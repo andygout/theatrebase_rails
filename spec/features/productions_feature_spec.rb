@@ -8,4 +8,16 @@ feature 'productions' do
       expect(page).to have_link 'Add Production'
     end
   end
+
+  context 'productions have been added' do
+    before do
+      Production.create(title: 'Hamlet')
+    end
+
+    scenario 'display productions', js: true do
+      visit productions_path
+      expect(page).to have_content('Hamlet')
+      expect(page).not_to have_content('No productions yet')
+    end
+  end
 end

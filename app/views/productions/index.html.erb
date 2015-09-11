@@ -1,3 +1,9 @@
-<h2>No productions yet</h2>
+<% if @productions.any? %>
+  <% @productions.each do |production| %>
+    <h2><%= production.title %></h2>
+  <% end %>
+<% else %>
+  <h2>No productions yet</h2>
+<% end %>
 
 <%= link_to 'Add Production', new_production_path %>
