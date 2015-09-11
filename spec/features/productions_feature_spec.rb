@@ -20,4 +20,15 @@ feature 'productions' do
       expect(page).not_to have_content('No productions yet')
     end
   end
+
+  context 'creating productions' do
+    scenario 'prompts user to complete form, then displays new production', js: true do
+      visit productions_path
+      click_link 'Add Production'
+      fill_in 'production_title', with: 'Hamlet'
+      click_button 'Create Production'
+      expect(page).to have_content 'Hamlet'
+      expect(current_path).to eq productions_path
+    end
+  end
 end
