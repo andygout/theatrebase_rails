@@ -35,11 +35,25 @@ feature 'productions' do
   context 'viewing productions' do
     let!(:hamlet) { Production.create(title: 'Hamlet') }
 
-    scenario 'lets a user view a production' do
+    scenario 'lets a user view a production', js: true do
       visit productions_path
       click_link 'Hamlet'
       expect(page).to have_content 'Hamlet'
       expect(current_path).to eq production_path(hamlet)
+    end
+  end
+
+  context 'editing productions' do
+    let!(:hamlet) { Production.create(title: 'Hamlet') }
+
+    scenario 'let a user edit a production', js: true do
+      visit "/productions/#{hamlet.id}"
+      click_link 'Edit Production'
+      fill_in 'production_title', with: 'Macbeth'
+      click_button 'Update Production'
+      expect(page).not_to have_content 'Hamlet'
+      expect(page).to have_content 'Macbeth'
+      expect(current_path).to eq "/productions/#{hamlet.id}"
     end
   end
 end
