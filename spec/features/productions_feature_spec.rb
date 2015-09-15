@@ -11,7 +11,7 @@ feature 'productions' do
 
   context 'productions have been added' do
     before do
-      Production.create(title: 'Hamlet')
+      create :production
     end
 
     scenario 'display productions', js: true do
@@ -33,7 +33,7 @@ feature 'productions' do
   end
 
   context 'viewing productions' do
-    let!(:hamlet) { Production.create(title: 'Hamlet') }
+    let!(:hamlet) { create :production }
 
     scenario 'lets a user view a production', js: true do
       visit productions_path
@@ -44,7 +44,7 @@ feature 'productions' do
   end
 
   context 'editing productions' do
-    let!(:hamlet) { Production.create(title: 'Hamlet') }
+    let!(:hamlet) { create :production }
 
     scenario 'let a user edit a production', js: true do
       visit "/productions/#{hamlet.id}"
@@ -58,7 +58,7 @@ feature 'productions' do
   end
 
   context 'deleting productions' do
-    let!(:hamlet) { Production.create(title: 'Hamlet') }
+    let!(:hamlet) { create :production }
 
     scenario 'removes a production when a user clicks its delete link', js: true do
       visit "/productions/#{hamlet.id}"
