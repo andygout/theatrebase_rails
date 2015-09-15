@@ -56,4 +56,15 @@ feature 'productions' do
       expect(current_path).to eq "/productions/#{hamlet.id}"
     end
   end
+
+  context 'deleting productions' do
+    let!(:hamlet) { Production.create(title: 'Hamlet') }
+
+    scenario 'removes a production when a user clicks its delete link', js: true do
+      visit "/productions/#{hamlet.id}"
+      click_link 'Delete Production'
+      expect(page).not_to have_content 'Hamlet'
+      expect(page).to have_content 'Production deleted successfully'
+    end
+  end
 end

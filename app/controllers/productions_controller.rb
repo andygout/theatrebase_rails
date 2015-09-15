@@ -27,6 +27,13 @@ class ProductionsController < ApplicationController
     redirect_to production_path(@production)
   end
 
+  def destroy
+    @production = Production.find(params[:id])
+    @production.destroy
+    flash[:notice] = 'Production deleted successfully'
+    redirect_to productions_path
+  end
+
   def production_params
     params.require(:production).permit(:title)
   end
