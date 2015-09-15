@@ -31,4 +31,15 @@ feature 'productions' do
       expect(current_path).to eq productions_path
     end
   end
+
+  context 'viewing productions' do
+    let!(:hamlet) { Production.create(title: 'Hamlet') }
+
+    scenario 'lets a user view a production' do
+      visit productions_path
+      click_link 'Hamlet'
+      expect(page).to have_content 'Hamlet'
+      expect(current_path).to eq production_path(hamlet)
+    end
+  end
 end
