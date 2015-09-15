@@ -24,7 +24,8 @@ feature 'productions' do
       click_link 'Add Production'
       fill_in 'production_title', with: 'Hamlet'
       click_button 'Create Production'
-      expect(page).to have_content 'Hamlet'
+      expect(page).to have_content 'Production created successfully: Hamlet'
+      expect(page).to have_content 'Hamlet', count: 2
       expect(current_path).to eq productions_path
     end
   end
@@ -46,8 +47,9 @@ feature 'productions' do
       click_link 'Edit Production'
       fill_in 'production_title', with: 'Macbeth'
       click_button 'Update Production'
+      expect(page).to have_content 'Production updated successfully: Macbeth'
+      expect(page).to have_content 'Macbeth', count: 2
       expect(page).not_to have_content "#{production.title}"
-      expect(page).to have_content 'Macbeth'
       expect(current_path).to eq "/productions/#{production.id}"
     end
   end
@@ -57,8 +59,8 @@ feature 'productions' do
     scenario 'removes a production when a user clicks its delete link', js: true do
       visit "/productions/#{production.id}"
       click_link 'Delete Production'
-      expect(page).not_to have_content "#{production.title}"
-      expect(page).to have_content 'Production deleted successfully'
+      expect(page).to have_content "Production deleted successfully: #{production.title}"
+      expect(page).not_to have_content "#{production.title}", count: 2
     end
   end
 end
