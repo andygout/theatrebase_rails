@@ -1,7 +1,11 @@
 require 'rails_helper'
 
 describe User, type: :model do
-  let(:user) { User.new name: 'Andy Gout', email: 'andygout@example.com' }
+  let(:user) { User.new name: 'Andy Gout',
+                        email: 'andygout@example.com',
+                        password: 'foobar',
+                        password_confirmation: 'foobar'
+             }
 
   context 'valid details' do
     it 'should be valid' do
@@ -60,6 +64,13 @@ describe User, type: :model do
       user.email = mixed_case_email
       user.save
       expect(mixed_case_email.downcase).to eq user.reload.email
+    end
+  end
+
+  context 'password validation' do
+    it 'should have a minimum length' do
+      user.password = user.password_confirmation = 'a' * 5
+      expect(user.valid?).to be false
     end
   end
 end
