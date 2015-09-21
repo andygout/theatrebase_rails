@@ -47,5 +47,19 @@ describe User, type: :model do
         expect(user.valid?).to be(false), "#{invalid_address.inspect} should be invalid"
       end
     end
+
+    it 'should be invalid if not unique' do
+      duplicate_user = user.dup
+      duplicate_user.email = user.email.upcase
+      user.save
+      expect(duplicate_user.valid?).to be false
+    end
+
+    it 'should be saved as lowercase' do
+      mixed_case_email = 'Foo@ExAMPle.CoM'
+      user.email = mixed_case_email
+      user.save
+      expect(mixed_case_email.downcase).to eq user.reload.email
+    end
   end
 end
