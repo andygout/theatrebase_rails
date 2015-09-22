@@ -1,0 +1,3 @@
+<% if @user.errors.any? %>
+  There are <%= pluralize(count, "error") %> on this page that need amending before submission can be successful.
+<% end %>
