@@ -36,8 +36,10 @@ class ProductionsController < ApplicationController
     redirect_to productions_path
   end
 
-  def production_params
-    params.require(:production).permit(:title)
-  end
+  private
+
+    def production_params
+      params.require(:production).permit(:title)
+    end
 
 end
