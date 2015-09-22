@@ -10,7 +10,7 @@ class ProductionsController < ApplicationController
 
   def create
     @production = Production.create(production_params)
-    flash[:notice] = "Production created successfully: #{@production.title}"
+    flash[:success] = "Production created successfully: #{@production.title}"
     redirect_to productions_path
   end
 
@@ -25,14 +25,14 @@ class ProductionsController < ApplicationController
   def update
     @production = Production.find(params[:id])
     @production.update(production_params)
-    flash[:notice] = "Production updated successfully: #{@production.title}"
+    flash[:success] = "Production updated successfully: #{@production.title}"
     redirect_to production_path(@production)
   end
 
   def destroy
     @production = Production.find(params[:id])
     @production.destroy
-    flash[:notice] = "Production deleted successfully: #{@production.title}"
+    flash[:success] = "Production deleted successfully: #{@production.title}"
     redirect_to productions_path
   end
 
