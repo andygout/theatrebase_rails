@@ -10,7 +10,6 @@ feature 'user sign-up' do
       fill_in 'user_password',              with: "#{user[:password]}"
       fill_in 'user_password_confirmation', with: "#{user[:password_confirmation]}"
       expect { click_button 'Create User' }.to change { User.count }.by 1
-      byebug
       expect(page).to have_content "User created successfully: Andy Gout"
       expect(current_path).to eq "/users/1"
     end
