@@ -24,10 +24,10 @@ feature 'user sign-up' do
       fill_in 'user_password',              with: "#{invalid_user[:password]}"
       fill_in 'user_password_confirmation', with: "#{invalid_user[:password_confirmation]}"
       expect { click_button 'Create User' }.to change { User.count }.by 0
-      expect(page).to have_content "Can't be blank"
-      expect(page).to have_content "Is invalid"
+      expect(page).to have_content "Name cannot be blank"
+      expect(page).to have_content "Email must be in a valid format"
       expect(page).to have_content "Doesn't match password"
-      expect(page).to have_content "Is too short (minimum is 6 characters)"
+      expect(page).to have_content "Password is too short (minimum length: 6 characters)"
       expect(current_path).to eq users_path
     end
   end

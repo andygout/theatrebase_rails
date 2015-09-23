@@ -28,4 +28,4 @@ en:
       too_short: "%{attribute} is too short (minimum length: %{count} characters)"
       too_long: "%{attribute} is too long (maximum length: %{count} characters)"
       invalid: "%{attribute} must be in a valid format"
-      taken: "%{attribute} is is already taken"
+      taken: "%{attribute} is already taken"
