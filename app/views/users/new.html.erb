@@ -3,7 +3,7 @@
 <h1>Sign up</h1>
 
 <%= form_for @user do |f| %>
-  <%= render 'partials/error_count', count: @user.errors.count %>
+  <%= render 'partials/error_count' %>
 
   <%= f.label :name %>
   <%= f.text_field :name %>
