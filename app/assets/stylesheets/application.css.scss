@@ -13,3 +13,23 @@
  *= require_tree .
  *= require_self
  */
+
+$error-color: #FF3232;
+$success-color: #629632;
+
+/* forms errors*/
+.field_with_errors {
+  color: $error-color;
+  input {
+    border-color: $error-color;
+  }
+}
+
+/* alerts */
+.alert-success {
+  color: $success-color;
+}
+
+.alert-error {
+  color: $error-color;
+}
