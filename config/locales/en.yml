@@ -20,8 +20,6 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  error_notification:
-    default_message: "Please review the problems below:"
   errors:
     messages:
       blank: "%{attribute} cannot be blank"
