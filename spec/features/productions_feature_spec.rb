@@ -83,7 +83,7 @@ feature 'productions' do
       expect(page).to have_css('div.alert-error')
       expect(page).to have_css('li.field_with_errors')
       expect(page).not_to have_css('div.alert-success')
-      # expect(page).to have_content "#{production.title}"
+      expect(page).to have_content "#{production.title}"
       expect(current_path).to eq "/productions/#{production.id}"
     end
   end

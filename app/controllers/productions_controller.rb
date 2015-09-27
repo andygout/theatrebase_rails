@@ -24,6 +24,7 @@ class ProductionsController < ApplicationController
 
   def edit
     @production = Production.find(params[:id])
+    @title = @production.title
   end
 
   def update
@@ -32,6 +33,7 @@ class ProductionsController < ApplicationController
       flash[:success] = "Production updated successfully: #{@production.title}"
       redirect_to production_path(@production)
     else
+      @title = Production.find(params[:id]).title
       render :edit
     end
   end
