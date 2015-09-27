@@ -1,11 +1,7 @@
 require 'rails_helper'
 
 describe User, type: :model do
-  let(:user) { User.new name: 'Andy Gout',
-                        email: 'andygout@example.com',
-                        password: 'foobar',
-                        password_confirmation: 'foobar'
-             }
+  let(:user) { build :user }
 
   context 'valid details' do
     it 'should be valid' do
