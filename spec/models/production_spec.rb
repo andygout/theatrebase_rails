@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe Production, type: :model do
-  let!(:production) { build :production }
+  let(:production) { build :production }
 
   context 'valid details' do
     it 'should be valid' do
