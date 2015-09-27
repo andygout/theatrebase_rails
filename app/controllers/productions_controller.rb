@@ -9,9 +9,13 @@ class ProductionsController < ApplicationController
   end
 
   def create
-    @production = Production.create(production_params)
-    flash[:success] = "Production created successfully: #{@production.title}"
-    redirect_to productions_path
+    @production = Production.new(production_params)
+    if @production.save
+      flash[:success] = "Production created successfully: #{@production.title}"
+      redirect_to @production
+    else
+      render :new
+    end
   end
 
   def show
@@ -20,13 +24,18 @@ class ProductionsController < ApplicationController
 
   def edit
     @production = Production.find(params[:id])
+    @title = @production.title
   end
 
   def update
     @production = Production.find(params[:id])
-    @production.update(production_params)
-    flash[:success] = "Production updated successfully: #{@production.title}"
-    redirect_to production_path(@production)
+    if @production.update(production_params)
+      flash[:success] = "Production updated successfully: #{@production.title}"
+      redirect_to production_path(@production)
+    else
+      @title = Production.find(params[:id]).title
+      render :edit
+    end
   end
 
   def destroy

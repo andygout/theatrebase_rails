@@ -1,5 +1,9 @@
 <%= form_for @production do |f| %>
+  <%= render 'partials/error_count', count: @production.errors.count %>
+
   <%= f.label :title %>
   <%= f.text_field :title %>
+  <%= render partial: 'partials/error', collection: @production.errors[:title] %>
+
   <%= f.submit %>
 <% end %>
