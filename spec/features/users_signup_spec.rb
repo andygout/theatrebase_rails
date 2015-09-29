@@ -4,7 +4,7 @@ feature 'user sign-up' do
   context 'valid details' do
     let(:user) { attributes_for :user }
     scenario 'should redirect to user page with success message', js: true do
-      visit new_user_path
+      visit signup_path
       fill_in 'user_name',                  with: "#{user[:name]}"
       fill_in 'user_email',                 with: "#{user[:email]}"
       fill_in 'user_password',              with: "#{user[:password]}"
@@ -20,7 +20,7 @@ feature 'user sign-up' do
   context 'invalid details' do
     let(:invalid_user) { attributes_for :invalid_user }
     scenario 'should re-render the form with error message', js: true do
-      visit new_user_path
+      visit signup_path
       fill_in 'user_name',                  with: "#{invalid_user[:name]}"
       fill_in 'user_email',                 with: "#{invalid_user[:email]}"
       fill_in 'user_password',              with: "#{invalid_user[:password]}"
