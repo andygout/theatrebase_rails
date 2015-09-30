@@ -56,3 +56,36 @@ feature 'User log out' do
     end
   end
 end
+
+feature 'Remembering user across sessions' do
+  context 'opting to be remembered' do
+    let!(:user) { create :user }
+    scenario 'should remember user after closing and re-opening browser', js: true do
+      visit login_path
+      fill_in 'session_email',    with: "#{user.email}"
+      fill_in 'session_password', with: "#{user.password}"
+      find(:css, '#session_remember_me').set true
+      click_button 'Log in'
+      expire_cookies
+      visit root_path
+      expect(page).to have_selector :link, 'Profile'
+      expect(page).to have_selector :link, 'Log out'
+      expect(page).not_to have_selector :link, 'Log in'
+    end
+  end
+
+  context 'not opting to be remembered' do
+    let!(:user) { create :user }
+    scenario 'should remember user after closing and re-opening browser', js: true do
+      visit login_path
+      fill_in 'session_email',    with: "#{user.email}"
+      fill_in 'session_password', with: "#{user.password}"
+      click_button 'Log in'
+      expire_cookies
+      visit root_path
+      expect(page).to have_selector :link, 'Log in'
+      expect(page).not_to have_selector :link, 'Profile'
+      expect(page).not_to have_selector :link, 'Log out'
+    end
+  end
+end
