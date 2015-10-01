@@ -69,4 +69,10 @@ describe User, type: :model do
       expect(user.valid?).to be false
     end
   end
+
+  context 'authentication' do
+    it 'should return false for a user with nil digest' do
+      expect(user.authenticated?('')).to be false
+    end
+  end
 end
