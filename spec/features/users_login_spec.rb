@@ -99,3 +99,33 @@ feature 'Remembering user across sessions' do
     end
   end
 end
+
+feature 'friendly forwarding' do
+  context 'attempt to visit edit page not logged in; logging in redirects to intended page' do
+    let(:user) { create :user }
+    scenario 'should redirect to login page', js: true do
+      visit edit_user_path(user)
+      fill_in 'session_email',    with: "#{user.email}"
+      fill_in 'session_password', with: "#{user.password}"
+      click_button 'Log in'
+      expect(current_path).to eq edit_user_path(user)
+    end
+  end
+
+  context 'attempt to visit edit page not logged in; logging in redirects to intended page first time only' do
+    let(:user) { create :user }
+    scenario 'should redirect to login page', js: true do
+      visit edit_user_path(user)
+      fill_in 'session_email',    with: "#{user.email}"
+      fill_in 'session_password', with: "#{user.password}"
+      click_button 'Log in'
+      expect(current_path).to eq edit_user_path(user)
+      click_link 'Log out'
+      visit login_path
+      fill_in 'session_email',    with: "#{user.email}"
+      fill_in 'session_password', with: "#{user.password}"
+      click_button 'Log in'
+      expect(current_path).to eq user_path(user)
+    end
+  end
+end
