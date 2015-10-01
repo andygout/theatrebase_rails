@@ -55,6 +55,28 @@ feature 'User log out' do
       expect(current_path).to eq root_path
     end
   end
+
+  context 'having been logged in' do
+    let!(:user) { create :user }
+    scenario 'should redirect to home page if logging out from second window', js:true do
+      visit login_path
+      fill_in 'session_email',    with: "#{user.email}"
+      fill_in 'session_password', with: "#{user.password}"
+      click_button 'Log in'
+      new_window = open_new_window
+      within_window new_window do
+        visit root_path
+      end
+      click_link 'Log out'
+      within_window new_window do
+        click_link 'Log out'
+        expect(page).to have_selector :link, 'Log in'
+        expect(page).not_to have_selector :link, 'Profile'
+        expect(page).not_to have_selector :link, 'Log out'
+        expect(current_path).to eq root_path
+      end
+    end
+  end
 end
 
 feature 'Remembering user across sessions' do
