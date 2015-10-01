@@ -9,7 +9,7 @@ require 'rspec/rails'
 require 'capybara/poltergeist'
 require 'capybara/rails'
 require 'support/database_cleaner'
-require 'support/helpers'
+require 'support/helper_methods'
 
 Capybara.current_driver = :poltergeist
 Capybara.default_max_wait_time = 5
