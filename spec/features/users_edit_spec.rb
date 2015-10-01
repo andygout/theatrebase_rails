@@ -34,4 +34,13 @@ feature 'User edit' do
       expect(current_path).to eq user_path(user)
     end
   end
+
+  context 'not logged in' do
+    let(:user) { create :user }
+    scenario 'should redirect to login page', js: true do
+      visit edit_user_path(user)
+      expect(page).to have_css 'div.alert-error'
+      expect(current_path).to eq login_path
+    end
+  end
 end
