@@ -26,6 +26,13 @@ FactoryGirl.define do
       password 'barfoo'
       password_confirmation 'barfoo'
     end
+
+    factory :list_user do
+      sequence(:name) { |n| "User #{n}" }
+      sequence(:email) { |n| "user#{n}@example.com" }
+      password 'foobar'
+      password_confirmation 'foobar'
+    end
   end
 
 end
