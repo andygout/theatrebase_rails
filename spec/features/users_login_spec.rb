@@ -16,7 +16,7 @@ feature 'User log in' do
       expect(page).to have_selector :link, 'Profile'
       expect(page).to have_selector :link, 'Log out'
       expect(page).not_to have_selector :link, 'Log in'
-      expect(current_path).to eq "/users/1"
+      expect(current_path).to eq user_path(user)
     end
   end
 
@@ -41,12 +41,8 @@ end
 
 feature 'User log out' do
   context 'having been logged in' do
-    let!(:user) { create :user }
     scenario 'should redirect to home page with success message', js: true do
-      visit login_path
-      fill_in 'session_email',    with: "#{user.email}"
-      fill_in 'session_password', with: "#{user.password}"
-      click_button 'Log in'
+      create_logged_in_user
       click_link 'Log out'
       expect(page).to have_css 'div.alert-success'
       expect(page).to have_selector :link, 'Log in'
@@ -57,12 +53,8 @@ feature 'User log out' do
   end
 
   context 'having been logged in' do
-    let!(:user) { create :user }
     scenario 'should redirect to home page if logging out from second window', js:true do
-      visit login_path
-      fill_in 'session_email',    with: "#{user.email}"
-      fill_in 'session_password', with: "#{user.password}"
-      click_button 'Log in'
+      create_logged_in_user
       new_window = open_new_window
       within_window new_window do
         visit root_path
@@ -97,17 +89,43 @@ feature 'Remembering user across sessions' do
   end
 
   context 'not opting to be remembered' do
-    let!(:user) { create :user }
     scenario 'should remember user after closing and re-opening browser', js: true do
-      visit login_path
-      fill_in 'session_email',    with: "#{user.email}"
-      fill_in 'session_password', with: "#{user.password}"
-      click_button 'Log in'
+      create_logged_in_user
       expire_cookies
       visit root_path
       expect(page).to have_selector :link, 'Log in'
       expect(page).not_to have_selector :link, 'Profile'
       expect(page).not_to have_selector :link, 'Log out'
+    end
+  end
+end
+
+feature 'friendly forwarding' do
+  context 'attempt to visit edit page not logged in; logging in redirects to intended page' do
+    let(:user) { create :user }
+    scenario 'should redirect to login page', js: true do
+      visit edit_user_path(user)
+      fill_in 'session_email',    with: "#{user.email}"
+      fill_in 'session_password', with: "#{user.password}"
+      click_button 'Log in'
+      expect(current_path).to eq edit_user_path(user)
+    end
+  end
+
+  context 'attempt to visit edit page not logged in; logging in redirects to intended page first time only' do
+    let(:user) { create :user }
+    scenario 'should redirect to login page', js: true do
+      visit edit_user_path(user)
+      fill_in 'session_email',    with: "#{user.email}"
+      fill_in 'session_password', with: "#{user.password}"
+      click_button 'Log in'
+      expect(current_path).to eq edit_user_path(user)
+      click_link 'Log out'
+      visit login_path
+      fill_in 'session_email',    with: "#{user.email}"
+      fill_in 'session_password', with: "#{user.password}"
+      click_button 'Log in'
+      expect(current_path).to eq user_path(user)
     end
   end
 end
