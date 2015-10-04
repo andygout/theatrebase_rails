@@ -22,7 +22,7 @@ feature 'User sign-up' do
 
   context 'invalid details' do
     let(:invalid_user) { attributes_for :invalid_user }
-    scenario 'should re-render the form with error message', js: true do
+    scenario 'should re-render form with error message', js: true do
       visit signup_path
       fill_in 'user_name',                  with: "#{invalid_user[:name]}"
       fill_in 'user_email',                 with: "#{invalid_user[:email]}"

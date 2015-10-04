@@ -2,24 +2,4 @@
 
 <h1>Sign up</h1>
 
-<%= form_for @user do |f| %>
-  <%= render 'partials/error_count', count: @user.errors.count %>
-
-  <%= f.label :name %>
-  <%= f.text_field :name %>
-  <%= render partial: 'partials/error', collection: @user.errors[:name] %>
-
-  <%= f.label :email %>
-  <%= f.email_field :email %>
-  <%= render partial: 'partials/error', collection: @user.errors[:email] %>
-
-  <%= f.label :password %>
-  <%= f.password_field :password %>
-  <%= render partial: 'partials/error', collection: @user.errors[:password] %>
-
-  <%= f.label :password_confirmation, "Password confirmation" %>
-  <%= f.password_field :password_confirmation %>
-  <%= render partial: 'partials/error', collection: @user.errors[:password_confirmation] %>
-
-  <%= f.submit %>
-<% end %>
+<%= render "form" %>
