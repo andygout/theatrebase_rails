@@ -5,17 +5,17 @@ feature 'User log in' do
     let!(:user) { create :user }
     scenario 'should redirect to user page with success message', js: true do
       visit login_path
-      expect(page).to have_selector :link, 'Log in'
-      expect(page).not_to have_selector :link, 'Profile'
-      expect(page).not_to have_selector :link, 'Log out'
+      expect(page).to have_link('Log in', href: login_path)
+      expect(page).not_to have_link('Profile', href: user_path(user.id))
+      expect(page).not_to have_link('Log out', href: logout_path)
       fill_in 'session_email',    with: "#{user.email}"
       fill_in 'session_password', with: "#{user.password}"
       click_button 'Log in'
       expect(page).to have_css 'div.alert-success'
       expect(page).not_to have_css 'div.alert-error'
-      expect(page).to have_selector :link, 'Profile'
-      expect(page).to have_selector :link, 'Log out'
-      expect(page).not_to have_selector :link, 'Log in'
+      expect(page).to have_link('Profile', href: user_path(user.id))
+      expect(page).to have_link('Log out', href: logout_path)
+      expect(page).not_to have_link('Log in', href: login_path)
       expect(current_path).to eq user_path(user)
     end
   end
@@ -30,9 +30,9 @@ feature 'User log in' do
       expect(page).to have_css 'div.alert-error'
       expect(page).not_to have_css 'div.alert-success'
       expect(current_path).to eq login_path
-      expect(page).to have_selector :link, 'Log in'
-      expect(page).not_to have_selector :link, 'Profile'
-      expect(page).not_to have_selector :link, 'Log out'
+      expect(page).to have_link('Log in', href: login_path)
+      expect(page).not_to have_link('Profile')
+      expect(page).not_to have_link('Log out', href: logout_path)
       visit root_path
       expect(page).not_to have_css 'div.alert-error'
     end
@@ -41,20 +41,20 @@ end
 
 feature 'User log out' do
   context 'having been logged in' do
+    let!(:user) { create_logged_in_user }
     scenario 'should redirect to home page with success message', js: true do
-      create_logged_in_user
       click_link 'Log out'
       expect(page).to have_css 'div.alert-success'
-      expect(page).to have_selector :link, 'Log in'
-      expect(page).not_to have_selector :link, 'Profile'
-      expect(page).not_to have_selector :link, 'Log out'
+      expect(page).to have_link('Log in', href: login_path)
+      expect(page).not_to have_link('Profile', href: user_path(user.id))
+      expect(page).not_to have_link('Log out', href: logout_path)
       expect(current_path).to eq root_path
     end
   end
 
   context 'having been logged in' do
+    let!(:user) { create_logged_in_user }
     scenario 'should redirect to home page if logging out from second window', js:true do
-      create_logged_in_user
       new_window = open_new_window
       within_window new_window do
         visit root_path
@@ -62,9 +62,9 @@ feature 'User log out' do
       click_link 'Log out'
       within_window new_window do
         click_link 'Log out'
-        expect(page).to have_selector :link, 'Log in'
-        expect(page).not_to have_selector :link, 'Profile'
-        expect(page).not_to have_selector :link, 'Log out'
+        expect(page).to have_link('Log in', href: login_path)
+        expect(page).not_to have_link('Profile', href: user_path(user.id))
+        expect(page).not_to have_link('Log out', href: logout_path)
         expect(current_path).to eq root_path
       end
     end
@@ -82,20 +82,20 @@ feature 'Remembering user across sessions' do
       click_button 'Log in'
       expire_cookies
       visit root_path
-      expect(page).to have_selector :link, 'Profile'
-      expect(page).to have_selector :link, 'Log out'
-      expect(page).not_to have_selector :link, 'Log in'
+      expect(page).to have_link('Profile', href: user_path(user.id))
+      expect(page).to have_link('Log out', href: logout_path)
+      expect(page).not_to have_link('Log in', href: login_path)
     end
   end
 
   context 'not opting to be remembered' do
+    let!(:user) { create_logged_in_user }
     scenario 'should remember user after closing and re-opening browser', js: true do
-      create_logged_in_user
       expire_cookies
       visit root_path
-      expect(page).to have_selector :link, 'Log in'
-      expect(page).not_to have_selector :link, 'Profile'
-      expect(page).not_to have_selector :link, 'Log out'
+      expect(page).to have_link('Log in', href: login_path)
+      expect(page).not_to have_link('Profile', href: user_path(user.id))
+      expect(page).not_to have_link('Log out', href: logout_path)
     end
   end
 end

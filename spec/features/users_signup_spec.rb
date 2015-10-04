@@ -13,9 +13,9 @@ feature 'User sign-up' do
       expect(page).to have_css 'div.alert-success'
       expect(page).not_to have_css 'div.alert-error'
       expect(page).not_to have_css 'li.field_with_errors'
-      expect(page).to have_selector :link, 'Profile'
-      expect(page).to have_selector :link, 'Log out'
-      expect(page).not_to have_selector :link, 'Log in'
+      expect(page).to have_link('Profile', href: user_path(User.last.id))
+      expect(page).to have_link('Log out', href: logout_path)
+      expect(page).not_to have_link('Log in', href: login_path)
       expect(current_path).to eq "/users/1"
     end
   end
@@ -32,9 +32,9 @@ feature 'User sign-up' do
       expect(page).to have_css 'div.alert-error'
       expect(page).to have_css 'li.field_with_errors'
       expect(page).not_to have_css 'div.alert-success'
-      expect(page).to have_selector :link, 'Log in'
-      expect(page).not_to have_selector :link, 'Profile'
-      expect(page).not_to have_selector :link, 'Log out'
+      expect(page).to have_link('Log in', href: login_path)
+      expect(page).not_to have_link('Profile')
+      expect(page).not_to have_link('Log out', href: logout_path)
       expect(current_path).to eq users_path
     end
   end
