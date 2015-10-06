@@ -1,6 +1,10 @@
 <% provide(:title, "#{@user.name} (user)") %>
 
-<%= link_to "Edit Profile", edit_user_path(current_user) %>
+<%= link_to "Edit Profile", edit_user_path(@user) %>
+
+<% if admin?(current_user) && !current_user?(@user) %>
+  <%= link_to 'Delete User', @user, method: :delete %>
+<% end %>
 
 <%= @user.name %>
 <%= @user.email %>

@@ -4,7 +4,7 @@ feature 'User edit' do
   context 'valid details' do
     let(:user) { create_logged_in_user }
     let(:edit_user) { attributes_for :edit_user }
-    scenario 'should redirect to user page with success message', js: true do
+    scenario 'should redirect to user profile with success message', js: true do
       visit edit_user_path(user)
       fill_in 'user_name',                  with: "#{edit_user[:name]}"
       fill_in 'user_email',                 with: "#{edit_user[:email]}"

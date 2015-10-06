@@ -1,4 +1,4 @@
-User.create!( name:                   'Andy Gout',
+user = User.create!( name:                   'Andy Gout',
               email:                  'andygout@example.com',
               password:               'foobar',
               password_confirmation:  'foobar'
@@ -11,3 +11,5 @@ User.create!( name:                   'Andy Gout',
                 password_confirmation:  'password'
               )
 end
+
+Admin.create!(user_id: user.id)

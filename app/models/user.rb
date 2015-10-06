@@ -20,6 +20,8 @@ class User < ActiveRecord::Base
     length: { minimum: 6 },
     allow_blank: true
 
+  has_one :admin
+
   def User.digest string
     cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST : BCrypt::Engine.cost
     BCrypt::Password.create(string, cost: cost)
