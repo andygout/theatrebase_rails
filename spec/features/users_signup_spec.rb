@@ -3,7 +3,7 @@ require 'rails_helper'
 feature 'User sign-up' do
   context 'valid details' do
     let(:user) { attributes_for :user }
-    scenario 'should redirect to user page with success message', js: true do
+    scenario 'redirect to user page with success message', js: true do
       visit signup_path
       fill_in 'user_name',                  with: "#{user[:name]}"
       fill_in 'user_email',                 with: "#{user[:email]}"
@@ -22,7 +22,7 @@ feature 'User sign-up' do
 
   context 'invalid details' do
     let(:invalid_user) { attributes_for :invalid_user }
-    scenario 'should re-render form with error message', js: true do
+    scenario 're-render form with error message', js: true do
       visit signup_path
       fill_in 'user_name',                  with: "#{invalid_user[:name]}"
       fill_in 'user_email',                 with: "#{invalid_user[:email]}"

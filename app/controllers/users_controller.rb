@@ -1,7 +1,9 @@
 class UsersController < ApplicationController
 
-  before_action :logged_in_user, only: [:index, :edit, :update, :destroy]
-  before_action :correct_user, only: [:edit, :update]
+  before_action :logged_in_user,        only: [:index, :edit, :update, :show, :destroy]
+  before_action :admin_user,            only: :index
+  before_action :correct_user,          only: [:edit, :update]
+  before_action :admin_or_correct_user, only: [:show, :destroy]
 
   def index
     @users = User.paginate(page: params[:page])
@@ -44,7 +46,12 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     @user.destroy
     flash[:success] = "User deleted successfully: #{@user.name}"
-    redirect_to users_path
+    if current_user == @user
+      session.delete :user_id
+      redirect_to root_path
+    else
+      redirect_to users_path
+    end
   end
 
   private
@@ -65,9 +72,27 @@ class UsersController < ApplicationController
       end
     end
 
+    def admin_user
+      unless admin? current_user
+        flash[:error] = 'Access denied'
+        redirect_to root_path
+      end
+    end
+
     def correct_user
       @user = User.find(params[:id])
-      redirect_to(root_path) unless current_user? @user
+      unless current_user? @user
+        flash[:error] = 'Access denied'
+        redirect_to root_path
+      end
+    end
+
+    def admin_or_correct_user
+      @user = User.find(params[:id])
+      unless current_user?(@user) || admin?(current_user)
+        flash[:error] = 'Access denied'
+        redirect_to root_path
+      end
     end
 
 end

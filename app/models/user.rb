@@ -20,7 +20,7 @@ class User < ActiveRecord::Base
     length: { minimum: 6 },
     allow_blank: true
 
-  has_one :admin
+  has_one :admin, dependent: :destroy
 
   def User.digest string
     cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST : BCrypt::Engine.cost
