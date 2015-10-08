@@ -15,18 +15,6 @@ feature 'User delete' do
       expect(current_path).to eq users_path
     end
 
-    scenario 'delete other admin user; redirect to user index with success message', js: true do
-      visit user_path(second_admin_user)
-      expect { click_link 'Delete User' }.to change { User.count }.by(-1)
-                                        .and change { Admin.count }.by(-1)
-      expect(User.exists? second_admin_user.id).to be false
-      expect(Admin.exists? user_id: second_admin_user).to be false
-      expect(page).to have_css 'div.alert-success'
-      expect(page).not_to have_css 'div.alert-error'
-      expect(page).not_to have_link("#{second_admin_user.name}", href: user_path(second_admin_user))
-      expect(current_path).to eq users_path
-    end
-
     scenario 'delete own profile; redirect to home page with success message', js: true do
       visit user_path(admin_user)
       expect { click_link 'Delete User' }.to change { User.count }.by(-1)

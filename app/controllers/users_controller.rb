@@ -3,7 +3,8 @@ class UsersController < ApplicationController
   before_action :logged_in_user,        only: [:index, :edit, :update, :show, :destroy]
   before_action :admin_user,            only: :index
   before_action :correct_user,          only: [:edit, :update]
-  before_action :admin_or_correct_user, only: [:show, :destroy]
+  before_action :show_user,             only: :show
+  before_action :destroy_user,          only: :destroy
 
   def index
     @users = User.paginate(page: params[:page])
@@ -87,9 +88,17 @@ class UsersController < ApplicationController
       end
     end
 
-    def admin_or_correct_user
+    def show_user
       @user = User.find(params[:id])
-      unless current_user?(@user) || admin?(current_user)
+      unless valid_show_user @user
+        flash[:error] = 'Access denied'
+        redirect_to root_path
+      end
+    end
+
+    def destroy_user
+      @user = User.find(params[:id])
+      unless valid_destroy_user @user
         flash[:error] = 'Access denied'
         redirect_to root_path
       end
