@@ -4,6 +4,12 @@ def create_logged_in_user
   return user
 end
 
+def create_logged_in_admin_user
+  admin_user = create :admin_user
+  login admin_user
+  return admin_user
+end
+
 def login user
   visit login_path
   fill_in 'session_email',    with: "#{user.email}"
