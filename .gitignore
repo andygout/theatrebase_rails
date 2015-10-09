@@ -14,3 +14,6 @@
 
 # Ignore SimpleCov coverage files.
 /coverage
+
+# Ignore image files.
+/app/assets/images
