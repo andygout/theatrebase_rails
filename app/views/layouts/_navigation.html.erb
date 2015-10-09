@@ -1,6 +1,5 @@
 <div id="navigation">
   <ul>
-    <li><%= link_to 'Home', root_path %></li>
     <%= link_to 'Add Production', new_production_path %>
     <% if logged_in? %>
       <li><%= link_to 'Profile', current_user %></li>
