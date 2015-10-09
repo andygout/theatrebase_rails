@@ -6,11 +6,26 @@ FactoryGirl.define do
     password 'foobar'
     password_confirmation 'foobar'
 
-    factory :invalid_user do
-      name ''
-      email 'andygout@example'
-      password 'foo'
-      password_confirmation 'bar'
+    factory :second_user do
+      name 'John Smith'
+      email 'johnsmith@example.com'
+    end
+
+    factory :admin_user do
+      name 'David Jones'
+      email 'davidjones@example.com'
+      admin
+    end
+
+    factory :second_admin_user do
+      name 'Charlie Brown'
+      email 'charliebrown@example.com'
+      admin
+    end
+
+    factory :list_users do
+      sequence(:name) { |n| "User #{n}" }
+      sequence(:email) { |n| "user#{n}@example.com" }
     end
 
     factory :edit_user do
@@ -20,18 +35,11 @@ FactoryGirl.define do
       password_confirmation ''
     end
 
-    factory :second_user do
-      name 'John Smith'
-      email 'johnsmith@example.com'
-      password 'barfoo'
-      password_confirmation 'barfoo'
-    end
-
-    factory :list_user do
-      sequence(:name) { |n| "User #{n}" }
-      sequence(:email) { |n| "user#{n}@example.com" }
-      password 'foobar'
-      password_confirmation 'foobar'
+    factory :invalid_user do
+      name ''
+      email 'andygout@example'
+      password 'foo'
+      password_confirmation 'bar'
     end
   end
 
