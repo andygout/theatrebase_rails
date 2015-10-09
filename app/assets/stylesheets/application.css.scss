@@ -10,14 +10,168 @@
  * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
  * file per style scope.
  *
+ *= require normalize-rails
  *= require_tree .
  *= require_self
  */
 
+$html_bg: #F0F0F0;
+$header_color: #1975A3;
+$header_hover_color: #3083AC;
+$theme_color: #006699;
+$content_color: #404040;
+$form_bg_color: #F8F8F8;
+$button_bg_color: #E8E8E8;
+$border-color: #949494;
+$box_shadow_color: #D0D0D0;
 $error-color: #FF3232;
 $success-color: #629632;
 
-/* forms errors*/
+* {
+  margin: 0;
+  padding: 0;
+  font-family: arial, sans-serif;
+  color: $content_color;
+  text-decoration: none;
+}
+
+html {
+  overflow-y: scroll;
+  text-align: center;
+  background: $html_bg;
+}
+
+h1 {
+  color: $theme_color;
+  font-size: xx-large;
+  padding-bottom: 0px;
+  margin-left: 6px;
+  margin-right: 6px;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+a {
+  color: $theme_color;
+}
+
+a:hover {
+  color: $content_color;
+}
+
+#container {
+  width: 1000px;
+  background: white;
+  margin: auto;
+  text-align:
+  left;
+  border-left: 2px solid $border-color;
+  border-right: 2px solid $border-color;
+  border-bottom: 2px solid $border-color;
+  box-shadow:  6px 3px 100px $border-color, -6px 3px 100px $box_shadow_color;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+#header {
+  height: 75px;
+  background: black;
+  padding-left: 10px;
+  font-size: 400%;
+  font-weight: bold;
+  a {
+    color: $header_color;
+  }
+  a:hover {
+    color: $header_hover_color;
+  }
+}
+
+#header_search {
+  margin-top: 25px;
+  margin-left: 600px;
+}
+
+#navigation {
+  padding-top: 4px;
+  padding-left: 35px;
+  padding-right: 35px;
+  ul li {
+    display: inline;
+    margin: 6em;
+  }
+}
+
+#content {
+  padding-top: 20px;
+  padding-left: 50px;
+  padding-bottom: 20px;
+  width: 900px;
+  color: $content_color;
+  font-size: small;
+  font-weight: normal;
+}
+
+#footer {
+  margin-top: 40px;
+  background: black;
+  font-weight: bold;
+  height: 20px;
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
+}
+
+.footer_text_left {
+  margin-top: 3px;
+  padding-left: 10px;
+  font-size: x-small;
+  float: left;
+  color: $header_color;
+}
+
+.footer_text_right {
+  margin-top: 3px;
+  padding-right: 10px;
+  font-size: x-small;
+  float: right;
+  color: $header_color;
+}
+
+.buttons {
+  margin-top: 40px;
+  form {
+    display: inline;
+  }
+}
+
+.button {
+  width: 150px;
+  margin-top: 20px;
+  padding-left: 5px;
+  padding-right: 5px;
+  font-size: 100%;
+  background-color: $button_bg_color;
+  color: $content_color;
+}
+
+.button:focus {outline:0;}
+
+fieldset {
+  margin-top: 20px;
+  padding-left: 10px;
+  padding-right: 10px;
+  border: 2px solid $border-color;
+  background-color: $form_bg_color;
+  width: 97%;
+  border-radius: 5px;
+  label {
+    width: 99%;
+  }
+  input {
+    width: 99%
+  }
+}
+
 .field_with_errors {
   color: $error-color;
   input {
@@ -25,7 +179,6 @@ $success-color: #629632;
   }
 }
 
-/* alerts */
 .alert-success {
   color: $success-color;
 }
