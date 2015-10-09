@@ -1,6 +1,8 @@
 <% provide(:title, "#{@production.title}") %>
 
-<%= @production.title %>
+<h1><%= @production.title %></h1>
 
-<%= link_to 'Edit Production', edit_production_path(@production) %>
-<%= link_to 'Delete Production', production_path(@production), method: :delete %>
+<div class="buttons">
+  <%= button_to 'Edit Production', edit_production_path(@production), method: :get, class: 'button' %>
+  <%= button_to 'Delete Production', production_path(@production), method: :delete, class: 'button' %>
+</div>

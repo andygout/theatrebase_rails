@@ -2,12 +2,15 @@
 <html>
   <%= render 'layouts/head' %>
   <body>
-    <%= render 'layouts/header' %>
+    <div id="container">
 
-    <% flash.each do |msg_type, msg| %>
-      <%= content_tag(:div, msg, class: "alert alert-#{msg_type}") %>
-    <% end %>
+      <%= render 'layouts/header' %>
 
-    <%= yield %>
+      <%= render 'layouts/navigation' %>
+
+      <%= render 'layouts/content' %>
+
+      <%= render 'layouts/footer' %>
+    </div>
   </body>
 </html>
