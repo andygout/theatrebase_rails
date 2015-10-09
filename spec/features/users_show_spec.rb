@@ -10,8 +10,8 @@ feature 'User profile' do
       visit user_path(admin_user)
       expect(page).to have_content "#{admin_user.name}"
       expect(page).to have_content "#{admin_user.email}"
-      expect(page).to have_link('Edit Profile', href: edit_user_path(admin_user))
-      expect(page).to have_link('Delete User', href: user_path(admin_user))
+      expect(page).to have_button('Edit Profile')
+      expect(page).to have_button('Delete User')
       expect(current_path).to eq user_path(admin_user)
     end
 
@@ -19,8 +19,8 @@ feature 'User profile' do
       visit user_path(second_admin_user)
       expect(page).to have_content "#{second_admin_user.name}"
       expect(page).to have_content "#{second_admin_user.email}"
-      expect(page).not_to have_link('Edit Profile', href: edit_user_path(second_admin_user))
-      expect(page).not_to have_link('Delete User', href: user_path(second_admin_user))
+      expect(page).not_to have_button('Edit Profile')
+      expect(page).not_to have_button('Delete User')
       expect(current_path).to eq user_path(second_admin_user)
     end
 
@@ -28,8 +28,8 @@ feature 'User profile' do
       visit user_path(user)
       expect(page).to have_content "#{user.name}"
       expect(page).to have_content "#{user.email}"
-      expect(page).to have_link('Delete User', href: user_path(user))
-      expect(page).not_to have_link('Edit Profile', href: edit_user_path(user))
+      expect(page).to have_button('Delete User')
+      expect(page).not_to have_button('Edit Profile')
       expect(current_path).to eq user_path(user)
     end
   end
@@ -43,8 +43,8 @@ feature 'User profile' do
       visit user_path(user)
       expect(page).to have_content "#{user.name}"
       expect(page).to have_content "#{user.email}"
-      expect(page).to have_link('Edit Profile', href: edit_user_path(user))
-      expect(page).to have_link('Delete User', href: user_path(user))
+      expect(page).to have_button('Edit Profile')
+      expect(page).to have_button('Delete User')
       expect(current_path).to eq user_path(user)
     end
 
