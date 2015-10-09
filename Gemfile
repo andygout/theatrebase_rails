@@ -32,6 +32,7 @@ gem 'bcrypt', '~> 3.1.7'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
+gem 'normalize-rails'
 gem 'will_paginate', '~> 3.0.7'
 
 group :development, :test do

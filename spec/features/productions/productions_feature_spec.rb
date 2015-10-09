@@ -61,7 +61,7 @@ feature 'Productions' do
     let(:production) { create :production }
     scenario 'redirects to updated production page with success message', js: true do
       visit "/productions/#{production.id}"
-      click_link 'Edit Production'
+      click_button 'Edit Production'
       fill_in 'production_title', with: 'Macbeth'
       click_button 'Update Production'
       expect(page).to have_css 'div.alert-success'
@@ -77,7 +77,7 @@ feature 'Productions' do
     let(:production) { create :production }
     scenario 'invalid title given; re-renders edit form with error message', js: true do
       visit "/productions/#{production.id}"
-      click_link 'Edit Production'
+      click_button 'Edit Production'
       fill_in 'production_title', with: ' '
       click_button 'Update Production'
       expect(page).to have_css 'div.alert-error'
@@ -92,7 +92,7 @@ feature 'Productions' do
     let(:production) { create :production }
     scenario 'removes a production when a user clicks its delete link', js: true do
       visit "/productions/#{production.id}"
-      click_link 'Delete Production'
+      click_button 'Delete Production'
       expect(page).to have_css 'div.alert-success'
       expect(page).not_to have_css 'div.alert-error'
       expect(page).not_to have_content "#{production.title}", count: 2
