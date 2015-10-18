@@ -83,6 +83,13 @@ describe UsersController, type: :controller do
     end
   end
 
+  context 'attempt to assign non-admin user as admin via update web request' do
+    it 'will not update admin status' do
+      session[:user_id] = user.id
+      expect { patch :update, id: user, user: { name: user.name, email: user.email, admin_attributes: { user_id: user.id } } }.to change { Admin.count }.by 0
+    end
+  end
+
   context 'attempt to visit index when not logged in' do
     it 'redirect to login page' do
       get :index
