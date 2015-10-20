@@ -25,8 +25,8 @@ feature 'Productions' do
       click_link 'Add Production'
       fill_in 'production_title', with: "#{production[:title]}"
       expect { click_button 'Create Production' }.to change { Production.count }.by 1
-      expect(page).to have_css 'div.alert-success'
-      expect(page).not_to have_css 'div.alert-error'
+      expect(page).to have_css 'p.alert-success'
+      expect(page).not_to have_css 'p.alert-error'
       expect(page).not_to have_css 'li.field_with_errors'
       expect(page).to have_content 'Hamlet', count: 2
       expect(current_path).to eq "/productions/1"
@@ -39,9 +39,9 @@ feature 'Productions' do
       click_link 'Add Production'
       fill_in 'production_title', with: ' '
       expect { click_button 'Create Production' }.to change { Production.count }.by 0
-      expect(page).to have_css 'div.alert-error'
+      expect(page).to have_css 'p.alert-error'
       expect(page).to have_css 'li.field_with_errors'
-      expect(page).not_to have_css 'div.alert-success'
+      expect(page).not_to have_css 'p.alert-success'
       expect(page).to have_content "New Production"
       expect(current_path).to eq productions_path
     end
@@ -64,8 +64,8 @@ feature 'Productions' do
       click_button 'Edit Production'
       fill_in 'production_title', with: 'Macbeth'
       click_button 'Update Production'
-      expect(page).to have_css 'div.alert-success'
-      expect(page).not_to have_css 'div.alert-error'
+      expect(page).to have_css 'p.alert-success'
+      expect(page).not_to have_css 'p.alert-error'
       expect(page).not_to have_css 'li.field_with_errors'
       expect(page).to have_content 'Macbeth', count: 2
       expect(page).not_to have_content "#{production.title}"
@@ -80,9 +80,9 @@ feature 'Productions' do
       click_button 'Edit Production'
       fill_in 'production_title', with: ' '
       click_button 'Update Production'
-      expect(page).to have_css 'div.alert-error'
+      expect(page).to have_css 'p.alert-error'
       expect(page).to have_css 'li.field_with_errors'
-      expect(page).not_to have_css 'div.alert-success'
+      expect(page).not_to have_css 'p.alert-success'
       expect(page).to have_content "#{production.title}"
       expect(current_path).to eq "/productions/#{production.id}"
     end
@@ -93,8 +93,8 @@ feature 'Productions' do
     scenario 'removes a production when a user clicks its delete link', js: true do
       visit "/productions/#{production.id}"
       click_button 'Delete Production'
-      expect(page).to have_css 'div.alert-success'
-      expect(page).not_to have_css 'div.alert-error'
+      expect(page).to have_css 'p.alert-success'
+      expect(page).not_to have_css 'p.alert-error'
       expect(page).not_to have_content "#{production.title}", count: 2
       expect(current_path).to eq productions_path
     end

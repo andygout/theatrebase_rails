@@ -1,6 +1,6 @@
 <% provide(:title, "#{@production.title}") %>
 
-<h1><%= @production.title %></h1>
+<h1 class="header-text"><%= @production.title %></h1>
 
 <div class="buttons">
   <%= button_to 'Edit Production', edit_production_path(@production), method: :get, class: 'button' %>

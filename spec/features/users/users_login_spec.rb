@@ -11,8 +11,8 @@ feature 'User log in' do
       fill_in 'session_email',    with: "#{user.email}"
       fill_in 'session_password', with: "#{user.password}"
       click_button 'Log in'
-      expect(page).to have_css 'div.alert-success'
-      expect(page).not_to have_css 'div.alert-error'
+      expect(page).to have_css 'p.alert-success'
+      expect(page).not_to have_css 'p.alert-error'
       expect(page).to have_link('Profile', href: user_path(user.id))
       expect(page).to have_link('Log out', href: logout_path)
       expect(page).not_to have_link('Log in', href: login_path)
@@ -27,14 +27,14 @@ feature 'User log in' do
       fill_in 'session_email',    with: "#{invalid_user[:email]}"
       fill_in 'session_password', with: "#{invalid_user[:password]}"
       click_button 'Log in'
-      expect(page).to have_css 'div.alert-error'
-      expect(page).not_to have_css 'div.alert-success'
+      expect(page).to have_css 'p.alert-error'
+      expect(page).not_to have_css 'p.alert-success'
       expect(current_path).to eq login_path
       expect(page).to have_link('Log in', href: login_path)
       expect(page).not_to have_link('Profile')
       expect(page).not_to have_link('Log out', href: logout_path)
       visit root_path
-      expect(page).not_to have_css 'div.alert-error'
+      expect(page).not_to have_css 'p.alert-error'
     end
   end
 end
@@ -44,7 +44,7 @@ feature 'User log out' do
     let!(:user) { create_logged_in_user }
     scenario 'redirect to home page with success message', js: true do
       click_link 'Log out'
-      expect(page).to have_css 'div.alert-success'
+      expect(page).to have_css 'p.alert-success'
       expect(page).to have_link('Log in', href: login_path)
       expect(page).not_to have_link('Profile', href: user_path(user.id))
       expect(page).not_to have_link('Log out', href: logout_path)
