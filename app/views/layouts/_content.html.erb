@@ -1,6 +1,6 @@
 <div class="content">
   <% flash.each do |msg_type, msg| %>
-    <%= content_tag(:div, msg, class: "head-alert alert-#{msg_type}") %>
+    <%= content_tag(:p, msg, class: "head-alert alert-#{msg_type}") %>
   <% end %>
 
   <%= yield %>

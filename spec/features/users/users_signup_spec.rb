@@ -10,8 +10,8 @@ feature 'User sign-up' do
       fill_in 'user_password',              with: "#{user[:password]}"
       fill_in 'user_password_confirmation', with: "#{user[:password_confirmation]}"
       expect { click_button 'Create User' }.to change { User.count }.by 1
-      expect(page).to have_css 'div.alert-success'
-      expect(page).not_to have_css 'div.alert-error'
+      expect(page).to have_css 'p.alert-success'
+      expect(page).not_to have_css 'p.alert-error'
       expect(page).not_to have_css 'li.field_with_errors'
       expect(page).to have_link('Profile', href: user_path(User.last.id))
       expect(page).to have_link('Log out', href: logout_path)
@@ -29,9 +29,9 @@ feature 'User sign-up' do
       fill_in 'user_password',              with: "#{invalid_user[:password]}"
       fill_in 'user_password_confirmation', with: "#{invalid_user[:password_confirmation]}"
       expect { click_button 'Create User' }.to change { User.count }.by 0
-      expect(page).to have_css 'div.alert-error'
+      expect(page).to have_css 'p.alert-error'
       expect(page).to have_css 'li.field_with_errors'
-      expect(page).not_to have_css 'div.alert-success'
+      expect(page).not_to have_css 'p.alert-success'
       expect(page).to have_link('Log in', href: login_path)
       expect(page).not_to have_link('Profile')
       expect(page).not_to have_link('Log out', href: logout_path)
