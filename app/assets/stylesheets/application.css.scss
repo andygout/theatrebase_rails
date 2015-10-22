@@ -27,16 +27,6 @@ $box_shadow_color: #D0D0D0;
 $error-color: #FF3232;
 $success-color: #629632;
 
-@mixin button {
-  width: 150px;
-  margin-top: 20px;
-  padding-left: 5px;
-  padding-right: 5px;
-  font-size: 100%;
-  background-color: $button_bg_color;
-  color: $content_color;
-}
-
 * {
   margin: 0;
   padding: 0;
@@ -53,10 +43,9 @@ html {
 
 a {
   color: $theme_color;
-}
-
-a:hover {
-  color: $content_color;
+  &:hover {
+    color: $content_color;
+  }
 }
 
 .header-text {
@@ -91,9 +80,9 @@ a:hover {
   font-weight: bold;
   .root-link {
     color: $header_color;
-  }
-  .root-link:hover {
-    color: $header_hover_color;
+    &:hover {
+      color: $header_hover_color;
+    }
   }
 }
 
@@ -142,19 +131,21 @@ a:hover {
   color: $header_color;
 }
 
-.buttons {
-  margin-top: 40px;
-  .button_to {
-    display: inline;
-  }
+.button_to {
+  display: inline;
 }
 
 .button {
-  @include button;
-}
-
-.button:focus {
-  outline:0;
+  width: 150px;
+  margin-top: 60px;
+  padding-left: 5px;
+  padding-right: 5px;
+  font-size: 100%;
+  background-color: $button_bg_color;
+  color: $content_color;
+  &:focus {
+    outline:0;
+  }
 }
 
 .form {
@@ -163,16 +154,16 @@ a:hover {
   padding-right: 10px;
   border: 2px solid $border-color;
   background-color: $form_bg_color;
-  width: 97%;
   border-radius: 5px;
-  .label {
-    width: 99%;
+  .form-item {
+    margin-top: 10px;
   }
   .input {
-    width: 99%;
+    display: block;
+    width: 99.5%;
   }
   .button {
-    @include button;
+    margin-top: 40px;
   }
 }
 
