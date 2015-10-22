@@ -89,10 +89,10 @@ a:hover {
   padding-left: 10px;
   font-size: 400%;
   font-weight: bold;
-  a {
+  .root-link {
     color: $header_color;
   }
-  a:hover {
+  .root-link:hover {
     color: $header_hover_color;
   }
 }
@@ -101,7 +101,7 @@ a:hover {
   padding-top: 4px;
   padding-left: 35px;
   padding-right: 35px;
-  ul li {
+  .nav-list-item {
     display: inline;
     margin: 6em;
   }
@@ -165,10 +165,10 @@ a:hover {
   background-color: $form_bg_color;
   width: 97%;
   border-radius: 5px;
-  label {
+  .label {
     width: 99%;
   }
-  input {
+  .input {
     width: 99%;
   }
   .button {
@@ -178,6 +178,7 @@ a:hover {
 
 .field_with_errors {
   color: $error-color;
+  list-style-position: inside;
   .input {
     border-color: $error-color;
   }

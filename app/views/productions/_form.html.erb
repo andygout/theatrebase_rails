@@ -1,9 +1,9 @@
-<fieldset class="form">
+<fieldset class='form'>
   <%= form_for @production do |f| %>
     <%= render 'partials/error_count', count: @production.errors.count %>
 
-    <%= f.label :title %>
-    <%= f.text_field :title %>
+    <%= f.label :title, class: 'label' %>
+    <%= f.text_field :title, class: 'input' %>
     <%= render partial: 'partials/error', collection: @production.errors[:title] %>
 
     <%= f.submit nil, class: 'button' %>
