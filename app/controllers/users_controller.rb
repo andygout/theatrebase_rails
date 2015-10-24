@@ -74,31 +74,27 @@ class UsersController < ApplicationController
     end
 
     def admin_user
-      unless admin? current_user
-        flash[:error] = 'Access denied'
-        redirect_to root_path
-      end
+      validate_user admin? current_user
     end
 
     def correct_user
-      @user = User.find(params[:id])
-      unless current_user? @user
-        flash[:error] = 'Access denied'
-        redirect_to root_path
-      end
+      validate_user current_user? find_user(params[:id])
     end
 
     def show_user
-      @user = User.find(params[:id])
-      unless valid_show_user @user
-        flash[:error] = 'Access denied'
-        redirect_to root_path
-      end
+      validate_user valid_show_user? find_user(params[:id])
     end
 
     def destroy_user
-      @user = User.find(params[:id])
-      unless valid_destroy_user @user
+      validate_user valid_destroy_user? find_user(params[:id])
+    end
+
+    def find_user user_id
+      @user = User.find(user_id)
+    end
+
+    def validate_user user_valid
+      unless user_valid
         flash[:error] = 'Access denied'
         redirect_to root_path
       end
