@@ -78,11 +78,12 @@ a {
   padding-left: 10px;
   font-size: 400%;
   font-weight: bold;
-  .root-link {
-    color: $header_color;
-    &:hover {
-      color: $header_hover_color;
-    }
+}
+
+.root-link {
+  color: $header_color;
+  &:hover {
+    color: $header_hover_color;
   }
 }
 
@@ -90,10 +91,11 @@ a {
   padding-top: 4px;
   padding-left: 35px;
   padding-right: 35px;
-  .nav-list-item {
-    display: inline;
-    margin: 6em;
-  }
+}
+
+.nav-list-item {
+  display: inline;
+  margin: 6em;
 }
 
 .content {
@@ -155,16 +157,18 @@ a {
   border: 2px solid $border-color;
   background-color: $form_bg_color;
   border-radius: 5px;
-  .form-item {
-    margin-top: 10px;
-  }
-  .input {
-    display: block;
-    width: 99.5%;
-  }
   .button {
     margin-top: 40px;
   }
+}
+
+.form-item {
+  margin-top: 10px;
+}
+
+.input {
+  display: block;
+  width: 99.5%;
 }
 
 .field_with_errors {
