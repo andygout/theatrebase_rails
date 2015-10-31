@@ -7,7 +7,8 @@ feature 'User delete' do
     let(:second_admin_user) { create :second_admin_user }
     scenario 'delete non-admin user; redirect to user index with success message', js: true do
       visit user_path(user)
-      expect { click_button 'Delete User' }.to change { User.count }.by -1
+      click_button 'Delete User'
+      expect { click_button 'OK' }.to change { User.count }.by -1
       expect(User.exists? user.id).to be false
       expect(page).to have_css 'p.alert-success'
       expect(page).not_to have_css 'p.alert-error'
@@ -17,7 +18,8 @@ feature 'User delete' do
 
     scenario 'delete own profile; redirect to home page with success message', js: true do
       visit user_path(admin_user)
-      expect { click_button 'Delete User' }.to change { User.count }.by(-1)
+      click_button 'Delete User'
+      expect { click_button 'OK' }.to change { User.count }.by(-1)
                                         .and change { Admin.count }.by(-1)
       expect(User.exists? admin_user.id).to be false
       expect(Admin.exists? user_id: admin_user).to be false
@@ -34,7 +36,8 @@ feature 'User delete' do
     let!(:user) { create_logged_in_user }
     scenario 'delete own profile; redirect to home page with success message', js: true do
       visit user_path(user)
-      expect { click_button 'Delete User' }.to change { User.count }.by -1
+      click_button 'Delete User'
+      expect { click_button 'OK' }.to change { User.count }.by -1
       expect(User.exists? user.id).to be false
       expect(Admin.exists? user_id: user).to be false
       expect(page).to have_css 'p.alert-success'
