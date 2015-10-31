@@ -195,3 +195,24 @@ a {
 .pagination .current {
   font-style: normal;
 }
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: black no-repeat scroll center center;
+}
+
+.modal {
+  position: fixed;
+  padding: 20px;
+  background-color: white;
+  border: 2px solid $border-color;
+  border-radius: 5px;
+  .button {
+    margin-left: 2px;
+    margin-right: 2px;
+  }
+}
