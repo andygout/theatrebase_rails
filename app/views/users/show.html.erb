@@ -2,12 +2,10 @@
 
 <h1 class='header-text'><%= @user.name %>: <%= @user.email %></h1>
 
-<div class='buttons'>
-  <% if current_user? @user %>
-    <%= button_to 'Edit Profile', edit_user_path(@user), method: :get, class: 'button' %>
-  <% end %>
+<% if current_user? @user %>
+  <%= button_to 'Edit Profile', edit_user_path(@user), method: :get, class: 'button' %>
+<% end %>
 
-  <% if valid_destroy_user? @user %>
-    <%= button_to 'Delete User', @user, method: :delete, class: 'button', data: { confirm: 'Delete confirmation', model: 'user' } %>
-  <% end %>
-</div>
+<% if valid_destroy_user? @user %>
+  <%= button_to 'Delete User', @user, method: :delete, class: 'button', data: { confirm: 'Delete confirmation', model: 'user' } %>
+<% end %>
