@@ -141,7 +141,7 @@ a {
   margin-top: 60px;
   padding-left: 5px;
   padding-right: 5px;
-  font-size: medium;
+  font-size: small;
   background-color: $button_bg_color;
   color: $content_color;
   &:focus {
@@ -163,6 +163,10 @@ a {
 
 .form-item {
   margin-top: 10px;
+}
+
+.label {
+  display: table-cell;
 }
 
 .input {
