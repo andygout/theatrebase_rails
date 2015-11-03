@@ -1,8 +1,15 @@
+var timeMillisecs = 500;
+var timeSecs = millisecsToSecs(timeMillisecs);
+
+function millisecsToSecs(millisecs) {
+  return millisecs / 1000;
+}
+
 $.rails.allowAction = function(link) {
   if (!link.attr('data-confirm')) {
     return true;
   }
-  $.rails.showConfirmDialog(link);
+  $.rails.activateModal(link);
   return false;
 };
 
@@ -11,28 +18,18 @@ $.rails.confirmed = function(link) {
   return link.trigger('click.rails');
 };
 
-$.rails.showConfirmDialog = function(link) {
-  $('body').css('overflow-y', 'hidden');
+$.rails.activateModal = function(link) {
+  setBodyOverflowY('hidden');
 
-  $('<div class="overlay"></div>')
-    .css('top', $(document).scrollTop())
-    .css('opacity', '0')
-    .animate({'opacity': '0.5'}, 'slow')
-    .appendTo('body');
+  createOverlay();
 
-  var model = link.attr('data-model');
-  var modalHTML = "<div class='modal'><h1 class='header-text'>Really delete this " + model + "?</h1><button class='button confirm'>OK</button><button class='button cancel'>Cancel</button></div>";
+  var modalHTML = acquireModalHTML(link);
+
   $(modalHTML)
     .hide()
     .appendTo('body');
-    var top = ($(window).height() - $('.modal').height()) / 2;
-    var left = ($(window).width() - $('.modal').width()) / 2;
-    $('.modal')
-      .css({
-        'top': top + $(document).scrollTop(),
-        'left': left
-      })
-      .fadeIn();
+
+    showModal();
 
     $('.confirm').click(function() {
       $.rails.confirmed(link);
@@ -42,6 +39,66 @@ $.rails.showConfirmDialog = function(link) {
       removeModal();
     });
 };
+
+function setBodyOverflowY(value) {
+  $('body').css('overflow-y', value);
+}
+
+function createOverlay() {
+  $('<div class="overlay"></div>')
+    .css('opacity', 0.5)
+    .fadeIn(timeMillisecs)
+    .appendTo('body');
+}
+
+function acquireModalHTML(link) {
+  var model = link.attr('data-model');
+  return "<div class='modal'><h1 class='header-text'>Really delete this " + model + "?</h1><button class='button confirm'>OK</button><button class='button cancel'>Cancel</button></div>";
+}
+
+function showModal() {
+  $('.modal')
+    .css({
+      'top': acquireModalTop(),
+      'left': acquireModalLeft()
+    })
+    .fadeIn(timeMillisecs);
+
+    blurContainer(2);
+}
+
+function acquireModalTop() {
+  return ($(window).height() - $('.modal').outerHeight()) / 2;
+}
+
+function acquireModalLeft() {
+  return ($(window).width() - $('.modal').outerWidth()) / 2;
+}
+
+function blurContainer(blurSize) {
+  var filterVal = 'blur(' + blurSize + 'px)';
+  $('.container')
+    .css({
+      'filter': filterVal,
+      'webkitFilter': filterVal,
+      'mozFilter': filterVal,
+      'oFilter': filterVal,
+      'msFilter': filterVal
+    })
+    containerTransition('ease-out');
+}
+
+function containerTransition(effect) {
+  var transitionVal = 'all ' + timeSecs + 's ' + effect
+  $('.container')
+    .css({
+      'transition': transitionVal,
+      '-webkit-transition': transitionVal,
+      '-moz-transition': transitionVal,
+      '-o-transition': transitionVal,
+      '-ms-transition': transitionVal
+    })
+}
 
 $(document).mouseup(function (e)
 {
@@ -53,9 +110,11 @@ $(document).mouseup(function (e)
 });
 
 function removeModal() {
+  blurContainer(0);
+
   $('.overlay, .modal')
-    .fadeOut('slow', function() {
+    .fadeOut(timeMillisecs, function() {
       $(this).remove();
-      $('body').css('overflow-y', 'auto');
+      setBodyOverflowY('auto');
     });
 }
