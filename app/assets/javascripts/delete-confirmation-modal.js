@@ -1,8 +1,11 @@
+var timeMillisecs = 500;
+var timeSecs = timeMillisecs / 1000;
+
 $.rails.allowAction = function(link) {
   if (!link.attr('data-confirm')) {
     return true;
   }
-  $.rails.showConfirmDialog(link);
+  $.rails.showConfirmModal(link);
   return false;
 };
 
@@ -11,13 +14,12 @@ $.rails.confirmed = function(link) {
   return link.trigger('click.rails');
 };
 
-$.rails.showConfirmDialog = function(link) {
+$.rails.showConfirmModal = function(link) {
   $('body').css('overflow-y', 'hidden');
 
   $('<div class="overlay"></div>')
-    .css('top', $(document).scrollTop())
-    .css('opacity', '0')
-    .animate({'opacity': '0.5'}, 'slow')
+    .css('opacity', 0.5)
+    .fadeIn(timeMillisecs)
     .appendTo('body');
 
   var model = link.attr('data-model');
@@ -25,14 +27,16 @@ $.rails.showConfirmDialog = function(link) {
   $(modalHTML)
     .hide()
     .appendTo('body');
-    var top = ($(window).height() - $('.modal').height()) / 2;
-    var left = ($(window).width() - $('.modal').width()) / 2;
+    var top = ($(window).height() - $('.modal').outerHeight()) / 2;
+    var left = ($(window).width() - $('.modal').outerWidth()) / 2;
     $('.modal')
       .css({
-        'top': top + $(document).scrollTop(),
+        'top': top,
         'left': left
       })
-      .fadeIn();
+      .fadeIn(timeMillisecs);
+
+      blurElement($('.container'), 2);
 
     $('.confirm').click(function() {
       $.rails.confirmed(link);
@@ -42,6 +46,27 @@ $.rails.showConfirmDialog = function(link) {
       removeModal();
     });
 };
+
+function blurElement(element, blurSize) {
+  var filterVal = 'blur(' + blurSize + 'px)';
+  $(element)
+    .css('filter', filterVal)
+    .css('webkitFilter', filterVal)
+    .css('mozFilter', filterVal)
+    .css('oFilter', filterVal)
+    .css('msFilter', filterVal)
+    transition(element, 'ease-out');
+}
+
+function transition(element, effect) {
+  var transitionVal = 'all ' + timeSecs + 's ' + effect
+  $(element)
+    .css('transition', transitionVal)
+    .css('-webkit-transition', transitionVal)
+    .css('-moz-transition', transitionVal)
+    .css('-o-transition', transitionVal)
+    .css('-ms-transition', transitionVal);
+}
 
 $(document).mouseup(function (e)
 {
@@ -53,8 +78,10 @@ $(document).mouseup(function (e)
 });
 
 function removeModal() {
+  blurElement($('.container'), 0, timeSecs);
+
   $('.overlay, .modal')
-    .fadeOut('slow', function() {
+    .fadeOut(timeMillisecs, function() {
       $(this).remove();
       $('body').css('overflow-y', 'auto');
     });
