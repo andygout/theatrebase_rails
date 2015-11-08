@@ -7,5 +7,5 @@
 <% end %>
 
 <% if valid_destroy_user? @user %>
-  <%= button_to 'Delete User', @user, method: :delete, class: 'button', data: { confirm: 'Delete confirmation', model: 'user' } %>
+  <%= button_to 'Delete User', @user, method: :delete, class: 'button', data: { confirm: 'Really delete this user?' } %>
 <% end %>
