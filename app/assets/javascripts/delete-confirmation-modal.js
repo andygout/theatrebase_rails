@@ -15,7 +15,7 @@ $.rails.confirmed = function(link) {
 };
 
 $.rails.activateModal = function(link) {
-  setBodyOverflowY('hidden');
+  $('body').addClass('overflow-y-hidden');
 
   createOverlay();
 
@@ -29,8 +29,8 @@ $.rails.activateModal = function(link) {
 
   $(document).mouseup(function (e)
   {
-    var container = $('.modal');
-    if (!container.is(e.target) && container.has(e.target).length === 0)
+    var modal = $('.modal');
+    if (!modal.is(e.target) && modal.has(e.target).length === 0)
     {
       removeEffect();
     }
@@ -51,18 +51,14 @@ function removeEffect() {
   $('.overlay, .modal')
     .fadeOut(timeMillisecs, function() {
       $(this).remove();
-      setBodyOverflowY('auto');
+      $('body').removeClass('overflow-y-hidden');
     });
 }
 
-function setBodyOverflowY(value) {
-  $('body').css('overflow-y', value);
-}
-
 function createOverlay() {
-  $("<div class='overlay'></div>")
-    .css('opacity', 0.5)
-    .fadeIn(timeMillisecs)
+  $('<div></div>')
+    .addClass('overlay')
+    .fadeTo(timeMillisecs, 0.5)
     .appendTo('body');
 }
 
@@ -96,6 +92,7 @@ function acquireModalLeft() {
 
 function blurContainer(blurSize) {
   var filterVal = 'blur(' + blurSize + 'px)';
+
   $('.container')
     .css({
       'filter': filterVal,
