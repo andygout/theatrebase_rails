@@ -23,9 +23,7 @@ $.rails.activateModal = function(link) {
 
   blurContainer(2);
 
-  $(window).resize(function() {
-    centreModal();
-  });
+  windowResizeListener();
 
   $(document).mouseup(function (e)
   {
@@ -72,17 +70,24 @@ function createModal(link) {
   $(modalHTML)
     .hide()
     .fadeIn(timeMillisecs)
-    .appendTo('body');
-
-  centreModal();
-}
-
-function centreModal() {
-  $('.modal')
+    .appendTo('body')
     .css({
       'top': acquireModalTop(),
       'left': acquireModalLeft()
     });
+}
+
+function windowResizeListener() {
+  $(window).resize(function() {
+    clearTimeout(window.resizeEvt);
+    window.resizeEvt = setTimeout(function() {
+      repositionModal();
+    }, 250);
+  });
+}
+
+function repositionModal() {
+  $('.modal').animate({top: acquireModalTop(), left: acquireModalLeft()}, 250);
 }
 
 function acquireModalTop() {
