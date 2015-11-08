@@ -63,8 +63,11 @@ function createOverlay() {
 }
 
 function createModal(link) {
-  var model = link.attr('data-model');
-  var modalHTML = "<div class='modal'><h1 class='header-text'>Really delete this " + model + "?</h1><button class='button confirm'>OK</button><button class='button cancel'>Cancel</button></div>";
+  var modalHTML = "<div class='modal'>" +
+                  "<h1 class='header-text'>" + link.attr('data-confirm') + "</h1>" +
+                  "<button class='button confirm'>OK</button>" +
+                  "<button class='button cancel'>Cancel</button>" +
+                  "</div>";
 
   $(modalHTML)
     .hide()
