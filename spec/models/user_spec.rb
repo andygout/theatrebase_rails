@@ -1,6 +1,10 @@
 require 'rails_helper'
 
 describe User, type: :model do
+  context 'relations' do
+    it { should have_one :admin }
+  end
+
   let(:user) { build :user }
 
   context 'valid details' do
