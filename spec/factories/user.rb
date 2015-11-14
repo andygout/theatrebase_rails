@@ -5,6 +5,8 @@ FactoryGirl.define do
     email 'andygout@example.com'
     password 'foobar'
     password_confirmation 'foobar'
+    activated true
+    activated_at { Time.now }
 
     factory :second_user do
       name 'John Smith'
