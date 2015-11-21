@@ -69,6 +69,40 @@ feature 'User sign-up' do
       expect(page).not_to have_link('Log in', href: login_path)
       expect(current_path).to eq user_path(user)
     end
+
+    scenario 'user will not be included in user index list if account not activated', js: true do
+      signup user
+      user_email = acquire_email_address ActionMailer::Base.deliveries.last.to_s
+      user = User.find_by(email: user_email)
+      login admin_user
+      visit users_path
+      expect(page).not_to have_content user.name
+    end
+
+    scenario 'user will be included in user index list once account activated', js: true do
+      signup user
+      user = click_activation_link ActionMailer::Base.deliveries.last.to_s
+      login admin_user
+      visit users_path
+      expect(page).to have_content user.name
+    end
+
+    scenario 'visiting user page will redirect to root if account not activated', js: true do
+      signup user
+      user_email = acquire_email_address ActionMailer::Base.deliveries.last.to_s
+      user = User.find_by(email: user_email)
+      login admin_user
+      visit user_path(user)
+      expect(current_path).to eq root_path
+    end
+
+    scenario 'visiting user page will display user once account activated', js: true do
+      signup user
+      user = click_activation_link ActionMailer::Base.deliveries.last.to_s
+      login admin_user
+      visit user_path(user)
+      expect(current_path).to eq user_path(user)
+    end
   end
 
   context 'invalid details' do
