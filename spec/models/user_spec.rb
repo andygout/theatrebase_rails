@@ -76,7 +76,7 @@ describe User, type: :model do
 
   context 'authentication' do
     it 'should return false for a user with nil digest' do
-      expect(user.authenticated?('')).to be false
+      expect(user.authenticated?(:remember, '')).to be false
     end
   end
 end

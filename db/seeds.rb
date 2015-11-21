@@ -3,7 +3,7 @@ user = User.create!(name:                   'Andy Gout',
                     password:               'foobar',
                     password_confirmation:  'foobar',
                     activated:              true,
-                    activated_at:           Time.now
+                    activated_at:           Time.zone.now
                    )
 
 99.times do |n|
@@ -12,7 +12,7 @@ user = User.create!(name:                   'Andy Gout',
                 password:               'password',
                 password_confirmation:  'password',
                 activated:              true,
-                activated_at:           Time.now
+                activated_at:           Time.zone.now
               )
 end
 
