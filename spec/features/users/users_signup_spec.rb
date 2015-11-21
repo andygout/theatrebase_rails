@@ -20,15 +20,18 @@ feature 'User sign-up' do
 
     scenario 'user not activated and cannot log in if account not activated via emailed link', js: true do
       signup user
+      visit login_path
+      fill_in 'session_email',    with: user[:email]
+      fill_in 'session_password', with: user[:password]
+      click_button 'Log in'
       user_email = acquire_email_address ActionMailer::Base.deliveries.last.to_s
       user = User.find_by(email: user_email)
       expect(user.activated?).to eq false
-      login user
       expect(page).to have_css '.alert-error'
       expect(page).to have_link('Log in', href: login_path)
       expect(page).not_to have_link('Profile', href: user_path(user.id))
       expect(page).not_to have_link('Log out', href: logout_path)
-      expect(current_path).to eq login_path
+      expect(current_path).to eq root_path
     end
 
     scenario 'activation link not valid if invalid token given', js: true do
