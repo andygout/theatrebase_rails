@@ -3,20 +3,108 @@ require 'rails_helper'
 feature 'User sign-up' do
   context 'valid details' do
     let(:user) { attributes_for :user }
-    scenario 'redirect to user page with success message', js: true do
+    let(:admin_user) { create_logged_in_admin_user }
+    scenario 'user created; redirect to home page with success message; account activation email sent', js: true do
       visit signup_path
       fill_in 'user_name',                  with: "#{user[:name]}"
       fill_in 'user_email',                 with: "#{user[:email]}"
       fill_in 'user_password',              with: "#{user[:password]}"
       fill_in 'user_password_confirmation', with: "#{user[:password_confirmation]}"
-      expect { click_button 'Create User' }.to change { User.count }.by 1
+      expect { click_button 'Create User' }.to change { User.count }.by(1)
+                                          .and change { ActionMailer::Base.deliveries.count }.by(1)
       expect(page).to have_css 'p.alert-success'
       expect(page).not_to have_css 'p.alert-error'
       expect(page).not_to have_css 'li.field_with_errors'
-      expect(page).to have_link('Profile', href: user_path(User.last.id))
+      expect(current_path).to eq root_path
+    end
+
+    scenario 'user not activated and cannot log in if account not activated via emailed link', js: true do
+      signup user
+      visit login_path
+      fill_in 'session_email',    with: user[:email]
+      fill_in 'session_password', with: user[:password]
+      click_button 'Log in'
+      user_email = acquire_email_address ActionMailer::Base.deliveries.last.to_s
+      user = User.find_by(email: user_email)
+      expect(user.activated?).to eq false
+      expect(page).to have_css '.alert-error'
+      expect(page).to have_link('Log in', href: login_path)
+      expect(page).not_to have_link('Profile', href: user_path(user.id))
+      expect(page).not_to have_link('Log out', href: logout_path)
+      expect(current_path).to eq root_path
+    end
+
+    scenario 'activation link not valid if invalid token given', js: true do
+      signup user
+      user_email = acquire_email_address ActionMailer::Base.deliveries.last.to_s
+      visit edit_account_activation_path('invalid-token', email: user_email)
+      user = User.find_by(email: user_email)
+      expect(user.activated?).to eq false
+      expect(page).to have_css '.alert-error'
+      expect(page).to have_link('Log in', href: login_path)
+      expect(page).not_to have_link('Profile', href: user_path(user.id))
+      expect(page).not_to have_link('Log out', href: logout_path)
+      expect(current_path).to eq root_path
+    end
+
+    scenario 'activation link not valid if incorrect email given', js: true do
+      signup user
+      msg = ActionMailer::Base.deliveries.last.to_s
+      activation_token = acquire_token msg
+      user_email = acquire_email_address msg
+      visit edit_account_activation_path(activation_token, email: 'incorrect-email')
+      user = User.find_by(email: user_email)
+      expect(user.activated?).to eq false
+      expect(page).to have_css '.alert-error'
+      expect(page).to have_link('Log in', href: login_path)
+      expect(page).not_to have_link('Profile', href: user_path(user.id))
+      expect(page).not_to have_link('Log out', href: logout_path)
+      expect(current_path).to eq root_path
+    end
+
+    scenario 'activation link valid if valid token and correct email given', js: true do
+      signup user
+      user = click_activation_link ActionMailer::Base.deliveries.last.to_s
+      expect(user.activated?).to eq true
+      expect(page).to have_css '.alert-success'
+      expect(page).to have_link('Profile', href: user_path(user.id))
       expect(page).to have_link('Log out', href: logout_path)
       expect(page).not_to have_link('Log in', href: login_path)
-      expect(current_path).to eq "/users/1"
+      expect(current_path).to eq user_path(user)
+    end
+
+    scenario 'user will not be included in user index list if account not activated', js: true do
+      signup user
+      user_email = acquire_email_address ActionMailer::Base.deliveries.last.to_s
+      user = User.find_by(email: user_email)
+      login admin_user
+      visit users_path
+      expect(page).not_to have_content user.name
+    end
+
+    scenario 'user will be included in user index list once account activated', js: true do
+      signup user
+      user = click_activation_link ActionMailer::Base.deliveries.last.to_s
+      login admin_user
+      visit users_path
+      expect(page).to have_content user.name
+    end
+
+    scenario 'visiting user page will redirect to root if account not activated', js: true do
+      signup user
+      user_email = acquire_email_address ActionMailer::Base.deliveries.last.to_s
+      user = User.find_by(email: user_email)
+      login admin_user
+      visit user_path(user)
+      expect(current_path).to eq root_path
+    end
+
+    scenario 'visiting user page will display user once account activated', js: true do
+      signup user
+      user = click_activation_link ActionMailer::Base.deliveries.last.to_s
+      login admin_user
+      visit user_path(user)
+      expect(current_path).to eq user_path(user)
     end
   end
 

@@ -22,6 +22,7 @@ Rails.application.routes.draw do
   #   resources :products
   resources :productions
   resources :users
+  resources :account_activations, only: [:edit]
 
   # Example resource route with options:
   #   resources :products do
