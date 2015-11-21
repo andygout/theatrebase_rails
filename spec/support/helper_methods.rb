@@ -35,3 +35,10 @@ end
 def acquire_email_address msg
   LINK_REGEX.match(msg)[2].gsub(/%40/, '@')
 end
+
+def click_activation_link msg
+  activation_token = acquire_token msg
+  user_email = acquire_email_address msg
+  visit edit_account_activation_path(activation_token, email: user_email)
+  User.find_by(email: user_email)
+end

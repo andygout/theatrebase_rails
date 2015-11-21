@@ -3,6 +3,7 @@ require 'rails_helper'
 feature 'User sign-up' do
   context 'valid details' do
     let(:user) { attributes_for :user }
+    let(:admin_user) { create_logged_in_admin_user }
     scenario 'user created; redirect to home page with success message; account activation email sent', js: true do
       visit signup_path
       fill_in 'user_name',                  with: "#{user[:name]}"
@@ -19,8 +20,7 @@ feature 'User sign-up' do
 
     scenario 'user not activated and cannot log in if account not activated via emailed link', js: true do
       signup user
-      msg = ActionMailer::Base.deliveries.last.to_s
-      user_email = acquire_email_address msg
+      user_email = acquire_email_address ActionMailer::Base.deliveries.last.to_s
       user = User.find_by(email: user_email)
       expect(user.activated?).to eq false
       login user
@@ -33,8 +33,7 @@ feature 'User sign-up' do
 
     scenario 'activation link not valid if invalid token given', js: true do
       signup user
-      msg = ActionMailer::Base.deliveries.last.to_s
-      user_email = acquire_email_address msg
+      user_email = acquire_email_address ActionMailer::Base.deliveries.last.to_s
       visit edit_account_activation_path('invalid-token', email: user_email)
       user = User.find_by(email: user_email)
       expect(user.activated?).to eq false
@@ -62,11 +61,7 @@ feature 'User sign-up' do
 
     scenario 'activation link valid if valid token and correct email given', js: true do
       signup user
-      msg = ActionMailer::Base.deliveries.last.to_s
-      activation_token = acquire_token msg
-      user_email = acquire_email_address msg
-      visit edit_account_activation_path(activation_token, email: user_email)
-      user = User.find_by(email: user_email)
+      user = click_activation_link ActionMailer::Base.deliveries.last.to_s
       expect(user.activated?).to eq true
       expect(page).to have_css '.alert-success'
       expect(page).to have_link('Profile', href: user_path(user.id))
