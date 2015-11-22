@@ -6,8 +6,8 @@ describe UsersController, type: :controller do
   let!(:admin_user) { create :admin_user }
   let!(:second_admin_user) { create :second_admin_user }
 
-  context "GET #new" do
-    it "returns http success" do
+  context 'GET #new' do
+    it 'returns http success' do
       get :new
       expect(response).to have_http_status(:success)
     end

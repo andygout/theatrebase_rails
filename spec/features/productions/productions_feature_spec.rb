@@ -13,7 +13,7 @@ feature 'Productions' do
     let!(:production) { create :production }
     scenario 'display productions', js: true do
       visit productions_path
-      expect(page).to have_content "#{production.title}"
+      expect(page).to have_content production.title
       expect(page).not_to have_content 'No productions yet'
     end
   end
@@ -23,13 +23,13 @@ feature 'Productions' do
     scenario 'redirects to created production page with success message', js: true do
       visit productions_path
       click_link 'Add Production'
-      fill_in 'production_title', with: "#{production[:title]}"
+      fill_in 'production_title', with: production[:title]
       expect { click_button 'Create Production' }.to change { Production.count }.by 1
-      expect(page).to have_css 'p.alert-success'
-      expect(page).not_to have_css 'p.alert-error'
-      expect(page).not_to have_css 'li.field_with_errors'
+      expect(page).to have_css '.alert-success'
+      expect(page).not_to have_css '.alert-error'
+      expect(page).not_to have_css '.field_with_errors'
       expect(page).to have_content 'Hamlet', count: 2
-      expect(current_path).to eq "/productions/1"
+      expect(current_path).to eq production_path(Production.last)
     end
   end
 
@@ -39,10 +39,10 @@ feature 'Productions' do
       click_link 'Add Production'
       fill_in 'production_title', with: ' '
       expect { click_button 'Create Production' }.to change { Production.count }.by 0
-      expect(page).to have_css 'p.alert-error'
-      expect(page).to have_css 'li.field_with_errors'
-      expect(page).not_to have_css 'p.alert-success'
-      expect(page).to have_content "New Production"
+      expect(page).to have_css '.alert-error'
+      expect(page).to have_css '.field_with_errors'
+      expect(page).not_to have_css '.alert-success'
+      expect(page).to have_content 'New Production'
       expect(current_path).to eq productions_path
     end
   end
@@ -51,8 +51,8 @@ feature 'Productions' do
     let!(:production) { create :production }
     scenario 'lets a user view a production', js: true do
       visit productions_path
-      click_link "#{production.title}"
-      expect(page).to have_content "#{production.title}"
+      click_link production.title
+      expect(page).to have_content production.title
       expect(current_path).to eq production_path(production)
     end
   end
@@ -60,42 +60,42 @@ feature 'Productions' do
   context 'editing productions with valid details' do
     let(:production) { create :production }
     scenario 'redirects to updated production page with success message', js: true do
-      visit "/productions/#{production.id}"
+      visit production_path(production)
       click_button 'Edit Production'
       fill_in 'production_title', with: 'Macbeth'
       click_button 'Update Production'
-      expect(page).to have_css 'p.alert-success'
-      expect(page).not_to have_css 'p.alert-error'
-      expect(page).not_to have_css 'li.field_with_errors'
+      expect(page).to have_css '.alert-success'
+      expect(page).not_to have_css '.alert-error'
+      expect(page).not_to have_css '.field_with_errors'
       expect(page).to have_content 'Macbeth', count: 2
-      expect(page).not_to have_content "#{production.title}"
-      expect(current_path).to eq "/productions/#{production.id}"
+      expect(page).not_to have_content production.title
+      expect(current_path).to eq production_path(production)
     end
   end
 
   context 'editing productions with invalid details' do
     let(:production) { create :production }
     scenario 'invalid title given; re-renders edit form with error message', js: true do
-      visit "/productions/#{production.id}"
+      visit production_path(production)
       click_button 'Edit Production'
       fill_in 'production_title', with: ' '
       click_button 'Update Production'
-      expect(page).to have_css 'p.alert-error'
-      expect(page).to have_css 'li.field_with_errors'
-      expect(page).not_to have_css 'p.alert-success'
-      expect(page).to have_content "#{production.title}"
-      expect(current_path).to eq "/productions/#{production.id}"
+      expect(page).to have_css '.alert-error'
+      expect(page).to have_css '.field_with_errors'
+      expect(page).not_to have_css '.alert-success'
+      expect(page).to have_content production.title
+      expect(current_path).to eq production_path(production)
     end
   end
 
   context 'deleting productions' do
     let(:production) { create :production }
     scenario 'removes a production when a user clicks its delete link', js: true do
-      visit "/productions/#{production.id}"
+      visit production_path(production)
       click_button 'Delete Production'
-      expect(page).to have_css 'p.alert-success'
-      expect(page).not_to have_css 'p.alert-error'
-      expect(page).not_to have_content "#{production.title}", count: 2
+      expect(page).to have_css '.alert-success'
+      expect(page).not_to have_css '.alert-error'
+      expect(page).not_to have_content production.title, count: 2
       expect(current_path).to eq productions_path
     end
   end

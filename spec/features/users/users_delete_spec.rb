@@ -10,7 +10,7 @@ feature 'User delete' do
       click_button 'Delete User'
       expect { click_button 'Cancel' }.to change { User.count }.by 0
       expect(User.exists? user.id).to be true
-      expect(page).not_to have_css 'p.alert-success'
+      expect(page).not_to have_css '.alert-success'
       expect(current_path).to eq user_path(user)
     end
 
@@ -19,7 +19,7 @@ feature 'User delete' do
       click_button 'Delete User'
       expect { click_button 'Cancel' }.to change { User.count }.by 0
       expect(User.exists? admin_user.id).to be true
-      expect(page).not_to have_css 'p.alert-success'
+      expect(page).not_to have_css '.alert-success'
       expect(current_path).to eq user_path(admin_user)
     end
 
@@ -28,9 +28,9 @@ feature 'User delete' do
       click_button 'Delete User'
       expect { click_button 'OK' }.to change { User.count }.by -1
       expect(User.exists? user.id).to be false
-      expect(page).to have_css 'p.alert-success'
-      expect(page).not_to have_css 'p.alert-error'
-      expect(page).not_to have_link("#{user.name}", href: user_path(user))
+      expect(page).to have_css '.alert-success'
+      expect(page).not_to have_css '.alert-error'
+      expect(page).not_to have_link(user.name, href: user_path(user))
       expect(current_path).to eq users_path
     end
 
@@ -41,8 +41,8 @@ feature 'User delete' do
                                  .and change { Admin.count }.by(-1)
       expect(User.exists? admin_user.id).to be false
       expect(Admin.exists? user_id: admin_user).to be false
-      expect(page).to have_css 'p.alert-success'
-      expect(page).not_to have_css 'p.alert-error'
+      expect(page).to have_css '.alert-success'
+      expect(page).not_to have_css '.alert-error'
       expect(page).to have_link('Log in', href: login_path)
       expect(page).not_to have_link('Profile', href: user_path(admin_user.id))
       expect(page).not_to have_link('Log out', href: logout_path)
@@ -57,7 +57,7 @@ feature 'User delete' do
       click_button 'Delete User'
       expect { click_button 'Cancel' }.to change { User.count }.by 0
       expect(User.exists? user.id).to be true
-      expect(page).not_to have_css 'p.alert-success'
+      expect(page).not_to have_css '.alert-success'
       expect(current_path).to eq user_path(user)
     end
 
@@ -67,8 +67,8 @@ feature 'User delete' do
       expect { click_button 'OK' }.to change { User.count }.by -1
       expect(User.exists? user.id).to be false
       expect(Admin.exists? user_id: user).to be false
-      expect(page).to have_css 'p.alert-success'
-      expect(page).not_to have_css 'p.alert-error'
+      expect(page).to have_css '.alert-success'
+      expect(page).not_to have_css '.alert-error'
       expect(page).to have_link('Log in', href: login_path)
       expect(page).not_to have_link('Profile', href: user_path(user.id))
       expect(page).not_to have_link('Log out', href: logout_path)

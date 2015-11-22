@@ -8,9 +8,9 @@ feature 'User index page' do
       create_logged_in_admin_user
       create_list(:list_users, ENTRIES_PER_PAGE)
       visit users_path
-      expect(page).to have_css 'div.pagination'
+      expect(page).to have_css '.pagination'
       User.paginate(page: 1).each do |user|
-        expect(page).to have_link("#{user.name}", href: user_path(user))
+        expect(page).to have_link(user.name, href: user_path(user))
       end
     end
   end
@@ -20,9 +20,9 @@ feature 'User index page' do
       create_logged_in_admin_user
       create_list(:list_users, ENTRIES_PER_PAGE-1)
       visit users_path
-      expect(page).not_to have_css 'div.pagination'
+      expect(page).not_to have_css '.pagination'
       User.all.each do |user|
-        expect(page).to have_link("#{user.name}", href: user_path(user))
+        expect(page).to have_link(user.name, href: user_path(user))
       end
     end
   end
@@ -31,7 +31,7 @@ feature 'User index page' do
     scenario 'redirect to home page', js: true do
       create_logged_in_user
       visit users_path
-      expect(page).to have_css 'p.alert-error'
+      expect(page).to have_css '.alert-error'
       expect(current_path).to eq root_path
     end
   end
@@ -39,7 +39,7 @@ feature 'User index page' do
   context 'not logged in' do
     scenario 'redirect to login page', js: true do
       visit users_path
-      expect(page).to have_css 'p.alert-error'
+      expect(page).to have_css '.alert-error'
       expect(current_path).to eq login_path
     end
   end
@@ -52,16 +52,16 @@ feature 'User index page' do
       visit users_path
       login admin_user
       expect(current_path).to eq users_path
-      expect(page).to have_css 'p.alert-success'
-      expect(page).not_to have_css 'p.alert-error'
+      expect(page).to have_css '.alert-success'
+      expect(page).not_to have_css '.alert-error'
     end
 
     scenario 'log in as non-admin; redirect to home page (user index not permitted)', js: true do
       visit users_path
       login user
       expect(current_path).to eq root_path
-      expect(page).to have_css 'p.alert-error'
-      expect(page).not_to have_css 'p.alert-success'
+      expect(page).to have_css '.alert-error'
+      expect(page).not_to have_css '.alert-success'
     end
   end
 end

@@ -8,11 +8,9 @@ feature 'User log in' do
       expect(page).to have_link('Log in', href: login_path)
       expect(page).not_to have_link('Profile', href: user_path(user.id))
       expect(page).not_to have_link('Log out', href: logout_path)
-      fill_in 'session_email',    with: "#{user.email}"
-      fill_in 'session_password', with: "#{user.password}"
-      click_button 'Log in'
-      expect(page).to have_css 'p.alert-success'
-      expect(page).not_to have_css 'p.alert-error'
+      login user
+      expect(page).to have_css '.alert-success'
+      expect(page).not_to have_css '.alert-error'
       expect(page).to have_link('Profile', href: user_path(user.id))
       expect(page).to have_link('Log out', href: logout_path)
       expect(page).not_to have_link('Log in', href: login_path)
@@ -24,17 +22,17 @@ feature 'User log in' do
     let(:invalid_user) { attributes_for :invalid_user }
     scenario 're-render form with error message', js: true do
       visit login_path
-      fill_in 'session_email',    with: "#{invalid_user[:email]}"
-      fill_in 'session_password', with: "#{invalid_user[:password]}"
+      fill_in 'session_email',    with: invalid_user[:email]
+      fill_in 'session_password', with: invalid_user[:password]
       click_button 'Log in'
-      expect(page).to have_css 'p.alert-error'
-      expect(page).not_to have_css 'p.alert-success'
+      expect(page).to have_css '.alert-error'
+      expect(page).not_to have_css '.alert-success'
       expect(current_path).to eq login_path
       expect(page).to have_link('Log in', href: login_path)
       expect(page).not_to have_link('Profile')
       expect(page).not_to have_link('Log out', href: logout_path)
       visit root_path
-      expect(page).not_to have_css 'p.alert-error'
+      expect(page).not_to have_css '.alert-error'
     end
   end
 end
@@ -44,7 +42,7 @@ feature 'User log out' do
     let!(:user) { create_logged_in_user }
     scenario 'redirect to home page with success message', js: true do
       click_link 'Log out'
-      expect(page).to have_css 'p.alert-success'
+      expect(page).to have_css '.alert-success'
       expect(page).to have_link('Log in', href: login_path)
       expect(page).not_to have_link('Profile', href: user_path(user.id))
       expect(page).not_to have_link('Log out', href: logout_path)
@@ -76,8 +74,8 @@ feature 'Remembering user across sessions' do
     let!(:user) { create :user }
     scenario 'remember user after closing and re-opening browser', js: true do
       visit login_path
-      fill_in 'session_email',    with: "#{user.email}"
-      fill_in 'session_password', with: "#{user.password}"
+      fill_in 'session_email',    with: user.email
+      fill_in 'session_password', with: user.password
       find(:css, '#session_remember_me').set true
       click_button 'Log in'
       expire_cookies
@@ -100,19 +98,19 @@ feature 'Remembering user across sessions' do
   end
 end
 
-feature 'friendly forwarding' do
+feature 'Friendly forwarding' do
   context 'attempt to visit page not logged in; logging in redirects to intended page first time only' do
     let(:user) { create :user }
     scenario 'redirect to login page', js: true do
       visit edit_user_path(user)
-      fill_in 'session_email',    with: "#{user.email}"
-      fill_in 'session_password', with: "#{user.password}"
+      fill_in 'session_email',    with: user.email
+      fill_in 'session_password', with: user.password
       click_button 'Log in'
       expect(current_path).to eq edit_user_path(user)
       click_link 'Log out'
       visit login_path
-      fill_in 'session_email',    with: "#{user.email}"
-      fill_in 'session_password', with: "#{user.password}"
+      fill_in 'session_email',    with: user.email
+      fill_in 'session_password', with: user.password
       click_button 'Log in'
       expect(current_path).to eq user_path(user)
     end
