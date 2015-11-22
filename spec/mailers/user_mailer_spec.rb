@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe UserMailer, type: :mailer do
-  describe 'account_activation' do
+  describe 'account activation' do
     let(:user) { create :user }
     let(:mail) { UserMailer.account_activation(user) }
 
