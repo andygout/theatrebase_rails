@@ -3,6 +3,7 @@ require 'rails_helper'
 feature 'User password reset' do
   context 'existing email address' do
     let(:user) { create :user }
+
     scenario 'redirect to home page with success message; password reset email sent', js: true do
       visit login_path
       click_link 'Reset password'

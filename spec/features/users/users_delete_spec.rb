@@ -5,6 +5,7 @@ feature 'User delete' do
     let!(:admin_user) { create_logged_in_admin_user }
     let(:user) { create :user }
     let(:second_admin_user) { create :second_admin_user }
+
     scenario 'opt to not delete non-admin user; remain on user page', js: true do
       visit user_path(user)
       click_button 'Delete User'
@@ -52,6 +53,7 @@ feature 'User delete' do
 
   context 'logged in as non-admin' do
     let!(:user) { create_logged_in_user }
+
     scenario 'opt to not delete own profile; remain on user page', js: true do
       visit user_path(user)
       click_button 'Delete User'

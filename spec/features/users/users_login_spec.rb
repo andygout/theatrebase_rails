@@ -3,6 +3,7 @@ require 'rails_helper'
 feature 'User log in' do
   context 'valid details' do
     let!(:user) { create :user }
+
     scenario 'redirect to user page with success message', js: true do
       visit login_path
       expect(page).to have_link('Log in', href: login_path)
@@ -20,6 +21,7 @@ feature 'User log in' do
 
   context 'invalid details' do
     let(:invalid_user) { attributes_for :invalid_user }
+
     scenario 're-render form with error message', js: true do
       visit login_path
       fill_in 'session_email',    with: invalid_user[:email]
@@ -27,10 +29,10 @@ feature 'User log in' do
       click_button 'Log in'
       expect(page).to have_css '.alert-error'
       expect(page).not_to have_css '.alert-success'
-      expect(current_path).to eq login_path
       expect(page).to have_link('Log in', href: login_path)
       expect(page).not_to have_link('Profile')
       expect(page).not_to have_link('Log out', href: logout_path)
+      expect(current_path).to eq login_path
       visit root_path
       expect(page).not_to have_css '.alert-error'
     end
@@ -40,6 +42,7 @@ end
 feature 'User log out' do
   context 'having been logged in' do
     let!(:user) { create_logged_in_user }
+
     scenario 'redirect to home page with success message', js: true do
       click_link 'Log out'
       expect(page).to have_css '.alert-success'
@@ -52,6 +55,7 @@ feature 'User log out' do
 
   context 'having been logged in; logging out from second window' do
     let!(:user) { create_logged_in_user }
+
     scenario 'redirect to home page if logging out from second window', js:true do
       new_window = open_new_window
       within_window new_window do
@@ -72,6 +76,7 @@ end
 feature 'Remembering user across sessions' do
   context 'opting to be remembered' do
     let!(:user) { create :user }
+
     scenario 'remember user after closing and re-opening browser', js: true do
       visit login_path
       fill_in 'session_email',    with: user.email
@@ -88,6 +93,7 @@ feature 'Remembering user across sessions' do
 
   context 'not opting to be remembered' do
     let!(:user) { create_logged_in_user }
+
     scenario 'remember user after closing and re-opening browser', js: true do
       expire_cookies
       visit root_path
@@ -101,6 +107,7 @@ end
 feature 'Friendly forwarding' do
   context 'attempt to visit page not logged in; logging in redirects to intended page first time only' do
     let(:user) { create :user }
+
     scenario 'redirect to login page', js: true do
       visit edit_user_path(user)
       fill_in 'session_email',    with: user.email

@@ -11,6 +11,7 @@ feature 'Productions' do
 
   context 'productions have been added' do
     let!(:production) { create :production }
+
     scenario 'display productions', js: true do
       visit productions_path
       expect(page).to have_content production.title
@@ -20,6 +21,7 @@ feature 'Productions' do
 
   context 'creating productions with valid details' do
     let(:production) { attributes_for :production }
+
     scenario 'redirects to created production page with success message', js: true do
       visit productions_path
       click_link 'Add Production'
@@ -49,6 +51,7 @@ feature 'Productions' do
 
   context 'viewing productions' do
     let!(:production) { create :production }
+
     scenario 'lets a user view a production', js: true do
       visit productions_path
       click_link production.title
@@ -59,6 +62,7 @@ feature 'Productions' do
 
   context 'editing productions with valid details' do
     let(:production) { create :production }
+
     scenario 'redirects to updated production page with success message', js: true do
       visit production_path(production)
       click_button 'Edit Production'
@@ -75,6 +79,7 @@ feature 'Productions' do
 
   context 'editing productions with invalid details' do
     let(:production) { create :production }
+
     scenario 'invalid title given; re-renders edit form with error message', js: true do
       visit production_path(production)
       click_button 'Edit Production'
@@ -90,6 +95,7 @@ feature 'Productions' do
 
   context 'deleting productions' do
     let(:production) { create :production }
+
     scenario 'removes a production when a user clicks its delete link', js: true do
       visit production_path(production)
       click_button 'Delete Production'

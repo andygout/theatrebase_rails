@@ -4,6 +4,7 @@ feature 'User sign-up' do
   context 'valid details' do
     let(:user) { attributes_for :user }
     let(:admin_user) { create_logged_in_admin_user }
+
     scenario 'user created; redirect to home page with success message; account activation email sent', js: true do
       visit signup_path
       fill_in 'user_name',                  with: user[:name]
@@ -110,6 +111,7 @@ feature 'User sign-up' do
 
   context 'invalid details' do
     let(:invalid_user) { attributes_for :invalid_user }
+
     scenario 're-render form with error message', js: true do
       visit signup_path
       fill_in 'user_name',                  with: invalid_user[:name]

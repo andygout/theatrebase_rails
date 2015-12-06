@@ -63,6 +63,7 @@ feature 'User profile' do
 
   context 'not logged in' do
     let!(:user) { create :user }
+
     scenario 'redirect to login page', js: true do
       visit user_path(user)
       expect(page).to have_css '.alert-error'
@@ -77,33 +78,33 @@ feature 'User profile' do
     scenario 'log in as admin; redirect to own user profile page', js: true do
       visit user_path(admin_user)
       login admin_user
-      expect(current_path).to eq user_path(admin_user)
       expect(page).to have_css '.alert-success'
       expect(page).not_to have_css '.alert-error'
+      expect(current_path).to eq user_path(admin_user)
     end
 
     scenario 'log in as admin; redirect to another user profile page', js: true do
       visit user_path(user)
       login admin_user
-      expect(current_path).to eq user_path(user)
       expect(page).to have_css '.alert-success'
       expect(page).not_to have_css '.alert-error'
+      expect(current_path).to eq user_path(user)
     end
 
     scenario 'log in as non-admin; redirect to own user profile page', js: true do
       visit user_path(user)
       login user
-      expect(current_path).to eq user_path(user)
       expect(page).to have_css '.alert-success'
       expect(page).not_to have_css '.alert-error'
+      expect(current_path).to eq user_path(user)
     end
 
     scenario 'log in as non-admin; redirect to home page (another user profile page not permitted)', js: true do
       visit user_path(admin_user)
       login user
-      expect(current_path).to eq root_path
       expect(page).to have_css '.alert-error'
       expect(page).not_to have_css '.alert-success'
+      expect(current_path).to eq root_path
     end
   end
 end

@@ -1,13 +1,13 @@
 class UsersController < ApplicationController
 
-  before_action :logged_in_user,        only: [:index, :edit, :update, :show, :destroy]
-  before_action :admin_user,            only: :index
-  before_action :correct_user,          only: [:edit, :update]
-  before_action :show_user,             only: :show
-  before_action :destroy_user,          only: :destroy
+  before_action :logged_in_user,  only: [:index, :edit, :update, :show, :destroy]
+  before_action :admin_user,      only: :index
+  before_action :correct_user,    only: [:edit, :update]
+  before_action :show_user,       only: :show
+  before_action :destroy_user,    only: :destroy
 
   def index
-    @users = User.where(activated: true).paginate(page: params[:page])
+    @users = User.where(activated: true).order(:id).paginate(page: params[:page])
   end
 
   def new
@@ -62,8 +62,7 @@ class UsersController < ApplicationController
       params.require(:user).permit( :name,
                                     :email,
                                     :password,
-                                    :password_confirmation
-                                  )
+                                    :password_confirmation)
     end
 
     def logged_in_user
