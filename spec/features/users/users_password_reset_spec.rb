@@ -1,0 +1,177 @@
+require 'rails_helper'
+
+feature 'User password reset' do
+  context 'existing email address' do
+    let(:user) { create :user }
+    scenario 'redirect to home page with success message; password reset email sent', js: true do
+      visit login_path
+      click_link 'Reset password'
+      fill_in 'password_reset_email', with: user.email
+      expect { click_button 'Submit' }.to change { ActionMailer::Base.deliveries.count }.by 1
+      expect(page).to have_css '.alert-success'
+      expect(page).not_to have_css '.alert-error'
+      expect(current_path).to eq root_path
+    end
+
+    scenario 'password reset link not valid if invalid token given', js: true do
+      request_password_reset user
+      user_email = acquire_email_address ActionMailer::Base.deliveries.last.to_s
+      visit edit_password_reset_path('invalid-token', email: user_email)
+      expect(current_path).to eq root_path
+    end
+
+    scenario 'password reset link not valid if invalid email given', js: true do
+      request_password_reset user
+      password_reset_token = acquire_token ActionMailer::Base.deliveries.last.to_s
+      visit edit_password_reset_path(password_reset_token, email: 'incorrect-email')
+      expect(current_path).to eq root_path
+    end
+
+    scenario 'password reset link valid if valid token and correct email given', js: true do
+      request_password_reset user
+      msg = ActionMailer::Base.deliveries.last.to_s
+      user = click_resource_link msg, 'password_reset'
+      password_reset_token = acquire_token msg
+      expect(find('#email', :visible => false).value).to eq user.email
+      expect(current_path).to eq edit_password_reset_path(password_reset_token)
+    end
+
+    scenario 'password reset link redirects to home page if user not activated', js: true do
+      request_password_reset user
+      user.update_attribute(:activated, false)
+      user = click_resource_link ActionMailer::Base.deliveries.last.to_s, 'password_reset'
+      expect(current_path).to eq root_path
+    end
+
+    scenario 'password reset link redirects to link request page if token has expired', js: true do
+      request_password_reset user
+      user.update_attribute(:reset_sent_at, 3.hours.ago)
+      click_resource_link ActionMailer::Base.deliveries.last.to_s, 'password_reset'
+      expect(page).to have_css '.alert-error'
+      expect(current_path).to eq new_password_reset_path
+    end
+
+    scenario 'password cannot be reset without entering new password & confirmation', js: true do
+      request_password_reset user
+      msg = ActionMailer::Base.deliveries.last.to_s
+      click_resource_link msg, 'password_reset'
+      password_reset_token = acquire_token msg
+      click_button 'Reset password'
+      expect(page).to have_css '.alert-error'
+      expect(page).not_to have_css '.alert-success'
+      expect(current_path).to eq password_reset_path(password_reset_token)
+    end
+
+    scenario 'password cannot be reset by entering new password without confirmation', js: true do
+      request_password_reset user
+      msg = ActionMailer::Base.deliveries.last.to_s
+      click_resource_link msg, 'password_reset'
+      password_reset_token = acquire_token msg
+      fill_in 'user_password', with: 'new-password'
+      click_button 'Reset password'
+      expect(page).to have_css '.alert-error'
+      expect(page).to have_css '.field_with_errors'
+      expect(page).not_to have_css '.alert-success'
+      expect(current_path).to eq password_reset_path(password_reset_token)
+    end
+
+    scenario 'password cannot be reset by entering new confirmation without password', js: true do
+      request_password_reset user
+      msg = ActionMailer::Base.deliveries.last.to_s
+      click_resource_link msg, 'password_reset'
+      password_reset_token = acquire_token msg
+      fill_in 'user_password_confirmation', with: 'new-password'
+      click_button 'Reset password'
+      expect(page).to have_css '.alert-error'
+      expect(page).not_to have_css '.alert-success'
+      expect(current_path).to eq password_reset_path(password_reset_token)
+    end
+
+    scenario 'password cannot be reset by entering password and confirmation that are too short', js: true do
+      request_password_reset user
+      msg = ActionMailer::Base.deliveries.last.to_s
+      click_resource_link msg, 'password_reset'
+      password_reset_token = acquire_token msg
+      fill_in 'user_password',              with: 'foo'
+      fill_in 'user_password_confirmation', with: 'foo'
+      click_button 'Reset password'
+      expect(page).to have_css '.alert-error'
+      expect(page).not_to have_css '.alert-success'
+      expect(current_path).to eq password_reset_path(password_reset_token)
+    end
+
+    scenario 'password cannot be reset by entering non-matching password and confirmation', js: true do
+      request_password_reset user
+      msg = ActionMailer::Base.deliveries.last.to_s
+      click_resource_link msg, 'password_reset'
+      password_reset_token = acquire_token msg
+      fill_in 'user_password',              with: 'foobar'
+      fill_in 'user_password_confirmation', with: 'barfoo'
+      click_button 'Reset password'
+      expect(page).to have_css '.alert-error'
+      expect(page).not_to have_css '.alert-success'
+      expect(current_path).to eq password_reset_path(password_reset_token)
+    end
+
+    scenario 'password is reset by entering valid password and confirmation', js: true do
+      request_password_reset user
+      user = click_resource_link ActionMailer::Base.deliveries.last.to_s, 'password_reset'
+      fill_in 'user_password',              with: 'newpassword'
+      fill_in 'user_password_confirmation', with: 'newpassword'
+      click_button 'Reset password'
+      expect(page).to have_css '.alert-success'
+      expect(page).not_to have_css '.alert-error'
+      expect(current_path).to eq user_path(user)
+    end
+
+    scenario 'after password is reset old password cannot be used', js: true do
+      request_password_reset user
+      click_resource_link ActionMailer::Base.deliveries.last.to_s, 'password_reset'
+      fill_in 'user_password',              with: 'newpassword'
+      fill_in 'user_password_confirmation', with: 'newpassword'
+      click_button 'Reset password'
+      click_link 'Log out'
+      click_link 'Log in'
+      fill_in 'session_email',    with: user.email
+      fill_in 'session_password', with: user.password
+      click_button 'Log in'
+      expect(page).to have_css '.alert-error'
+      expect(page).not_to have_css '.alert-success'
+      expect(page).to have_link('Log in', href: login_path)
+      expect(page).not_to have_link('Profile')
+      expect(page).not_to have_link('Log out', href: logout_path)
+      expect(current_path).to eq login_path
+    end
+
+    scenario 'after password is reset new password can be used', js: true do
+      request_password_reset user
+      click_resource_link ActionMailer::Base.deliveries.last.to_s, 'password_reset'
+      fill_in 'user_password',              with: 'newpassword'
+      fill_in 'user_password_confirmation', with: 'newpassword'
+      click_button 'Reset password'
+      click_link 'Log out'
+      click_link 'Log in'
+      fill_in 'session_email',    with: user.email
+      fill_in 'session_password', with: 'newpassword'
+      click_button 'Log in'
+      expect(page).to have_css '.alert-success'
+      expect(page).not_to have_css '.alert-error'
+      expect(page).to have_link('Profile', href: user_path(user.id))
+      expect(page).to have_link('Log out', href: logout_path)
+      expect(page).not_to have_link('Log in', href: login_path)
+      expect(current_path).to eq user_path(user)
+    end
+  end
+
+  context 'non-existing email address' do
+    scenario 're-render form with error message', js: true do
+      visit login_path
+      click_link 'Reset password'
+      fill_in 'password_reset_email', with: 'non-existing@example.com'
+      expect { click_button 'Submit' }.to change { ActionMailer::Base.deliveries.count }.by 0
+      expect(page).to have_css '.alert-error'
+      expect(page).not_to have_css '.alert-success'
+      expect(current_path).to eq password_resets_path
+    end
+  end
+end

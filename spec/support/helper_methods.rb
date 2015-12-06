@@ -28,6 +28,13 @@ def signup user
   click_button 'Create User'
 end
 
+def request_password_reset user
+  visit login_path
+  click_link 'Reset password'
+  fill_in 'password_reset_email', with: user.email
+  click_button 'Submit'
+end
+
 def acquire_token msg
   LINK_REGEX.match(msg)[1]
 end
@@ -36,9 +43,13 @@ def acquire_email_address msg
   LINK_REGEX.match(msg)[2].gsub(/%40/, '@')
 end
 
-def click_activation_link msg
-  activation_token = acquire_token msg
+def click_resource_link msg, resource
+  token = acquire_token msg
   user_email = acquire_email_address msg
-  visit edit_account_activation_path(activation_token, email: user_email)
+  if resource == 'account_activation'
+    visit edit_account_activation_path(token, email: user_email)
+  elsif resource == 'password_reset'
+    visit edit_password_reset_path(token, email: user_email)
+  end
   User.find_by(email: user_email)
 end
