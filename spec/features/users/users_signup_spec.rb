@@ -64,7 +64,7 @@ feature 'User sign-up' do
 
     scenario 'activation link valid if valid token and correct email given', js: true do
       signup user
-      user = click_activation_link ActionMailer::Base.deliveries.last.to_s
+      user = click_resource_link ActionMailer::Base.deliveries.last.to_s, 'account_activation'
       expect(user.activated?).to eq true
       expect(page).to have_css '.alert-success'
       expect(page).to have_link('Profile', href: user_path(user.id))
@@ -84,7 +84,7 @@ feature 'User sign-up' do
 
     scenario 'user will be included in user index list once account activated', js: true do
       signup user
-      user = click_activation_link ActionMailer::Base.deliveries.last.to_s
+      user = click_resource_link ActionMailer::Base.deliveries.last.to_s, 'account_activation'
       login admin_user
       visit users_path
       expect(page).to have_content user.name
@@ -101,7 +101,7 @@ feature 'User sign-up' do
 
     scenario 'visiting user page will display user once account activated', js: true do
       signup user
-      user = click_activation_link ActionMailer::Base.deliveries.last.to_s
+      user = click_resource_link ActionMailer::Base.deliveries.last.to_s, 'account_activation'
       login admin_user
       visit user_path(user)
       expect(current_path).to eq user_path(user)
