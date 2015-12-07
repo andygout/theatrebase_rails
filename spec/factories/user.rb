@@ -38,8 +38,8 @@ FactoryGirl.define do
     factory :edit_user do
       name 'Andrew Gout'
       email 'andrewgout@example.com'
-      password ''
-      password_confirmation ''
+      password 'barfoo'
+      password_confirmation 'barfoo'
     end
 
     factory :invalid_user do

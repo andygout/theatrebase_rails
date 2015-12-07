@@ -28,6 +28,13 @@ def signup user
   click_button 'Create User'
 end
 
+def user_edit_form name, email, password, password_confirmation
+  fill_in 'user_name',                  with: name
+  fill_in 'user_email',                 with: email
+  fill_in 'user_password',              with: password
+  fill_in 'user_password_confirmation', with: password_confirmation
+end
+
 def request_password_reset user
   visit login_path
   click_link 'Reset password'
