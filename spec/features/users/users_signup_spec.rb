@@ -145,6 +145,22 @@ feature 'User sign-up' do
       expect(current_path).to eq users_path
     end
 
+    scenario 'using single whitespace for password but no confirmation', js: true do
+      visit signup_path
+      fill_in 'user_name',                  with: user[:name]
+      fill_in 'user_email',                 with: user[:email]
+      fill_in 'user_password',              with: ' '
+      fill_in 'user_password_confirmation', with: ''
+      expect { click_button 'Create User' }.to change { User.count }.by 0
+      expect(page).to have_css '.alert-error'
+      expect(page).to have_css '.field_with_errors'
+      expect(page).not_to have_css '.alert-success'
+      expect(page).to have_link('Log in', href: login_path)
+      expect(page).not_to have_link('Profile')
+      expect(page).not_to have_link('Log out', href: logout_path)
+      expect(current_path).to eq users_path
+    end
+
     scenario 'no password or confirmation', js: true do
       visit signup_path
       fill_in 'user_name',                  with: user[:name]
