@@ -45,7 +45,7 @@ feature 'User delete' do
       expect(page).to have_css '.alert-success'
       expect(page).not_to have_css '.alert-error'
       expect(page).to have_link('Log in', href: login_path)
-      expect(page).not_to have_link('Profile', href: user_path(admin_user.id))
+      expect(page).not_to have_link('Profile', href: user_path(admin_user))
       expect(page).not_to have_link('Log out', href: logout_path)
       expect(current_path).to eq root_path
     end
@@ -72,7 +72,7 @@ feature 'User delete' do
       expect(page).to have_css '.alert-success'
       expect(page).not_to have_css '.alert-error'
       expect(page).to have_link('Log in', href: login_path)
-      expect(page).not_to have_link('Profile', href: user_path(user.id))
+      expect(page).not_to have_link('Profile', href: user_path(user))
       expect(page).not_to have_link('Log out', href: logout_path)
       expect(current_path).to eq root_path
     end

@@ -57,31 +57,8 @@ feature 'User password reset' do
       msg = ActionMailer::Base.deliveries.last.to_s
       click_resource_link msg, 'password_reset'
       password_reset_token = acquire_token msg
-      click_button 'Reset password'
-      expect(page).to have_css '.alert-error'
-      expect(page).not_to have_css '.alert-success'
-      expect(current_path).to eq password_reset_path(password_reset_token)
-    end
-
-    scenario 'password cannot be reset by entering new password without confirmation', js: true do
-      request_password_reset user
-      msg = ActionMailer::Base.deliveries.last.to_s
-      click_resource_link msg, 'password_reset'
-      password_reset_token = acquire_token msg
-      fill_in 'user_password', with: 'new-password'
-      click_button 'Reset password'
-      expect(page).to have_css '.alert-error'
-      expect(page).to have_css '.field_with_errors'
-      expect(page).not_to have_css '.alert-success'
-      expect(current_path).to eq password_reset_path(password_reset_token)
-    end
-
-    scenario 'password cannot be reset by entering new confirmation without password', js: true do
-      request_password_reset user
-      msg = ActionMailer::Base.deliveries.last.to_s
-      click_resource_link msg, 'password_reset'
-      password_reset_token = acquire_token msg
-      fill_in 'user_password_confirmation', with: 'new-password'
+      fill_in 'user_password',              with: ''
+      fill_in 'user_password_confirmation', with: ''
       click_button 'Reset password'
       expect(page).to have_css '.alert-error'
       expect(page).not_to have_css '.alert-success'
@@ -117,19 +94,19 @@ feature 'User password reset' do
     scenario 'password is reset by entering valid password and confirmation', js: true do
       request_password_reset user
       user = click_resource_link ActionMailer::Base.deliveries.last.to_s, 'password_reset'
-      fill_in 'user_password',              with: 'newpassword'
-      fill_in 'user_password_confirmation', with: 'newpassword'
+      fill_in 'user_password',              with: 'new-password'
+      fill_in 'user_password_confirmation', with: 'new-password'
       click_button 'Reset password'
       expect(page).to have_css '.alert-success'
       expect(page).not_to have_css '.alert-error'
       expect(current_path).to eq user_path(user)
     end
 
-    scenario 'after password is reset old password cannot be used', js: true do
+    scenario 'after password is reset only new password can be used', js: true do
       request_password_reset user
       click_resource_link ActionMailer::Base.deliveries.last.to_s, 'password_reset'
-      fill_in 'user_password',              with: 'newpassword'
-      fill_in 'user_password_confirmation', with: 'newpassword'
+      fill_in 'user_password',              with: 'new-password'
+      fill_in 'user_password_confirmation', with: 'new-password'
       click_button 'Reset password'
       click_link 'Log out'
       click_link 'Log in'
@@ -142,22 +119,12 @@ feature 'User password reset' do
       expect(page).not_to have_link('Profile')
       expect(page).not_to have_link('Log out', href: logout_path)
       expect(current_path).to eq login_path
-    end
-
-    scenario 'after password is reset new password can be used', js: true do
-      request_password_reset user
-      click_resource_link ActionMailer::Base.deliveries.last.to_s, 'password_reset'
-      fill_in 'user_password',              with: 'newpassword'
-      fill_in 'user_password_confirmation', with: 'newpassword'
-      click_button 'Reset password'
-      click_link 'Log out'
-      click_link 'Log in'
       fill_in 'session_email',    with: user.email
-      fill_in 'session_password', with: 'newpassword'
+      fill_in 'session_password', with: 'new-password'
       click_button 'Log in'
       expect(page).to have_css '.alert-success'
       expect(page).not_to have_css '.alert-error'
-      expect(page).to have_link('Profile', href: user_path(user.id))
+      expect(page).to have_link('Profile', href: user_path(user))
       expect(page).to have_link('Log out', href: logout_path)
       expect(page).not_to have_link('Log in', href: login_path)
       expect(current_path).to eq user_path(user)

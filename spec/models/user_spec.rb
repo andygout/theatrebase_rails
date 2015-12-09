@@ -68,8 +68,18 @@ describe User, type: :model do
   end
 
   context 'password validation' do
-    it 'should have a minimum length' do
+    it 'should not be valid if less than minimum length' do
       user.password = user.password_confirmation = 'a' * 5
+      expect(user.valid?).to be false
+    end
+
+    it 'should not be valid if comprised solely of blank spaces' do
+      user.password = user.password_confirmation = ' ' * 6
+      expect(user.valid?).to be false
+    end
+
+    it 'should not be valid if too long' do
+      user.password = user.password_confirmation = 'a' * 73
       expect(user.valid?).to be false
     end
   end

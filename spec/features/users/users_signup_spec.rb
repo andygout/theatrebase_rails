@@ -30,7 +30,7 @@ feature 'User sign-up' do
       expect(user.activated?).to eq false
       expect(page).to have_css '.alert-error'
       expect(page).to have_link('Log in', href: login_path)
-      expect(page).not_to have_link('Profile', href: user_path(user.id))
+      expect(page).not_to have_link('Profile', href: user_path(user))
       expect(page).not_to have_link('Log out', href: logout_path)
       expect(current_path).to eq root_path
     end
@@ -43,7 +43,7 @@ feature 'User sign-up' do
       expect(user.activated?).to eq false
       expect(page).to have_css '.alert-error'
       expect(page).to have_link('Log in', href: login_path)
-      expect(page).not_to have_link('Profile', href: user_path(user.id))
+      expect(page).not_to have_link('Profile', href: user_path(user))
       expect(page).not_to have_link('Log out', href: logout_path)
       expect(current_path).to eq root_path
     end
@@ -58,7 +58,7 @@ feature 'User sign-up' do
       expect(user.activated?).to eq false
       expect(page).to have_css '.alert-error'
       expect(page).to have_link('Log in', href: login_path)
-      expect(page).not_to have_link('Profile', href: user_path(user.id))
+      expect(page).not_to have_link('Profile', href: user_path(user))
       expect(page).not_to have_link('Log out', href: logout_path)
       expect(current_path).to eq root_path
     end
@@ -68,10 +68,26 @@ feature 'User sign-up' do
       user = click_resource_link ActionMailer::Base.deliveries.last.to_s, 'account_activation'
       expect(user.activated?).to eq true
       expect(page).to have_css '.alert-success'
-      expect(page).to have_link('Profile', href: user_path(user.id))
+      expect(page).to have_link('Profile', href: user_path(user))
       expect(page).to have_link('Log out', href: logout_path)
       expect(page).not_to have_link('Log in', href: login_path)
       expect(current_path).to eq user_path(user)
+    end
+
+    scenario 'once account activated user can login with given password', js: true do
+      signup user
+      new_user = click_resource_link ActionMailer::Base.deliveries.last.to_s, 'account_activation'
+      click_link 'Log out'
+      visit login_path
+      fill_in 'session_email',    with: user[:email]
+      fill_in 'session_password', with: user[:password]
+      click_button 'Log in'
+      expect(page).to have_css '.alert-success'
+      expect(page).not_to have_css '.alert-error'
+      expect(page).to have_link('Profile', href: user_path(new_user))
+      expect(page).to have_link('Log out', href: logout_path)
+      expect(page).not_to have_link('Log in', href: login_path)
+      expect(current_path).to eq user_path(new_user)
     end
 
     scenario 'user will not be included in user index list if account not activated', js: true do
@@ -109,15 +125,80 @@ feature 'User sign-up' do
     end
   end
 
-  context 'invalid details' do
+  context 'invalid details; all re-render form with error message' do
+    let(:user) { attributes_for :user }
     let(:invalid_user) { attributes_for :invalid_user }
 
-    scenario 're-render form with error message', js: true do
+    scenario 'invalid name, email, password and confirmation', js: true do
       visit signup_path
       fill_in 'user_name',                  with: invalid_user[:name]
       fill_in 'user_email',                 with: invalid_user[:email]
       fill_in 'user_password',              with: invalid_user[:password]
       fill_in 'user_password_confirmation', with: invalid_user[:password_confirmation]
+      expect { click_button 'Create User' }.to change { User.count }.by 0
+      expect(page).to have_css '.alert-error'
+      expect(page).to have_css '.field_with_errors'
+      expect(page).not_to have_css '.alert-success'
+      expect(page).to have_link('Log in', href: login_path)
+      expect(page).not_to have_link('Profile')
+      expect(page).not_to have_link('Log out', href: logout_path)
+      expect(current_path).to eq users_path
+    end
+
+    scenario 'using single whitespace for password but no confirmation', js: true do
+      visit signup_path
+      fill_in 'user_name',                  with: user[:name]
+      fill_in 'user_email',                 with: user[:email]
+      fill_in 'user_password',              with: ' '
+      fill_in 'user_password_confirmation', with: ''
+      expect { click_button 'Create User' }.to change { User.count }.by 0
+      expect(page).to have_css '.alert-error'
+      expect(page).to have_css '.field_with_errors'
+      expect(page).not_to have_css '.alert-success'
+      expect(page).to have_link('Log in', href: login_path)
+      expect(page).not_to have_link('Profile')
+      expect(page).not_to have_link('Log out', href: logout_path)
+      expect(current_path).to eq users_path
+    end
+
+    scenario 'no password or confirmation', js: true do
+      visit signup_path
+      fill_in 'user_name',                  with: user[:name]
+      fill_in 'user_email',                 with: user[:email]
+      fill_in 'user_password',              with: ''
+      fill_in 'user_password_confirmation', with: ''
+      expect { click_button 'Create User' }.to change { User.count }.by 0
+      expect(page).to have_css '.alert-error'
+      expect(page).to have_css '.field_with_errors'
+      expect(page).not_to have_css '.alert-success'
+      expect(page).to have_link('Log in', href: login_path)
+      expect(page).not_to have_link('Profile')
+      expect(page).not_to have_link('Log out', href: logout_path)
+      expect(current_path).to eq users_path
+    end
+
+    scenario 'password and confirmation too short', js: true do
+      visit signup_path
+      fill_in 'user_name',                  with: user[:name]
+      fill_in 'user_email',                 with: user[:email]
+      fill_in 'user_password',              with: 'foo'
+      fill_in 'user_password_confirmation', with: 'foo'
+      expect { click_button 'Create User' }.to change { User.count }.by 0
+      expect(page).to have_css '.alert-error'
+      expect(page).to have_css '.field_with_errors'
+      expect(page).not_to have_css '.alert-success'
+      expect(page).to have_link('Log in', href: login_path)
+      expect(page).not_to have_link('Profile')
+      expect(page).not_to have_link('Log out', href: logout_path)
+      expect(current_path).to eq users_path
+    end
+
+    scenario 'password and confirmation non-matching', js: true do
+      visit signup_path
+      fill_in 'user_name',                  with: user[:name]
+      fill_in 'user_email',                 with: user[:email]
+      fill_in 'user_password',              with: 'foobar'
+      fill_in 'user_password_confirmation', with: 'barfoo'
       expect { click_button 'Create User' }.to change { User.count }.by 0
       expect(page).to have_css '.alert-error'
       expect(page).to have_css '.field_with_errors'
