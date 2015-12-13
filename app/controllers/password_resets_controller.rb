@@ -24,7 +24,7 @@ class PasswordResetsController < ApplicationController
 
   def update
     if password_blank?
-      flash.now[:error] = 'Password cannot be blank'
+      @user.errors.add(:password, 'Password cannot be blank')
       render :edit
     elsif @user.update_attributes(user_params)
       log_in @user

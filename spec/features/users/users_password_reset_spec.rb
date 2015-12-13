@@ -61,6 +61,7 @@ feature 'User password reset' do
       fill_in 'user_password_confirmation', with: ''
       click_button 'Reset password'
       expect(page).to have_css '.alert-error'
+      expect(page).to have_css '.field_with_errors'
       expect(page).not_to have_css '.alert-success'
       expect(current_path).to eq password_reset_path(password_reset_token)
     end
@@ -74,6 +75,7 @@ feature 'User password reset' do
       fill_in 'user_password_confirmation', with: 'foo'
       click_button 'Reset password'
       expect(page).to have_css '.alert-error'
+      expect(page).to have_css '.field_with_errors'
       expect(page).not_to have_css '.alert-success'
       expect(current_path).to eq password_reset_path(password_reset_token)
     end
@@ -87,6 +89,7 @@ feature 'User password reset' do
       fill_in 'user_password_confirmation', with: 'barfoo'
       click_button 'Reset password'
       expect(page).to have_css '.alert-error'
+      expect(page).to have_css '.field_with_errors'
       expect(page).not_to have_css '.alert-success'
       expect(current_path).to eq password_reset_path(password_reset_token)
     end
@@ -99,6 +102,7 @@ feature 'User password reset' do
       click_button 'Reset password'
       expect(page).to have_css '.alert-success'
       expect(page).not_to have_css '.alert-error'
+      expect(page).not_to have_css '.field_with_errors'
       expect(current_path).to eq user_path(user)
     end
 
