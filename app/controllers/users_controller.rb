@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
 
   before_action :logged_in_user,  only: [:index, :edit, :update, :show, :destroy]
-  before_action :admin_user,      only: :index
+  before_action :admin_user,      only: [:index, :new, :create]
   before_action :correct_user,    only: [:edit, :update]
   before_action :show_user,       only: :show
   before_action :destroy_user,    only: :destroy
@@ -15,10 +15,13 @@ class UsersController < ApplicationController
   end
 
   def create
+    @password = SecureRandom.urlsafe_base64
+    params[:user][:password] = @password
+    params[:user][:password_confirmation] = @password
     @user = User.new(user_params)
     if @user.save
       @user.send_activation_email
-      flash[:success] = 'Please check your email to activate your account'
+      flash[:success] = "Account activation details for #{@user.name} sent to: #{@user.email}"
       redirect_to root_path
     else
       render :new

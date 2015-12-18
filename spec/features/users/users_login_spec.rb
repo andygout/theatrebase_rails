@@ -20,11 +20,14 @@ feature 'User log in' do
   end
 
   context 'invalid details; all re-render form with error message' do
+    before(:each) do
+      visit login_path
+    end
+
     let(:user) { create :user }
     let(:second_user) { attributes_for :second_user }
 
     scenario 'details of non-existing user', js: true do
-      visit login_path
       fill_in 'session_email',    with: second_user[:email]
       fill_in 'session_password', with: second_user[:password]
       click_button 'Log in'
@@ -37,7 +40,6 @@ feature 'User log in' do
     end
 
     scenario 'correct email address but incorrect password', js: true do
-      visit login_path
       fill_in 'session_email',    with: user.email
       fill_in 'session_password', with: 'incorrect-password'
       click_button 'Log in'
@@ -50,7 +52,6 @@ feature 'User log in' do
     end
 
     scenario 'correct password but incorrect email address', js: true do
-      visit login_path
       fill_in 'session_email',    with: 'incorrect@example.com'
       fill_in 'session_password', with: user.password
       click_button 'Log in'
@@ -63,7 +64,6 @@ feature 'User log in' do
     end
 
     scenario 'error alert will disappear when visiting subsequent page', js: true do
-      visit login_path
       fill_in 'session_email',    with: second_user[:email]
       fill_in 'session_password', with: second_user[:password]
       click_button 'Log in'

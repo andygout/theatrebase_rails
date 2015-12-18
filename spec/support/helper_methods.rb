@@ -3,13 +3,13 @@ LINK_REGEX = /\/([a-zA-Z0-9_\-]*)\/edit\?email=([a-zA-Z0-9%\.]*)/
 def create_logged_in_user
   user = create :user
   login user
-  return user
+  user
 end
 
 def create_logged_in_admin_user
   admin_user = create :admin_user
   login admin_user
-  return admin_user
+  admin_user
 end
 
 def login user
@@ -19,12 +19,10 @@ def login user
   click_button 'Log in'
 end
 
-def signup user
-  visit signup_path
+def create_user user
+  visit new_user_path
   fill_in 'user_name',                  with: user[:name]
   fill_in 'user_email',                 with: user[:email]
-  fill_in 'user_password',              with: user[:password]
-  fill_in 'user_password_confirmation', with: user[:password_confirmation]
   click_button 'Create User'
 end
 

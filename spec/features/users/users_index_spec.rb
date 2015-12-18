@@ -45,11 +45,14 @@ feature 'User index page' do
   end
 
   context 'friendly forwarding: logging in redirects to user index page (if permitted)' do
+    before(:each) do
+      visit users_path
+    end
+
     let(:admin_user) { create :admin_user }
     let(:user) { create :user }
 
     scenario 'log in as admin; redirect to user index page', js: true do
-      visit users_path
       login admin_user
       expect(page).to have_css '.alert-success'
       expect(page).not_to have_css '.alert-error'
@@ -57,7 +60,6 @@ feature 'User index page' do
     end
 
     scenario 'log in as non-admin; redirect to home page (user index not permitted)', js: true do
-      visit users_path
       login user
       expect(page).to have_css '.alert-error'
       expect(page).not_to have_css '.alert-success'

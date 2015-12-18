@@ -54,9 +54,12 @@ feature 'User delete' do
   context 'logged in as non-admin' do
     let!(:user) { create_logged_in_user }
 
-    scenario 'opt to not delete own profile; remain on user page', js: true do
+    before(:each) do
       visit user_path(user)
       click_button 'Delete User'
+    end
+
+    scenario 'opt to not delete own profile; remain on user page', js: true do
       expect { click_button 'Cancel' }.to change { User.count }.by 0
       expect(User.exists? user.id).to be true
       expect(page).not_to have_css '.alert-success'
@@ -64,8 +67,6 @@ feature 'User delete' do
     end
 
     scenario 'delete own profile; redirect to home page with success message', js: true do
-      visit user_path(user)
-      click_button 'Delete User'
       expect { click_button 'OK' }.to change { User.count }.by -1
       expect(User.exists? user.id).to be false
       expect(Admin.exists? user_id: user).to be false

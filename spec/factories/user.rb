@@ -4,9 +4,8 @@ FactoryGirl.define do
     name                  'Andy Gout'
     email                 'andygout@example.com'
     password              'foobar'
-    password_confirmation 'foobar'
-    activated true
-    activated_at { Time.zone.now }
+    activated             true
+    activated_at          { Time.zone.now }
 
     factory :second_user do
       name  'John Smith'
@@ -39,14 +38,11 @@ FactoryGirl.define do
       name                  'Andrew Gout'
       email                 'andrewgout@example.com'
       password              'barfoo'
-      password_confirmation 'barfoo'
     end
 
     factory :invalid_user do
-      name                  ''
-      email                 'andygout@example'
-      password              'foo'
-      password_confirmation 'bar'
+      name  ''
+      email 'andygout@example'
     end
   end
 
