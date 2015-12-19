@@ -1,9 +1,9 @@
-<% provide(:title, 'Reset password') %>
+<% provide(:title, 'Set password') %>
 
-<h1 class='header-text'>Reset password</h1>
+<h1 class='header-text'>Set password</h1>
 
 <fieldset class='form'>
-  <%= form_for(@user, url: password_reset_path(params[:id])) do |f| %>
+  <%= form_for(@user, url: account_activation_path(params[:id])) do |f| %>
     <%= render 'partials/error_count', count: @user.errors.count %>
 
     <%= hidden_field_tag :email, @user.email %>
@@ -20,6 +20,6 @@
       <%= render partial: 'partials/error', collection: @user.errors[:password_confirmation] %>
     </div>
 
-    <%= f.submit 'Reset Password', class: 'button' %>
+    <%= f.submit 'Set Password', class: 'button' %>
   <% end %>
 </fieldset>

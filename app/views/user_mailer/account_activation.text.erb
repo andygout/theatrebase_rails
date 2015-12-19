@@ -1,5 +1,5 @@
 Hi <%= @user.name %>,
 
-Visit the below address to activate your account:
+Visit the below address to activate your account and set its password:
 
 <%= edit_account_activation_url(@user.activation_token, email: @user.email) %>

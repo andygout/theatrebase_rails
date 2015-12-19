@@ -1,30 +1,32 @@
 require 'rails_helper'
 
-feature 'User edit' do
-  context 'logged in as admin; updating own profile' do
+feature 'User edit/update' do
+  context 'logged in as admin; updating own profile with valid details' do
     let(:admin_user) { create_logged_in_admin_user }
     let(:edit_user) { attributes_for :edit_user }
-    let(:invalid_user) { attributes_for :invalid_user }
+
+    before(:each) do
+      visit edit_user_path(admin_user)
+    end
 
     scenario 'valid details (inc. new password); redirect to user profile with success message', js: true do
-      visit edit_user_path(admin_user)
       user_edit_form( edit_user[:name],
                       edit_user[:email],
                       edit_user[:password],
-                      edit_user[:password_confirmation])
+                      edit_user[:password])
       click_button 'Update User'
       expect(page).to have_css '.alert-success'
       expect(page).not_to have_css '.alert-error'
       expect(page).not_to have_css '.field_with_errors'
+      expect(page).to have_content(edit_user[:name])
       expect(current_path).to eq user_path(admin_user)
     end
 
     scenario 'after email and password are updated only new details can be used', js: true do
-      visit edit_user_path(admin_user)
       user_edit_form( edit_user[:name],
                       edit_user[:email],
                       edit_user[:password],
-                      edit_user[:password_confirmation])
+                      edit_user[:password])
       click_button 'Update User'
       click_link 'Log out'
       login admin_user
@@ -35,7 +37,7 @@ feature 'User edit' do
       expect(page).not_to have_link('Log out', href: logout_path)
       expect(current_path).to eq login_path
       fill_in 'session_email',    with: edit_user[:email]
-      fill_in 'session_password', with: edit_user[:password_confirmation]
+      fill_in 'session_password', with: edit_user[:password]
       click_button 'Log in'
       expect(page).to have_css '.alert-success'
       expect(page).not_to have_css '.alert-error'
@@ -46,7 +48,6 @@ feature 'User edit' do
     end
 
     scenario 'valid details (retaining existing password); redirect to user profile with success message', js: true do
-      visit edit_user_path(admin_user)
       user_edit_form( edit_user[:name],
                       edit_user[:email],
                       '',
@@ -59,7 +60,6 @@ feature 'User edit' do
     end
 
     scenario 'if existing password is retained it can still be used', js: true do
-      visit edit_user_path(admin_user)
       user_edit_form( edit_user[:name],
                       edit_user[:email],
                       '',
@@ -77,13 +77,22 @@ feature 'User edit' do
       expect(page).not_to have_link('Log in', href: login_path)
       expect(current_path).to eq user_path(admin_user)
     end
+  end
 
-    scenario 'invalid details (name, email, password and confirmation); re-render form with error message', js: true do
+  context 'logged in as admin; updating own profile with invalid details; all re-render form with error message' do
+    let(:admin_user) { create_logged_in_admin_user }
+    let(:edit_user) { attributes_for :edit_user }
+    let(:invalid_user) { attributes_for :invalid_user }
+
+    before(:each) do
       visit edit_user_path(admin_user)
+    end
+
+    scenario 'invalid name', js: true do
       user_edit_form( invalid_user[:name],
-                      invalid_user[:email],
-                      invalid_user[:password],
-                      invalid_user[:password_confirmation])
+                      edit_user[:email],
+                      edit_user[:password],
+                      edit_user[:password])
       click_button 'Update User'
       expect(page).to have_css '.alert-error'
       expect(page).to have_css '.field_with_errors'
@@ -91,8 +100,31 @@ feature 'User edit' do
       expect(current_path).to eq user_path(admin_user)
     end
 
-    scenario 'invalid details (password and confirmation too short); re-render form with error message', js: true do
-      visit edit_user_path(admin_user)
+    scenario 'invalid email', js: true do
+      user_edit_form( edit_user[:name],
+                      invalid_user[:email],
+                      edit_user[:password],
+                      edit_user[:password])
+      click_button 'Update User'
+      expect(page).to have_css '.alert-error'
+      expect(page).to have_css '.field_with_errors'
+      expect(page).not_to have_css '.alert-success'
+      expect(current_path).to eq user_path(admin_user)
+    end
+
+    scenario 'password as single whitespace (with no confirmation)', js: true do
+      user_edit_form( edit_user[:name],
+                      edit_user[:email],
+                      ' ',
+                      '')
+      click_button 'Update User'
+      expect(page).to have_css '.alert-error'
+      expect(page).to have_css '.field_with_errors'
+      expect(page).not_to have_css '.alert-success'
+      expect(current_path).to eq user_path(admin_user)
+    end
+
+    scenario 'password and confirmation too short', js: true do
       user_edit_form( edit_user[:name],
                       edit_user[:email],
                       'foo',
@@ -104,8 +136,7 @@ feature 'User edit' do
       expect(current_path).to eq user_path(admin_user)
     end
 
-    scenario 'invalid details (password and confirmation non-matching); re-render form with error message', js: true do
-      visit edit_user_path(admin_user)
+    scenario 'non-matching password and confirmation', js: true do
       user_edit_form( edit_user[:name],
                       edit_user[:email],
                       'foobar',
@@ -118,10 +149,18 @@ feature 'User edit' do
     end
   end
 
-  context 'logged in as admin; attempt to edit another user profile' do
+  context 'logged in as admin; attempt to edit another user' do
+    let(:second_admin_user) { create :second_admin_user }
     let(:user) { create :user }
 
-    scenario 'redirect to home page', js: true do
+    scenario 'attempt to edit another admin user: redirect to home page', js: true do
+      create_logged_in_admin_user
+      visit edit_user_path(second_admin_user)
+      expect(page).to have_css '.alert-error'
+      expect(current_path).to eq root_path
+    end
+
+    scenario 'attempt to edit a non-admin user: redirect to home page', js: true do
       create_logged_in_admin_user
       visit edit_user_path(user)
       expect(page).to have_css '.alert-error'
@@ -129,30 +168,32 @@ feature 'User edit' do
     end
   end
 
-  context 'logged in as non-admin; updating own profile' do
+  context 'logged in as non-admin; updating own profile with valid details' do
     let(:user) { create_logged_in_user }
     let(:edit_user) { attributes_for :edit_user }
-    let(:invalid_user) { attributes_for :invalid_user }
+
+    before(:each) do
+      visit edit_user_path(user)
+    end
 
     scenario 'valid details (inc. new password); redirect to user profile with success message', js: true do
-      visit edit_user_path(user)
       user_edit_form( edit_user[:name],
                       edit_user[:email],
                       edit_user[:password],
-                      edit_user[:password_confirmation])
+                      edit_user[:password])
       click_button 'Update User'
       expect(page).to have_css '.alert-success'
       expect(page).not_to have_css '.alert-error'
       expect(page).not_to have_css '.field_with_errors'
+      expect(page).to have_content(edit_user[:name])
       expect(current_path).to eq user_path(user)
     end
 
     scenario 'after email and password are updated only new details can be used', js: true do
-      visit edit_user_path(user)
       user_edit_form( edit_user[:name],
                       edit_user[:email],
                       edit_user[:password],
-                      edit_user[:password_confirmation])
+                      edit_user[:password])
       click_button 'Update User'
       click_link 'Log out'
       login user
@@ -163,7 +204,7 @@ feature 'User edit' do
       expect(page).not_to have_link('Log out', href: logout_path)
       expect(current_path).to eq login_path
       fill_in 'session_email',    with: edit_user[:email]
-      fill_in 'session_password', with: edit_user[:password_confirmation]
+      fill_in 'session_password', with: edit_user[:password]
       click_button 'Log in'
       expect(page).to have_css '.alert-success'
       expect(page).not_to have_css '.alert-error'
@@ -174,7 +215,6 @@ feature 'User edit' do
     end
 
     scenario 'valid details (retaining existing password); redirect to user profile with success message', js: true do
-      visit edit_user_path(user)
       user_edit_form( edit_user[:name],
                       edit_user[:email],
                       '',
@@ -187,7 +227,6 @@ feature 'User edit' do
     end
 
     scenario 'if existing password is retained it can still be used', js: true do
-      visit edit_user_path(user)
       user_edit_form( edit_user[:name],
                       edit_user[:email],
                       '',
@@ -205,13 +244,22 @@ feature 'User edit' do
       expect(page).not_to have_link('Log in', href: login_path)
       expect(current_path).to eq user_path(user)
     end
+  end
 
-    scenario 'invalid details (name, email, password and confirmation); re-render form with error message', js: true do
+  context 'logged in as non-admin; updating own profile with invalid details; all re-render form with error message' do
+    let(:user) { create_logged_in_user }
+    let(:edit_user) { attributes_for :edit_user }
+    let(:invalid_user) { attributes_for :invalid_user }
+
+    before(:each) do
       visit edit_user_path(user)
+    end
+
+    scenario 'invalid name', js: true do
       user_edit_form( invalid_user[:name],
-                      invalid_user[:email],
-                      invalid_user[:password],
-                      invalid_user[:password_confirmation])
+                      edit_user[:email],
+                      edit_user[:password],
+                      edit_user[:password])
       click_button 'Update User'
       expect(page).to have_css '.alert-error'
       expect(page).to have_css '.field_with_errors'
@@ -219,8 +267,31 @@ feature 'User edit' do
       expect(current_path).to eq user_path(user)
     end
 
-    scenario 'invalid details (password and confirmation too short); re-render form with error message', js: true do
-      visit edit_user_path(user)
+    scenario 'invalid email', js: true do
+      user_edit_form( edit_user[:name],
+                      invalid_user[:email],
+                      edit_user[:password],
+                      edit_user[:password])
+      click_button 'Update User'
+      expect(page).to have_css '.alert-error'
+      expect(page).to have_css '.field_with_errors'
+      expect(page).not_to have_css '.alert-success'
+      expect(current_path).to eq user_path(user)
+    end
+
+    scenario 'password as single whitespace (with no confirmation)', js: true do
+      user_edit_form( edit_user[:name],
+                      edit_user[:email],
+                      ' ',
+                      '')
+      click_button 'Update User'
+      expect(page).to have_css '.alert-error'
+      expect(page).to have_css '.field_with_errors'
+      expect(page).not_to have_css '.alert-success'
+      expect(current_path).to eq user_path(user)
+    end
+
+    scenario 'password and confirmation too short', js: true do
       user_edit_form( edit_user[:name],
                       edit_user[:email],
                       'foo',
@@ -232,8 +303,7 @@ feature 'User edit' do
       expect(current_path).to eq user_path(user)
     end
 
-    scenario 'invalid details (password and confirmation non-matching); re-render form with error message', js: true do
-      visit edit_user_path(user)
+    scenario 'non-matching password and confirmation', js: true do
       user_edit_form( edit_user[:name],
                       edit_user[:email],
                       'foobar',
@@ -246,10 +316,18 @@ feature 'User edit' do
     end
   end
 
-  context 'logged in as non-admin; attempt to edit another user profile' do
+  context 'logged in as non-admin; attempt to edit another user' do
+    let(:admin_user) { create :admin_user }
     let(:second_user) { create :second_user }
 
-    scenario 'redirect to home page', js: true do
+    scenario 'attempt to edit an admin user: redirect to home page', js: true do
+      create_logged_in_user
+      visit edit_user_path(admin_user)
+      expect(page).to have_css '.alert-error'
+      expect(current_path).to eq root_path
+    end
+
+    scenario 'attempt to edit another non-admin user: redirect to home page', js: true do
       create_logged_in_user
       visit edit_user_path(second_user)
       expect(page).to have_css '.alert-error'

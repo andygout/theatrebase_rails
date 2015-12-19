@@ -2,14 +2,36 @@ require 'rails_helper'
 
 describe UsersController, type: :controller do
   let!(:user) { create :user }
-  let!(:second_user) { create :second_user }
+  let(:second_user) { create :second_user }
+  let(:third_user) { attributes_for :third_user }
   let!(:admin_user) { create :admin_user }
   let!(:second_admin_user) { create :second_admin_user }
 
-  context 'GET #new' do
-    it 'returns http success' do
+  context 'attempt add new user' do
+    it 'when logged in as admin' do
+      session[:user_id] = admin_user.id
       get :new
-      expect(response).to have_http_status(:success)
+      expect(response).to render_template(:new)
+    end
+
+    it 'when logged in as non-admin' do
+      session[:user_id] = user.id
+      get :new
+      expect(response).to redirect_to root_path
+    end
+  end
+
+  context 'attempt create new user' do
+    it 'when logged in as admin' do
+      session[:user_id] = admin_user.id
+      expect { post :create, user: { name: third_user[:name], email: third_user[:email] } }.to change { User.count }.by 1
+      expect(response).to redirect_to root_path
+    end
+
+    it 'when logged in as non-admin' do
+      session[:user_id] = user.id
+      expect { post :create, user: { name: third_user[:name], email: third_user[:email] } }.to change { User.count }.by 0
+      expect(response).to redirect_to root_path
     end
   end
 
@@ -50,7 +72,7 @@ describe UsersController, type: :controller do
 
   context 'attempt update' do
     it 'when not logged in: redirect to login page' do
-      patch :update, id: user, user: { name: user[:name], email: user[:email] }
+      patch :update, id: user, user: { name: user.name, email: user.email }
       expect(response).to redirect_to login_path
     end
   end
@@ -58,13 +80,13 @@ describe UsersController, type: :controller do
   context 'attempt update when logged in as admin' do
     it 'update other admin user: fail and redirect to home page' do
       session[:user_id] = admin_user.id
-      patch :update, id: second_admin_user, user: { name: second_admin_user[:name], email: second_admin_user[:email] }
+      patch :update, id: second_admin_user, user: { name: second_admin_user.name, email: second_admin_user.email }
       expect(response).to redirect_to root_path
     end
 
     it 'update non-admin user: fail and redirect to home page' do
       session[:user_id] = admin_user.id
-      patch :update, id: user, user: { name: user[:name], email: user[:email] }
+      patch :update, id: user, user: { name: user.name, email: user.email }
       expect(response).to redirect_to root_path
     end
   end
@@ -72,13 +94,13 @@ describe UsersController, type: :controller do
   context 'attempt update when logged in as non-admin' do
     it 'update admin user: fail and redirect to home page' do
       session[:user_id] = user.id
-      patch :update, id: admin_user, user: { name: admin_user[:name], email: admin_user[:email] }
+      patch :update, id: admin_user, user: { name: admin_user.name, email: admin_user.email }
       expect(response).to redirect_to root_path
     end
 
     it 'update other non-admin user: fail and redirect to home page' do
       session[:user_id] = user.id
-      patch :update, id: second_user, user: { name: second_user[:name], email: second_user[:email] }
+      patch :update, id: second_user, user: { name: second_user.name, email: second_user.email }
       expect(response).to redirect_to root_path
     end
   end
