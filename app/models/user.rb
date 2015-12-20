@@ -23,6 +23,8 @@ class User < ActiveRecord::Base
     allow_nil: true
 
   has_one :admin, dependent: :destroy
+  belongs_to :user
+  has_many :users, -> { extending WithUserAssociationExtension }
 
   def User.digest string
     cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST : BCrypt::Engine.cost
