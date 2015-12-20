@@ -42,12 +42,12 @@ ActiveRecord::Schema.define(version: 20151220163428) do
     t.datetime "activated_at"
     t.string   "reset_digest"
     t.datetime "reset_sent_at"
-    t.integer  "user_id"
+    t.integer  "creator_id"
   end
 
+  add_index "users", ["creator_id"], name: "index_users_on_creator_id", using: :btree
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
-  add_index "users", ["user_id"], name: "index_users_on_user_id", using: :btree
 
   add_foreign_key "admins", "users"
-  add_foreign_key "users", "users"
+  add_foreign_key "users", "users", column: "creator_id"
 end

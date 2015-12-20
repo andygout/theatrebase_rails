@@ -13,7 +13,7 @@ user = User.create!(name:                   'Andy Gout',
                 password_confirmation:  'password',
                 activated:              true,
                 activated_at:           Time.zone.now,
-                user_id:                1
+                creator_id:             1
               )
 end
 

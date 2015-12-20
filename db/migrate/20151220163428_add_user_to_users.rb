@@ -1,5 +1,6 @@
 class AddUserToUsers < ActiveRecord::Migration
   def change
-    add_reference :users, :user, index: true, foreign_key: true
+    add_reference :users, :creator, references: :users, index: true
+    add_foreign_key :users, :users, column: :creator_id
   end
 end
