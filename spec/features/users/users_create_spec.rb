@@ -36,6 +36,16 @@ feature 'User add/create' do
       expect(page).not_to have_css '.field_with_errors'
       expect(current_path).to eq root_path
     end
+
+    scenario 'user created; creator and updater associations (w/admin) created', js: true do
+      fill_in 'user_name',  with: user[:name]
+      fill_in 'user_email', with: user[:email]
+      click_button 'Create User'
+      user_email = acquire_email_address ActionMailer::Base.deliveries.last.to_s
+      user = User.find_by(email: user_email)
+      expect(user.creator).to eq(@admin_user)
+      expect(user.updater).to eq(@admin_user)
+    end
   end
 
   context 'submit add user form using invalid details; all re-render form with error message' do
@@ -177,6 +187,15 @@ feature 'User add/create' do
       expect(page).not_to have_css '.alert-error'
       expect(page).not_to have_css '.field_with_errors'
       expect(current_path).to eq user_path(@new_user)
+    end
+
+    scenario 'password is set; existing creator association (w/admin) remains and updater association (w/itself) updated', js: true do
+      fill_in 'user_password',              with: edit_user[:password]
+      fill_in 'user_password_confirmation', with: edit_user[:password]
+      click_button 'Set Password'
+      user = User.find_by(email: @new_user.email)
+      expect(user.creator).to eq(@admin_user)
+      expect(user.updater).to eq(user)
     end
   end
 
