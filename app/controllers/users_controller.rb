@@ -19,6 +19,7 @@ class UsersController < ApplicationController
     params[:user][:password] = @password
     params[:user][:password_confirmation] = @password
     @user = User.new(user_params)
+    @user = current_user.created_users.build_with_user(user_params, current_user)
     if @user.save
       @user.send_activation_email
       flash[:success] = "Account activation details for #{@user.name} sent to: #{@user.email}"
