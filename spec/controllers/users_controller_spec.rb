@@ -8,13 +8,13 @@ describe UsersController, type: :controller do
   let!(:second_admin_user) { create :second_admin_user }
 
   context 'attempt add new user' do
-    it 'when logged in as admin' do
+    it 'when logged in as admin: render new user form' do
       session[:user_id] = admin_user.id
       get :new
       expect(response).to render_template(:new)
     end
 
-    it 'when logged in as non-admin' do
+    it 'when logged in as non-admin: fail and redirect to home page' do
       session[:user_id] = user.id
       get :new
       expect(response).to redirect_to root_path
@@ -22,13 +22,13 @@ describe UsersController, type: :controller do
   end
 
   context 'attempt create new user' do
-    it 'when logged in as admin' do
+    it 'when logged in as admin: succeed and redirect to home page' do
       session[:user_id] = admin_user.id
       expect { post :create, user: { name: third_user[:name], email: third_user[:email] } }.to change { User.count }.by 1
       expect(response).to redirect_to root_path
     end
 
-    it 'when logged in as non-admin' do
+    it 'when logged in as non-admin: fail and redirect to home page' do
       session[:user_id] = user.id
       expect { post :create, user: { name: third_user[:name], email: third_user[:email] } }.to change { User.count }.by 0
       expect(response).to redirect_to root_path
@@ -36,7 +36,7 @@ describe UsersController, type: :controller do
   end
 
   context 'attempt edit' do
-    it 'when not logged in: redirect to login page' do
+    it 'when not logged in: fail and redirect to login page' do
       get :edit, id: user
       expect(response).to redirect_to login_path
     end
@@ -71,7 +71,7 @@ describe UsersController, type: :controller do
   end
 
   context 'attempt update' do
-    it 'when not logged in: redirect to login page' do
+    it 'when not logged in: fail and redirect to login page' do
       patch :update, id: user, user: { name: user.name, email: user.email }
       expect(response).to redirect_to login_path
     end
