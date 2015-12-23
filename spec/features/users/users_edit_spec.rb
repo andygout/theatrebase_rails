@@ -22,6 +22,17 @@ feature 'User edit/update' do
       expect(current_path).to eq user_path(admin_user)
     end
 
+    scenario 'valid details; existing creator association remains and updater association (w/itself) updated', js: true do
+      user_edit_form( edit_user[:name],
+                      edit_user[:email],
+                      edit_user[:password],
+                      edit_user[:password])
+      click_button 'Update User'
+      admin_user = User.find_by(email: edit_user[:email])
+      expect(admin_user.creator).to eq(nil)
+      expect(admin_user.updater).to eq(admin_user)
+    end
+
     scenario 'after email and password are updated only new details can be used', js: true do
       user_edit_form( edit_user[:name],
                       edit_user[:email],
@@ -147,6 +158,18 @@ feature 'User edit/update' do
       expect(page).not_to have_css '.alert-success'
       expect(current_path).to eq user_path(admin_user)
     end
+
+    scenario 'invalid details; existing creator and updater associations remain', js: true do
+      user_edit_form( invalid_user[:name],
+                      invalid_user[:email],
+                      'foo',
+                      'bar')
+      click_button 'Update User'
+      admin_user_copy = admin_user
+      admin_user = User.find_by(email: admin_user_copy.email)
+      expect(admin_user.creator).to eq(nil)
+      expect(admin_user.updater).to eq(nil)
+    end
   end
 
   context 'logged in as admin; attempt to edit another user' do
@@ -170,6 +193,7 @@ feature 'User edit/update' do
 
   context 'logged in as non-admin; updating own profile with valid details' do
     let(:user) { create_logged_in_user }
+    let(:admin_user) { create :admin_user }
     let(:edit_user) { attributes_for :edit_user }
 
     before(:each) do
@@ -187,6 +211,17 @@ feature 'User edit/update' do
       expect(page).not_to have_css '.field_with_errors'
       expect(page).to have_content(edit_user[:name])
       expect(current_path).to eq user_path(user)
+    end
+
+    scenario 'valid details; existing creator association remains and updater association (w/itself) updated', js: true do
+      user_edit_form( edit_user[:name],
+                      edit_user[:email],
+                      edit_user[:password],
+                      edit_user[:password])
+      click_button 'Update User'
+      user = User.find_by(email: edit_user[:email])
+      expect(user.creator).to eq(nil)
+      expect(user.updater).to eq(user)
     end
 
     scenario 'after email and password are updated only new details can be used', js: true do
@@ -313,6 +348,18 @@ feature 'User edit/update' do
       expect(page).to have_css '.field_with_errors'
       expect(page).not_to have_css '.alert-success'
       expect(current_path).to eq user_path(user)
+    end
+
+    scenario 'invalid details; existing creator and updater associations remain', js: true do
+      user_edit_form( invalid_user[:name],
+                      invalid_user[:email],
+                      'foo',
+                      'bar')
+      click_button 'Update User'
+      user_copy = user
+      user = User.find_by(email: user_copy.email)
+      expect(user.creator).to eq(nil)
+      expect(user.updater).to eq(nil)
     end
   end
 
