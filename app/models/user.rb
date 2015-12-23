@@ -24,6 +24,12 @@ class User < ActiveRecord::Base
 
   has_one :admin, dependent: :destroy
 
+  belongs_to :creator, class_name: 'User', foreign_key: 'creator_id'
+  has_many :created_users, -> { extending WithUserAssociationExtension }, class_name: 'User', foreign_key: 'creator_id'
+
+  belongs_to :updater, class_name: 'User', foreign_key: 'updater_id'
+  has_many :updated_users, class_name: 'User', foreign_key: 'updater_id'
+
   def User.digest string
     cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST : BCrypt::Engine.cost
     BCrypt::Password.create(string, cost: cost)

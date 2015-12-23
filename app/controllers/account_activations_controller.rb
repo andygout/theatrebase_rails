@@ -14,6 +14,7 @@ class AccountActivationsController < ApplicationController
   end
 
   def update
+    params[:user][:updater_id] = current_user.id
     if password_blank?
       @user.errors.add(:password, 'Password cannot be blank')
       render :edit
@@ -28,7 +29,11 @@ class AccountActivationsController < ApplicationController
   private
 
     def user_params
-      params.require(:user).permit(:password, :password_confirmation)
+      params
+        .require(:user)
+        .permit(:password,
+                :password_confirmation,
+                :updater_id)
     end
 
     def password_blank?
