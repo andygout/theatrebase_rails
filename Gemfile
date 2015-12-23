@@ -56,7 +56,7 @@ group :test do
   gem 'database_cleaner'
   gem 'factory_girl_rails'
   gem 'poltergeist'
-  gem 'selenium-webdriver', '2.46.2'
+  gem 'selenium-webdriver'
   gem 'shoulda'
   gem 'show_me_the_cookies'
   gem 'simplecov'
