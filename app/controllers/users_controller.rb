@@ -18,6 +18,7 @@ class UsersController < ApplicationController
     @password = SecureRandom.urlsafe_base64
     params[:user][:password] = @password
     params[:user][:password_confirmation] = @password
+    params[:user][:updater_id] = current_user.id
     @user = User.new(user_params)
     @user = current_user.created_users.build_with_user(user_params, current_user)
     if @user.save
@@ -34,7 +35,8 @@ class UsersController < ApplicationController
   end
 
   def update
-    if @user.update_attributes(user_params)
+    params[:user][:updater_id] = current_user.id
+    if @user.update(user_params)
       flash[:success] = "Profile updated successfully: #{@user.name}"
       redirect_to @user
     else
@@ -63,10 +65,13 @@ class UsersController < ApplicationController
   private
 
     def user_params
-      params.require(:user).permit( :name,
-                                    :email,
-                                    :password,
-                                    :password_confirmation)
+      params
+        .require(:user)
+        .permit(:name,
+                :email,
+                :password,
+                :password_confirmation,
+                :updater_id)
     end
 
     def logged_in_user

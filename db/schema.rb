@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151223220820) do
+ActiveRecord::Schema.define(version: 20151223222232) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -43,11 +43,14 @@ ActiveRecord::Schema.define(version: 20151223220820) do
     t.string   "reset_digest"
     t.datetime "reset_sent_at"
     t.integer  "creator_id"
+    t.integer  "updater_id"
   end
 
   add_index "users", ["creator_id"], name: "index_users_on_creator_id", using: :btree
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
+  add_index "users", ["updater_id"], name: "index_users_on_updater_id", using: :btree
 
   add_foreign_key "admins", "users"
   add_foreign_key "users", "users", column: "creator_id"
+  add_foreign_key "users", "users", column: "updater_id"
 end
