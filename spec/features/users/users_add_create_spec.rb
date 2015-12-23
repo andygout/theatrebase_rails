@@ -45,6 +45,8 @@ feature 'User add/create' do
       user = User.find_by(email: user_email)
       expect(user.creator).to eq(@admin_user)
       expect(user.updater).to eq(@admin_user)
+      expect(@admin_user.created_users).to include(user)
+      expect(@admin_user.updated_users).to include(user)
     end
   end
 
@@ -179,6 +181,18 @@ feature 'User add/create' do
       expect(current_path).to eq account_activation_path(@account_activation_token)
     end
 
+    scenario 'if password not set correctly existing creator and updater associations (w/admin) remain', js: true do
+      fill_in 'user_password',              with: 'foo'
+      fill_in 'user_password_confirmation', with: 'bar'
+      click_button 'Set Password'
+      user = User.find_by(email: @new_user.email)
+      expect(user.creator).to eq(@admin_user)
+      expect(user.updater).to eq(@admin_user)
+      expect(@admin_user.created_users).to include(user)
+      expect(@admin_user.updated_users).to include(user)
+      expect(user.updated_users).not_to include(user)
+    end
+
     scenario 'password is set by entering valid password and confirmation', js: true do
       fill_in 'user_password',              with: edit_user[:password]
       fill_in 'user_password_confirmation', with: edit_user[:password]
@@ -196,6 +210,9 @@ feature 'User add/create' do
       user = User.find_by(email: @new_user.email)
       expect(user.creator).to eq(@admin_user)
       expect(user.updater).to eq(user)
+      expect(@admin_user.created_users).to include(user)
+      expect(user.updated_users).to include(user)
+      expect(@admin_user.updated_users).not_to include(user)
     end
   end
 
