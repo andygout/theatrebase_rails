@@ -3,6 +3,10 @@ require 'rails_helper'
 describe User, type: :model do
   context 'relations' do
     it { should have_one :admin }
+    it { should belong_to :creator }
+    it { should have_many :created_users }
+    it { should belong_to :updater }
+    it { should have_many :updated_users }
   end
 
   let(:user) { build :user }

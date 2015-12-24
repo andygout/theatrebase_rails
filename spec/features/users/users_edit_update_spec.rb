@@ -31,6 +31,8 @@ feature 'User edit/update' do
       admin_user = User.find_by(email: edit_user[:email])
       expect(admin_user.creator).to eq(nil)
       expect(admin_user.updater).to eq(admin_user)
+      expect(admin_user.created_users).to be_empty
+      expect(admin_user.updated_users).to include(admin_user)
     end
 
     scenario 'after email and password are updated only new details can be used', js: true do
@@ -169,6 +171,8 @@ feature 'User edit/update' do
       admin_user = User.find_by(email: admin_user_copy.email)
       expect(admin_user.creator).to eq(nil)
       expect(admin_user.updater).to eq(nil)
+      expect(admin_user.created_users).to be_empty
+      expect(admin_user.updated_users).to be_empty
     end
   end
 
@@ -222,6 +226,8 @@ feature 'User edit/update' do
       user = User.find_by(email: edit_user[:email])
       expect(user.creator).to eq(nil)
       expect(user.updater).to eq(user)
+      expect(user.created_users).to be_empty
+      expect(user.updated_users).to include(user)
     end
 
     scenario 'after email and password are updated only new details can be used', js: true do
@@ -360,6 +366,8 @@ feature 'User edit/update' do
       user = User.find_by(email: user_copy.email)
       expect(user.creator).to eq(nil)
       expect(user.updater).to eq(nil)
+      expect(user.created_users).to be_empty
+      expect(user.updated_users).to be_empty
     end
   end
 
