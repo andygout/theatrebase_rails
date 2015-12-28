@@ -122,6 +122,7 @@ feature 'Remembering user across sessions' do
       expect(page).to have_link('Profile', href: user_path(user))
       expect(page).to have_link('Log out', href: logout_path)
       expect(page).not_to have_link('Log in', href: login_path)
+      expect(User.find(user.id).remember_created_at).not_to eq(nil)
     end
   end
 
@@ -134,6 +135,36 @@ feature 'Remembering user across sessions' do
       expect(page).to have_link('Log in', href: login_path)
       expect(page).not_to have_link('Profile', href: user_path(user))
       expect(page).not_to have_link('Log out', href: logout_path)
+      expect(User.find(user.id).remember_created_at).to eq(nil)
+    end
+  end
+end
+
+feature '\'Remember created at\' time' do
+  context 'user logs in' do
+    let(:user) { create :user }
+
+    scenario 'value will be set and reset on subsequent log ins', js: true do
+      expect(User.find(user.id).remember_created_at).to eq(nil)
+      login user
+      expect(User.find(user.id).remember_created_at).to eq(nil)
+      click_link 'Log out'
+      visit login_path
+      fill_in 'session_email',    with: user.email
+      fill_in 'session_password', with: user.password
+      find(:css, '#session_remember_me').set true
+      click_button 'Log in'
+      expect(User.find(user.id).remember_created_at).not_to eq(nil)
+      first_remember_created_at_time = User.find(user.id).remember_created_at
+      click_link 'Log out'
+      visit login_path
+      fill_in 'session_email',    with: user.email
+      fill_in 'session_password', with: user.password
+      find(:css, '#session_remember_me').set true
+      click_button 'Log in'
+      expect(User.find(user.id).remember_created_at).not_to eq(nil)
+      second_remember_created_at_time = User.find(user.id).remember_created_at
+      expect(first_remember_created_at_time).not_to eq(second_remember_created_at_time)
     end
   end
 end
