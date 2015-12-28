@@ -169,6 +169,24 @@ feature '\'Remember created at\' time' do
   end
 end
 
+feature '\'Current log in at\' time' do
+  context 'user logs in' do
+    let(:user) { create :user }
+
+    scenario 'value will be set and reset on subsequent log ins', js: true do
+      expect(User.find(user.id).current_log_in_at).to eq(nil)
+      login user
+      expect(User.find(user.id).current_log_in_at).not_to eq(nil)
+      first_log_in_time = User.find(user.id).current_log_in_at
+      click_link 'Log out'
+      login user
+      expect(User.find(user.id).current_log_in_at).not_to eq(nil)
+      second_log_in_time = User.find(user.id).current_log_in_at
+      expect(first_log_in_time).not_to eq(second_log_in_time)
+    end
+  end
+end
+
 feature 'Friendly forwarding' do
   context 'attempt to visit page not logged in; logging in redirects to intended page first time only' do
     let(:user) { create :user }

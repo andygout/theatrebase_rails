@@ -51,6 +51,10 @@ class User < ActiveRecord::Base
     BCrypt::Password.new(digest).is_password?(token)
   end
 
+  def set_current_log_in_at
+    update_attributes(current_log_in_at: Time.zone.now)
+  end
+
   def forget
     update_attributes(remember_digest: nil, remember_created_at: nil)
   end
