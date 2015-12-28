@@ -169,20 +169,29 @@ feature '\'Remember created at\' time' do
   end
 end
 
-feature '\'Current log in at\' time' do
+feature '\'Current log in at\'/\'Last log in at\' times' do
   context 'user logs in' do
     let(:user) { create :user }
 
-    scenario 'value will be set and reset on subsequent log ins', js: true do
+    scenario 'values will be set and reset on subsequent log ins', js: true do
       expect(User.find(user.id).current_log_in_at).to eq(nil)
+      expect(User.find(user.id).last_log_in_at).to eq(nil)
       login user
-      expect(User.find(user.id).current_log_in_at).not_to eq(nil)
-      first_log_in_time = User.find(user.id).current_log_in_at
+      first_current_log_in_at_time = User.find(user.id).current_log_in_at
+      expect(first_current_log_in_at_time).not_to eq(nil)
+      expect(User.find(user.id).last_log_in_at).to eq(nil)
       click_link 'Log out'
       login user
-      expect(User.find(user.id).current_log_in_at).not_to eq(nil)
-      second_log_in_time = User.find(user.id).current_log_in_at
-      expect(first_log_in_time).not_to eq(second_log_in_time)
+      second_current_log_in_at_time = User.find(user.id).current_log_in_at
+      first_last_log_in_at_time = User.find(user.id).last_log_in_at
+      expect(second_current_log_in_at_time).not_to eq(nil)
+      expect(first_current_log_in_at_time).to eq(first_last_log_in_at_time)
+      expect(first_current_log_in_at_time).not_to eq(second_current_log_in_at_time)
+      click_link 'Log out'
+      login user
+      second_last_log_in_at_time = User.find(user.id).last_log_in_at
+      expect(first_last_log_in_at_time).not_to eq(second_last_log_in_at_time)
+      expect(second_current_log_in_at_time).to eq(second_last_log_in_at_time)
     end
   end
 end
