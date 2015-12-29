@@ -196,6 +196,21 @@ feature '\'Current log in at\'/\'Last log in at\' times' do
   end
 end
 
+feature 'Log in count' do
+  context 'user logs in' do
+    let(:user) { create :user }
+
+    scenario 'value will be incremented on each log in', js: true do
+      expect(User.find(user.id).log_in_count).to eq(nil)
+      login user
+      expect(User.find(user.id).log_in_count).to eq(1)
+      click_link 'Log out'
+      login user
+      expect { login user }.to change { User.find(user.id).log_in_count }.by 1
+    end
+  end
+end
+
 feature 'Friendly forwarding' do
   context 'attempt to visit page not logged in; logging in redirects to intended page first time only' do
     let(:user) { create :user }

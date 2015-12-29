@@ -51,9 +51,11 @@ class User < ActiveRecord::Base
     BCrypt::Password.new(digest).is_password?(token)
   end
 
-  def set_log_in_times
+  def set_log_in_data
+    self.log_in_count = 0 if log_in_count == nil
     update_attributes(current_log_in_at: Time.zone.now,
-                      last_log_in_at: current_log_in_at)
+                      last_log_in_at: current_log_in_at,
+                      log_in_count: log_in_count + 1)
   end
 
   def forget
