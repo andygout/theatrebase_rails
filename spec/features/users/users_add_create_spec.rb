@@ -16,7 +16,7 @@ feature 'User add/create' do
       expect(page).to have_link('Add User', href: new_user_path)
       click_link 'Log out'
       expect(page).not_to have_link('Add User', href: new_user_path)
-      login second_user
+      log_in second_user
       expect(page).not_to have_link('Add User', href: new_user_path)
     end
   end
@@ -88,16 +88,16 @@ feature 'User add/create' do
       cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST : BCrypt::Engine.cost
       password_digest = BCrypt::Password.create(user[:password], cost: cost)
       new_user.update_attribute(:password_digest, password_digest)
-      visit login_path
+      visit log_in_path
       fill_in 'session_email',    with: user[:email]
       fill_in 'session_password', with: user[:password]
       click_button 'Log in'
       expect(new_user.activated?).to eq false
       expect(page).to have_css '.alert-error'
       expect(page).not_to have_css '.alert-success'
-      expect(page).to have_link('Log in', href: login_path)
+      expect(page).to have_link('Log in', href: log_in_path)
       expect(page).not_to have_link('Profile', href: user_path(new_user))
-      expect(page).not_to have_link('Log out', href: logout_path)
+      expect(page).not_to have_link('Log out', href: log_out_path)
       expect(current_path).to eq root_path
     end
 
@@ -108,9 +108,9 @@ feature 'User add/create' do
       expect(user.activated?).to eq false
       expect(page).to have_css '.alert-error'
       expect(page).not_to have_css '.alert-success'
-      expect(page).to have_link('Log in', href: login_path)
+      expect(page).to have_link('Log in', href: log_in_path)
       expect(page).not_to have_link('Profile', href: user_path(user))
-      expect(page).not_to have_link('Log out', href: logout_path)
+      expect(page).not_to have_link('Log out', href: log_out_path)
       expect(current_path).to eq root_path
     end
 
@@ -123,9 +123,9 @@ feature 'User add/create' do
       expect(user.activated?).to eq false
       expect(page).to have_css '.alert-error'
       expect(page).not_to have_css '.alert-success'
-      expect(page).to have_link('Log in', href: login_path)
+      expect(page).to have_link('Log in', href: log_in_path)
       expect(page).not_to have_link('Profile', href: user_path(user))
-      expect(page).not_to have_link('Log out', href: logout_path)
+      expect(page).not_to have_link('Log out', href: log_out_path)
       expect(current_path).to eq root_path
     end
 
@@ -137,8 +137,8 @@ feature 'User add/create' do
       expect(page).to have_css '.alert-success'
       expect(page).not_to have_css '.alert-error'
       expect(page).to have_link('Profile', href: user_path(user))
-      expect(page).to have_link('Log out', href: logout_path)
-      expect(page).not_to have_link('Log in', href: login_path)
+      expect(page).to have_link('Log out', href: log_out_path)
+      expect(page).not_to have_link('Log in', href: log_in_path)
       expect(current_path).to eq edit_account_activation_path(account_activation_token)
     end
   end
@@ -227,24 +227,24 @@ feature 'User add/create' do
       fill_in 'user_password_confirmation', with: edit_user[:password]
       click_button 'Set Password'
       click_link 'Log out'
-      visit login_path
+      visit log_in_path
       fill_in 'session_email',    with: user[:email]
       fill_in 'session_password', with: user[:password]
       click_button 'Log in'
       expect(page).to have_css '.alert-error'
       expect(page).not_to have_css '.alert-success'
-      expect(page).to have_link('Log in', href: login_path)
+      expect(page).to have_link('Log in', href: log_in_path)
       expect(page).not_to have_link('Profile')
-      expect(page).not_to have_link('Log out', href: logout_path)
-      expect(current_path).to eq login_path
+      expect(page).not_to have_link('Log out', href: log_out_path)
+      expect(current_path).to eq log_in_path
       fill_in 'session_email',    with: user[:email]
       fill_in 'session_password', with: edit_user[:password]
       click_button 'Log in'
       expect(page).to have_css '.alert-success'
       expect(page).not_to have_css '.alert-error'
       expect(page).to have_link('Profile', href: user_path(new_user))
-      expect(page).to have_link('Log out', href: logout_path)
-      expect(page).not_to have_link('Log in', href: login_path)
+      expect(page).to have_link('Log out', href: log_out_path)
+      expect(page).not_to have_link('Log in', href: log_in_path)
       expect(current_path).to eq user_path(new_user)
     end
   end
@@ -267,7 +267,7 @@ feature 'User add/create' do
       fill_in 'user_password_confirmation', with: edit_user[:password]
       click_button 'Set Password'
       click_link 'Log out'
-      login @admin_user
+      log_in @admin_user
       visit users_path
       expect(page).to have_content user.name
     end

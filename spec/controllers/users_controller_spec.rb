@@ -36,9 +36,9 @@ describe UsersController, type: :controller do
   end
 
   context 'attempt edit' do
-    it 'when not logged in: fail and redirect to login page' do
+    it 'when not logged in: fail and redirect to log in page' do
       get :edit, id: user
-      expect(response).to redirect_to login_path
+      expect(response).to redirect_to log_in_path
     end
   end
 
@@ -71,9 +71,9 @@ describe UsersController, type: :controller do
   end
 
   context 'attempt update' do
-    it 'when not logged in: fail and redirect to login page' do
+    it 'when not logged in: fail and redirect to log in page' do
       patch :update, id: user, user: { name: user.name, email: user.email }
-      expect(response).to redirect_to login_path
+      expect(response).to redirect_to log_in_path
     end
   end
 
@@ -113,9 +113,9 @@ describe UsersController, type: :controller do
   end
 
   context 'attempt to visit index when not logged in' do
-    it 'redirect to login page' do
+    it 'redirect to log in page' do
       get :index
-      expect(response).to redirect_to login_path
+      expect(response).to redirect_to log_in_path
     end
   end
 
@@ -130,7 +130,7 @@ describe UsersController, type: :controller do
   context 'attempt delete when not logged in' do
     it 'redirect to home page' do
       expect { delete :destroy, id: user }.to change { User.count }.by 0
-      expect(response).to redirect_to login_path
+      expect(response).to redirect_to log_in_path
     end
   end
 
