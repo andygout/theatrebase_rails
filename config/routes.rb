@@ -4,9 +4,9 @@ Rails.application.routes.draw do
 
   get 'password_resets/edit'
 
-  get     'login'   =>  'sessions#new'
-  post    'login'   =>  'sessions#create'
-  delete  'logout'  =>  'sessions#destroy'
+  get     'log_in'   =>  'sessions#new'
+  post    'log_in'   =>  'sessions#create'
+  delete  'log_out'  =>  'sessions#destroy'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

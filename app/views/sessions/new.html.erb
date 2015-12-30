@@ -3,7 +3,7 @@
 <h1 class='header-text'>Log in</h1>
 
 <fieldset class='form'>
-  <%= form_for(:session, url: login_path) do |f| %>
+  <%= form_for(:session, url: log_in_path) do |f| %>
     <div class='form-item'>
       <%= f.label :email, class: 'label' %>
       <%= f.email_field :email, class: 'input' %>

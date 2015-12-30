@@ -37,10 +37,10 @@ feature 'User index page' do
   end
 
   context 'not logged in' do
-    scenario 'redirect to login page', js: true do
+    scenario 'redirect to log in page', js: true do
       visit users_path
       expect(page).to have_css '.alert-error'
-      expect(current_path).to eq login_path
+      expect(current_path).to eq log_in_path
     end
   end
 
@@ -53,14 +53,14 @@ feature 'User index page' do
     let(:user) { create :user }
 
     scenario 'log in as admin; redirect to user index page', js: true do
-      login admin_user
+      log_in admin_user
       expect(page).to have_css '.alert-success'
       expect(page).not_to have_css '.alert-error'
       expect(current_path).to eq users_path
     end
 
     scenario 'log in as non-admin; redirect to home page (user index not permitted)', js: true do
-      login user
+      log_in user
       expect(page).to have_css '.alert-error'
       expect(page).not_to have_css '.alert-success'
       expect(current_path).to eq root_path

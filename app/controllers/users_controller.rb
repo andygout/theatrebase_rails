@@ -19,7 +19,6 @@ class UsersController < ApplicationController
     params[:user][:password] = @password
     params[:user][:password_confirmation] = @password
     params[:user][:updater_id] = current_user.id
-    @user = User.new(user_params)
     @user = current_user.created_users.build_with_user(user_params, current_user)
     if @user.save
       @user.send_activation_email
@@ -78,7 +77,7 @@ class UsersController < ApplicationController
       unless logged_in?
         store_location
         flash[:error] = 'Please log in'
-        redirect_to login_path
+        redirect_to log_in_path
       end
     end
 

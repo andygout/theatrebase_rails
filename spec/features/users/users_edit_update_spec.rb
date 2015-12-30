@@ -42,21 +42,21 @@ feature 'User edit/update' do
                       edit_user[:password])
       click_button 'Update User'
       click_link 'Log out'
-      login admin_user
+      log_in admin_user
       expect(page).to have_css '.alert-error'
       expect(page).not_to have_css '.alert-success'
-      expect(page).to have_link('Log in', href: login_path)
+      expect(page).to have_link('Log in', href: log_in_path)
       expect(page).not_to have_link('Profile')
-      expect(page).not_to have_link('Log out', href: logout_path)
-      expect(current_path).to eq login_path
+      expect(page).not_to have_link('Log out', href: log_out_path)
+      expect(current_path).to eq log_in_path
       fill_in 'session_email',    with: edit_user[:email]
       fill_in 'session_password', with: edit_user[:password]
       click_button 'Log in'
       expect(page).to have_css '.alert-success'
       expect(page).not_to have_css '.alert-error'
       expect(page).to have_link('Profile', href: user_path(admin_user))
-      expect(page).to have_link('Log out', href: logout_path)
-      expect(page).not_to have_link('Log in', href: login_path)
+      expect(page).to have_link('Log out', href: log_out_path)
+      expect(page).not_to have_link('Log in', href: log_in_path)
       expect(current_path).to eq user_path(admin_user)
     end
 
@@ -79,15 +79,15 @@ feature 'User edit/update' do
                       '')
       click_button 'Update User'
       click_link 'Log out'
-      visit login_path
+      visit log_in_path
       fill_in 'session_email',    with: edit_user[:email]
       fill_in 'session_password', with: admin_user.password
       click_button 'Log in'
       expect(page).to have_css '.alert-success'
       expect(page).not_to have_css '.alert-error'
       expect(page).to have_link('Profile', href: user_path(admin_user))
-      expect(page).to have_link('Log out', href: logout_path)
-      expect(page).not_to have_link('Log in', href: login_path)
+      expect(page).to have_link('Log out', href: log_out_path)
+      expect(page).not_to have_link('Log in', href: log_in_path)
       expect(current_path).to eq user_path(admin_user)
     end
   end
@@ -237,21 +237,21 @@ feature 'User edit/update' do
                       edit_user[:password])
       click_button 'Update User'
       click_link 'Log out'
-      login user
+      log_in user
       expect(page).to have_css '.alert-error'
       expect(page).not_to have_css '.alert-success'
-      expect(page).to have_link('Log in', href: login_path)
+      expect(page).to have_link('Log in', href: log_in_path)
       expect(page).not_to have_link('Profile')
-      expect(page).not_to have_link('Log out', href: logout_path)
-      expect(current_path).to eq login_path
+      expect(page).not_to have_link('Log out', href: log_out_path)
+      expect(current_path).to eq log_in_path
       fill_in 'session_email',    with: edit_user[:email]
       fill_in 'session_password', with: edit_user[:password]
       click_button 'Log in'
       expect(page).to have_css '.alert-success'
       expect(page).not_to have_css '.alert-error'
       expect(page).to have_link('Profile', href: user_path(user))
-      expect(page).to have_link('Log out', href: logout_path)
-      expect(page).not_to have_link('Log in', href: login_path)
+      expect(page).to have_link('Log out', href: log_out_path)
+      expect(page).not_to have_link('Log in', href: log_in_path)
       expect(current_path).to eq user_path(user)
     end
 
@@ -274,15 +274,15 @@ feature 'User edit/update' do
                       '')
       click_button 'Update User'
       click_link 'Log out'
-      visit login_path
+      visit log_in_path
       fill_in 'session_email',    with: edit_user[:email]
       fill_in 'session_password', with: user.password
       click_button 'Log in'
       expect(page).to have_css '.alert-success'
       expect(page).not_to have_css '.alert-error'
       expect(page).to have_link('Profile', href: user_path(user))
-      expect(page).to have_link('Log out', href: logout_path)
-      expect(page).not_to have_link('Log in', href: login_path)
+      expect(page).to have_link('Log out', href: log_out_path)
+      expect(page).not_to have_link('Log in', href: log_in_path)
       expect(current_path).to eq user_path(user)
     end
   end
@@ -393,10 +393,10 @@ feature 'User edit/update' do
   context 'not logged in' do
     let(:user) { create :user }
 
-    scenario 'redirect to login page', js: true do
+    scenario 'redirect to log in page', js: true do
       visit edit_user_path(user)
       expect(page).to have_css '.alert-error'
-      expect(current_path).to eq login_path
+      expect(current_path).to eq log_in_path
     end
   end
 
@@ -406,7 +406,7 @@ feature 'User edit/update' do
 
     scenario 'log in as admin; redirect to own user edit page', js: true do
       visit edit_user_path(admin_user)
-      login admin_user
+      log_in admin_user
       expect(page).to have_css '.alert-success'
       expect(page).not_to have_css '.alert-error'
       expect(current_path).to eq edit_user_path(admin_user)
@@ -414,7 +414,7 @@ feature 'User edit/update' do
 
     scenario 'log in as admin; redirect to home page (another user edit page not permitted)', js: true do
       visit edit_user_path(user)
-      login admin_user
+      log_in admin_user
       expect(page).to have_css '.alert-error'
       expect(page).not_to have_css '.alert-success'
       expect(current_path).to eq root_path
@@ -422,7 +422,7 @@ feature 'User edit/update' do
 
     scenario 'log in as non-admin; redirect to own user edit page', js: true do
       visit edit_user_path(user)
-      login user
+      log_in user
       expect(page).to have_css '.alert-success'
       expect(page).not_to have_css '.alert-error'
       expect(current_path).to eq edit_user_path(user)
@@ -430,7 +430,7 @@ feature 'User edit/update' do
 
     scenario 'log in as non-admin; redirect to home page (another user edit page not permitted)', js: true do
       visit edit_user_path(admin_user)
-      login user
+      log_in user
       expect(page).to have_css '.alert-error'
       expect(page).not_to have_css '.alert-success'
       expect(current_path).to eq root_path

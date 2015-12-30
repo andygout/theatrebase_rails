@@ -6,9 +6,9 @@
         <li class='nav-list-item'><%= link_to 'Add User', new_user_path %></li>
       <% end %>
       <li class='nav-list-item'><%= link_to 'Profile', current_user %></li>
-      <li class='nav-list-item'><%= link_to 'Log out', logout_path, method: 'delete' %></li>
+      <li class='nav-list-item'><%= link_to 'Log out', log_out_path, method: 'delete' %></li>
     <% else %>
-      <li class='nav-list-item'><%= link_to 'Log in', login_path %></li>
+      <li class='nav-list-item'><%= link_to 'Log in', log_in_path %></li>
     <% end %>
   </ul>
 </nav>

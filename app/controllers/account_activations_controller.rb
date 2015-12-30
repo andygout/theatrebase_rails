@@ -18,7 +18,7 @@ class AccountActivationsController < ApplicationController
     if password_blank?
       @user.errors.add(:password, 'Password cannot be blank')
       render :edit
-    elsif @user.update_attributes(user_params)
+    elsif @user.update(user_params)
       flash[:success] = 'Password has been set'
       redirect_to @user
     else

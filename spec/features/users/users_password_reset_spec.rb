@@ -5,7 +5,7 @@ feature 'User password reset' do
     let(:user) { create :user }
 
     scenario 'redirect to home page with success message; password reset email sent', js: true do
-      visit login_path
+      visit log_in_path
       click_link 'Reset password'
       fill_in 'password_reset_email', with: user.email
       expect { click_button 'Submit' }.to change { ActionMailer::Base.deliveries.count }.by 1
@@ -116,25 +116,25 @@ feature 'User password reset' do
       click_button 'Log in'
       expect(page).to have_css '.alert-error'
       expect(page).not_to have_css '.alert-success'
-      expect(page).to have_link('Log in', href: login_path)
+      expect(page).to have_link('Log in', href: log_in_path)
       expect(page).not_to have_link('Profile')
-      expect(page).not_to have_link('Log out', href: logout_path)
-      expect(current_path).to eq login_path
+      expect(page).not_to have_link('Log out', href: log_out_path)
+      expect(current_path).to eq log_in_path
       fill_in 'session_email',    with: user.email
       fill_in 'session_password', with: 'new-password'
       click_button 'Log in'
       expect(page).to have_css '.alert-success'
       expect(page).not_to have_css '.alert-error'
       expect(page).to have_link('Profile', href: user_path(user))
-      expect(page).to have_link('Log out', href: logout_path)
-      expect(page).not_to have_link('Log in', href: login_path)
+      expect(page).to have_link('Log out', href: log_out_path)
+      expect(page).not_to have_link('Log in', href: log_in_path)
       expect(current_path).to eq user_path(user)
     end
   end
 
   context 'non-existing email address' do
     scenario 're-render form with error message', js: true do
-      visit login_path
+      visit log_in_path
       click_link 'Reset password'
       fill_in 'password_reset_email', with: 'non-existing@example.com'
       expect { click_button 'Submit' }.to change { ActionMailer::Base.deliveries.count }.by 0
