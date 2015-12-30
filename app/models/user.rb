@@ -41,7 +41,8 @@ class User < ActiveRecord::Base
 
   def remember
     self.remember_token = User.new_token
-    update_attribute(:remember_digest, User.digest(remember_token))
+    update_attributes(remember_digest: User.digest(remember_token),
+                      remember_created_at: Time.zone.now)
   end
 
   def authenticated? attribute, token
@@ -50,8 +51,15 @@ class User < ActiveRecord::Base
     BCrypt::Password.new(digest).is_password?(token)
   end
 
+  def set_log_in_data
+    self.log_in_count = 0 if log_in_count == nil
+    update_attributes(current_log_in_at: Time.zone.now,
+                      last_log_in_at: current_log_in_at,
+                      log_in_count: log_in_count + 1)
+  end
+
   def forget
-    update_attribute(:remember_digest, nil)
+    update_attributes(remember_digest: nil, remember_created_at: nil)
   end
 
   def activate
