@@ -2,5 +2,7 @@
 
 <h1 class='header-text'><%= @production.title %></h1>
 
-<%= button_to 'Edit Production', edit_production_path(@production), method: :get, class: 'button' %>
-<%= button_to 'Delete Production', production_path(@production), method: :delete, class: 'button' %>
+<% if logged_in? %>
+  <%= button_to 'Edit Production', edit_production_path(@production), method: :get, class: 'button' %>
+  <%= button_to 'Delete Production', production_path(@production), method: :delete, class: 'button' %>
+<% end %>
