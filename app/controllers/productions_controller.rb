@@ -1,5 +1,7 @@
 class ProductionsController < ApplicationController
 
+  before_action :logged_in_user,  only: [:new, :create, :edit, :destroy]
+
   def index
     @productions = Production.all
   end
