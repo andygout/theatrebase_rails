@@ -8,16 +8,12 @@ module UsersHelper
     end
   end
 
-  def admin? user
-    Admin.exists?(user_id: user.id)
-  end
-
   def valid_show_user? user
-    current_user?(user) || admin?(current_user)
+    current_user?(user) || current_user.admin
   end
 
   def valid_destroy_user? user
-    current_user?(user) || (admin?(current_user) && !admin?(user))
+    current_user?(user) || (current_user.admin && !user.admin)
   end
 
 end
