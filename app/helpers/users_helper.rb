@@ -1,5 +1,13 @@
 module UsersHelper
 
+  def logged_in_user
+    unless logged_in?
+      store_location
+      flash[:error] = 'Please log in'
+      redirect_to log_in_path
+    end
+  end
+
   def admin? user
     Admin.exists?(user_id: user.id)
   end

@@ -73,14 +73,6 @@ class UsersController < ApplicationController
                 :updater_id)
     end
 
-    def logged_in_user
-      unless logged_in?
-        store_location
-        flash[:error] = 'Please log in'
-        redirect_to log_in_path
-      end
-    end
-
     def admin_user
       validate_user admin? current_user
     end

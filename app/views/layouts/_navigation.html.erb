@@ -1,7 +1,7 @@
 <nav class='navigation'>
   <ul class='nav-list'>
-    <li class='nav-list-item'><%= link_to 'Add Production', new_production_path %></li>
     <% if logged_in? %>
+      <li class='nav-list-item'><%= link_to 'Add Production', new_production_path %></li>
       <% if admin? current_user %>
         <li class='nav-list-item'><%= link_to 'Add User', new_user_path %></li>
       <% end %>

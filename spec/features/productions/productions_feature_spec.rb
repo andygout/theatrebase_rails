@@ -2,10 +2,9 @@ require 'rails_helper'
 
 feature 'Productions' do
   context 'no productions have been added' do
-    scenario 'should display a prompt to add a production', js: true do
+    scenario 'should display notification that no productions yet added', js: true do
       visit productions_path
       expect(page).to have_content 'No productions yet'
-      expect(page).to have_link 'Add Production'
     end
   end
 
@@ -19,7 +18,19 @@ feature 'Productions' do
     end
   end
 
+  context 'adding productions' do
+    let(:user) { create :user }
+
+    scenario 'user must be logged in to see \'Add Production\' link' do
+      visit root_path
+      expect(page).not_to have_link('Add Production', href: new_production_path)
+      log_in user
+      expect(page).to have_link('Add Production', href: new_production_path)
+    end
+  end
+
   context 'creating productions with valid details' do
+    let!(:user) { create_logged_in_user }
     let(:production) { attributes_for :production }
 
     scenario 'redirects to created production page with success message', js: true do
@@ -36,6 +47,8 @@ feature 'Productions' do
   end
 
   context 'creating productions with invalid details' do
+    let!(:user) { create_logged_in_user }
+
     scenario 'invalid title given; re-renders add form with error message', js: true do
       visit productions_path
       click_link 'Add Production'
@@ -60,7 +73,21 @@ feature 'Productions' do
     end
   end
 
-  context 'editing productions with valid details' do
+  context 'editing productions' do
+    let(:user) { create :user }
+    let(:production) { create :production }
+
+    scenario 'user must be logged in to see \'Edit Production\' button' do
+      visit production_path(production)
+      expect(page).not_to have_button('Edit Production')
+      log_in user
+      visit production_path(production)
+      expect(page).to have_button('Edit Production')
+    end
+  end
+
+  context 'updating productions with valid details' do
+    let!(:user) { create_logged_in_user }
     let(:production) { create :production }
 
     scenario 'redirects to updated production page with success message', js: true do
@@ -77,7 +104,8 @@ feature 'Productions' do
     end
   end
 
-  context 'editing productions with invalid details' do
+  context 'updating productions with invalid details' do
+    let!(:user) { create_logged_in_user }
     let(:production) { create :production }
 
     scenario 'invalid title given; re-renders edit form with error message', js: true do
@@ -94,9 +122,19 @@ feature 'Productions' do
   end
 
   context 'deleting productions' do
+    let(:user) { create :user }
     let(:production) { create :production }
 
+    scenario 'user must be logged in to see \'Delete Production\' button' do
+      visit production_path(production)
+      expect(page).not_to have_button('Delete Production')
+      log_in user
+      visit production_path(production)
+      expect(page).to have_button('Delete Production')
+    end
+
     scenario 'removes a production when a user clicks its delete link', js: true do
+      log_in user
       visit production_path(production)
       click_button 'Delete Production'
       expect(page).to have_css '.alert-success'
