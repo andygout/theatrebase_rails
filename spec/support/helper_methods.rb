@@ -6,6 +6,12 @@ def create_logged_in_user
   user
 end
 
+def create_logged_in_super_admin_user
+  super_admin_user = create :super_admin_user
+  log_in super_admin_user
+  super_admin_user
+end
+
 def create_logged_in_admin_user
   admin_user = create :admin_user
   log_in admin_user

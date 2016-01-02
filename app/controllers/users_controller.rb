@@ -74,7 +74,7 @@ class UsersController < ApplicationController
     end
 
     def admin_user
-      validate_user current_user.admin
+      validate_user super_or_admin? current_user
     end
 
     def correct_user

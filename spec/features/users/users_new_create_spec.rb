@@ -1,27 +1,60 @@
 require 'rails_helper'
 
 feature 'User new/create' do
-  before(:each) do
-    @admin_user = create_logged_in_admin_user
-  end
-
+  let!(:admin_user) { create_logged_in_admin_user }
+  let(:super_admin_user) { create :super_admin_user }
   let(:second_user) { create :second_user }
   let(:user) { attributes_for :user }
   let(:edit_user) { attributes_for :edit_user }
   let(:invalid_user) { attributes_for :invalid_user }
 
   context 'accessing add new user form' do
-    scenario 'can view link as admin; not when logged out; not when logged in as non-admin', js: true do
+    scenario 'can view link as admin and super-admin; not as non-admin; not when logged out', js: true do
       visit root_path
       expect(page).to have_link('Add User', href: new_user_path)
       click_link 'Log out'
-      expect(page).not_to have_link('Add User', href: new_user_path)
+      log_in super_admin_user
+      expect(page).to have_link('Add User', href: new_user_path)
+      click_link 'Log out'
       log_in second_user
+      expect(page).not_to have_link('Add User', href: new_user_path)
+      click_link 'Log out'
       expect(page).not_to have_link('Add User', href: new_user_path)
     end
   end
 
-  context 'submit add new user form using valid details' do
+  context 'logged in as super-admin user; submit add new user form using valid details' do
+    before(:each) do
+      click_link 'Log out'
+      log_in super_admin_user
+      visit new_user_path
+    end
+
+    scenario 'user created; redirect to home page with success message; account activation email sent', js: true do
+      fill_in 'user_name',  with: user[:name]
+      fill_in 'user_email', with: user[:email]
+      expect { click_button 'Create User' }.to change { User.count }.by(1)
+                                          .and change { ActionMailer::Base.deliveries.count }.by(1)
+      expect(page).to have_css '.alert-success'
+      expect(page).not_to have_css '.alert-error'
+      expect(page).not_to have_css '.field_with_errors'
+      expect(current_path).to eq root_path
+    end
+
+    scenario 'user created; creator and updater associations (w/admin) created', js: true do
+      fill_in 'user_name',  with: user[:name]
+      fill_in 'user_email', with: user[:email]
+      click_button 'Create User'
+      user_email = acquire_email_address ActionMailer::Base.deliveries.last.to_s
+      user = User.find_by(email: user_email)
+      expect(user.creator).to eq(super_admin_user)
+      expect(user.updater).to eq(super_admin_user)
+      expect(super_admin_user.created_users).to include(user)
+      expect(super_admin_user.updated_users).to include(user)
+    end
+  end
+
+  context 'logged in as admin user; submit add new user form using valid details' do
     before(:each) do
       visit new_user_path
     end
@@ -43,10 +76,10 @@ feature 'User new/create' do
       click_button 'Create User'
       user_email = acquire_email_address ActionMailer::Base.deliveries.last.to_s
       user = User.find_by(email: user_email)
-      expect(user.creator).to eq(@admin_user)
-      expect(user.updater).to eq(@admin_user)
-      expect(@admin_user.created_users).to include(user)
-      expect(@admin_user.updated_users).to include(user)
+      expect(user.creator).to eq(admin_user)
+      expect(user.updater).to eq(admin_user)
+      expect(admin_user.created_users).to include(user)
+      expect(admin_user.updated_users).to include(user)
     end
   end
 
@@ -186,10 +219,10 @@ feature 'User new/create' do
       fill_in 'user_password_confirmation', with: 'bar'
       click_button 'Set Password'
       user = User.find_by(email: @new_user.email)
-      expect(user.creator).to eq(@admin_user)
-      expect(user.updater).to eq(@admin_user)
-      expect(@admin_user.created_users).to include(user)
-      expect(@admin_user.updated_users).to include(user)
+      expect(user.creator).to eq(admin_user)
+      expect(user.updater).to eq(admin_user)
+      expect(admin_user.created_users).to include(user)
+      expect(admin_user.updated_users).to include(user)
       expect(user.updated_users).not_to include(user)
     end
 
@@ -208,11 +241,11 @@ feature 'User new/create' do
       fill_in 'user_password_confirmation', with: edit_user[:password]
       click_button 'Set Password'
       user = User.find_by(email: @new_user.email)
-      expect(user.creator).to eq(@admin_user)
+      expect(user.creator).to eq(admin_user)
       expect(user.updater).to eq(user)
-      expect(@admin_user.created_users).to include(user)
+      expect(admin_user.created_users).to include(user)
       expect(user.updated_users).to include(user)
-      expect(@admin_user.updated_users).not_to include(user)
+      expect(admin_user.updated_users).not_to include(user)
     end
   end
 
@@ -267,7 +300,7 @@ feature 'User new/create' do
       fill_in 'user_password_confirmation', with: edit_user[:password]
       click_button 'Set Password'
       click_link 'Log out'
-      log_in @admin_user
+      log_in admin_user
       visit users_path
       expect(page).to have_content user.name
     end

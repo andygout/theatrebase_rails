@@ -17,6 +17,18 @@ FactoryGirl.define do
       email 'fredwhite@example.com'
     end
 
+    factory :super_admin_user do
+      name  'Daniel Taylor'
+      email 'danieltaylor@example.com'
+      super_admin
+    end
+
+    factory :second_super_admin_user do
+      name  'Harry Williams'
+      email 'harrywilliams@example.com'
+      super_admin
+    end
+
     factory :admin_user do
       name  'David Jones'
       email 'davidjones@example.com'
