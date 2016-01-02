@@ -2,10 +2,6 @@ class ProductionsController < ApplicationController
 
   before_action :logged_in_user,  only: [:new, :create, :edit, :destroy]
 
-  def index
-    @productions = Production.all
-  end
-
   def new
     @production = Production.new
   end
@@ -18,10 +14,6 @@ class ProductionsController < ApplicationController
     else
       render :new
     end
-  end
-
-  def show
-    @production = Production.find(params[:id])
   end
 
   def edit
@@ -45,6 +37,14 @@ class ProductionsController < ApplicationController
     @production.destroy
     flash[:success] = "Production deleted successfully: #{@production.title}"
     redirect_to productions_path
+  end
+
+  def show
+    @production = Production.find(params[:id])
+  end
+
+  def index
+    @productions = Production.all
   end
 
   private

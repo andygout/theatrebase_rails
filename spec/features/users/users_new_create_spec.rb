@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-feature 'User add/create' do
+feature 'User new/create' do
   before(:each) do
     @admin_user = create_logged_in_admin_user
   end
@@ -10,7 +10,7 @@ feature 'User add/create' do
   let(:edit_user) { attributes_for :edit_user }
   let(:invalid_user) { attributes_for :invalid_user }
 
-  context 'accessing add user form' do
+  context 'accessing add new user form' do
     scenario 'can view link as admin; not when logged out; not when logged in as non-admin', js: true do
       visit root_path
       expect(page).to have_link('Add User', href: new_user_path)
@@ -21,7 +21,7 @@ feature 'User add/create' do
     end
   end
 
-  context 'submit add user form using valid details' do
+  context 'submit add new user form using valid details' do
     before(:each) do
       visit new_user_path
     end
@@ -50,7 +50,7 @@ feature 'User add/create' do
     end
   end
 
-  context 'submit add user form using invalid details; all re-render form with error message' do
+  context 'submit add new user form using invalid details; all re-render form with error message' do
     before(:each) do
       visit new_user_path
     end

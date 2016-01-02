@@ -1,14 +1,10 @@
 class UsersController < ApplicationController
 
-  before_action :logged_in_user,  only: [:index, :new, :create, :edit, :update, :show, :destroy]
-  before_action :admin_user,      only: [:index, :new, :create]
+  before_action :logged_in_user,  only: [:new, :create, :edit, :update, :destroy, :show, :index]
+  before_action :admin_user,      only: [:new, :create, :index]
   before_action :correct_user,    only: [:edit, :update]
-  before_action :show_user,       only: :show
   before_action :destroy_user,    only: :destroy
-
-  def index
-    @users = User.where(activated: true).order(:id).paginate(page: params[:page])
-  end
+  before_action :show_user,       only: :show
 
   def new
     @user = User.new
@@ -44,11 +40,6 @@ class UsersController < ApplicationController
     end
   end
 
-  def show
-    @user = User.find(params[:id])
-    redirect_to root_path and return unless @user.activated?
-  end
-
   def destroy
     @user = User.find(params[:id])
     @user.destroy
@@ -59,6 +50,15 @@ class UsersController < ApplicationController
     else
       redirect_to users_path
     end
+  end
+
+  def show
+    @user = User.find(params[:id])
+    redirect_to root_path and return unless @user.activated?
+  end
+
+  def index
+    @users = User.where(activated: true).order(:id).paginate(page: params[:page])
   end
 
   private

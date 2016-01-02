@@ -5,19 +5,6 @@ describe ProductionsController, type: :controller do
   let(:production) { attributes_for :production }
   let!(:second_production) { create :second_production }
 
-  context 'attempt visit production index' do
-    it 'when logged in: render production index' do
-      session[:user_id] = user.id
-      get :index
-      expect(response).to render_template(:index)
-    end
-
-    it 'when not logged in: fail and redirect to log in page' do
-      get :index
-      expect(response).to render_template(:index)
-    end
-  end
-
   context 'attempt add new production' do
     it 'when logged in: render new production form' do
       session[:user_id] = user.id
@@ -31,8 +18,8 @@ describe ProductionsController, type: :controller do
     end
   end
 
-  context 'attempt create new production' do
-    it 'when logged in: succeed and redirect to production page' do
+  context 'attempt create production' do
+    it 'when logged in: succeed and redirect to production display page' do
       session[:user_id] = user.id
       expect { post :create, production: { title: production[:title] } }.to change { Production.count }.by 1
       expect(response).to redirect_to production_path(Production.last)
@@ -45,7 +32,7 @@ describe ProductionsController, type: :controller do
   end
 
   context 'attempt edit production' do
-    it 'when logged in: succeed and redirect to production edit page' do
+    it 'when logged in: redirect to production edit form' do
       session[:user_id] = user.id
       get :edit, id: second_production
       expect(response).to render_template(:edit)
@@ -58,7 +45,7 @@ describe ProductionsController, type: :controller do
   end
 
   context 'attempt update production' do
-    it 'when logged in: succeed and redirect to production page' do
+    it 'when logged in: render production edit form' do
       session[:user_id] = user.id
       get :edit, id: second_production
       expect(response).to render_template(:edit)
@@ -70,19 +57,6 @@ describe ProductionsController, type: :controller do
     end
   end
 
-  context 'attempt visit production page' do
-    it 'when logged in: succeed and render production page' do
-      session[:user_id] = user.id
-      get :show, id: second_production
-      expect(response).to render_template(:show)
-    end
-
-    it 'when not logged in: fail and redirect to log in page' do
-      get :show, id: second_production
-      expect(response).to render_template(:show)
-    end
-  end
-
   context 'attempt delete production' do
     it 'when logged in: succeed and redirect to home page' do
       session[:user_id] = user.id
@@ -91,9 +65,34 @@ describe ProductionsController, type: :controller do
     end
 
     it 'when not logged in: fail and redirect to log in page' do
-      get :edit, id: second_production
       expect { delete :destroy, id: second_production }.to change { Production.count }.by 0
       expect(response).to redirect_to log_in_path
+    end
+  end
+
+  context 'attempt visit production display page' do
+    it 'when logged in: render production display page' do
+      session[:user_id] = user.id
+      get :show, id: second_production
+      expect(response).to render_template(:show)
+    end
+
+    it 'when not logged in: render production display page' do
+      get :show, id: second_production
+      expect(response).to render_template(:show)
+    end
+  end
+
+  context 'attempt visit production index' do
+    it 'when logged in: render production index' do
+      session[:user_id] = user.id
+      get :index
+      expect(response).to render_template(:index)
+    end
+
+    it 'when not logged in: render production index' do
+      get :index
+      expect(response).to render_template(:index)
     end
   end
 end
