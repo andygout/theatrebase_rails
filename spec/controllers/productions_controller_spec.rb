@@ -5,6 +5,19 @@ describe ProductionsController, type: :controller do
   let(:production) { attributes_for :production }
   let!(:second_production) { create :second_production }
 
+  context 'attempt visit production index' do
+    it 'when logged in: render production index' do
+      session[:user_id] = user.id
+      get :index
+      expect(response).to render_template(:index)
+    end
+
+    it 'when not logged in: fail and redirect to log in page' do
+      get :index
+      expect(response).to render_template(:index)
+    end
+  end
+
   context 'attempt add new production' do
     it 'when logged in: render new production form' do
       session[:user_id] = user.id
@@ -54,6 +67,19 @@ describe ProductionsController, type: :controller do
     it 'when not logged in: fail and redirect to log in page' do
       get :edit, id: second_production
       expect(response).to redirect_to log_in_path
+    end
+  end
+
+  context 'attempt visit production page' do
+    it 'when logged in: succeed and render production page' do
+      session[:user_id] = user.id
+      get :show, id: second_production
+      expect(response).to render_template(:show)
+    end
+
+    it 'when not logged in: fail and redirect to log in page' do
+      get :show, id: second_production
+      expect(response).to render_template(:show)
     end
   end
 
