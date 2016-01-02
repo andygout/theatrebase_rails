@@ -7,25 +7,6 @@ describe UsersController, type: :controller do
   let!(:admin_user) { create :admin_user }
   let!(:second_admin_user) { create :second_admin_user }
 
-  context 'attempt visit user index' do
-    it 'when logged in as admin: redirect to user index' do
-      session[:user_id] = admin_user.id
-      get :index
-      expect(response).to render_template(:index)
-    end
-
-    it 'when logged in as non-admin: redirect to home page' do
-      session[:user_id] = user.id
-      get :index
-      expect(response).to redirect_to root_path
-    end
-
-    it 'when not logged in: redirect to log in page' do
-      get :index
-      expect(response).to redirect_to log_in_path
-    end
-  end
-
   context 'attempt add new user' do
     it 'when logged in as admin: render new user form' do
       session[:user_id] = admin_user.id
@@ -45,7 +26,7 @@ describe UsersController, type: :controller do
     end
   end
 
-  context 'attempt create new user' do
+  context 'attempt create user' do
     it 'when logged in as admin: succeed and redirect to home page' do
       session[:user_id] = admin_user.id
       expect { post :create, user: { name: third_user[:name], email: third_user[:email] } }.to change { User.count }.by 1
@@ -65,7 +46,7 @@ describe UsersController, type: :controller do
   end
 
   context 'attempt edit when logged in as admin' do
-    it 'edit self (admin user): succeed and render user edit page' do
+    it 'edit self (admin user): succeed and render user edit form' do
       session[:user_id] = admin_user.id
       get :edit, id: admin_user
       expect(response).to render_template(:edit)
@@ -85,7 +66,7 @@ describe UsersController, type: :controller do
   end
 
   context 'attempt edit when logged in as non-admin' do
-    it 'edit self (non-admin user): succeed and render user edit page' do
+    it 'edit self (non-admin user): succeed and render user edit form' do
       session[:user_id] = user.id
       get :edit, id: user
       expect(response).to render_template(:edit)
@@ -112,7 +93,7 @@ describe UsersController, type: :controller do
   end
 
   context 'attempt update when logged in as admin' do
-    it 'update self (admin user): succeed and redirect to user page' do
+    it 'update self (admin user): succeed and redirect to user display page' do
       session[:user_id] = admin_user.id
       patch :update, id: admin_user, user: { name: admin_user.name, email: admin_user.email }
       expect(response).to redirect_to user_path(admin_user)
@@ -132,7 +113,7 @@ describe UsersController, type: :controller do
   end
 
   context 'attempt update when logged in as non-admin' do
-    it 'update self (admin user): succeed and redirect to user page' do
+    it 'update self (non-admin user): succeed and redirect to user display page' do
       session[:user_id] = user.id
       patch :update, id: user, user: { name: user.name, email: user.email }
       expect(response).to redirect_to user_path(user)
@@ -159,57 +140,10 @@ describe UsersController, type: :controller do
   end
 
   context 'attempt to assign non-admin user as admin via update web request' do
-    it 'faila nd redirect to user page' do
+    it 'faila nd redirect to user display page' do
       session[:user_id] = user.id
       expect { patch :update, id: user, user: { name: user.name, email: user.email, admin_attributes: { user_id: user.id } } }.to change { Admin.count }.by 0
       expect(response).to redirect_to user_path(user)
-    end
-  end
-
- context 'attempt visit user page when logged in as admin' do
-    it 'visit self (admin user): render user page' do
-      session[:user_id] = admin_user.id
-      get :show, id: admin_user
-      expect(response).to render_template(:show)
-    end
-
-    it 'visit other admin user: render user page' do
-      session[:user_id] = admin_user.id
-      get :show, id: second_admin_user
-      expect(response).to render_template(:show)
-    end
-
-    it 'visit non-admin user: succeed and render user page' do
-      session[:user_id] = admin_user.id
-      get :show, id: user
-      expect(response).to render_template(:show)
-    end
-  end
-
-  context 'attempt visit user page when logged in as non-admin' do
-    it 'visit self (non-admin user): render user page' do
-      session[:user_id] = user.id
-      get :show, id: user
-      expect(response).to render_template(:show)
-    end
-
-    it 'visit other non-admin user: fail and redirect to home page' do
-      session[:user_id] = user.id
-      get :show, id: second_user
-      expect(response).to redirect_to root_path
-    end
-
-    it 'visit admin user: fail and redirect to home page' do
-      session[:user_id] = user.id
-      get :show, id: admin_user
-      expect(response).to redirect_to root_path
-    end
-  end
-
-  context 'attempt visit user page when not logged in' do
-    it 'redirect to log in page' do
-      get :show, id: user
-      expect(response).to redirect_to log_in_path
     end
   end
 
@@ -243,16 +177,16 @@ describe UsersController, type: :controller do
       expect(response).to redirect_to root_path
     end
 
-    it 'delete other non-admin user: fail and redirect to home page' do
-      session[:user_id] = second_user.id
-      expect { delete :destroy, id: user }.to change { User.count }.by 0
-      expect(response).to redirect_to root_path
-    end
-
     it 'delete admin user: fail and redirect to home page' do
       session[:user_id] = user.id
       expect { delete :destroy, id: admin_user }.to change { User.count }.by(0)
                                                .and change { Admin.count }.by(0)
+      expect(response).to redirect_to root_path
+    end
+
+    it 'delete other non-admin user: fail and redirect to home page' do
+      session[:user_id] = second_user.id
+      expect { delete :destroy, id: user }.to change { User.count }.by 0
       expect(response).to redirect_to root_path
     end
   end
@@ -260,6 +194,72 @@ describe UsersController, type: :controller do
   context 'attempt delete when not logged in' do
     it 'redirect to log in page' do
       expect { delete :destroy, id: user }.to change { User.count }.by 0
+      expect(response).to redirect_to log_in_path
+    end
+  end
+
+ context 'attempt visit user display page when logged in as admin' do
+    it 'visit self (admin user): render user display page' do
+      session[:user_id] = admin_user.id
+      get :show, id: admin_user
+      expect(response).to render_template(:show)
+    end
+
+    it 'visit other admin user: render user display page' do
+      session[:user_id] = admin_user.id
+      get :show, id: second_admin_user
+      expect(response).to render_template(:show)
+    end
+
+    it 'visit non-admin user: succeed and render user display page' do
+      session[:user_id] = admin_user.id
+      get :show, id: user
+      expect(response).to render_template(:show)
+    end
+  end
+
+  context 'attempt visit user display page when logged in as non-admin' do
+    it 'visit self (non-admin user): render user display page' do
+      session[:user_id] = user.id
+      get :show, id: user
+      expect(response).to render_template(:show)
+    end
+
+    it 'visit admin user: fail and redirect to home page' do
+      session[:user_id] = user.id
+      get :show, id: admin_user
+      expect(response).to redirect_to root_path
+    end
+
+    it 'visit other non-admin user: fail and redirect to home page' do
+      session[:user_id] = user.id
+      get :show, id: second_user
+      expect(response).to redirect_to root_path
+    end
+  end
+
+  context 'attempt visit user page when not logged in' do
+    it 'redirect to log in page' do
+      get :show, id: user
+      expect(response).to redirect_to log_in_path
+    end
+  end
+
+  context 'attempt visit user index' do
+    it 'when logged in as admin: render user index' do
+      session[:user_id] = admin_user.id
+      get :index
+      expect(response).to render_template(:index)
+    end
+
+    it 'when logged in as non-admin: redirect to home page' do
+      session[:user_id] = user.id
+      get :index
+      expect(response).to redirect_to root_path
+    end
+
+    it 'when not logged in: redirect to log in page' do
+      get :index
       expect(response).to redirect_to log_in_path
     end
   end
