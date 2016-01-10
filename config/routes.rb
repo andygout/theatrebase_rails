@@ -25,6 +25,7 @@ Rails.application.routes.draw do
   #   resources :products
   resources :productions
   resources :users
+  resources :permissions,         only: [:edit, :update]
   resources :account_activations, only: [:edit, :update]
   resources :password_resets,     only: [:new, :create, :edit, :update]
 

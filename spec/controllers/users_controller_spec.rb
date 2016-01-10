@@ -229,33 +229,25 @@ describe UsersController, type: :controller do
     end
   end
 
-  context 'attempt to assign super-admin and admin attributes to user via update web request' do
-    it 'attempt to assign user as admin user: fail and redirect to user display page' do
+  context 'attempt to assign permissions to user via update web request; all fail and redirect to user display page' do
+    it 'attempt to assign non-admin user permissions of admin user' do
       session[:user_id] = user.id
-      expect { patch :update, id: user, user: { name: user.name, email: user.email, admin_attributes: { user_id: user.id } } }.to change { Admin.count }.by 0
+      expect { patch :update, id: user, user: { admin_attributes: { status: true } } }.to change { Admin.count }.by 0
       expect(response).to redirect_to user_path(user)
     end
 
-    it 'attempt to assign user as super-admin user: fail and redirect to user display page' do
+    it 'attempt to assign non-admin user permissions of super-admin user' do
       session[:user_id] = user.id
-      expect { patch :update, id: user, user: { name: user.name, email: user.email, super_admin_attributes: { user_id: user.id } } }.to change { SuperAdmin.count }.by 0
+      expect { patch :update, id: user, user: { super_admin_attributes: { } } }.to change { SuperAdmin.count }.by 0
       expect(response).to redirect_to user_path(user)
     end
 
-    it 'attempt to assign admin user as super-admin user: fail and redirect to user display page' do
+    it 'attempt to assign admin user permissions of super-admin user' do
       session[:user_id] = admin_user.id
-      expect { patch :update, id: admin_user, user: { name: admin_user.name, email: admin_user.email, super_admin_attributes: { user_id: admin_user.id } } }.to change { SuperAdmin.count }.by 0
+      expect { patch :update, id: admin_user, user: { super_admin_attributes: { } } }.to change { SuperAdmin.count }.by 0
       expect(response).to redirect_to user_path(admin_user)
     end
   end
-
-  # context 'attempt to assign non-admin user as admin via update web request' do
-  #   it 'fail and redirect to user display page' do
-  #     session[:user_id] = user.id
-  #     expect { patch :update, id: user, user: { name: user.name, email: user.email, admin_attributes: { user_id: user.id } } }.to change { Admin.count }.by 0
-  #     expect(response).to redirect_to user_path(user)
-  #   end
-  # end
 
   context 'attempt delete when logged in as super-admin user' do
     it 'delete self (super-admin user): fail and redirect to home page' do

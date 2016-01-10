@@ -3,6 +3,8 @@ class CreateAdmins < ActiveRecord::Migration
     create_table :admins do |t|
       t.belongs_to :user, index: true, foreign_key: true
 
+      t.boolean :status
+
       t.timestamps null: false
     end
   end

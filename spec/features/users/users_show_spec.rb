@@ -12,6 +12,7 @@ feature 'User profile' do
       expect(page).to have_content super_admin_user.name
       expect(page).to have_content super_admin_user.email
       expect(page).to have_button('Edit Profile')
+      expect(page).not_to have_button('Edit Permissions')
       expect(page).not_to have_button('Delete User')
       expect(current_path).to eq user_path(super_admin_user)
     end
@@ -21,6 +22,7 @@ feature 'User profile' do
       expect(page).to have_content second_super_admin_user.name
       expect(page).to have_content second_super_admin_user.email
       expect(page).not_to have_button('Edit Profile')
+      expect(page).not_to have_button('Edit Permissions')
       expect(page).not_to have_button('Delete User')
       expect(current_path).to eq user_path(second_super_admin_user)
     end
@@ -30,6 +32,7 @@ feature 'User profile' do
       expect(page).to have_content admin_user.name
       expect(page).to have_content admin_user.email
       expect(page).not_to have_button('Edit Profile')
+      expect(page).to have_button('Edit Permissions')
       expect(page).to have_button('Delete User')
       expect(current_path).to eq user_path(admin_user)
     end
@@ -39,6 +42,7 @@ feature 'User profile' do
       expect(page).to have_content user.name
       expect(page).to have_content user.email
       expect(page).to have_button('Delete User')
+      expect(page).to have_button('Edit Permissions')
       expect(page).not_to have_button('Edit Profile')
       expect(current_path).to eq user_path(user)
     end
@@ -55,6 +59,7 @@ feature 'User profile' do
       expect(page).to have_content super_admin_user.name
       expect(page).to have_content super_admin_user.email
       expect(page).not_to have_button('Edit Profile')
+      expect(page).not_to have_button('Edit Permissions')
       expect(page).not_to have_button('Delete User')
       expect(current_path).to eq user_path(super_admin_user)
     end
@@ -64,6 +69,7 @@ feature 'User profile' do
       expect(page).to have_content admin_user.name
       expect(page).to have_content admin_user.email
       expect(page).to have_button('Edit Profile')
+      expect(page).not_to have_button('Edit Permissions')
       expect(page).to have_button('Delete User')
       expect(current_path).to eq user_path(admin_user)
     end
@@ -73,6 +79,7 @@ feature 'User profile' do
       expect(page).to have_content second_admin_user.name
       expect(page).to have_content second_admin_user.email
       expect(page).not_to have_button('Edit Profile')
+      expect(page).not_to have_button('Edit Permissions')
       expect(page).not_to have_button('Delete User')
       expect(current_path).to eq user_path(second_admin_user)
     end
@@ -82,6 +89,7 @@ feature 'User profile' do
       expect(page).to have_content user.name
       expect(page).to have_content user.email
       expect(page).to have_button('Delete User')
+      expect(page).not_to have_button('Edit Permissions')
       expect(page).not_to have_button('Edit Profile')
       expect(current_path).to eq user_path(user)
     end
@@ -110,6 +118,7 @@ feature 'User profile' do
       expect(page).to have_content user.name
       expect(page).to have_content user.email
       expect(page).to have_button('Edit Profile')
+      expect(page).not_to have_button('Edit Permissions')
       expect(page).to have_button('Delete User')
       expect(current_path).to eq user_path(user)
     end

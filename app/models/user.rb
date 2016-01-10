@@ -23,6 +23,7 @@ class User < ActiveRecord::Base
     allow_nil: true
 
   has_one :admin, dependent: :destroy
+  accepts_nested_attributes_for :admin, update_only: true
 
   has_one :super_admin, dependent: :destroy
 
