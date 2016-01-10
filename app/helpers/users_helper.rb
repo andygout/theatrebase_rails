@@ -8,6 +8,10 @@ module UsersHelper
     end
   end
 
+  def valid_permissions_user? user
+    current_user.super_admin && !user.super_admin
+  end
+
   def valid_show_user? user
     current_user?(user) || super_or_admin?(current_user)
   end
@@ -27,15 +31,15 @@ module UsersHelper
   end
 
   def super_admin_delete_admin? user
-    current_user.super_admin && user.admin
+    user.admin ? (current_user.super_admin && user.admin.status) : false
   end
 
   def super_or_admin? user
-    user.super_admin || user.admin
+    (user.super_admin || user.admin) ? (user.super_admin || user.admin.status) : false
   end
 
   def not_super_or_admin? user
-    !user.super_admin && !user.admin
+    (user.super_admin || user.admin) ? (!user.super_admin && !user.admin.status) : true
   end
 
 end

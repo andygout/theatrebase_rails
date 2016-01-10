@@ -18,6 +18,7 @@ ActiveRecord::Schema.define(version: 20160102163835) do
 
   create_table "admins", force: :cascade do |t|
     t.integer  "user_id"
+    t.boolean  "status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
