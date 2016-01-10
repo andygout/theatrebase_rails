@@ -1,4 +1,5 @@
 class PasswordResetsController < ApplicationController
+
   before_action :get_user,          only: [:edit, :update]
   before_action :valid_user,        only: [:edit, :update]
   before_action :check_expiration,  only: [:edit, :update]
@@ -38,11 +39,10 @@ class PasswordResetsController < ApplicationController
   private
 
     def user_params
-      params.require(:user).permit(:password, :password_confirmation)
-    end
-
-    def password_blank?
-      params[:user][:password].blank?
+      params
+        .require(:user)
+        .permit(:password,
+                :password_confirmation)
     end
 
     def get_user
@@ -60,5 +60,9 @@ class PasswordResetsController < ApplicationController
         flash[:error] = 'Password reset token has expired'
         redirect_to new_password_reset_url
       end
+    end
+
+    def password_blank?
+      params[:user][:password].blank?
     end
 end

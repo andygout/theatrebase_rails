@@ -3,7 +3,7 @@
 <h1 class='header-text'><%= @user.name %>: <%= @user.email %></h1>
 
 <% if current_user? @user %>
-  <%= button_to 'Edit Profile', edit_user_path(@user), method: :get, class: 'button' %>
+  <%= button_to 'Edit User', edit_user_path(@user), method: :get, class: 'button' %>
 <% end %>
 
 <% if valid_permissions_user? @user %>

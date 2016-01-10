@@ -1,9 +1,5 @@
 Rails.application.routes.draw do
 
-  get 'password_resets/new'
-
-  get 'password_resets/edit'
-
   get     'log_in'   =>  'sessions#new'
   post    'log_in'   =>  'sessions#create'
   delete  'log_out'  =>  'sessions#destroy'

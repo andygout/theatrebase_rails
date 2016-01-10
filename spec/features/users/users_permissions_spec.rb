@@ -102,19 +102,27 @@ feature 'User edit/update permissions' do
     end
   end
 
+  context 'accessing permitted user permissions edit form' do
+    let!(:super_admin_user) { create_logged_in_super_admin_user }
+    let(:user) { create :user }
+
+    scenario 'click on \'Edit Permissions\' button on user profile page; display user edit form' do
+      visit user_path(user)
+      click_button 'Edit Permissions'
+      expect(current_path).to eq edit_permission_path(user)
+    end
+  end
+
   context 'updating permissions of permitted user profile' do
     let!(:super_admin_user) { create_logged_in_super_admin_user }
     let(:user) { create :user }
     let(:second_user) { create :second_user }
 
-    scenario 'using button to access edit user permissions form', js: true do
-      visit user_path(user)
-      click_button 'Edit Permissions'
-      expect(current_path).to eq edit_permission_path(user)
+    before(:each) do
+      visit edit_permission_path(user)
     end
 
     scenario 'successful update; redirect to user profile with success message', js: true do
-      visit edit_permission_path(user)
       click_button 'Update Permissions'
       expect(page).to have_css '.alert-success'
       expect(page).not_to have_css '.alert-error'
@@ -140,7 +148,6 @@ feature 'User edit/update permissions' do
     end
 
     scenario 'after permissions are updated only new permissions apply (admin status set to true)', js: true do
-      visit edit_permission_path(user)
       check('status')
       click_button 'Update Permissions'
       click_link 'Log out'
@@ -150,12 +157,11 @@ feature 'User edit/update permissions' do
       expect(page).to have_content second_user.email
       expect(page).to have_button('Delete User')
       expect(page).not_to have_button('Edit Permissions')
-      expect(page).not_to have_button('Edit Profile')
+      expect(page).not_to have_button('Edit User')
       expect(current_path).to eq user_path(second_user)
     end
 
     scenario 'after permissions are updated only new permissions apply (admin status set to false)', js: true do
-      visit edit_permission_path(user)
       click_button 'Update Permissions'
       click_link 'Log out'
       log_in user

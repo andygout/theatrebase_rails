@@ -59,6 +59,26 @@ describe UsersController, type: :controller do
     end
   end
 
+  context 'attempt to assign permissions to user via create web request; all fail and redirect to user display page' do
+    it 'attempt to create admin user when signed in as non-admin user' do
+      session[:user_id] = user.id
+      expect { post :create, user: { name: third_user[:name], email: third_user[:email], admin_attributes: { status: true } } }.to change { Admin.count }.by 0
+      expect(response).to redirect_to root_path
+    end
+
+    it 'attempt to create super-admin user when signed in as non-admin user' do
+      session[:user_id] = user.id
+      expect { post :create, user: { name: third_user[:name], email: third_user[:email], super_admin_attributes: { } } }.to change { SuperAdmin.count }.by 0
+      expect(response).to redirect_to root_path
+    end
+
+    it 'attempt to create super-admin user when signed in as admin user' do
+      session[:user_id] = admin_user.id
+      expect { post :create, user: { name: third_user[:name], email: third_user[:email], super_admin_attributes: { } } }.to change { SuperAdmin.count }.by 0
+      expect(response).to redirect_to root_path
+    end
+  end
+
   context 'attempt edit when logged in as super-admin user' do
     it 'edit self (super-admin user): succeed and render user edit form' do
       session[:user_id] = super_admin_user.id

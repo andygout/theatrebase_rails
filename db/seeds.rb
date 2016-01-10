@@ -18,4 +18,4 @@ user = User.create!(name:                   'Andy Gout',
               )
 end
 
-Admin.create!(user_id: user.id)
+SuperAdmin.create!(user_id: user.id)

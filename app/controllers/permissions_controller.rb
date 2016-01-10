@@ -14,7 +14,7 @@ class PermissionsController < ApplicationController
       flash[:success] = "Permissions updated successfully: #{@user.name}"
       redirect_to @user
     else
-      @page_title = User.find(params[:id]).name
+      @page_title = @user.name
       render :edit
     end
   end

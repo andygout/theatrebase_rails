@@ -7,7 +7,7 @@ feature 'User edit/update' do
     let(:admin_user) { create :admin_user }
     let(:user) { create :user }
 
-    scenario 'attempt edit self (super-admin user): render user edit form', js: true do
+    scenario 'attempt edit self (super-admin user): render super-admin user edit form', js: true do
       visit edit_user_path(super_admin_user)
       expect(current_path).to eq edit_user_path(super_admin_user)
     end
@@ -43,7 +43,7 @@ feature 'User edit/update' do
       expect(current_path).to eq root_path
     end
 
-    scenario 'attempt edit self (admin user): render user edit form', js: true do
+    scenario 'attempt edit self (admin user): render admin user edit form', js: true do
       visit edit_user_path(admin_user)
       expect(current_path).to eq edit_user_path(admin_user)
     end
@@ -79,7 +79,7 @@ feature 'User edit/update' do
       expect(current_path).to eq root_path
     end
 
-    scenario 'attempt edit self (non-admin user): render user edit form', js: true do
+    scenario 'attempt edit self (non-admin user): render non-admin user edit form', js: true do
       visit edit_user_path(user)
       expect(current_path).to eq edit_user_path(user)
     end
@@ -101,9 +101,18 @@ feature 'User edit/update' do
     end
   end
 
+  context 'accessing permitted user edit form' do
+    let(:user) { create_logged_in_user }
+
+    scenario 'click on \'Edit User\' button on user profile page; display user edit form' do
+      visit user_path(user)
+      click_button 'Edit User'
+      expect(current_path).to eq edit_user_path(user)
+    end
+  end
+
   context 'updating permitted user profile with valid details' do
     let(:user) { create_logged_in_user }
-    let(:admin_user) { create :admin_user }
     let(:edit_user) { attributes_for :edit_user }
 
     before(:each) do
@@ -202,6 +211,19 @@ feature 'User edit/update' do
       visit edit_user_path(user)
     end
 
+    scenario 're-rendered user edit form should display existing user name', js: true do
+      user_edit_form( invalid_user[:name],
+                      invalid_user[:email],
+                      invalid_user[:password],
+                      invalid_user[:password])
+      click_button 'Update User'
+      expect(page).to have_css '.alert-error'
+      expect(page).to have_css '.field_with_errors'
+      expect(page).not_to have_css '.alert-success'
+      expect(page).to have_content user.name
+      expect(current_path).to eq user_path(user)
+    end
+
     scenario 'invalid name', js: true do
       user_edit_form( invalid_user[:name],
                       edit_user[:email],
@@ -274,60 +296,6 @@ feature 'User edit/update' do
       expect(user.updater).to eq(nil)
       expect(user.created_users).to be_empty
       expect(user.updated_users).to be_empty
-    end
-  end
-
-  context 'friendly forwarding: logging in redirects to intended user edit page (if permitted)' do
-    let(:super_admin_user) { create :super_admin_user }
-    let(:admin_user) { create :admin_user }
-    let(:user) { create :user }
-
-    scenario 'log in as super-admin; redirect to own user edit page', js: true do
-      visit edit_user_path(super_admin_user)
-      log_in super_admin_user
-      expect(page).to have_css '.alert-success'
-      expect(page).not_to have_css '.alert-error'
-      expect(current_path).to eq edit_user_path(super_admin_user)
-    end
-
-    scenario 'log in as super-admin; fail and redirect to home page (another user edit page not permitted)', js: true do
-      visit edit_user_path(admin_user)
-      log_in super_admin_user
-      expect(page).to have_css '.alert-error'
-      expect(page).not_to have_css '.alert-success'
-      expect(current_path).to eq root_path
-    end
-
-    scenario 'log in as admin; redirect to own user edit page', js: true do
-      visit edit_user_path(admin_user)
-      log_in admin_user
-      expect(page).to have_css '.alert-success'
-      expect(page).not_to have_css '.alert-error'
-      expect(current_path).to eq edit_user_path(admin_user)
-    end
-
-    scenario 'log in as admin; fail and redirect to home page (another user edit page not permitted)', js: true do
-      visit edit_user_path(user)
-      log_in admin_user
-      expect(page).to have_css '.alert-error'
-      expect(page).not_to have_css '.alert-success'
-      expect(current_path).to eq root_path
-    end
-
-    scenario 'log in as non-admin; redirect to own user edit page', js: true do
-      visit edit_user_path(user)
-      log_in user
-      expect(page).to have_css '.alert-success'
-      expect(page).not_to have_css '.alert-error'
-      expect(current_path).to eq edit_user_path(user)
-    end
-
-    scenario 'log in as non-admin; fail and redirect to home page (another user edit page not permitted)', js: true do
-      visit edit_user_path(admin_user)
-      log_in user
-      expect(page).to have_css '.alert-error'
-      expect(page).not_to have_css '.alert-success'
-      expect(current_path).to eq root_path
     end
   end
 end

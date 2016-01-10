@@ -44,8 +44,8 @@ class User < ActiveRecord::Base
 
   def remember
     self.remember_token = User.new_token
-    update(remember_digest: User.digest(remember_token),
-                      remember_created_at: Time.zone.now)
+    update( remember_digest: User.digest(remember_token),
+            remember_created_at: Time.zone.now)
   end
 
   def authenticated? attribute, token

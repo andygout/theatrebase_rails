@@ -53,10 +53,10 @@ ActiveRecord::Schema.define(version: 20160102163835) do
     t.datetime "current_log_in_at"
     t.datetime "last_log_in_at"
     t.integer  "log_in_count"
-    t.integer  "creator_id"
-    t.integer  "updater_id"
     t.datetime "created_at",          null: false
     t.datetime "updated_at",          null: false
+    t.integer  "creator_id"
+    t.integer  "updater_id"
   end
 
   add_index "users", ["creator_id"], name: "index_users_on_creator_id", using: :btree

@@ -212,7 +212,7 @@ feature 'Log in count' do
 end
 
 feature 'Friendly forwarding' do
-  context 'attempt to visit page not logged in; logging in redirects to intended page first time only' do
+  context 'attempt to visit permitted page not logged in; logging in redirects to intended page first time only' do
     let(:user) { create :user }
 
     scenario 'redirect to log in page', js: true do
@@ -221,6 +221,27 @@ feature 'Friendly forwarding' do
       fill_in 'session_password', with: user.password
       click_button 'Log in'
       expect(current_path).to eq edit_user_path(user)
+      click_link 'Log out'
+      visit log_in_path
+      fill_in 'session_email',    with: user.email
+      fill_in 'session_password', with: user.password
+      click_button 'Log in'
+      expect(current_path).to eq user_path(user)
+    end
+  end
+
+  context 'attempt to visit unpermitted page not logged in; logging in redirects to unpermitted alert page first time only' do
+    let(:user) { create :user }
+    let(:second_user) { create :second_user }
+
+    scenario 'redirect to log in page', js: true do
+      visit edit_user_path(second_user)
+      fill_in 'session_email',    with: user.email
+      fill_in 'session_password', with: user.password
+      click_button 'Log in'
+      expect(page).to have_css '.alert-error'
+      expect(page).not_to have_css '.alert-success'
+      expect(current_path).to eq root_path
       click_link 'Log out'
       visit log_in_path
       fill_in 'session_email',    with: user.email

@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
 
-  before_action :logged_in_user,  only: [:new, :create, :edit, :update, :destroy, :show, :index]
+  before_action :logged_in_user
   before_action :admin_user,      only: [:new, :create, :index]
   before_action :correct_user,    only: [:edit, :update]
   before_action :destroy_user,    only: :destroy
@@ -32,7 +32,7 @@ class UsersController < ApplicationController
   def update
     params[:user][:updater_id] = current_user.id
     if @user.update(user_params)
-      flash[:success] = "Profile updated successfully: #{@user.name}"
+      flash[:success] = "User updated successfully: #{@user.name}"
       redirect_to @user
     else
       @page_title = User.find(params[:id]).name
@@ -41,7 +41,6 @@ class UsersController < ApplicationController
   end
 
   def destroy
-    @user = User.find(params[:id])
     @user.destroy
     flash[:success] = "User deleted successfully: #{@user.name}"
     if current_user == @user
@@ -53,7 +52,6 @@ class UsersController < ApplicationController
   end
 
   def show
-    @user = User.find(params[:id])
     redirect_to root_path and return unless @user.activated?
   end
 
@@ -73,23 +71,27 @@ class UsersController < ApplicationController
                 :updater_id)
     end
 
+    def get_user
+      @user = User.find(params[:id])
+    end
+
     def admin_user
       validate_user super_or_admin? current_user
     end
 
     def correct_user
-      validate_user current_user? find_user(params[:id])
-    end
-
-    def show_user
-      validate_user valid_show_user? find_user(params[:id])
+      validate_user current_user? get_user(params[:id])
     end
 
     def destroy_user
-      validate_user valid_destroy_user? find_user(params[:id])
+      validate_user valid_destroy_user? get_user(params[:id])
     end
 
-    def find_user user_id
+    def show_user
+      validate_user valid_show_user? get_user(params[:id])
+    end
+
+    def get_user user_id
       @user = User.find(user_id)
     end
 

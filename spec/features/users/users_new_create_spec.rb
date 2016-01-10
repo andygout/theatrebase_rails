@@ -9,7 +9,7 @@ feature 'User new/create' do
   let(:invalid_user) { attributes_for :invalid_user }
 
   context 'accessing add new user form' do
-    scenario 'can view link as admin and super-admin; not as non-admin; not when logged out', js: true do
+    scenario 'can view link as admin user and super-admin user; not as non-admin user; not when logged out', js: true do
       visit root_path
       expect(page).to have_link('Add User', href: new_user_path)
       click_link 'Log out'
@@ -20,6 +20,12 @@ feature 'User new/create' do
       expect(page).not_to have_link('Add User', href: new_user_path)
       click_link 'Log out'
       expect(page).not_to have_link('Add User', href: new_user_path)
+    end
+
+    scenario 'click on \'Add User\' link; display new user form' do
+      visit root_path
+      click_link 'Add User'
+      expect(current_path).to eq new_user_path
     end
   end
 
