@@ -59,7 +59,7 @@ describe UsersController, type: :controller do
     end
   end
 
-  context 'attempt to assign permissions to user via create web request; all fail and redirect to user display page' do
+  context 'attempt to assign admin status to user via create web request; all fail and redirect to user display page' do
     it 'attempt to create admin user when signed in as non-admin user' do
       session[:user_id] = user.id
       expect { post :create, user: { name: third_user[:name], email: third_user[:email], admin_attributes: { status: true } } }.to change { Admin.count }.by 0
@@ -249,20 +249,20 @@ describe UsersController, type: :controller do
     end
   end
 
-  context 'attempt to assign permissions to user via update web request; all fail and redirect to user display page' do
-    it 'attempt to assign non-admin user permissions of admin user' do
+  context 'attempt to assign admin status to user via update web request; all fail and redirect to user display page' do
+    it 'attempt to assign non-admin user admin status' do
       session[:user_id] = user.id
       expect { patch :update, id: user, user: { admin_attributes: { status: true } } }.to change { Admin.count }.by 0
       expect(response).to redirect_to user_path(user)
     end
 
-    it 'attempt to assign non-admin user permissions of super-admin user' do
+    it 'attempt to assign non-admin user super-admin status' do
       session[:user_id] = user.id
       expect { patch :update, id: user, user: { super_admin_attributes: { } } }.to change { SuperAdmin.count }.by 0
       expect(response).to redirect_to user_path(user)
     end
 
-    it 'attempt to assign admin user permissions of super-admin user' do
+    it 'attempt to assign admin user super-admin status' do
       session[:user_id] = admin_user.id
       expect { patch :update, id: admin_user, user: { super_admin_attributes: { } } }.to change { SuperAdmin.count }.by 0
       expect(response).to redirect_to user_path(admin_user)

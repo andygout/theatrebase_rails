@@ -1,8 +1,8 @@
-class PermissionsController < ApplicationController
+class AdminStatusController < ApplicationController
 
   before_action :get_user
   before_action :logged_in_user
-  before_action :permissions_user
+  before_action :admin_status_user
 
   def edit
     @user.admin || @user.build_admin
@@ -11,7 +11,7 @@ class PermissionsController < ApplicationController
 
   def update
     if @user.update(user_params)
-      flash[:success] = "Permissions updated successfully: #{@user.name}"
+      flash[:success] = "Admin status updated successfully: #{@user.name}"
       redirect_to @user
     else
       @page_title = @user.name
@@ -31,8 +31,8 @@ class PermissionsController < ApplicationController
       @user = User.find_by(id: params[:id])
     end
 
-    def permissions_user
-      validate_user valid_permissions_user? @user
+    def admin_status_user
+      validate_user valid_admin_status_user? @user
     end
 
     def validate_user user_valid
