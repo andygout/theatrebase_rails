@@ -3,7 +3,7 @@
 <h1 class='header-text'>Edit User Admin Status</h1>
 
 <fieldset class='form'>
-  <%= form_for(@user, url: admin_status_path(params[:id])) do |f| %>
+  <%= form_for(@user, url: admin_status_path(params[:user_id])) do |f| %>
 
     <%= f.fields_for :admin do |a| %>
       <div class='form-item'>
