@@ -7,16 +7,6 @@ feature 'User delete' do
     let(:admin_user) { create :admin_user }
     let(:user) { create :user }
 
-    scenario 'attempt delete self (super-admin user); prevented by absent delete button', js: true do
-      visit user_path(super_admin_user)
-      expect(page).not_to have_button('Delete User')
-    end
-
-    scenario 'attempt delete another super-admin user; prevented by absent delete button', js: true do
-      visit user_path(second_super_admin_user)
-      expect(page).not_to have_button('Delete User')
-    end
-
     scenario 'delete admin user; redirect to user index with success message', js: true do
       visit user_path(admin_user)
       click_button 'Delete User'
@@ -48,11 +38,6 @@ feature 'User delete' do
     let(:second_admin_user) { create :second_admin_user }
     let(:user) { create :user }
 
-    scenario 'attempt delete super-admin user; prevented by absent delete button', js: true do
-      visit user_path(super_admin_user)
-      expect(page).not_to have_button('Delete User')
-    end
-
     scenario 'delete self (admin user); redirect to home page with success message', js: true do
       visit user_path(admin_user)
       click_button 'Delete User'
@@ -68,11 +53,6 @@ feature 'User delete' do
       expect(current_path).to eq root_path
     end
 
-    scenario 'attempt delete another admin user; prevented by absent delete button', js: true do
-      visit user_path(second_admin_user)
-      expect(page).not_to have_button('Delete User')
-    end
-
     scenario 'delete non-admin user; redirect to user index with success message', js: true do
       visit user_path(user)
       click_button 'Delete User'
@@ -86,7 +66,7 @@ feature 'User delete' do
   end
 
   context 'logged in as non-admin' do
-    let!(:user) { create_logged_in_user }
+    let(:user) { create_logged_in_user }
 
     scenario 'delete self (non-admin user); redirect to home page with success message', js: true do
       visit user_path(user)

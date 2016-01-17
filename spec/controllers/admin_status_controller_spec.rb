@@ -1,11 +1,11 @@
 require 'rails_helper'
 
 describe AdminStatusController, type: :controller do
-  let!(:super_admin_user) { create :super_admin_user }
-  let!(:second_super_admin_user) { create :second_super_admin_user }
-  let!(:admin_user) { create :admin_user }
-  let!(:second_admin_user) { create :second_admin_user }
-  let!(:user) { create :user }
+  let(:super_admin_user) { create :super_admin_user }
+  let(:second_super_admin_user) { create :second_super_admin_user }
+  let(:admin_user) { create :admin_user }
+  let(:second_admin_user) { create :second_admin_user }
+  let(:user) { create :user }
   let(:second_user) { create :second_user }
   let(:third_user) { attributes_for :third_user }
 

@@ -49,8 +49,8 @@ feature 'User profile' do
   end
 
   context 'logged in as admin' do
-    let(:super_admin_user) { create :super_admin_user }
     let!(:admin_user) { create_logged_in_admin_user }
+    let(:super_admin_user) { create :super_admin_user }
     let(:second_admin_user) { create :second_admin_user }
     let(:user) { create :user }
 
@@ -96,8 +96,8 @@ feature 'User profile' do
   end
 
   context 'logged in as non-admin' do
-    let(:super_admin_user) { create :super_admin_user }
     let!(:user) { create_logged_in_user }
+    let(:super_admin_user) { create :super_admin_user }
     let(:admin_user) { create :admin_user }
     let(:second_user) { create :second_user }
 
@@ -131,7 +131,7 @@ feature 'User profile' do
   end
 
   context 'not logged in' do
-    let!(:user) { create :user }
+    let(:user) { create :user }
 
     scenario 'redirect to log in page', js: true do
       visit user_path(user)

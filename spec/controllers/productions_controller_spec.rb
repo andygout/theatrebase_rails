@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe ProductionsController, type: :controller do
-  let!(:user) { create :user }
+  let(:user) { create :user }
   let(:production) { attributes_for :production }
   let!(:second_production) { create :second_production }
 
