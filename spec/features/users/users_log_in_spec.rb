@@ -1,9 +1,10 @@
 require 'rails_helper'
 
 feature 'User log in' do
-  context 'valid details' do
-    let(:user) { create :user }
+  let(:user) { create :user }
+  let(:second_user) { attributes_for :second_user }
 
+  context 'valid details' do
     scenario 'redirect to user page with success message', js: true do
       visit log_in_path
       expect(page).to have_link('Log in', href: log_in_path)
@@ -23,9 +24,6 @@ feature 'User log in' do
     before(:each) do
       visit log_in_path
     end
-
-    let(:user) { create :user }
-    let(:second_user) { attributes_for :second_user }
 
     scenario 'details of non-existing user', js: true do
       fill_in 'session_email',    with: second_user[:email]
@@ -74,9 +72,9 @@ feature 'User log in' do
 end
 
 feature 'User log out' do
-  context 'having been logged in' do
-    let!(:user) { create_logged_in_user }
+  let!(:user) { create_logged_in_user }
 
+  context 'having been logged in' do
     scenario 'redirect to home page with success message', js: true do
       click_link 'Log out'
       expect(page).to have_css '.alert-success'
@@ -88,8 +86,6 @@ feature 'User log out' do
   end
 
   context 'having been logged in; logging out from second window' do
-    let!(:user) { create_logged_in_user }
-
     scenario 'redirect to home page if logging out from second window', js:true do
       new_window = open_new_window
       within_window new_window do
@@ -141,9 +137,9 @@ feature 'Remembering user across sessions' do
 end
 
 feature '\'Remember created at\' time' do
-  context 'user logs in' do
-    let(:user) { create :user }
+  let(:user) { create :user }
 
+  context 'user logs in' do
     scenario 'value will be set and reset on subsequent log ins', js: true do
       expect(User.find(user.id).remember_created_at).to eq(nil)
       log_in user
@@ -170,9 +166,9 @@ feature '\'Remember created at\' time' do
 end
 
 feature '\'Current log in at\'/\'Last log in at\' times' do
-  context 'user logs in' do
-    let(:user) { create :user }
+  let(:user) { create :user }
 
+  context 'user logs in' do
     scenario 'values will be set and reset on subsequent log ins', js: true do
       expect(User.find(user.id).current_log_in_at).to eq(nil)
       expect(User.find(user.id).last_log_in_at).to eq(nil)
@@ -197,9 +193,9 @@ feature '\'Current log in at\'/\'Last log in at\' times' do
 end
 
 feature 'Log in count' do
-  context 'user logs in' do
-    let(:user) { create :user }
+  let(:user) { create :user }
 
+  context 'user logs in' do
     scenario 'value will be incremented on each log in', js: true do
       expect(User.find(user.id).log_in_count).to eq(nil)
       log_in user
@@ -212,15 +208,34 @@ feature 'Log in count' do
 end
 
 feature 'Friendly forwarding' do
-  context 'attempt to visit page not logged in; logging in redirects to intended page first time only' do
-    let(:user) { create :user }
+  let(:user) { create :user }
+  let(:second_user) { create :second_user }
 
+  context 'attempt to visit permitted page not logged in; logging in redirects to intended page first time only' do
     scenario 'redirect to log in page', js: true do
       visit edit_user_path(user)
       fill_in 'session_email',    with: user.email
       fill_in 'session_password', with: user.password
       click_button 'Log in'
       expect(current_path).to eq edit_user_path(user)
+      click_link 'Log out'
+      visit log_in_path
+      fill_in 'session_email',    with: user.email
+      fill_in 'session_password', with: user.password
+      click_button 'Log in'
+      expect(current_path).to eq user_path(user)
+    end
+  end
+
+  context 'attempt to visit unpermitted page not logged in; logging in redirects to unpermitted alert page first time only' do
+    scenario 'redirect to log in page', js: true do
+      visit edit_user_path(second_user)
+      fill_in 'session_email',    with: user.email
+      fill_in 'session_password', with: user.password
+      click_button 'Log in'
+      expect(page).to have_css '.alert-error'
+      expect(page).not_to have_css '.alert-success'
+      expect(current_path).to eq root_path
       click_link 'Log out'
       visit log_in_path
       fill_in 'session_email',    with: user.email

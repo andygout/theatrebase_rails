@@ -8,7 +8,7 @@ module UsersHelper
     end
   end
 
-  def valid_permissions_user? user
+  def valid_admin_status_user? user
     current_user.super_admin && !user.super_admin
   end
 

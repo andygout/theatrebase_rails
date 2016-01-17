@@ -8,16 +8,6 @@ feature 'Productions' do
     end
   end
 
-  context 'productions have been added' do
-    let!(:production) { create :production }
-
-    scenario 'display productions', js: true do
-      visit productions_path
-      expect(page).to have_content production.title
-      expect(page).not_to have_content 'No productions yet'
-    end
-  end
-
   context 'adding productions' do
     let(:user) { create :user }
 
@@ -59,17 +49,6 @@ feature 'Productions' do
       expect(page).not_to have_css '.alert-success'
       expect(page).to have_content 'New Production'
       expect(current_path).to eq productions_path
-    end
-  end
-
-  context 'viewing productions' do
-    let!(:production) { create :production }
-
-    scenario 'lets a user view a production', js: true do
-      visit productions_path
-      click_link production.title
-      expect(page).to have_content production.title
-      expect(current_path).to eq production_path(production)
     end
   end
 
@@ -141,6 +120,27 @@ feature 'Productions' do
       expect(page).not_to have_css '.alert-error'
       expect(page).not_to have_content production.title, count: 2
       expect(current_path).to eq productions_path
+    end
+  end
+
+  context 'viewing productions' do
+    let!(:production) { create :production }
+
+    scenario 'lets a user view a production', js: true do
+      visit productions_path
+      click_link production.title
+      expect(page).to have_content production.title
+      expect(current_path).to eq production_path(production)
+    end
+  end
+
+  context 'visiting production index' do
+    let!(:production) { create :production }
+
+    scenario 'will display existing productions', js: true do
+      visit productions_path
+      expect(page).to have_content production.title
+      expect(page).not_to have_content 'No productions yet'
     end
   end
 end

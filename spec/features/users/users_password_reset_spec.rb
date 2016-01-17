@@ -1,9 +1,9 @@
 require 'rails_helper'
 
 feature 'User password reset' do
-  context 'submitting request for password reset email' do
-    let(:user) { create :user }
+  let(:user) { create :user }
 
+  context 'submitting request for password reset email' do
     scenario 'redirect to home page with success message; password reset email sent', js: true do
       visit log_in_path
       click_link 'Reset password'
@@ -16,8 +16,6 @@ feature 'User password reset' do
   end
 
   context 'clicking password reset link' do
-    let(:user) { create :user }
-
     before(:each) do
       request_password_reset user
       @msg = ActionMailer::Base.deliveries.last.to_s
@@ -56,8 +54,6 @@ feature 'User password reset' do
   end
 
   context 'submitting password reset form' do
-    let(:user) { create :user }
-
     before(:each) do
       request_password_reset user
       @msg = ActionMailer::Base.deliveries.last.to_s

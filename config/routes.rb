@@ -1,9 +1,5 @@
 Rails.application.routes.draw do
 
-  get 'password_resets/new'
-
-  get 'password_resets/edit'
-
   get     'log_in'   =>  'sessions#new'
   post    'log_in'   =>  'sessions#create'
   delete  'log_out'  =>  'sessions#destroy'
@@ -25,7 +21,7 @@ Rails.application.routes.draw do
   #   resources :products
   resources :productions
   resources :users
-  resources :permissions,         only: [:edit, :update]
+  resources :admin_status,        only: [:edit, :update]
   resources :account_activations, only: [:edit, :update]
   resources :password_resets,     only: [:new, :create, :edit, :update]
 

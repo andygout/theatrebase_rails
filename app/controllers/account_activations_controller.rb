@@ -1,4 +1,5 @@
 class AccountActivationsController < ApplicationController
+
   before_action :get_user,  only: [:edit, :update]
 
   def edit
@@ -36,12 +37,12 @@ class AccountActivationsController < ApplicationController
                 :updater_id)
     end
 
-    def password_blank?
-      params[:user][:password].blank?
-    end
-
     def get_user
       @user = User.find_by(email: params[:email])
+    end
+
+    def password_blank?
+      params[:user][:password].blank?
     end
 
 end
