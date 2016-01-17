@@ -7,10 +7,8 @@
 
     <%= f.fields_for :admin do |a| %>
       <div class='form-item'>
-        <%= a.label :status, class: 'label' do %>
-          <span>Admin status</span>
-          <%= a.check_box :status, class: 'input' %>
-        <% end %>
+        <%= a.check_box :status, class: 'checkbox' %>
+        <%= a.label :status, 'Admin status', class: 'checkbox' %>
       </div>
     <% end %>
 
