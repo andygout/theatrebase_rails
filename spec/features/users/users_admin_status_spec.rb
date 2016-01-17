@@ -127,7 +127,7 @@ feature 'User edit/update admin status' do
       expect(page).to have_css '.alert-success'
       expect(page).not_to have_css '.alert-error'
       expect(page).not_to have_css '.field_with_errors'
-      expect(user.admin.status).to eq false
+      expect(user.admin).to be nil
       expect(current_path).to eq user_path(user)
       visit edit_admin_status_path(user)
       check('status')
@@ -135,7 +135,7 @@ feature 'User edit/update admin status' do
       expect(page).to have_css '.alert-success'
       expect(page).not_to have_css '.alert-error'
       expect(page).not_to have_css '.field_with_errors'
-      expect(User.find(user.id).admin.status).to eq true
+      expect(User.find(user.id).admin).not_to be nil
       expect(current_path).to eq user_path(user)
       visit edit_admin_status_path(user)
       uncheck('status')
@@ -143,7 +143,7 @@ feature 'User edit/update admin status' do
       expect(page).to have_css '.alert-success'
       expect(page).not_to have_css '.alert-error'
       expect(page).not_to have_css '.field_with_errors'
-      expect(User.find(user.id).admin.status).to eq false
+      expect(User.find(user.id).admin).to be nil
       expect(current_path).to eq user_path(user)
     end
 

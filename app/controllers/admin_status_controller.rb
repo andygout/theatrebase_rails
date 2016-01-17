@@ -24,7 +24,7 @@ class AdminStatusController < ApplicationController
     def user_params
       params
         .require(:user)
-        .permit(admin_attributes: [:status])
+        .permit(admin_attributes: [:_destroy, :id])
     end
 
     def get_user
