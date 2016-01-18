@@ -147,6 +147,18 @@ feature 'User edit/update admin status' do
       expect(current_path).to eq user_path(user)
     end
 
+    scenario 'assignor and assignee associations created/destroyed', js: true do
+      check('status')
+      click_button 'Update Admin Status'
+      expect(user.admin_status_assignor).to eq(super_admin_user)
+      expect(super_admin_user.admin_status_assignees).to include(user)
+      visit edit_admin_status_path(user)
+      uncheck('status')
+      click_button 'Update Admin Status'
+      expect(User.find(user.id).admin_status_assignor).to eq(nil)
+      expect(super_admin_user.admin_status_assignees).to be_empty
+    end
+
     scenario 'after admin status is updated (set to true) only new admin status applies', js: true do
       check('status')
       click_button 'Update Admin Status'
