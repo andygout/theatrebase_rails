@@ -18,8 +18,7 @@ ActiveRecord::Schema.define(version: 20160102163835) do
 
   create_table "admins", id: false, force: :cascade do |t|
     t.integer  "user_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at"
     t.integer  "assignor_id"
   end
 
@@ -34,8 +33,7 @@ ActiveRecord::Schema.define(version: 20160102163835) do
 
   create_table "super_admins", id: false, force: :cascade do |t|
     t.integer  "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
   end
 
   add_index "super_admins", ["user_id"], name: "index_super_admins_on_user_id", using: :btree
