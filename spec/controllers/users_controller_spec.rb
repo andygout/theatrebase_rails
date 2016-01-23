@@ -8,6 +8,7 @@ describe UsersController, type: :controller do
   let!(:user) { create :user }
   let(:second_user) { create :second_user }
   let(:third_user) { attributes_for :third_user }
+  let(:edit_user) { attributes_for :edit_user }
 
   context 'attempt add new user' do
     it 'when logged in as super-admin: render new user form' do
@@ -59,23 +60,61 @@ describe UsersController, type: :controller do
     end
   end
 
-  context 'attempt to assign admin status to user via create web request; all fail and redirect to user display page' do
-    it 'attempt to create admin user when signed in as non-admin user' do
-      session[:user_id] = user.id
-      expect { post :create, user: { name: third_user[:name], email: third_user[:email], admin_attributes: { status: true } } }.to change { Admin.count }.by 0
+  context 'attempt create user with admin status' do
+    it 'when logged in as super-admin user: user created but admin status not assigned; redirect to home page' do
+      session[:user_id] = super_admin_user.id
+      expect { post :create, user: { name: third_user[:name], email: third_user[:email], admin_attributes: { _destroy: '0' } } }.to change { User.count }.by(1)
+                            .and change { Admin.count }.by(0)
       expect(response).to redirect_to root_path
     end
 
-    it 'attempt to create super-admin user when signed in as non-admin user' do
-      session[:user_id] = user.id
-      expect { post :create, user: { name: third_user[:name], email: third_user[:email], super_admin_attributes: { } } }.to change { SuperAdmin.count }.by 0
-      expect(response).to redirect_to root_path
-    end
-
-    it 'attempt to create super-admin user when signed in as admin user' do
+    it 'when logged in as admin user: user created but admin status not assigned; redirect to home page' do
       session[:user_id] = admin_user.id
-      expect { post :create, user: { name: third_user[:name], email: third_user[:email], super_admin_attributes: { } } }.to change { SuperAdmin.count }.by 0
+      expect { post :create, user: { name: third_user[:name], email: third_user[:email], admin_attributes: { _destroy: '0' } } }.to change { User.count }.by(1)
+                            .and change { Admin.count }.by(0)
       expect(response).to redirect_to root_path
+    end
+
+    it 'when logged in as non-admin user: user not created nor admin status assigned; redirect to home page' do
+      session[:user_id] = user.id
+      expect { post :create, user: { name: third_user[:name], email: third_user[:email], admin_attributes: { _destroy: '0' } } }.to change { User.count }.by(0)
+                            .and change { Admin.count }.by(0)
+      expect(response).to redirect_to root_path
+    end
+
+    it 'when not logged in: user not created nor admin status assigned; redirect to log in page' do
+      expect { post :create, user: { name: third_user[:name], email: third_user[:email], admin_attributes: { _destroy: '0' } } }.to change { User.count }.by(0)
+                            .and change { Admin.count }.by(0)
+      expect(response).to redirect_to log_in_path
+    end
+  end
+
+  context 'attempt create user with super-admin status' do
+    it 'when logged in as super-admin user: user created but super-admin status not assigned; redirect to home page' do
+      session[:user_id] = super_admin_user.id
+      expect { post :create, user: { name: third_user[:name], email: third_user[:email], super_admin_attributes: { _destroy: '0' } } }.to change { User.count }.by(1)
+                                                    .and change { SuperAdmin.count }.by(0)
+      expect(response).to redirect_to root_path
+    end
+
+    it 'when logged in as admin user: user created but super-admin status not assigned; redirect to home page' do
+      session[:user_id] = admin_user.id
+      expect { post :create, user: { name: third_user[:name], email: third_user[:email], super_admin_attributes: { _destroy: '0' } } }.to change { User.count }.by(1)
+                                                    .and change { SuperAdmin.count }.by(0)
+      expect(response).to redirect_to root_path
+    end
+
+    it 'when logged in as non-admin user: user not created nor super-admin status assigned; redirect to home page' do
+      session[:user_id] = user.id
+      expect { post :create, user: { name: third_user[:name], email: third_user[:email], super_admin_attributes: { _destroy: '0' } } }.to change { User.count }.by(0)
+                                                    .and change { SuperAdmin.count }.by(0)
+      expect(response).to redirect_to root_path
+    end
+
+    it 'when not logged in: user not created nor super-admin status assigned; redirect to log in page' do
+      expect { post :create, user: { name: third_user[:name], email: third_user[:email], super_admin_attributes: { _destroy: '0' } } }.to change { User.count }.by(0)
+                                                    .and change { SuperAdmin.count }.by(0)
+      expect(response).to redirect_to log_in_path
     end
   end
 
@@ -167,25 +206,29 @@ describe UsersController, type: :controller do
   context 'attempt update when logged in as super-admin user' do
     it 'update self (super-admin user): succeed and redirect to user display page' do
       session[:user_id] = super_admin_user.id
-      patch :update, id: super_admin_user, user: { name: super_admin_user.name, email: super_admin_user.email }
+      patch :update, id: super_admin_user, user: { name: edit_user[:name], email: edit_user[:email] }
+      expect(super_admin_user.reload.name).to eq edit_user[:name]
       expect(response).to redirect_to user_path(super_admin_user)
     end
 
     it 'update other super-admin user: fail and redirect to home page' do
       session[:user_id] = super_admin_user.id
-      patch :update, id: second_super_admin_user, user: { name: second_super_admin_user.name, email: second_super_admin_user.email }
+      patch :update, id: second_super_admin_user, user: { name: edit_user[:name], email: edit_user[:email] }
+      expect(second_super_admin_user.reload.name).not_to eq edit_user[:name]
       expect(response).to redirect_to root_path
     end
 
     it 'update other admin user: fail and redirect to home page' do
       session[:user_id] = super_admin_user.id
-      patch :update, id: admin_user, user: { name: admin_user.name, email: admin_user.email }
+      patch :update, id: admin_user, user: { name: edit_user[:name], email: edit_user[:email] }
+      expect(admin_user.reload.name).not_to eq edit_user[:name]
       expect(response).to redirect_to root_path
     end
 
     it 'update non-admin user: fail and redirect to home page' do
       session[:user_id] = super_admin_user.id
-      patch :update, id: user, user: { name: user.name, email: user.email }
+      patch :update, id: user, user: { name: edit_user[:name], email: edit_user[:email] }
+      expect(user.reload.name).not_to eq edit_user[:name]
       expect(response).to redirect_to root_path
     end
   end
@@ -193,25 +236,29 @@ describe UsersController, type: :controller do
   context 'attempt update when logged in as admin user' do
     it 'update super-admin user: fail and redirect to home page' do
       session[:user_id] = admin_user.id
-      patch :update, id: super_admin_user, user: { name: super_admin_user.name, email: super_admin_user.email }
+      patch :update, id: super_admin_user, user: { name: edit_user[:name], email: edit_user[:email] }
+      expect(super_admin_user.reload.name).not_to eq edit_user[:name]
       expect(response).to redirect_to root_path
     end
 
     it 'update self (admin user): succeed and redirect to user display page' do
       session[:user_id] = admin_user.id
-      patch :update, id: admin_user, user: { name: admin_user.name, email: admin_user.email }
+      patch :update, id: admin_user, user: { name: edit_user[:name], email: edit_user[:email] }
+      expect(admin_user.reload.name).to eq edit_user[:name]
       expect(response).to redirect_to user_path(admin_user)
     end
 
     it 'update other admin user: fail and redirect to home page' do
       session[:user_id] = admin_user.id
-      patch :update, id: second_admin_user, user: { name: second_admin_user.name, email: second_admin_user.email }
+      patch :update, id: second_admin_user, user: { name: edit_user[:name], email: edit_user[:email] }
+      expect(second_admin_user.reload.name).not_to eq edit_user[:name]
       expect(response).to redirect_to root_path
     end
 
     it 'update non-admin user: fail and redirect to home page' do
       session[:user_id] = admin_user.id
-      patch :update, id: user, user: { name: user.name, email: user.email }
+      patch :update, id: user, user: { name: edit_user[:name], email: edit_user[:email] }
+      expect(user.reload.name).not_to eq edit_user[:name]
       expect(response).to redirect_to root_path
     end
   end
@@ -219,53 +266,234 @@ describe UsersController, type: :controller do
   context 'attempt update when logged in as non-admin user' do
     it 'update super-admin user: fail and redirect to home page' do
       session[:user_id] = user.id
-      patch :update, id: super_admin_user, user: { name: super_admin_user.name, email: super_admin_user.email }
+      patch :update, id: super_admin_user, user: { name: edit_user[:name], email: edit_user[:email] }
+      expect(super_admin_user.reload.name).not_to eq edit_user[:name]
       expect(response).to redirect_to root_path
     end
 
     it 'update admin user: fail and redirect to home page' do
       session[:user_id] = user.id
-      patch :update, id: admin_user, user: { name: admin_user.name, email: admin_user.email }
+      patch :update, id: admin_user, user: { name: edit_user[:name], email: edit_user[:email] }
+      expect(admin_user.reload.name).not_to eq edit_user[:name]
       expect(response).to redirect_to root_path
     end
 
     it 'update self (non-admin user): succeed and redirect to user display page' do
       session[:user_id] = user.id
-      patch :update, id: user, user: { name: user.name, email: user.email }
+      patch :update, id: user, user: { name: edit_user[:name], email: edit_user[:email] }
+      expect(user.reload.name).to eq edit_user[:name]
       expect(response).to redirect_to user_path(user)
     end
 
     it 'update other non-admin user: fail and redirect to home page' do
       session[:user_id] = user.id
-      patch :update, id: second_user, user: { name: second_user.name, email: second_user.email }
+      patch :update, id: second_user, user: { name: edit_user[:name], email: edit_user[:email] }
+      expect(second_user.reload.name).not_to eq edit_user[:name]
       expect(response).to redirect_to root_path
     end
   end
 
   context 'attempt update when not logged in' do
     it 'fail and redirect to log in page' do
-      patch :update, id: user, user: { name: user.name, email: user.email }
+      patch :update, id: user, user: { name: edit_user[:name], email: edit_user[:email] }
+      expect(user.reload.name).not_to eq edit_user[:name]
       expect(response).to redirect_to log_in_path
     end
   end
 
-  context 'attempt to assign admin status to user via update web request; all fail and redirect to user display page' do
-    it 'attempt to assign non-admin user admin status' do
-      session[:user_id] = user.id
-      expect { patch :update, id: user, user: { admin_attributes: { status: true } } }.to change { Admin.count }.by 0
-      expect(response).to redirect_to user_path(user)
+  context 'attempt update user and admin status when logged in as super-admin user' do
+    it 'update self (super-admin user): user updated but admin status not assigned; redirect to user display page' do
+      session[:user_id] = super_admin_user.id
+      expect { patch :update, id: super_admin_user, user: { name: edit_user[:name], email: edit_user[:email], admin_attributes: { _destroy: '0' } } }.to change { Admin.count }.by 0
+      expect(super_admin_user.reload.name).to eq edit_user[:name]
+      expect(response).to redirect_to user_path(super_admin_user)
     end
 
-    it 'attempt to assign non-admin user super-admin status' do
-      session[:user_id] = user.id
-      expect { patch :update, id: user, user: { super_admin_attributes: { } } }.to change { SuperAdmin.count }.by 0
-      expect(response).to redirect_to user_path(user)
+    it 'update other super-admin user: user not updated nor admin status assigned; redirect to home page' do
+      session[:user_id] = super_admin_user.id
+      expect { patch :update, id: second_super_admin_user, user: { name: edit_user[:name], email: edit_user[:email], admin_attributes: { _destroy: '0' } } }.to change { Admin.count }.by 0
+      expect(second_super_admin_user.reload.name).not_to eq edit_user[:name]
+      expect(response).to redirect_to root_path
     end
 
-    it 'attempt to assign admin user super-admin status' do
+    it 'update admin user: user not updated nor admin status revoked; redirect to home page' do
+      session[:user_id] = super_admin_user.id
+      expect { patch :update, id: admin_user, user: { name: edit_user[:name], email: edit_user[:email], admin_attributes: { _destroy: '1', id: admin_user.id } } }.to change { Admin.count }.by 0
+      expect(admin_user.reload.name).not_to eq edit_user[:name]
+      expect(response).to redirect_to root_path
+    end
+
+    it 'update non-admin user: user not updated nor admin status assigned; redirect to home page' do
+      session[:user_id] = super_admin_user.id
+      expect { patch :update, id: user, user: { name: edit_user[:name], email: edit_user[:email], admin_attributes: { _destroy: '0' } } }.to change { Admin.count }.by 0
+      expect(user.reload.name).not_to eq edit_user[:name]
+      expect(response).to redirect_to root_path
+    end
+  end
+
+  context 'attempt update user and admin status when logged in as admin user' do
+    it 'update super-admin user: user not updated nor admin status assigned; redirect to home page' do
       session[:user_id] = admin_user.id
-      expect { patch :update, id: admin_user, user: { super_admin_attributes: { } } }.to change { SuperAdmin.count }.by 0
+      expect { patch :update, id: super_admin_user, user: { name: edit_user[:name], email: edit_user[:email], admin_attributes: { _destroy: '0' } } }.to change { Admin.count }.by 0
+      expect(super_admin_user.reload.name).not_to eq edit_user[:name]
+      expect(response).to redirect_to root_path
+    end
+
+    it 'update self (admin user): user updated but admin status not revoked; redirect to user display page' do
+      session[:user_id] = admin_user.id
+      expect { patch :update, id: admin_user, user: { name: edit_user[:name], email: edit_user[:email], admin_attributes: { _destroy: '1', id: admin_user.id } } }.to change { Admin.count }.by 0
+      expect(admin_user.reload.name).to eq edit_user[:name]
       expect(response).to redirect_to user_path(admin_user)
+    end
+
+    it 'update other admin user: user not updated nor admin status revoked; redirect to home page' do
+      session[:user_id] = admin_user.id
+      expect { patch :update, id: second_admin_user, user: { name: edit_user[:name], email: edit_user[:email], admin_attributes: { _destroy: '1', id: admin_user.id } } }.to change { Admin.count }.by 0
+      expect(second_admin_user.reload.name).not_to eq edit_user[:name]
+      expect(response).to redirect_to root_path
+    end
+
+    it 'update non-admin user: user not updated nor admin status assigned; redirect to home page' do
+      session[:user_id] = admin_user.id
+      expect { patch :update, id: user, user: { name: edit_user[:name], email: edit_user[:email], admin_attributes: { _destroy: '0' } } }.to change { Admin.count }.by 0
+      expect(user.reload.name).not_to eq edit_user[:name]
+      expect(response).to redirect_to root_path
+    end
+  end
+
+  context 'attempt update user and admin status when logged in as non-admin user' do
+    it 'update super-admin user: user not updated nor admin status assigned; redirect to home page' do
+      session[:user_id] = user.id
+      expect { patch :update, id: super_admin_user, user: { name: edit_user[:name], email: edit_user[:email], admin_attributes: { _destroy: '0' } } }.to change { Admin.count }.by 0
+      expect(super_admin_user.reload.name).not_to eq edit_user[:name]
+      expect(response).to redirect_to root_path
+    end
+
+    it 'update admin user: user not updated nor admin status revoked; redirect to home page' do
+      session[:user_id] = user.id
+      expect { patch :update, id: admin_user, user: { name: edit_user[:name], email: edit_user[:email], admin_attributes: { _destroy: '1', id: admin_user.id } } }.to change { Admin.count }.by 0
+      expect(admin_user.reload.name).not_to eq edit_user[:name]
+      expect(response).to redirect_to root_path
+    end
+
+    it 'update self (non-admin user): user updated but admin status not assigned; redirect to user display page' do
+      session[:user_id] = user.id
+      expect { patch :update, id: user, user: { name: edit_user[:name], email: edit_user[:email], admin_attributes: { _destroy: '0' } } }.to change { Admin.count }.by 0
+      expect(user.reload.name).to eq edit_user[:name]
+      expect(response).to redirect_to user_path(user)
+    end
+
+    it 'update other non-admin user: user not updated nor admin status assigned; redirect to home page' do
+      session[:user_id] = user.id
+      expect { patch :update, id: second_user, user: { name: edit_user[:name], email: edit_user[:email], admin_attributes: { _destroy: '0' } } }.to change { Admin.count }.by 0
+      expect(second_user.reload.name).not_to eq edit_user[:name]
+      expect(response).to redirect_to root_path
+    end
+  end
+
+  context 'attempt update user and admin status when not logged in' do
+    it 'user not updated nor admin status assigned; redirect to log in page' do
+      expect { patch :update, id: user, user: { name: edit_user[:name], email: edit_user[:email], admin_attributes: { _destroy: '0' } } }.to change { Admin.count }.by 0
+      expect(user.reload.name).not_to eq edit_user[:name]
+      expect(response).to redirect_to log_in_path
+    end
+  end
+
+  context 'attempt update user and super-admin status when logged in as super-admin user' do
+    it 'update self (super-admin user): user updated but super-admin status not revoked; redirect to user display page' do
+      session[:user_id] = super_admin_user.id
+      expect { patch :update, id: super_admin_user, user: { name: edit_user[:name], email: edit_user[:email], super_admin_attributes: { _destroy: '1', id: super_admin_user.id } } }.to change { SuperAdmin.count }.by 0
+      expect(super_admin_user.reload.name).to eq edit_user[:name]
+      expect(response).to redirect_to user_path(super_admin_user)
+    end
+
+    it 'update other super-admin user: user not updated nor super-admin status revoked; redirect to home page' do
+      session[:user_id] = super_admin_user.id
+      expect { patch :update, id: second_super_admin_user, user: { name: edit_user[:name], email: edit_user[:email], super_admin_attributes: { _destroy: '1', id: second_super_admin_user.id } } }.to change { SuperAdmin.count }.by 0
+      expect(second_super_admin_user.reload.name).not_to eq edit_user[:name]
+      expect(response).to redirect_to root_path
+    end
+
+    it 'update admin user: user not updated nor super-admin status assigned; redirect to home page' do
+      session[:user_id] = super_admin_user.id
+      expect { patch :update, id: admin_user, user: { name: edit_user[:name], email: edit_user[:email], super_admin_attributes: { _destroy: '0' } } }.to change { SuperAdmin.count }.by 0
+      expect(admin_user.reload.name).not_to eq edit_user[:name]
+      expect(response).to redirect_to root_path
+    end
+
+    it 'update non-admin user: user not updated nor super-admin status assigned; redirect to home page' do
+      session[:user_id] = super_admin_user.id
+      expect { patch :update, id: user, user: { name: edit_user[:name], email: edit_user[:email], super_admin_attributes: { _destroy: '0' } } }.to change { SuperAdmin.count }.by 0
+      expect(user.reload.name).not_to eq edit_user[:name]
+      expect(response).to redirect_to root_path
+    end
+  end
+
+  context 'attempt update user and super-admin status when logged in as admin user' do
+    it 'update super-admin user: user not updated nor super-admin status revoked; redirect to home page' do
+      session[:user_id] = admin_user.id
+      expect { patch :update, id: super_admin_user, user: { name: edit_user[:name], email: edit_user[:email], super_admin_attributes: { _destroy: '1', id: super_admin_user.id } } }.to change { SuperAdmin.count }.by 0
+      expect(super_admin_user.reload.name).not_to eq edit_user[:name]
+      expect(response).to redirect_to root_path
+    end
+
+    it 'update self (admin user): user updated but super-admin status not assigned; redirect to user display page' do
+      session[:user_id] = admin_user.id
+      expect { patch :update, id: admin_user, user: { name: edit_user[:name], email: edit_user[:email], super_admin_attributes: { _destroy: '0' } } }.to change { SuperAdmin.count }.by 0
+      expect(admin_user.reload.name).to eq edit_user[:name]
+      expect(response).to redirect_to user_path(admin_user)
+    end
+
+    it 'update other admin user: user not updated nor super-admin status assigned; redirect to home page' do
+      session[:user_id] = admin_user.id
+      expect { patch :update, id: second_admin_user, user: { name: edit_user[:name], email: edit_user[:email], super_admin_attributes: { _destroy: '0' } } }.to change { SuperAdmin.count }.by 0
+      expect(second_admin_user.reload.name).not_to eq edit_user[:name]
+      expect(response).to redirect_to root_path
+    end
+
+    it 'update non-admin user: user not updated nor super-admin status assigned; redirect to home page' do
+      session[:user_id] = admin_user.id
+      expect { patch :update, id: user, user: { name: edit_user[:name], email: edit_user[:email], super_admin_attributes: { _destroy: '0' } } }.to change { SuperAdmin.count }.by 0
+      expect(user.reload.name).not_to eq edit_user[:name]
+      expect(response).to redirect_to root_path
+    end
+  end
+
+  context 'attempt update user and super-admin status when logged in as non-admin user' do
+    it 'update super-admin user: user not updated nor super-admin status revoked; redirect to home page' do
+      session[:user_id] = user.id
+      expect { patch :update, id: super_admin_user, user: { name: edit_user[:name], email: edit_user[:email], super_admin_attributes: { _destroy: '1', id: super_admin_user.id } } }.to change { SuperAdmin.count }.by 0
+      expect(super_admin_user.reload.name).not_to eq edit_user[:name]
+      expect(response).to redirect_to root_path
+    end
+
+    it 'update admin user: user not updated nor super-admin status assigned; redirect to home page' do
+      session[:user_id] = user.id
+      expect { patch :update, id: admin_user, user: { name: edit_user[:name], email: edit_user[:email], super_admin_attributes: { _destroy: '0' } } }.to change { SuperAdmin.count }.by 0
+      expect(admin_user.reload.name).not_to eq edit_user[:name]
+      expect(response).to redirect_to root_path
+    end
+
+    it 'update self (non-admin user): user updated but super-admin status not assigned; redirect to user display page' do
+      session[:user_id] = user.id
+      expect { patch :update, id: user, user: { name: edit_user[:name], email: edit_user[:email], super_admin_attributes: { _destroy: '0' } } }.to change { SuperAdmin.count }.by 0
+      expect(user.reload.name).to eq edit_user[:name]
+      expect(response).to redirect_to user_path(user)
+    end
+
+    it 'update other non-admin user: user not updated nor super-admin status assigned; redirect to home page' do
+      session[:user_id] = user.id
+      expect { patch :update, id: second_user, user: { name: edit_user[:name], email: edit_user[:email], super_admin_attributes: { _destroy: '0' } } }.to change { SuperAdmin.count }.by 0
+      expect(second_user.reload.name).not_to eq edit_user[:name]
+      expect(response).to redirect_to root_path
+    end
+  end
+
+  context 'attempt update user and super-admin status when not logged in' do
+    it 'user not updated nor super-admin status assigned; redirect to log in page' do
+      expect { patch :update, id: user, user: { name: edit_user[:name], email: edit_user[:email], super_admin_attributes: { _destroy: '0' } } }.to change { SuperAdmin.count }.by 0
+      expect(user.reload.name).not_to eq edit_user[:name]
+      expect(response).to redirect_to log_in_path
     end
   end
 
