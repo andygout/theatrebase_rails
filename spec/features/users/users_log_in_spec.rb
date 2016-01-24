@@ -118,7 +118,7 @@ feature 'Remembering user across sessions' do
       expect(page).to have_link('Profile', href: user_path(user))
       expect(page).to have_link('Log out', href: log_out_path)
       expect(page).not_to have_link('Log in', href: log_in_path)
-      expect(User.find(user.id).remember_created_at).not_to eq(nil)
+      expect(user.reload.remember_created_at).not_to eq(nil)
     end
   end
 
@@ -131,7 +131,7 @@ feature 'Remembering user across sessions' do
       expect(page).to have_link('Log in', href: log_in_path)
       expect(page).not_to have_link('Profile', href: user_path(user))
       expect(page).not_to have_link('Log out', href: log_out_path)
-      expect(User.find(user.id).remember_created_at).to eq(nil)
+      expect(user.reload.remember_created_at).to eq(nil)
     end
   end
 end
@@ -141,25 +141,25 @@ feature '\'Remember created at\' time' do
 
   context 'user logs in' do
     scenario 'value will be set and reset on subsequent log ins', js: true do
-      expect(User.find(user.id).remember_created_at).to eq(nil)
+      expect(user.reload.remember_created_at).to eq(nil)
       log_in user
-      expect(User.find(user.id).remember_created_at).to eq(nil)
+      expect(user.reload.remember_created_at).to eq(nil)
       click_link 'Log out'
       visit log_in_path
       fill_in 'session_email',    with: user.email
       fill_in 'session_password', with: user.password
       find(:css, '#session_remember_me').set true
       click_button 'Log in'
-      expect(User.find(user.id).remember_created_at).not_to eq(nil)
-      first_remember_created_at_time = User.find(user.id).remember_created_at
+      expect(user.reload.remember_created_at).not_to eq(nil)
+      first_remember_created_at_time = user.reload.remember_created_at
       click_link 'Log out'
       visit log_in_path
       fill_in 'session_email',    with: user.email
       fill_in 'session_password', with: user.password
       find(:css, '#session_remember_me').set true
       click_button 'Log in'
-      expect(User.find(user.id).remember_created_at).not_to eq(nil)
-      second_remember_created_at_time = User.find(user.id).remember_created_at
+      expect(user.reload.remember_created_at).not_to eq(nil)
+      second_remember_created_at_time = user.reload.remember_created_at
       expect(first_remember_created_at_time).not_to eq(second_remember_created_at_time)
     end
   end
@@ -170,22 +170,22 @@ feature '\'Current log in at\'/\'Last log in at\' times' do
 
   context 'user logs in' do
     scenario 'values will be set and reset on subsequent log ins', js: true do
-      expect(User.find(user.id).current_log_in_at).to eq(nil)
-      expect(User.find(user.id).last_log_in_at).to eq(nil)
+      expect(user.reload.current_log_in_at).to eq(nil)
+      expect(user.reload.last_log_in_at).to eq(nil)
       log_in user
-      first_current_log_in_at_time = User.find(user.id).current_log_in_at
+      first_current_log_in_at_time = user.reload.current_log_in_at
       expect(first_current_log_in_at_time).not_to eq(nil)
-      expect(User.find(user.id).last_log_in_at).to eq(nil)
+      expect(user.reload.last_log_in_at).to eq(nil)
       click_link 'Log out'
       log_in user
-      second_current_log_in_at_time = User.find(user.id).current_log_in_at
-      first_last_log_in_at_time = User.find(user.id).last_log_in_at
+      second_current_log_in_at_time = user.reload.current_log_in_at
+      first_last_log_in_at_time = user.reload.last_log_in_at
       expect(second_current_log_in_at_time).not_to eq(nil)
       expect(first_current_log_in_at_time).to eq(first_last_log_in_at_time)
       expect(first_current_log_in_at_time).not_to eq(second_current_log_in_at_time)
       click_link 'Log out'
       log_in user
-      second_last_log_in_at_time = User.find(user.id).last_log_in_at
+      second_last_log_in_at_time = user.reload.last_log_in_at
       expect(first_last_log_in_at_time).not_to eq(second_last_log_in_at_time)
       expect(second_current_log_in_at_time).to eq(second_last_log_in_at_time)
     end
@@ -197,12 +197,12 @@ feature 'Log in count' do
 
   context 'user logs in' do
     scenario 'value will be incremented on each log in', js: true do
-      expect(User.find(user.id).log_in_count).to eq(nil)
+      expect(user.reload.log_in_count).to eq(nil)
       log_in user
-      expect(User.find(user.id).log_in_count).to eq(1)
+      expect(user.reload.log_in_count).to eq(1)
       click_link 'Log out'
       log_in user
-      expect { log_in user }.to change { User.find(user.id).log_in_count }.by 1
+      expect { log_in user }.to change { user.reload.log_in_count }.by 1
     end
   end
 end

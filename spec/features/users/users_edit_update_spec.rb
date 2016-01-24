@@ -138,8 +138,7 @@ feature 'User edit/update' do
                       edit_user[:password],
                       edit_user[:password])
       click_button 'Update User'
-      user = User.find_by(email: edit_user[:email])
-      expect(user.creator).to eq(nil)
+      expect(user.reload.creator).to eq(nil)
       expect(user.updater).to eq(user)
       expect(user.created_users).to be_empty
       expect(user.updated_users).to include(user)
@@ -290,9 +289,7 @@ feature 'User edit/update' do
                       'foo',
                       'bar')
       click_button 'Update User'
-      user_copy = user
-      user = User.find_by(email: user_copy.email)
-      expect(user.creator).to eq(nil)
+      expect(user.reload.creator).to eq(nil)
       expect(user.updater).to eq(nil)
       expect(user.created_users).to be_empty
       expect(user.updated_users).to be_empty
