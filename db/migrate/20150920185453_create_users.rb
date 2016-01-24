@@ -16,12 +16,21 @@ class CreateUsers < ActiveRecord::Migration
       t.integer     :log_in_count
       t.timestamps  null: false
 
-      t.references  :creator, index: true
-      t.references  :updater, index: true
+      t.belongs_to :creator,
+        index: true
 
-      t.index       :email, unique: true
+      t.belongs_to :updater,
+        index: true
+
+      t.index :email,
+        unique: true
     end
-    add_foreign_key :users, :users, column: :creator_id
-    add_foreign_key :users, :users, column: :updater_id
+    add_foreign_key :users,
+      :users,
+      column: :creator_id
+
+    add_foreign_key :users,
+      :users,
+      column: :updater_id
   end
 end
