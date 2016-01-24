@@ -22,20 +22,42 @@ class User < ActiveRecord::Base
     length: { minimum: 6 },
     allow_nil: true
 
-  has_one :admin, dependent: :destroy
-  accepts_nested_attributes_for :admin, allow_destroy: true
-  has_one :admin_status_assignor, through: :admin, source: :assignor
+  has_one :admin,
+    dependent: :destroy
 
-  has_many :admins, foreign_key: 'assignor_id'
-  has_many :admin_status_assignees, through: :admins, source: :user
+  accepts_nested_attributes_for :admin,
+    allow_destroy: true
 
-  has_one :super_admin, dependent: :destroy
+  has_one :admin_status_assignor,
+    through: :admin,
+    source: :assignor
 
-  belongs_to :creator, class_name: 'User', foreign_key: 'creator_id'
-  has_many :created_users, -> { extending WithUserAssociationExtension }, class_name: 'User', foreign_key: 'creator_id'
+  has_many :admins,
+    foreign_key: :assignor_id
 
-  belongs_to :updater, class_name: 'User', foreign_key: 'updater_id'
-  has_many :updated_users, class_name: 'User', foreign_key: 'updater_id'
+  has_many :admin_status_assignees,
+    through: :admins,
+    source: :user
+
+  has_one :super_admin,
+    dependent: :destroy
+
+  belongs_to :creator,
+    class_name: :User,
+    foreign_key: :creator_id
+
+  has_many :created_users,
+    -> { extending WithUserAssociationExtension },
+    class_name: :User,
+    foreign_key: :creator_id
+
+  belongs_to :updater,
+    class_name: :User,
+    foreign_key: :updater_id
+
+  has_many :updated_users,
+    class_name: :User,
+    foreign_key: :updater_id
 
   def User.digest string
     cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST : BCrypt::Engine.cost
@@ -48,8 +70,8 @@ class User < ActiveRecord::Base
 
   def remember
     self.remember_token = User.new_token
-    update( remember_digest: User.digest(remember_token),
-            remember_created_at: Time.zone.now)
+    update( remember_digest:      User.digest(remember_token),
+            remember_created_at:  Time.zone.now)
   end
 
   def authenticated? attribute, token
@@ -60,17 +82,18 @@ class User < ActiveRecord::Base
 
   def set_log_in_data
     self.log_in_count = 0 if log_in_count == nil
-    update(current_log_in_at: Time.zone.now,
-                      last_log_in_at: current_log_in_at,
-                      log_in_count: log_in_count + 1)
+    update( current_log_in_at:  Time.zone.now,
+            last_log_in_at:     current_log_in_at,
+            log_in_count:       log_in_count + 1)
   end
 
   def forget
-    update(remember_digest: nil, remember_created_at: nil)
+    update( remember_digest:      nil,
+            remember_created_at:  nil)
   end
 
   def activate
-    update( activated: true,
+    update( activated:    true,
             activated_at: Time.zone.now)
   end
 
