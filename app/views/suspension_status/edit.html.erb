@@ -1,0 +1,18 @@
+<% provide(:title, 'Edit User Suspension Status') %>
+
+<h1 class='header-text'>Edit User Suspension Status</h1>
+
+<fieldset class='form'>
+  <%= form_for(@user, url: suspension_status_path(params[:user_id])) do |user| %>
+
+    <%= user.fields_for :suspension do |suspension| %>
+      <div class='form-item'>
+        <%= suspension.check_box :_destroy, { checked: suspension.object.persisted? }, '0', '1' %>
+        <%= suspension.label :_destroy, 'Suspension status', class: 'checkbox' %>
+      </div>
+    <% end %>
+
+    <%= user.submit 'Update Suspension Status', class: 'button' %>
+  <% end %>
+</fieldset>
+

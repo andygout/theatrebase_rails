@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160102163835) do
+ActiveRecord::Schema.define(version: 20160124205556) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -37,6 +37,15 @@ ActiveRecord::Schema.define(version: 20160102163835) do
   end
 
   add_index "super_admins", ["user_id"], name: "index_super_admins_on_user_id", using: :btree
+
+  create_table "suspensions", force: :cascade do |t|
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.integer  "assignor_id"
+  end
+
+  add_index "suspensions", ["assignor_id"], name: "index_suspensions_on_assignor_id", using: :btree
+  add_index "suspensions", ["user_id"], name: "index_suspensions_on_user_id", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "name"
@@ -65,6 +74,8 @@ ActiveRecord::Schema.define(version: 20160102163835) do
   add_foreign_key "admins", "users"
   add_foreign_key "admins", "users", column: "assignor_id"
   add_foreign_key "super_admins", "users"
+  add_foreign_key "suspensions", "users"
+  add_foreign_key "suspensions", "users", column: "assignor_id"
   add_foreign_key "users", "users", column: "creator_id"
   add_foreign_key "users", "users", column: "updater_id"
 end
