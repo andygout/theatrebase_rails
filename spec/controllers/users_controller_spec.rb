@@ -63,28 +63,32 @@ describe UsersController, type: :controller do
   context 'attempt create user with admin status' do
     it 'when logged in as super-admin user: user created but admin status not assigned; redirect to home page' do
       session[:user_id] = super_admin_user.id
-      expect { post :create, user: { name: third_user[:name], email: third_user[:email], admin_attributes: { _destroy: '0' } } }.to change { User.count }.by(1)
-                            .and change { Admin.count }.by(0)
+      expect { post :create, user: { name: third_user[:name], email: third_user[:email], admin_attributes: { _destroy: '0' } } }
+        .to change { User.count }.by(1)
+        .and change { Admin.count }.by(0)
       expect(response).to redirect_to root_path
     end
 
     it 'when logged in as admin user: user created but admin status not assigned; redirect to home page' do
       session[:user_id] = admin_user.id
-      expect { post :create, user: { name: third_user[:name], email: third_user[:email], admin_attributes: { _destroy: '0' } } }.to change { User.count }.by(1)
-                            .and change { Admin.count }.by(0)
+      expect { post :create, user: { name: third_user[:name], email: third_user[:email], admin_attributes: { _destroy: '0' } } }
+        .to change { User.count }.by(1)
+        .and change { Admin.count }.by(0)
       expect(response).to redirect_to root_path
     end
 
     it 'when logged in as non-admin user: user not created nor admin status assigned; redirect to home page' do
       session[:user_id] = user.id
-      expect { post :create, user: { name: third_user[:name], email: third_user[:email], admin_attributes: { _destroy: '0' } } }.to change { User.count }.by(0)
-                            .and change { Admin.count }.by(0)
+      expect { post :create, user: { name: third_user[:name], email: third_user[:email], admin_attributes: { _destroy: '0' } } }
+        .to change { User.count }.by(0)
+        .and change { Admin.count }.by(0)
       expect(response).to redirect_to root_path
     end
 
     it 'when not logged in: user not created nor admin status assigned; redirect to log in page' do
-      expect { post :create, user: { name: third_user[:name], email: third_user[:email], admin_attributes: { _destroy: '0' } } }.to change { User.count }.by(0)
-                            .and change { Admin.count }.by(0)
+      expect { post :create, user: { name: third_user[:name], email: third_user[:email], admin_attributes: { _destroy: '0' } } }
+        .to change { User.count }.by(0)
+        .and change { Admin.count }.by(0)
       expect(response).to redirect_to log_in_path
     end
   end
@@ -92,28 +96,32 @@ describe UsersController, type: :controller do
   context 'attempt create user with super-admin status' do
     it 'when logged in as super-admin user: user created but super-admin status not assigned; redirect to home page' do
       session[:user_id] = super_admin_user.id
-      expect { post :create, user: { name: third_user[:name], email: third_user[:email], super_admin_attributes: { _destroy: '0' } } }.to change { User.count }.by(1)
-                                                    .and change { SuperAdmin.count }.by(0)
+      expect { post :create, user: { name: third_user[:name], email: third_user[:email], super_admin_attributes: { _destroy: '0' } } }
+        .to change { User.count }.by(1)
+        .and change { SuperAdmin.count }.by(0)
       expect(response).to redirect_to root_path
     end
 
     it 'when logged in as admin user: user created but super-admin status not assigned; redirect to home page' do
       session[:user_id] = admin_user.id
-      expect { post :create, user: { name: third_user[:name], email: third_user[:email], super_admin_attributes: { _destroy: '0' } } }.to change { User.count }.by(1)
-                                                    .and change { SuperAdmin.count }.by(0)
+      expect { post :create, user: { name: third_user[:name], email: third_user[:email], super_admin_attributes: { _destroy: '0' } } }
+        .to change { User.count }.by(1)
+        .and change { SuperAdmin.count }.by(0)
       expect(response).to redirect_to root_path
     end
 
     it 'when logged in as non-admin user: user not created nor super-admin status assigned; redirect to home page' do
       session[:user_id] = user.id
-      expect { post :create, user: { name: third_user[:name], email: third_user[:email], super_admin_attributes: { _destroy: '0' } } }.to change { User.count }.by(0)
-                                                    .and change { SuperAdmin.count }.by(0)
+      expect { post :create, user: { name: third_user[:name], email: third_user[:email], super_admin_attributes: { _destroy: '0' } } }
+        .to change { User.count }.by(0)
+        .and change { SuperAdmin.count }.by(0)
       expect(response).to redirect_to root_path
     end
 
     it 'when not logged in: user not created nor super-admin status assigned; redirect to log in page' do
-      expect { post :create, user: { name: third_user[:name], email: third_user[:email], super_admin_attributes: { _destroy: '0' } } }.to change { User.count }.by(0)
-                                                    .and change { SuperAdmin.count }.by(0)
+      expect { post :create, user: { name: third_user[:name], email: third_user[:email], super_admin_attributes: { _destroy: '0' } } }
+        .to change { User.count }.by(0)
+        .and change { SuperAdmin.count }.by(0)
       expect(response).to redirect_to log_in_path
     end
   end
