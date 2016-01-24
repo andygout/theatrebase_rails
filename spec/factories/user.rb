@@ -20,25 +20,33 @@ FactoryGirl.define do
     factory :super_admin_user do
       name  'Daniel Taylor'
       email 'danieltaylor@example.com'
-      super_admin
+      after(:create) do |user|
+        create(:super_admin, user_id: user.id)
+      end
     end
 
     factory :second_super_admin_user do
       name  'Harry Williams'
       email 'harrywilliams@example.com'
-      super_admin
+      after(:create) do |user|
+        create(:super_admin, user_id: user.id)
+      end
     end
 
     factory :admin_user do
       name  'David Jones'
       email 'davidjones@example.com'
-      admin
+      after(:create) do |user|
+        create(:admin, user_id: user.id)
+      end
     end
 
     factory :second_admin_user do
       name  'Charlie Brown'
       email 'charliebrown@example.com'
-      admin
+      after(:create) do |user|
+        create(:admin, user_id: user.id)
+      end
     end
 
     factory :list_users do

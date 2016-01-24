@@ -16,13 +16,13 @@ ActiveRecord::Schema.define(version: 20160102163835) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "admins", force: :cascade do |t|
+  create_table "admins", id: false, force: :cascade do |t|
     t.integer  "user_id"
-    t.boolean  "status"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.integer  "assignor_id"
   end
 
+  add_index "admins", ["assignor_id"], name: "index_admins_on_assignor_id", using: :btree
   add_index "admins", ["user_id"], name: "index_admins_on_user_id", using: :btree
 
   create_table "productions", force: :cascade do |t|
@@ -31,10 +31,9 @@ ActiveRecord::Schema.define(version: 20160102163835) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "super_admins", force: :cascade do |t|
+  create_table "super_admins", id: false, force: :cascade do |t|
     t.integer  "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
   end
 
   add_index "super_admins", ["user_id"], name: "index_super_admins_on_user_id", using: :btree
@@ -64,6 +63,7 @@ ActiveRecord::Schema.define(version: 20160102163835) do
   add_index "users", ["updater_id"], name: "index_users_on_updater_id", using: :btree
 
   add_foreign_key "admins", "users"
+  add_foreign_key "admins", "users", column: "assignor_id"
   add_foreign_key "super_admins", "users"
   add_foreign_key "users", "users", column: "creator_id"
   add_foreign_key "users", "users", column: "updater_id"

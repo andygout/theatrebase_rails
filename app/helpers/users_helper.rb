@@ -31,15 +31,15 @@ module UsersHelper
   end
 
   def super_admin_delete_admin? user
-    user.admin ? (current_user.super_admin && user.admin.status) : false
+    current_user.super_admin && user.admin
   end
 
   def super_or_admin? user
-    (user.super_admin || user.admin) ? (user.super_admin || user.admin.status) : false
+    user.super_admin || user.admin
   end
 
   def not_super_or_admin? user
-    (user.super_admin || user.admin) ? (!user.super_admin && !user.admin.status) : true
+    !user.super_admin && !user.admin
   end
 
 end

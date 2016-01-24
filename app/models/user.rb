@@ -23,7 +23,11 @@ class User < ActiveRecord::Base
     allow_nil: true
 
   has_one :admin, dependent: :destroy
-  accepts_nested_attributes_for :admin, update_only: true
+  accepts_nested_attributes_for :admin, allow_destroy: true
+  has_one :admin_status_assignor, through: :admin, source: :assignor
+
+  has_many :admins, foreign_key: 'assignor_id'
+  has_many :admin_status_assignees, through: :admins, source: :user
 
   has_one :super_admin, dependent: :destroy
 
