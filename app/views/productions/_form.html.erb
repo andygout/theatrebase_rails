@@ -1,13 +1,13 @@
 <fieldset class='form'>
-  <%= form_for @production do |f| %>
+  <%= form_for @production do |production| %>
     <%= render 'partials/error_count', count: @production.errors.count %>
 
     <div class='form-item'>
-      <%= f.label :title, class: 'label' %>
-      <%= f.text_field :title, class: 'input' %>
+      <%= production.label :title, class: 'label' %>
+      <%= production.text_field :title, class: 'input' %>
       <%= render partial: 'partials/error', collection: @production.errors[:title] %>
     </div>
 
-    <%= f.submit nil, class: 'button' %>
+    <%= production.submit nil, class: 'button' %>
   <% end %>
 </fieldset>
