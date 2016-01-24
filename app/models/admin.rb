@@ -5,6 +5,9 @@ class Admin < ActiveRecord::Base
   validates_presence_of :user
 
   belongs_to :user
-  belongs_to :assignor, class_name: 'User', foreign_key: 'assignor_id'
+
+  belongs_to :assignor,
+    class_name: :User,
+    foreign_key: :assignor_id
 
 end
