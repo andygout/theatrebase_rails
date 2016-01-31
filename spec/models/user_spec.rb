@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe User, type: :model do
-  context 'relations' do
+  context 'associations' do
     it { should have_one :admin }
     it { should have_one(:admin_status_assignor).through(:admin) }
     it { should have_many :admins }
