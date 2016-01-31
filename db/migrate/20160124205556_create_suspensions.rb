@@ -1,6 +1,6 @@
 class CreateSuspensions < ActiveRecord::Migration
   def change
-    create_table :suspensions do |t|
+    create_table :suspensions, id: false do |t|
       t.belongs_to :user,
         index: true,
         foreign_key: true,

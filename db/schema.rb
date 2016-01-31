@@ -38,7 +38,7 @@ ActiveRecord::Schema.define(version: 20160124205556) do
 
   add_index "super_admins", ["user_id"], name: "index_super_admins_on_user_id", using: :btree
 
-  create_table "suspensions", force: :cascade do |t|
+  create_table "suspensions", id: false, force: :cascade do |t|
     t.integer  "user_id"
     t.datetime "created_at"
     t.integer  "assignor_id"
