@@ -1,10 +1,11 @@
 class UsersController < ApplicationController
 
   before_action :logged_in_user
-  before_action :admin_user,      only: [:new, :create, :index]
-  before_action :correct_user,    only: [:edit, :update]
-  before_action :destroy_user,    only: :destroy
-  before_action :show_user,       only: :show
+  before_action :not_suspended_user
+  before_action :admin_user,        only: [:new, :create, :index]
+  before_action :correct_user,      only: [:edit, :update]
+  before_action :destroy_user,      only: :destroy
+  before_action :show_user,         only: :show
 
   def new
     @user = User.new
@@ -73,6 +74,10 @@ class UsersController < ApplicationController
 
     def get_user
       @user = User.find(params[:id])
+    end
+
+    def not_suspended_user
+      validate_user not_suspended_user?
     end
 
     def admin_user

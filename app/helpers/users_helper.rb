@@ -8,8 +8,17 @@ module UsersHelper
     end
   end
 
+  def not_suspended_user?
+    !current_user.suspension
+  end
+
   def valid_admin_status_user? user
     current_user.super_admin && !user.super_admin
+  end
+
+  def valid_suspension_status_user? user
+    (current_user.super_admin && !user.super_admin) ||
+    (current_user.admin && !user.super_admin && !user.admin)
   end
 
   def valid_show_user? user

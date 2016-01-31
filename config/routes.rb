@@ -22,6 +22,7 @@ Rails.application.routes.draw do
   resources :productions
   resources :users
   resources :admin_status, param: :user_id, only: [:edit, :update]
+  resources :suspension_status, param: :user_id, only: [:edit, :update]
   resources :account_activations, only: [:edit, :update]
   resources :password_resets, only: [:new, :create, :edit, :update]
 

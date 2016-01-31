@@ -42,6 +42,23 @@ class User < ActiveRecord::Base
   has_one :super_admin,
     dependent: :destroy
 
+  has_one :suspension,
+    dependent: :destroy
+
+  accepts_nested_attributes_for :suspension,
+    allow_destroy: true
+
+  has_one :suspension_status_assignor,
+    through: :suspension,
+    source: :assignor
+
+  has_many :suspensions,
+    foreign_key: :assignor_id
+
+  has_many :suspension_status_assignees,
+    through: :suspensions,
+    source: :user
+
   belongs_to :creator,
     class_name: :User,
     foreign_key: :creator_id

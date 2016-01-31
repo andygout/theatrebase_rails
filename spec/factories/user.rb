@@ -17,6 +17,22 @@ FactoryGirl.define do
       email 'fredwhite@example.com'
     end
 
+    factory :suspended_user do
+      name  'Charles Vincent'
+      email 'charlesvincent@example.com'
+      after(:create) do |user|
+        create(:suspension, user_id: user.id)
+      end
+    end
+
+    factory :second_suspended_user do
+      name  'Anthony Croft'
+      email 'anthonycroft@example.com'
+      after(:create) do |user|
+        create(:suspension, user_id: user.id)
+      end
+    end
+
     factory :super_admin_user do
       name  'Daniel Taylor'
       email 'danieltaylor@example.com'
@@ -33,6 +49,24 @@ FactoryGirl.define do
       end
     end
 
+    factory :suspended_super_admin_user do
+      name  'Mark Wilson'
+      email 'markwilson@example.com'
+      after(:create) do |user|
+        create(:super_admin, user_id: user.id)
+        create(:suspension, user_id: user.id)
+      end
+    end
+
+    factory :second_suspended_super_admin_user do
+      name  'Kurt Hyslop'
+      email 'kurthyslop@example.com'
+      after(:create) do |user|
+        create(:super_admin, user_id: user.id)
+        create(:suspension, user_id: user.id)
+      end
+    end
+
     factory :admin_user do
       name  'David Jones'
       email 'davidjones@example.com'
@@ -46,6 +80,24 @@ FactoryGirl.define do
       email 'charliebrown@example.com'
       after(:create) do |user|
         create(:admin, user_id: user.id)
+      end
+    end
+
+    factory :suspended_admin_user do
+      name  'Christian Donaldson'
+      email 'christiandonaldson@example.com'
+      after(:create) do |user|
+        create(:admin, user_id: user.id)
+        create(:suspension, user_id: user.id)
+      end
+    end
+
+    factory :second_suspended_admin_user do
+      name  'Terence Johnson'
+      email 'terencejohnson@example.com'
+      after(:create) do |user|
+        create(:admin, user_id: user.id)
+        create(:suspension, user_id: user.id)
       end
     end
 
