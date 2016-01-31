@@ -2,15 +2,29 @@ require 'rails_helper'
 
 describe ProductionsController, type: :controller do
   let(:user) { create :user }
-  let(:add_production) { attributes_for :add_production }
-  let!(:production) { create :production }
-  let(:edit_production) { attributes_for :edit_production }
+  let(:admin_user) { create :admin_user }
+  let(:super_admin_user) { create :super_admin_user }
   let(:suspended_super_admin_user) { create :suspended_super_admin_user }
   let(:suspended_admin_user) { create :suspended_admin_user }
   let(:suspended_user) { create :suspended_user }
+  let(:add_production) { attributes_for :add_production }
+  let!(:production) { create :production }
+  let(:edit_production) { attributes_for :edit_production }
 
   context 'attempt add new production' do
-    it 'when logged in: render new production form' do
+    it 'as super-admin: render new production form' do
+      session[:user_id] = super_admin_user.id
+      get :new
+      expect(response).to render_template :new
+    end
+
+    it 'as admin: render new production form' do
+      session[:user_id] = admin_user.id
+      get :new
+      expect(response).to render_template :new
+    end
+
+    it 'as non-admin: render new production form' do
       session[:user_id] = user.id
       get :new
       expect(response).to render_template :new
@@ -41,7 +55,19 @@ describe ProductionsController, type: :controller do
   end
 
   context 'attempt create production' do
-    it 'when logged in: succeed and redirect to production display page' do
+    it 'as super-admin: succeed and redirect to production display page' do
+      session[:user_id] = super_admin_user.id
+      expect { post :create, production: { title: add_production[:title] } }.to change { Production.count }.by 1
+      expect(response).to redirect_to production_path(Production.last)
+    end
+
+    it 'as admin: succeed and redirect to production display page' do
+      session[:user_id] = admin_user.id
+      expect { post :create, production: { title: add_production[:title] } }.to change { Production.count }.by 1
+      expect(response).to redirect_to production_path(Production.last)
+    end
+
+    it 'as non-admin: succeed and redirect to production display page' do
       session[:user_id] = user.id
       expect { post :create, production: { title: add_production[:title] } }.to change { Production.count }.by 1
       expect(response).to redirect_to production_path(Production.last)
@@ -72,7 +98,19 @@ describe ProductionsController, type: :controller do
   end
 
   context 'attempt edit production' do
-    it 'when logged in: redirect to production edit form' do
+    it 'as super-admin: redirect to production edit form' do
+      session[:user_id] = super_admin_user.id
+      get :edit, id: production
+      expect(response).to render_template :edit
+    end
+
+    it 'as admin: redirect to production edit form' do
+      session[:user_id] = admin_user.id
+      get :edit, id: production
+      expect(response).to render_template :edit
+    end
+
+    it 'as non-admin: redirect to production edit form' do
       session[:user_id] = user.id
       get :edit, id: production
       expect(response).to render_template :edit
@@ -103,7 +141,21 @@ describe ProductionsController, type: :controller do
   end
 
   context 'attempt update production' do
-    it 'when logged in: succed and redirect to production display page' do
+    it 'as super-admin: succed and redirect to production display page' do
+      session[:user_id] = super_admin_user.id
+      patch :update, id: production, production: { title: edit_production[:title] }
+      expect(edit_production[:title]).to eq production.reload.title
+      expect(response).to redirect_to production_path(production)
+    end
+
+    it 'as admin: succed and redirect to production display page' do
+      session[:user_id] = admin_user.id
+      patch :update, id: production, production: { title: edit_production[:title] }
+      expect(edit_production[:title]).to eq production.reload.title
+      expect(response).to redirect_to production_path(production)
+    end
+
+    it 'as non-admin: succed and redirect to production display page' do
       session[:user_id] = user.id
       patch :update, id: production, production: { title: edit_production[:title] }
       expect(edit_production[:title]).to eq production.reload.title
@@ -139,7 +191,19 @@ describe ProductionsController, type: :controller do
   end
 
   context 'attempt delete production' do
-    it 'when logged in: succeed and redirect to home page' do
+    it 'as super-admin: succeed and redirect to home page' do
+      session[:user_id] = super_admin_user.id
+      expect { delete :destroy, id: production }.to change { Production.count }.by -1
+      expect(response).to redirect_to productions_path
+    end
+
+    it 'as admin: succeed and redirect to home page' do
+      session[:user_id] = admin_user.id
+      expect { delete :destroy, id: production }.to change { Production.count }.by -1
+      expect(response).to redirect_to productions_path
+    end
+
+    it 'as non-admin: succeed and redirect to home page' do
       session[:user_id] = user.id
       expect { delete :destroy, id: production }.to change { Production.count }.by -1
       expect(response).to redirect_to productions_path
@@ -170,7 +234,19 @@ describe ProductionsController, type: :controller do
   end
 
   context 'attempt visit production display page' do
-    it 'when logged in: render production display page' do
+    it 'as super-admin: render production display page' do
+      session[:user_id] = super_admin_user.id
+      get :show, id: production
+      expect(response).to render_template :show
+    end
+
+    it 'as admin: render production display page' do
+      session[:user_id] = admin_user.id
+      get :show, id: production
+      expect(response).to render_template :show
+    end
+
+    it 'as non-admin: render production display page' do
       session[:user_id] = user.id
       get :show, id: production
       expect(response).to render_template :show
@@ -201,7 +277,19 @@ describe ProductionsController, type: :controller do
   end
 
   context 'attempt visit production index' do
-    it 'when logged in: render production index' do
+    it 'as super-admin: render production display page' do
+      session[:user_id] = super_admin_user.id
+      get :index
+      expect(response).to render_template :index
+    end
+
+    it 'as admin: render production display page' do
+      session[:user_id] = admin_user.id
+      get :index
+      expect(response).to render_template :index
+    end
+
+    it 'as non-admin: render production display page' do
       session[:user_id] = user.id
       get :index
       expect(response).to render_template :index
