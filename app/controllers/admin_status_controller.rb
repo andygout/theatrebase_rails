@@ -7,7 +7,7 @@ class AdminStatusController < ApplicationController
 
   def edit
     @user.admin || @user.build_admin
-    @page_title = @user.name
+    @page_title = "#{@user.name} (#{@user.email})"
   end
 
   def update
@@ -16,7 +16,7 @@ class AdminStatusController < ApplicationController
       flash[:success] = "Admin status updated successfully: #{@user.name}"
       redirect_to @user
     else
-      @page_title = @user.name
+      @page_title = "#{@user.name} (#{@user.email})"
       render :edit
     end
   end

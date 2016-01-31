@@ -7,7 +7,7 @@ class SuspensionStatusController < ApplicationController
 
   def edit
     @user.suspension || @user.build_suspension
-    @page_title = @user.name
+    @page_title = "#{@user.name} (#{@user.email})"
   end
 
   def update
@@ -16,7 +16,7 @@ class SuspensionStatusController < ApplicationController
       flash[:success] = "Suspension status updated successfully: #{@user.name}"
       redirect_to @user
     else
-      @page_title = @user.name
+      @page_title = "#{@user.name} (#{@user.email})"
       render :edit
     end
   end

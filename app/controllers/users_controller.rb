@@ -23,7 +23,7 @@ class UsersController < ApplicationController
   end
 
   def edit
-    @page_title = @user.name
+    @page_title = "#{@user.name} (#{@user.email})"
   end
 
   def update
@@ -32,7 +32,8 @@ class UsersController < ApplicationController
       flash[:success] = "User updated successfully: #{@user.name}"
       redirect_to @user
     else
-      @page_title = User.find(params[:id]).name
+      @user_name_email = User.find(params[:id])
+      @page_title = "#{@user_name_email.name} (#{@user_name_email.email})"
       render :edit
     end
   end
@@ -49,6 +50,7 @@ class UsersController < ApplicationController
   end
 
   def show
+    @page_title = "#{@user.name} (#{@user.email})"
     redirect_to root_path and return unless @user.activated?
   end
 

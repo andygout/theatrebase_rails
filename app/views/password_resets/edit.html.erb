@@ -1,6 +1,6 @@
-<% provide(:title, 'Reset password') %>
+<% provide(:title, "Reset password: #{@page_title}") %>
 
-<h1 class='header-text'>Reset password</h1>
+<h1 class='header-text'>Reset password: <%= @page_title %></h1>
 
 <fieldset class='form'>
   <%= form_for(@user, url: password_reset_path(params[:id])) do |user| %>
