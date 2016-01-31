@@ -12,11 +12,7 @@ class UsersController < ApplicationController
   end
 
   def create
-    @password = SecureRandom.urlsafe_base64
-    params[:user][:password] = @password
-    params[:user][:password_confirmation] = @password
-    params[:user][:updater_id] = current_user.id
-    @user = current_user.created_users.build_with_user(user_params, current_user)
+    @user = current_user.created_users.build_with_user(user_create_params, current_user)
     if @user.save
       @user.send_activation_email
       flash[:success] = "Account activation details for #{@user.name} sent to: #{@user.email}"
@@ -31,8 +27,8 @@ class UsersController < ApplicationController
   end
 
   def update
-    params[:user][:updater_id] = current_user.id
-    if @user.update(user_params)
+    if @user.update(user_update_params)
+      @user.update_attribute(:updater_id, current_user.id)
       flash[:success] = "User updated successfully: #{@user.name}"
       redirect_to @user
     else
@@ -62,14 +58,20 @@ class UsersController < ApplicationController
 
   private
 
-    def user_params
+    def user_create_params
+      params
+        .require(:user)
+        .permit(:name,
+                :email)
+    end
+
+    def user_update_params
       params
         .require(:user)
         .permit(:name,
                 :email,
                 :password,
-                :password_confirmation,
-                :updater_id)
+                :password_confirmation)
     end
 
     def get_user
