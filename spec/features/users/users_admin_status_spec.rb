@@ -36,25 +36,25 @@ feature 'User edit/update admin status' do
     let(:second_admin_user) { create :second_admin_user }
     let(:user) { create :user }
 
-    scenario 'attempt edit admin status of super-admin user: fail and redirect to home page', js: true do
+    scenario 'attempt edit super-admin user: fail and redirect to home page', js: true do
       visit edit_admin_status_path(super_admin_user)
       expect(page).to have_css '.alert-error'
       expect(current_path).to eq root_path
     end
 
-    scenario 'attempt edit admin status of self (admin user): fail and redirect to home page', js: true do
+    scenario 'attempt edit self (admin user): fail and redirect to home page', js: true do
       visit edit_admin_status_path(admin_user)
       expect(page).to have_css '.alert-error'
       expect(current_path).to eq root_path
     end
 
-    scenario 'attempt edit admin status of another admin user: fail and redirect to home page', js: true do
+    scenario 'attempt edit another admin user: fail and redirect to home page', js: true do
       visit edit_admin_status_path(second_admin_user)
       expect(page).to have_css '.alert-error'
       expect(current_path).to eq root_path
     end
 
-    scenario 'attempt edit admin status of non-admin user: fail and redirect to home page', js: true do
+    scenario 'attempt edit non-admin user: fail and redirect to home page', js: true do
       visit edit_admin_status_path(user)
       expect(page).to have_css '.alert-error'
       expect(current_path).to eq root_path
@@ -67,25 +67,25 @@ feature 'User edit/update admin status' do
     let(:admin_user) { create :admin_user }
     let(:second_user) { create :second_user }
 
-    scenario 'attempt edit admin status of super-admin user: fail and redirect to home page', js: true do
+    scenario 'attempt edit super-admin user: fail and redirect to home page', js: true do
       visit edit_admin_status_path(super_admin_user)
       expect(page).to have_css '.alert-error'
       expect(current_path).to eq root_path
     end
 
-    scenario 'attempt edit admin status of admin user: fail and redirect to home page', js: true do
+    scenario 'attempt edit admin user: fail and redirect to home page', js: true do
       visit edit_admin_status_path(admin_user)
       expect(page).to have_css '.alert-error'
       expect(current_path).to eq root_path
     end
 
-    scenario 'attempt edit admin status of self (non-admin user): fail and redirect to home page', js: true do
+    scenario 'attempt edit self (non-admin user): fail and redirect to home page', js: true do
       visit edit_admin_status_path(user)
       expect(page).to have_css '.alert-error'
       expect(current_path).to eq root_path
     end
 
-    scenario 'attempt edit admin status of another non-admin user: fail and redirect to home page', js: true do
+    scenario 'attempt edit another non-admin user: fail and redirect to home page', js: true do
       visit edit_admin_status_path(second_user)
       expect(page).to have_css '.alert-error'
       expect(current_path).to eq root_path
@@ -159,7 +159,7 @@ feature 'User edit/update admin status' do
       expect(super_admin_user.admin_status_assignees).to be_empty
     end
 
-    scenario 'after admin status is updated (set to true) only new admin status applies', js: true do
+    scenario 'after admin status is updated only new admin status applies', js: true do
       check('status')
       click_button 'Update Admin Status'
       click_link 'Log out'
@@ -171,9 +171,10 @@ feature 'User edit/update admin status' do
       expect(page).not_to have_button('Edit Admin Status')
       expect(page).not_to have_button('Edit User')
       expect(current_path).to eq user_path(second_user)
-    end
-
-    scenario 'after admin status is updated (set to false) only new admin status applies', js: true do
+      click_link 'Log out'
+      log_in super_admin_user
+      visit edit_admin_status_path(user)
+      uncheck('status')
       click_button 'Update Admin Status'
       click_link 'Log out'
       log_in user

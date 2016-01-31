@@ -20,13 +20,13 @@ describe UsersController, type: :controller do
     it 'as super-admin: render new user form' do
       session[:user_id] = super_admin_user.id
       get :new
-      expect(response).to render_template(:new)
+      expect(response).to render_template :new
     end
 
     it 'as admin: render new user form' do
       session[:user_id] = admin_user.id
       get :new
-      expect(response).to render_template(:new)
+      expect(response).to render_template :new
     end
 
     it 'as non-admin: fail and redirect to home page' do
@@ -452,7 +452,7 @@ describe UsersController, type: :controller do
       ].each do |u|
         session[:user_id] = super_admin_user.id
         patch :update, id: u[:user], user: { name: edit_user[:name], email: edit_user[:email] }
-        expect(u[:user].reload.name).to eq u[:name]
+        expect(u[:name]).to eq u[:user].reload.name
         expect(response).to redirect_to(u[:response]), "Failed: #{u[:type]}"
       end
     end
@@ -510,7 +510,7 @@ describe UsersController, type: :controller do
       ].each do |u|
         session[:user_id] = admin_user.id
         patch :update, id: u[:user], user: { name: edit_user[:name], email: edit_user[:email] }
-        expect(u[:user].reload.name).to eq u[:name]
+        expect(u[:name]).to eq u[:user].reload.name
         expect(response).to redirect_to(u[:response]), "Failed: #{u[:type]}"
       end
     end
@@ -568,7 +568,7 @@ describe UsersController, type: :controller do
       ].each do |u|
         session[:user_id] = user.id
         patch :update, id: u[:user], user: { name: edit_user[:name], email: edit_user[:email] }
-        expect(u[:user].reload.name).to eq u[:name]
+        expect(u[:name]).to eq u[:user].reload.name
         expect(response).to redirect_to(u[:response]), "Failed: #{u[:type]}"
       end
     end
@@ -634,7 +634,7 @@ describe UsersController, type: :controller do
       ].each do |u|
         session[:user_id] = super_admin_user.id
         expect { patch :update, id: u[:user], user: { name: edit_user[:name], email: edit_user[:email], admin_attributes: { _destroy: u[:destroy], id: u[:id] } } }.to change { Admin.count }.by 0
-        expect(u[:user].reload.name).to eq u[:name]
+        expect(u[:name]).to eq u[:user].reload.name
         expect(response).to redirect_to(u[:response]), "Failed: #{u[:type]}"
       end
     end
@@ -692,7 +692,7 @@ describe UsersController, type: :controller do
       ].each do |u|
         session[:user_id] = admin_user.id
         expect { patch :update, id: u[:user], user: { name: edit_user[:name], email: edit_user[:email], admin_attributes: { _destroy: u[:destroy], id: u[:id] } } }.to change { Admin.count }.by 0
-        expect(u[:user].reload.name).to eq u[:name]
+        expect(u[:name]).to eq u[:user].reload.name
         expect(response).to redirect_to(u[:response]), "Failed: #{u[:type]}"
       end
     end
@@ -750,7 +750,7 @@ describe UsersController, type: :controller do
       ].each do |u|
         session[:user_id] = user.id
         expect { patch :update, id: u[:user], user: { name: edit_user[:name], email: edit_user[:email], admin_attributes: { _destroy: u[:destroy], id: u[:id] } } }.to change { Admin.count }.by 0
-        expect(u[:user].reload.name).to eq u[:name]
+        expect(u[:name]).to eq u[:user].reload.name
         expect(response).to redirect_to(u[:response]), "Failed: #{u[:type]}"
       end
     end
@@ -816,7 +816,7 @@ describe UsersController, type: :controller do
       ].each do |u|
         session[:user_id] = super_admin_user.id
         expect { patch :update, id: u[:user], user: { name: edit_user[:name], email: edit_user[:email], super_admin_attributes: { _destroy: u[:destroy], id: u[:id] } } }.to change { SuperAdmin.count }.by 0
-        expect(u[:user].reload.name).to eq u[:name]
+        expect(u[:name]).to eq u[:user].reload.name
         expect(response).to redirect_to(u[:response]), "Failed: #{u[:type]}"
       end
     end
@@ -874,7 +874,7 @@ describe UsersController, type: :controller do
       ].each do |u|
         session[:user_id] = admin_user.id
         expect { patch :update, id: u[:user], user: { name: edit_user[:name], email: edit_user[:email], super_admin_attributes: { _destroy: u[:destroy], id: u[:id] } } }.to change { SuperAdmin.count }.by 0
-        expect(u[:user].reload.name).to eq u[:name]
+        expect(u[:name]).to eq u[:user].reload.name
         expect(response).to redirect_to(u[:response]), "Failed: #{u[:type]}"
       end
     end
@@ -932,7 +932,7 @@ describe UsersController, type: :controller do
       ].each do |u|
         session[:user_id] = user.id
         expect { patch :update, id: u[:user], user: { name: edit_user[:name], email: edit_user[:email], super_admin_attributes: { _destroy: u[:destroy], id: u[:id] } } }.to change { SuperAdmin.count }.by 0
-        expect(u[:user].reload.name).to eq u[:name]
+        expect(u[:name]).to eq u[:user].reload.name
         expect(response).to redirect_to(u[:response]), "Failed: #{u[:type]}"
       end
     end
@@ -998,7 +998,7 @@ describe UsersController, type: :controller do
       ].each do |u|
         session[:user_id] = super_admin_user.id
         expect { patch :update, id: u[:user], user: { name: edit_user[:name], email: edit_user[:email], suspension_attributes: { _destroy: '0' } } }.to change { Suspension.count }.by 0
-        expect(u[:user].reload.name).to eq u[:name]
+        expect(u[:name]).to eq u[:user].reload.name
         expect(response).to redirect_to(u[:response]), "Failed: #{u[:type]}"
       end
     end
@@ -1056,7 +1056,7 @@ describe UsersController, type: :controller do
       ].each do |u|
         session[:user_id] = admin_user.id
         expect { patch :update, id: u[:user], user: { name: edit_user[:name], email: edit_user[:email], suspension_attributes: { _destroy: '0', id: u[:id] } } }.to change { Suspension.count }.by 0
-        expect(u[:user].reload.name).to eq u[:name]
+        expect(u[:name]).to eq u[:user].reload.name
         expect(response).to redirect_to(u[:response]), "Failed: #{u[:type]}"
       end
     end
@@ -1114,7 +1114,7 @@ describe UsersController, type: :controller do
       ].each do |u|
         session[:user_id] = user.id
         expect { patch :update, id: u[:user], user: { name: edit_user[:name], email: edit_user[:email], suspension_attributes: { _destroy: '0' } } }.to change { Suspension.count }.by 0
-        expect(u[:user].reload.name).to eq u[:name]
+        expect(u[:name]).to eq u[:user].reload.name
         expect(response).to redirect_to(u[:response]), "Failed: #{u[:type]}"
       end
     end
@@ -1548,16 +1548,16 @@ describe UsersController, type: :controller do
     it 'as super-admin user: render user index' do
       session[:user_id] = super_admin_user.id
       get :index
-      expect(response).to render_template(:index)
+      expect(response).to render_template :index
     end
 
     it 'as admin user: render user index' do
       session[:user_id] = admin_user.id
       get :index
-      expect(response).to render_template(:index)
+      expect(response).to render_template :index
     end
 
-    it 'as non-admin user: redirect to home page' do
+    it 'as non-admin user: fail and redirect to home page' do
       session[:user_id] = user.id
       get :index
       expect(response).to redirect_to root_path
@@ -1581,7 +1581,7 @@ describe UsersController, type: :controller do
       expect(response).to redirect_to root_path
     end
 
-    it 'when not logged in: redirect to log in page' do
+    it 'when not logged in: fail and redirect to log in page' do
       get :index
       expect(response).to redirect_to log_in_path
     end

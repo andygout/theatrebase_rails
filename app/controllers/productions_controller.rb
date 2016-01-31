@@ -1,7 +1,7 @@
 class ProductionsController < ApplicationController
 
   before_action :get_production,      only: [:edit, :update, :destroy, :show]
-  before_action :logged_in_user,      only: [:new, :create, :edit, :destroy]
+  before_action :logged_in_user,      only: [:new, :create, :edit, :update, :destroy]
   before_action :not_suspended_user,  only: [:new, :create, :edit, :update, :destroy]
 
   def new

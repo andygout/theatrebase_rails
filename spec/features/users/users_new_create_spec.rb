@@ -11,20 +11,20 @@ feature 'User new/create' do
   context 'accessing add new user form' do
     scenario 'can view link as admin user and super-admin user; not as non-admin user; not when logged out', js: true do
       visit root_path
-      expect(page).to have_link('Add User', href: new_user_path)
+      expect(page).to have_link('Add user', href: new_user_path)
       click_link 'Log out'
       log_in super_admin_user
-      expect(page).to have_link('Add User', href: new_user_path)
+      expect(page).to have_link('Add user', href: new_user_path)
       click_link 'Log out'
       log_in second_user
-      expect(page).not_to have_link('Add User', href: new_user_path)
+      expect(page).not_to have_link('Add user', href: new_user_path)
       click_link 'Log out'
-      expect(page).not_to have_link('Add User', href: new_user_path)
+      expect(page).not_to have_link('Add user', href: new_user_path)
     end
 
-    scenario 'click on \'Add User\' link; display new user form' do
+    scenario 'click on \'Add user\' link; display new user form' do
       visit root_path
-      click_link 'Add User'
+      click_link 'Add user'
       expect(current_path).to eq new_user_path
     end
   end
@@ -130,7 +130,7 @@ feature 'User new/create' do
       visit log_in_path
       fill_in 'session_email',    with: user[:email]
       fill_in 'session_password', with: user[:password]
-      click_button 'Log in'
+      click_button 'Log In'
       expect(new_user.activated?).to eq false
       expect(page).to have_css '.alert-error'
       expect(page).not_to have_css '.alert-success'
@@ -269,7 +269,7 @@ feature 'User new/create' do
       visit log_in_path
       fill_in 'session_email',    with: user[:email]
       fill_in 'session_password', with: user[:password]
-      click_button 'Log in'
+      click_button 'Log In'
       expect(page).to have_css '.alert-error'
       expect(page).not_to have_css '.alert-success'
       expect(page).to have_link('Log in', href: log_in_path)
@@ -278,7 +278,7 @@ feature 'User new/create' do
       expect(current_path).to eq log_in_path
       fill_in 'session_email',    with: user[:email]
       fill_in 'session_password', with: edit_user[:password]
-      click_button 'Log in'
+      click_button 'Log In'
       expect(page).to have_css '.alert-success'
       expect(page).not_to have_css '.alert-error'
       expect(page).to have_link('Profile', href: user_path(new_user))
