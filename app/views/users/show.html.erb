@@ -6,11 +6,11 @@
   <%= button_to 'Edit User', edit_user_path(@user), method: :get, class: 'button' %>
 <% end %>
 
-<% if valid_admin_status_user? @user %>
+<% if valid_admin_status_assignor? @user %>
   <%= button_to 'Edit Admin Status', edit_admin_status_path(@user), method: :get, class: 'button' %>
 <% end %>
 
-<% if valid_suspension_status_user? @user %>
+<% if valid_suspension_status_assignor? @user %>
   <%= button_to 'Edit Suspension Status', edit_suspension_status_path(@user), method: :get, class: 'button' %>
 <% end %>
 

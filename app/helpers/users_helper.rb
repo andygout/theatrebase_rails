@@ -8,15 +8,15 @@ module UsersHelper
     end
   end
 
-  def not_suspended_user?
-    !current_user.suspension
+  def not_suspended_user
+    validate_user !current_user.suspension
   end
 
-  def valid_admin_status_user? user
+  def valid_admin_status_assignor? user
     current_user.super_admin && !user.super_admin
   end
 
-  def valid_suspension_status_user? user
+  def valid_suspension_status_assignor? user
     (current_user.super_admin && !user.super_admin) ||
     (current_user.admin && !user.super_admin && !user.admin)
   end
@@ -49,6 +49,13 @@ module UsersHelper
 
   def not_super_or_admin? user
     !user.super_admin && !user.admin
+  end
+
+  def validate_user user_valid
+    unless user_valid
+      flash[:error] = 'Access denied'
+      redirect_to root_path
+    end
   end
 
 end

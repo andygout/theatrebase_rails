@@ -3,7 +3,7 @@ class AdminStatusController < ApplicationController
   before_action :get_user
   before_action :logged_in_user
   before_action :not_suspended_user
-  before_action :admin_status_user
+  before_action :admin_status_assignor
 
   def edit
     @user.admin || @user.build_admin
@@ -32,22 +32,11 @@ class AdminStatusController < ApplicationController
     end
 
     def get_user
-      @user = User.find_by(id: params[:user_id])
+      @user = User.find(params[:user_id])
     end
 
-    def not_suspended_user
-      validate_user not_suspended_user?
-    end
-
-    def admin_status_user
-      validate_user valid_admin_status_user? @user
-    end
-
-    def validate_user user_valid
-      unless user_valid
-        flash[:error] = 'Access denied'
-        redirect_to root_path
-      end
+    def admin_status_assignor
+      validate_user valid_admin_status_assignor? @user
     end
 
 end

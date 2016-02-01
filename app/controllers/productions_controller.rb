@@ -57,15 +57,4 @@ class ProductionsController < ApplicationController
       @production = Production.find(params[:id])
     end
 
-    def not_suspended_user
-      validate_user not_suspended_user?
-    end
-
-    def validate_user user_valid
-      unless user_valid
-        flash[:error] = 'Access denied'
-        redirect_to root_path
-      end
-    end
-
 end

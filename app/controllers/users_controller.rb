@@ -1,5 +1,8 @@
 class UsersController < ApplicationController
 
+  include UsersHelper
+
+  before_action :get_user,          only: [:edit, :update, :destroy, :show]
   before_action :logged_in_user
   before_action :not_suspended_user
   before_action :admin_user,        only: [:new, :create, :index]
@@ -80,35 +83,20 @@ class UsersController < ApplicationController
       @user = User.find(params[:id])
     end
 
-    def not_suspended_user
-      validate_user not_suspended_user?
-    end
-
     def admin_user
       validate_user super_or_admin? current_user
     end
 
     def correct_user
-      validate_user current_user? get_user(params[:id])
+      validate_user current_user? @user
     end
 
     def destroy_user
-      validate_user valid_destroy_user? get_user(params[:id])
+      validate_user valid_destroy_user? @user
     end
 
     def show_user
-      validate_user valid_show_user? get_user(params[:id])
-    end
-
-    def get_user user_id
-      @user = User.find(user_id)
-    end
-
-    def validate_user user_valid
-      unless user_valid
-        flash[:error] = 'Access denied'
-        redirect_to root_path
-      end
+      validate_user valid_show_user? @user
     end
 
 end
