@@ -180,4 +180,26 @@ feature 'User edit/update suspension status' do
       expect(current_path).to eq user_path(user)
     end
   end
+
+  context 'logged in as user whose account is suspended' do
+    let(:user) { create_logged_in_user }
+    let(:edit_user) { attributes_for :edit_user }
+    let(:super_admin_user) { create :super_admin_user }
+
+    scenario 'user will be logged out on first page request following suspension', js: true do
+      visit edit_user_path(user)
+      user_edit_form( edit_user[:name],
+                      edit_user[:email],
+                      edit_user[:password],
+                      edit_user[:password])
+      Suspension.create(user_id: user.id, assignor_id: super_admin_user.id)
+      click_button 'Update User'
+      expect(user.name).to eq user.reload.name
+      expect(page).to have_css '.alert-error'
+      expect(page).to have_link('Log in', href: log_in_path)
+      expect(page).not_to have_link('Profile')
+      expect(page).not_to have_link('Log out', href: log_out_path)
+      expect(current_path).to eq root_path
+    end
+  end
 end

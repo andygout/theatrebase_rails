@@ -9,7 +9,11 @@ module UsersHelper
   end
 
   def not_suspended_user
-    validate_user !current_user.suspension
+    if current_user.suspension
+      log_out
+      flash[:error] = 'Account suspended'
+      redirect_to root_path
+    end
   end
 
   def valid_admin_status_assignor? user
