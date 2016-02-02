@@ -1,12 +1,16 @@
 require 'rails_helper'
 
 describe User, type: :model do
-  context 'relations' do
+  context 'associations' do
     it { should have_one :admin }
     it { should have_one(:admin_status_assignor).through(:admin) }
     it { should have_many :admins }
     it { should have_many(:admin_status_assignees).through(:admins) }
     it { should have_one :super_admin }
+    it { should have_one :suspension }
+    it { should have_one(:suspension_status_assignor).through(:suspension) }
+    it { should have_many :suspensions }
+    it { should have_many(:suspension_status_assignees).through(:suspensions) }
     it { should belong_to :creator }
     it { should have_many :created_users }
     it { should belong_to :updater }

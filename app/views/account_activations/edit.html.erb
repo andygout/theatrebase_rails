@@ -1,6 +1,6 @@
-<% provide(:title, 'Set Password') %>
+<% provide(:title, "Set password: #{@page_title}") %>
 
-<h1 class='header-text'>Set Password</h1>
+<h1 class='header-text'>Set password: <%= @page_title %></h1>
 
 <fieldset class='form'>
   <%= form_for(@user, url: account_activation_path(params[:id])) do |user| %>

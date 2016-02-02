@@ -1,6 +1,6 @@
-<% provide(:title, 'Edit User Admin Status') %>
+<% provide(:title, "Edit user admin status: #{@page_title}") %>
 
-<h1 class='header-text'>Edit User Admin Status</h1>
+<h1 class='header-text'>Edit user admin status: <%= @page_title %></h1>
 
 <fieldset class='form'>
   <%= form_for(@user, url: admin_status_path(params[:user_id])) do |user| %>

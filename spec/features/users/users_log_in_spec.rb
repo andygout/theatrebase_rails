@@ -28,7 +28,7 @@ feature 'User log in' do
     scenario 'details of non-existing user', js: true do
       fill_in 'session_email',    with: second_user[:email]
       fill_in 'session_password', with: second_user[:password]
-      click_button 'Log in'
+      click_button 'Log In'
       expect(page).to have_css '.alert-error'
       expect(page).not_to have_css '.alert-success'
       expect(page).to have_link('Log in', href: log_in_path)
@@ -40,7 +40,7 @@ feature 'User log in' do
     scenario 'correct email address but incorrect password', js: true do
       fill_in 'session_email',    with: user.email
       fill_in 'session_password', with: 'incorrect-password'
-      click_button 'Log in'
+      click_button 'Log In'
       expect(page).to have_css '.alert-error'
       expect(page).not_to have_css '.alert-success'
       expect(page).to have_link('Log in', href: log_in_path)
@@ -52,7 +52,7 @@ feature 'User log in' do
     scenario 'correct password but incorrect email address', js: true do
       fill_in 'session_email',    with: 'incorrect@example.com'
       fill_in 'session_password', with: user.password
-      click_button 'Log in'
+      click_button 'Log In'
       expect(page).to have_css '.alert-error'
       expect(page).not_to have_css '.alert-success'
       expect(page).to have_link('Log in', href: log_in_path)
@@ -64,7 +64,7 @@ feature 'User log in' do
     scenario 'error alert will disappear when visiting subsequent page', js: true do
       fill_in 'session_email',    with: second_user[:email]
       fill_in 'session_password', with: second_user[:password]
-      click_button 'Log in'
+      click_button 'Log In'
       visit root_path
       expect(page).not_to have_css '.alert-error'
     end
@@ -112,7 +112,7 @@ feature 'Remembering user across sessions' do
       fill_in 'session_email',    with: user.email
       fill_in 'session_password', with: user.password
       find(:css, '#session_remember_me').set true
-      click_button 'Log in'
+      click_button 'Log In'
       expire_cookies
       visit root_path
       expect(page).to have_link('Profile', href: user_path(user))
@@ -149,7 +149,7 @@ feature '\'Remember created at\' time' do
       fill_in 'session_email',    with: user.email
       fill_in 'session_password', with: user.password
       find(:css, '#session_remember_me').set true
-      click_button 'Log in'
+      click_button 'Log In'
       expect(user.reload.remember_created_at).not_to eq(nil)
       first_remember_created_at_time = user.reload.remember_created_at
       click_link 'Log out'
@@ -157,7 +157,7 @@ feature '\'Remember created at\' time' do
       fill_in 'session_email',    with: user.email
       fill_in 'session_password', with: user.password
       find(:css, '#session_remember_me').set true
-      click_button 'Log in'
+      click_button 'Log In'
       expect(user.reload.remember_created_at).not_to eq(nil)
       second_remember_created_at_time = user.reload.remember_created_at
       expect(first_remember_created_at_time).not_to eq(second_remember_created_at_time)
@@ -216,13 +216,13 @@ feature 'Friendly forwarding' do
       visit edit_user_path(user)
       fill_in 'session_email',    with: user.email
       fill_in 'session_password', with: user.password
-      click_button 'Log in'
+      click_button 'Log In'
       expect(current_path).to eq edit_user_path(user)
       click_link 'Log out'
       visit log_in_path
       fill_in 'session_email',    with: user.email
       fill_in 'session_password', with: user.password
-      click_button 'Log in'
+      click_button 'Log In'
       expect(current_path).to eq user_path(user)
     end
   end
@@ -232,7 +232,7 @@ feature 'Friendly forwarding' do
       visit edit_user_path(second_user)
       fill_in 'session_email',    with: user.email
       fill_in 'session_password', with: user.password
-      click_button 'Log in'
+      click_button 'Log In'
       expect(page).to have_css '.alert-error'
       expect(page).not_to have_css '.alert-success'
       expect(current_path).to eq root_path
@@ -240,7 +240,7 @@ feature 'Friendly forwarding' do
       visit log_in_path
       fill_in 'session_email',    with: user.email
       fill_in 'session_password', with: user.password
-      click_button 'Log in'
+      click_button 'Log In'
       expect(current_path).to eq user_path(user)
     end
   end

@@ -1,7 +1,7 @@
 class ProductionsController < ApplicationController
 
   before_action :get_production,      only: [:edit, :update, :destroy, :show]
-  before_action :logged_in_user,      only: [:new, :create, :edit, :destroy]
+  before_action :logged_in_user,      only: [:new, :create, :edit, :update, :destroy]
   before_action :not_suspended_user,  only: [:new, :create, :edit, :update, :destroy]
 
   def new
@@ -55,17 +55,6 @@ class ProductionsController < ApplicationController
 
     def get_production
       @production = Production.find(params[:id])
-    end
-
-    def not_suspended_user
-      validate_user not_suspended_user?
-    end
-
-    def validate_user user_valid
-      unless user_valid
-        flash[:error] = 'Access denied'
-        redirect_to root_path
-      end
     end
 
 end

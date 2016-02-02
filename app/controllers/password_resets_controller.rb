@@ -21,9 +21,11 @@ class PasswordResetsController < ApplicationController
   end
 
   def edit
+    @page_title = "#{@user.name} (#{@user.email})"
   end
 
   def update
+    @page_title = "#{@user.name} (#{@user.email})"
     if password_blank?
       @user.errors.add(:password, 'Password cannot be blank')
       render :edit

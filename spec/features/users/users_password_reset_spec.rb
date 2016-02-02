@@ -109,7 +109,7 @@ feature 'User password reset' do
       click_link 'Log in'
       fill_in 'session_email',    with: user.email
       fill_in 'session_password', with: user.password
-      click_button 'Log in'
+      click_button 'Log In'
       expect(page).to have_css '.alert-error'
       expect(page).not_to have_css '.alert-success'
       expect(page).to have_link('Log in', href: log_in_path)
@@ -118,7 +118,7 @@ feature 'User password reset' do
       expect(current_path).to eq log_in_path
       fill_in 'session_email',    with: user.email
       fill_in 'session_password', with: 'new-password'
-      click_button 'Log in'
+      click_button 'Log In'
       expect(page).to have_css '.alert-success'
       expect(page).not_to have_css '.alert-error'
       expect(page).to have_link('Profile', href: user_path(user))

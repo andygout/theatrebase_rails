@@ -1,5 +1,8 @@
 class UsersController < ApplicationController
 
+  include UsersHelper
+
+  before_action :get_user,          only: [:edit, :update, :destroy, :show]
   before_action :logged_in_user
   before_action :not_suspended_user
   before_action :admin_user,        only: [:new, :create, :index]
@@ -12,11 +15,7 @@ class UsersController < ApplicationController
   end
 
   def create
-    @password = SecureRandom.urlsafe_base64
-    params[:user][:password] = @password
-    params[:user][:password_confirmation] = @password
-    params[:user][:updater_id] = current_user.id
-    @user = current_user.created_users.build_with_user(user_params, current_user)
+    @user = current_user.created_users.build_with_user(user_create_params, current_user)
     if @user.save
       @user.send_activation_email
       flash[:success] = "Account activation details for #{@user.name} sent to: #{@user.email}"
@@ -27,16 +26,17 @@ class UsersController < ApplicationController
   end
 
   def edit
-    @page_title = @user.name
+    @page_title = "#{@user.name} (#{@user.email})"
   end
 
   def update
-    params[:user][:updater_id] = current_user.id
-    if @user.update(user_params)
+    if @user.update(user_update_params)
+      @user.update_attribute(:updater_id, current_user.id)
       flash[:success] = "User updated successfully: #{@user.name}"
       redirect_to @user
     else
-      @page_title = User.find(params[:id]).name
+      @user_name_email = User.find(params[:id])
+      @page_title = "#{@user_name_email.name} (#{@user_name_email.email})"
       render :edit
     end
   end
@@ -53,6 +53,7 @@ class UsersController < ApplicationController
   end
 
   def show
+    @page_title = "#{@user.name} (#{@user.email})"
     redirect_to root_path and return unless @user.activated?
   end
 
@@ -62,22 +63,24 @@ class UsersController < ApplicationController
 
   private
 
-    def user_params
+    def user_create_params
+      params
+        .require(:user)
+        .permit(:name,
+                :email)
+    end
+
+    def user_update_params
       params
         .require(:user)
         .permit(:name,
                 :email,
                 :password,
-                :password_confirmation,
-                :updater_id)
+                :password_confirmation)
     end
 
     def get_user
       @user = User.find(params[:id])
-    end
-
-    def not_suspended_user
-      validate_user not_suspended_user?
     end
 
     def admin_user
@@ -85,26 +88,15 @@ class UsersController < ApplicationController
     end
 
     def correct_user
-      validate_user current_user? get_user(params[:id])
+      validate_user current_user? @user
     end
 
     def destroy_user
-      validate_user valid_destroy_user? get_user(params[:id])
+      validate_user valid_destroy_user? @user
     end
 
     def show_user
-      validate_user valid_show_user? get_user(params[:id])
-    end
-
-    def get_user user_id
-      @user = User.find(user_id)
-    end
-
-    def validate_user user_valid
-      unless user_valid
-        flash[:error] = 'Access denied'
-        redirect_to root_path
-      end
+      validate_user valid_show_user? @user
     end
 
 end

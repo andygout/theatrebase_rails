@@ -160,7 +160,7 @@ feature 'User edit/update' do
       expect(current_path).to eq log_in_path
       fill_in 'session_email',    with: edit_user[:email]
       fill_in 'session_password', with: edit_user[:password]
-      click_button 'Log in'
+      click_button 'Log In'
       expect(page).to have_css '.alert-success'
       expect(page).not_to have_css '.alert-error'
       expect(page).to have_link('Profile', href: user_path(user))
@@ -191,7 +191,7 @@ feature 'User edit/update' do
       visit log_in_path
       fill_in 'session_email',    with: edit_user[:email]
       fill_in 'session_password', with: user.password
-      click_button 'Log in'
+      click_button 'Log In'
       expect(page).to have_css '.alert-success'
       expect(page).not_to have_css '.alert-error'
       expect(page).to have_link('Profile', href: user_path(user))
