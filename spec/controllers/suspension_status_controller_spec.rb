@@ -357,4 +357,15 @@ describe SuspensionStatusController, type: :controller do
       expect(response).to redirect_to log_in_path
     end
   end
+
+  context 'logged in as user whose account is suspended' do
+    it 'user will be logged out on first page request following suspension' do
+      session[:user_id] = user.id
+      Suspension.create(user_id: user.id, assignor_id: super_admin_user.id)
+      expect(session[:user_id]).to eq user.id
+      get :edit, user_id: user
+      expect(session[:user_id]).to be nil
+      expect(response).to redirect_to root_path
+    end
+  end
 end

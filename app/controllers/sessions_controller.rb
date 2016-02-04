@@ -16,10 +16,10 @@ class SessionsController < ApplicationController
   def clearance_check user
     if !user.activated?
       flash[:error] = 'Account not activated: check your email for the activation link'
-      redirect_to root_path
+      validate_user false
     elsif user.suspension
       flash[:error] = 'Account suspended'
-      redirect_to root_path
+      validate_user false
     else
       log_in user
       params[:session][:remember_me] == '1' ? remember(user) : forget(user)

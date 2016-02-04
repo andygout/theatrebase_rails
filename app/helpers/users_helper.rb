@@ -9,7 +9,18 @@ module UsersHelper
   end
 
   def not_suspended_user
-    validate_user !current_user.suspension
+    if current_user.suspension
+      log_out
+      flash[:error] = 'Account suspended'
+      validate_user false
+    end
+  end
+
+  def validate_user user_valid
+    unless user_valid
+      flash[:error] ||= 'Access denied'
+      redirect_to root_path
+    end
   end
 
   def valid_admin_status_assignor? user
@@ -49,13 +60,6 @@ module UsersHelper
 
   def not_super_or_admin? user
     !user.super_admin && !user.admin
-  end
-
-  def validate_user user_valid
-    unless user_valid
-      flash[:error] = 'Access denied'
-      redirect_to root_path
-    end
   end
 
 end
