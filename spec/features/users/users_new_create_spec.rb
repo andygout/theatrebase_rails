@@ -287,41 +287,4 @@ feature 'User new/create' do
       expect(current_path).to eq user_path(new_user)
     end
   end
-
-  context 'viewing user' do
-    before(:each) do
-      create_user user
-    end
-
-    scenario 'user will not be included in user index list if account not activated', js: true do
-      user_email = acquire_email_address ActionMailer::Base.deliveries.last.to_s
-      user = User.find_by(email: user_email)
-      visit users_path
-      expect(page).not_to have_content user.name
-    end
-
-    scenario 'user will be included in user index list once account activated', js: true do
-      user = click_resource_link ActionMailer::Base.deliveries.last.to_s, 'account_activation'
-      fill_in 'user_password',              with: edit_user[:password]
-      fill_in 'user_password_confirmation', with: edit_user[:password]
-      click_button 'Set Password'
-      click_link 'Log out'
-      log_in admin_user
-      visit users_path
-      expect(page).to have_content user.name
-    end
-
-    scenario 'visiting user page will redirect to root if account not activated', js: true do
-      user_email = acquire_email_address ActionMailer::Base.deliveries.last.to_s
-      user = User.find_by(email: user_email)
-      visit user_path(user)
-      expect(current_path).to eq root_path
-    end
-
-    scenario 'visiting user page will display user once account activated', js: true do
-      user = click_resource_link ActionMailer::Base.deliveries.last.to_s, 'account_activation'
-      visit user_path(user)
-      expect(current_path).to eq user_path(user)
-    end
-  end
 end
