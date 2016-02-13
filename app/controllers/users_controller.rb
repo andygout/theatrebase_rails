@@ -54,11 +54,10 @@ class UsersController < ApplicationController
 
   def show
     @page_title = "#{@user.name} (#{@user.email})"
-    redirect_to root_path and return unless @user.activated?
   end
 
   def index
-    @users = User.where(activated: true).order(:id).paginate(page: params[:page])
+    @users = User.order(:id).paginate(page: params[:page])
   end
 
   private
