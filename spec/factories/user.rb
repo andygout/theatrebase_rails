@@ -16,6 +16,12 @@ FactoryGirl.define do
       email 'fredwhite@example.com'
     end
 
+    factory :unactivated_user do
+      name          'Ted Barnes'
+      email         'tedbarnes@example.com'
+      activated_at  nil
+    end
+
     factory :suspended_user do
       name  'Charles Vincent'
       email 'charlesvincent@example.com'

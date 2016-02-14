@@ -9,14 +9,17 @@ class PasswordResetsController < ApplicationController
 
   def create
     @user = User.find_by(email: params[:password_reset][:email].downcase)
-    if @user
+    if !@user
+      flash.now[:error] = 'Email address not found'
+      render :new
+    elsif !@user.activated_at
+      flash[:error] = 'Account not yet activated - please check your email for account activation instructions'
+      redirect_to root_path
+    else
       @user.create_reset_digest
       @user.send_password_reset_email
       flash[:success] = 'Please check your email for password reset instructions'
       redirect_to root_path
-    else
-      flash.now[:error] = 'Email address not found'
-      render :new
     end
   end
 

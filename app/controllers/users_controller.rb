@@ -18,7 +18,7 @@ class UsersController < ApplicationController
     @user = current_user.created_users.build_with_user(user_create_params, current_user)
     if @user.save
       @user.send_activation_email
-      flash[:success] = "Account activation details for #{@user.name} sent to: #{@user.email}"
+      flash[:success] = "Account activation instructions for #{@user.name} sent to: #{@user.email}"
       redirect_to root_path
     else
       render :new
