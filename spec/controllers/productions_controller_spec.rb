@@ -141,21 +141,21 @@ describe ProductionsController, type: :controller do
   end
 
   context 'attempt update production' do
-    it 'as super-admin: succed and redirect to production display page' do
+    it 'as super-admin: succeed and redirect to production display page' do
       session[:user_id] = super_admin_user.id
       patch :update, id: production, production: { title: edit_production[:title] }
       expect(edit_production[:title]).to eq production.reload.title
       expect(response).to redirect_to production_path(production)
     end
 
-    it 'as admin: succed and redirect to production display page' do
+    it 'as admin: succeed and redirect to production display page' do
       session[:user_id] = admin_user.id
       patch :update, id: production, production: { title: edit_production[:title] }
       expect(edit_production[:title]).to eq production.reload.title
       expect(response).to redirect_to production_path(production)
     end
 
-    it 'as non-admin: succed and redirect to production display page' do
+    it 'as non-admin: succeed and redirect to production display page' do
       session[:user_id] = user.id
       patch :update, id: production, production: { title: edit_production[:title] }
       expect(edit_production[:title]).to eq production.reload.title
