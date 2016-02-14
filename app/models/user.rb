@@ -110,8 +110,8 @@ class User < ActiveRecord::Base
   end
 
   def activate
-    update( activated:    true,
-            activated_at: Time.zone.now)
+    update( activation_digest:  nil,
+            activated_at:       Time.zone.now)
   end
 
   def send_activation_email

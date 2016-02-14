@@ -14,7 +14,7 @@ class SessionsController < ApplicationController
   end
 
   def clearance_check user
-    if !user.activated?
+    if !user.activated_at?
       flash[:error] = 'Account not activated: check your email for the activation link'
       validate_user false
     elsif user.suspension

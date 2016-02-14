@@ -4,12 +4,11 @@ class CreateUsers < ActiveRecord::Migration
       t.string      :name
       t.string      :email
       t.string      :password_digest
-      t.string      :remember_digest
       t.string      :activation_digest
-      t.boolean     :activated
       t.datetime    :activated_at
       t.string      :reset_digest
       t.datetime    :reset_sent_at
+      t.string      :remember_digest
       t.datetime    :remember_created_at
       t.datetime    :current_log_in_at
       t.datetime    :last_log_in_at

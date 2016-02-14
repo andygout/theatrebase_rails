@@ -4,7 +4,6 @@ FactoryGirl.define do
     name          'Andy Gout'
     email         'andygout@example.com'
     password      'foobar'
-    activated     true
     activated_at  { Time.zone.now }
 
     factory :second_user do
@@ -15,6 +14,12 @@ FactoryGirl.define do
     factory :third_user do
       name  'Fred White'
       email 'fredwhite@example.com'
+    end
+
+    factory :unactivated_user do
+      name          'Ted Barnes'
+      email         'tedbarnes@example.com'
+      activated_at  nil
     end
 
     factory :suspended_user do

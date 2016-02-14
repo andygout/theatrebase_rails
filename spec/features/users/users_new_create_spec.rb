@@ -131,7 +131,7 @@ feature 'User new/create' do
       fill_in 'session_email',    with: user[:email]
       fill_in 'session_password', with: user[:password]
       click_button 'Log In'
-      expect(new_user.activated?).to eq false
+      expect(new_user.activated_at).to eq nil
       expect(page).to have_css '.alert-error'
       expect(page).not_to have_css '.alert-success'
       expect(page).to have_link('Log in', href: log_in_path)
@@ -144,7 +144,7 @@ feature 'User new/create' do
       user_email = acquire_email_address ActionMailer::Base.deliveries.last.to_s
       visit edit_account_activation_path('invalid-token', email: user_email)
       user = User.find_by(email: user_email)
-      expect(user.activated?).to eq false
+      expect(user.activated_at).to eq nil
       expect(page).to have_css '.alert-error'
       expect(page).not_to have_css '.alert-success'
       expect(page).to have_link('Log in', href: log_in_path)
@@ -159,7 +159,7 @@ feature 'User new/create' do
       user_email = acquire_email_address msg
       visit edit_account_activation_path(activation_token, email: 'incorrect-email')
       user = User.find_by(email: user_email)
-      expect(user.activated?).to eq false
+      expect(user.activated_at).to eq nil
       expect(page).to have_css '.alert-error'
       expect(page).not_to have_css '.alert-success'
       expect(page).to have_link('Log in', href: log_in_path)
@@ -172,7 +172,7 @@ feature 'User new/create' do
       msg = ActionMailer::Base.deliveries.last.to_s
       user = click_resource_link msg, 'account_activation'
       account_activation_token = acquire_token msg
-      expect(user.activated?).to eq true
+      expect(user.activated_at).not_to eq nil
       expect(page).to have_css '.alert-success'
       expect(page).not_to have_css '.alert-error'
       expect(page).to have_link('Profile', href: user_path(user))
