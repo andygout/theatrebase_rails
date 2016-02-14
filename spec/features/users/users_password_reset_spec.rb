@@ -40,7 +40,7 @@ feature 'User password reset' do
     end
 
     scenario 'redirects to home page if user not activated', js: true do
-      user.update_attribute(:activated, false)
+      user.update_attribute(:activated_at, nil)
       click_resource_link @msg, 'password_reset'
       expect(current_path).to eq root_path
     end
