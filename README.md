@@ -216,11 +216,33 @@ Technologies used:
 Testing:
 -------
 
-- [RSpec](http://rspec.info/): Behaviour Driven
-Development for Ruby
+- [RSpec](http://rspec.info/): Behaviour Driven Development for Ruby
 - [Capybara](https://github.com/jnicklas/capybara): library written in the Ruby programming language which makes it easy to simulate how a user interacts with your application
 - [Poltergeist](https://github.com/teampoltergeist/poltergeist): PhantomJS driver for Capybara; allows you to run your Capybara tests on a headless WebKit browser, provided by PhantomJS
 - [SimpleCov](https://github.com/colszowka/simplecov): code coverage for Ruby 1.9+ with a powerful configuration library and automatic merging of coverage across test suites
+- [Selenium WebDriver](http://www.seleniumhq.org/projects/webdriver/): browser automation for tests; accepts commands and sends them to a browser, implemented through a browser-specific browser driver, which sends commands to a browser, and retrieves results
+
+#### ChromeDriver
+- [ChromeDriver](https://sites.google.com/a/chromium.org/chromedriver/downloads): runs WebDriver tests on Chrome browser (Firefox is Selenium's default browser); add below to respective files:-
+
+`Gemfile`:
+`gem 'chromedriver-helper', '~> 1.0'`
+
+`spec/spec_helper`:
+```ruby
+require 'capybara'
+require 'show_me_the_cookies'
+
+Capybara.register_driver :chrome do |app|
+  Capybara::Selenium::Driver.new(app, :browser => :chrome)
+end
+Capybara.javascript_driver = :chrome
+ShowMeTheCookies.register_adapter(:chrome, ShowMeTheCookies::Selenium)
+```
+
+Tests also require `page.execute_script 'window.close();'` at end of `within_window` method
+
+*N.B. Tests fail on Travis CI so only usefully applied locally*
 
 
 Site setup
