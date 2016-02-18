@@ -17,11 +17,10 @@ class AccountActivationsController < ApplicationController
 
   def update
     @page_title = "#{@user.name} (#{@user.email})"
-    params[:user][:updater_id] = current_user.id
     if password_blank?
       @user.errors.add(:password, 'Password cannot be blank')
       render :edit
-    elsif @user.update(user_params)
+    elsif @user.update(user_params.merge(updater_id: current_user.id))
       flash[:success] = 'Password has been set'
       redirect_to @user
     else
@@ -35,8 +34,7 @@ class AccountActivationsController < ApplicationController
       params
         .require(:user)
         .permit(:password,
-                :password_confirmation,
-                :updater_id)
+                :password_confirmation)
     end
 
     def get_user
