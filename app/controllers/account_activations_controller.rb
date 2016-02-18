@@ -17,7 +17,6 @@ class AccountActivationsController < ApplicationController
 
   def update
     @page_title = "#{@user.name} (#{@user.email})"
-    params[:user][:updater_id] = current_user.id
     if password_blank?
       @user.errors.add(:password, 'Password cannot be blank')
       render :edit
@@ -37,6 +36,7 @@ class AccountActivationsController < ApplicationController
         .permit(:password,
                 :password_confirmation,
                 :updater_id)
+        .merge(updater_id: current_user.id)
     end
 
     def get_user
