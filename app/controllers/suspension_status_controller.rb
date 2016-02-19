@@ -11,7 +11,6 @@ class SuspensionStatusController < ApplicationController
   end
 
   def update
-    params[:user][:suspension_attributes][:assignor_id] = current_user.id
     if @user.update(user_params)
       flash[:success] = "Suspension status updated successfully: #{@user.name}"
       redirect_to @user
@@ -27,8 +26,8 @@ class SuspensionStatusController < ApplicationController
       params
         .require(:user)
         .permit(suspension_attributes: [:_destroy,
-                                        :id,
-                                        :assignor_id])
+                                        :id])
+        .deep_merge(suspension_attributes: { assignor_id: current_user.id })
     end
 
     def get_user

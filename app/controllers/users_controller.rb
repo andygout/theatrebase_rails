@@ -31,7 +31,6 @@ class UsersController < ApplicationController
 
   def update
     if @user.update(user_update_params)
-      @user.update_attribute(:updater_id, current_user.id)
       flash[:success] = "User updated successfully: #{@user.name}"
       redirect_to @user
     else
@@ -76,6 +75,7 @@ class UsersController < ApplicationController
                 :email,
                 :password,
                 :password_confirmation)
+        .merge(updater_id: current_user.id)
     end
 
     def get_user

@@ -11,7 +11,6 @@ class AdminStatusController < ApplicationController
   end
 
   def update
-    params[:user][:admin_attributes][:assignor_id] = current_user.id
     if @user.update(user_params)
       flash[:success] = "Admin status updated successfully: #{@user.name}"
       redirect_to @user
@@ -27,8 +26,8 @@ class AdminStatusController < ApplicationController
       params
         .require(:user)
         .permit(admin_attributes: [:_destroy,
-                                   :id,
-                                   :assignor_id])
+                                   :id])
+        .deep_merge(admin_attributes: { assignor_id: current_user.id })
     end
 
     def get_user
