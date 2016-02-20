@@ -11,13 +11,9 @@ class AdminStatusController < ApplicationController
   end
 
   def update
-    if @user.update(user_params)
-      flash[:success] = "Admin status updated successfully: #{@user.name}"
-      redirect_to @user
-    else
-      @page_title = "#{@user.name} (#{@user.email})"
-      render :edit
-    end
+    @user.update(user_params)
+    flash[:success] = "Admin status updated successfully: #{@user.name}"
+    redirect_to @user
   end
 
     private
