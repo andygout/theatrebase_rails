@@ -1,6 +1,11 @@
 require 'rails_helper'
 
 describe Production, type: :model do
+  context 'associations' do
+    it { should belong_to :creator }
+    it { should belong_to :updater }
+  end
+
   let(:production) { build :production }
 
   context 'valid details' do
