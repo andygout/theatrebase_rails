@@ -76,6 +76,15 @@ class User < ActiveRecord::Base
     class_name: :User,
     foreign_key: :updater_id
 
+  has_many :created_productions,
+    -> { extending WithUserAssociationExtension },
+    class_name: :Production,
+    foreign_key: :creator_id
+
+  has_many :updated_productions,
+    class_name: :Production,
+    foreign_key: :updater_id
+
   def User.digest string
     cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST : BCrypt::Engine.cost
     BCrypt::Password.create(string, cost: cost)
