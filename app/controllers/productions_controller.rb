@@ -9,7 +9,7 @@ class ProductionsController < ApplicationController
   end
 
   def create
-    @production = Production.new(production_params)
+    @production = current_user.created_productions.build_with_user(production_params, current_user)
     if @production.save
       flash[:success] = "Production created successfully: #{@production.title}"
       redirect_to @production
@@ -51,6 +51,7 @@ class ProductionsController < ApplicationController
       params
         .require(:production)
         .permit(:title)
+        .merge(updater_id: current_user.id)
     end
 
     def get_production

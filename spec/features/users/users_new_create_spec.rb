@@ -22,7 +22,7 @@ feature 'User new/create' do
       expect(page).not_to have_link('Add user', href: new_user_path)
     end
 
-    scenario 'click on \'Add user\' link; display new user form' do
+    scenario 'click on \'Add user\' link; display new user form', js: true do
       visit root_path
       click_link 'Add user'
       expect(current_path).to eq new_user_path

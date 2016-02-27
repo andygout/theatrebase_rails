@@ -15,6 +15,8 @@ describe User, type: :model do
     it { should have_many :created_users }
     it { should belong_to :updater }
     it { should have_many :updated_users }
+    it { should have_many :created_productions }
+    it { should have_many :updated_productions }
   end
 
   let(:user) { build :user }

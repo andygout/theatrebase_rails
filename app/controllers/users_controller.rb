@@ -62,10 +62,14 @@ class UsersController < ApplicationController
   private
 
     def user_create_params
+      @password = SecureRandom.urlsafe_base64
       params
         .require(:user)
         .permit(:name,
                 :email)
+        .merge( password: @password,
+                password_confirmation: @password,
+                updater_id: current_user.id)
     end
 
     def user_update_params
