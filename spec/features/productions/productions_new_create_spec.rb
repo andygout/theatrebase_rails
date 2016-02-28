@@ -27,10 +27,10 @@ feature 'Production new/create' do
       expect(page).to have_content 'Hamlet', count: 2
       @production = Production.last
       expect(page).to have_current_path production_path(@production)
-      expect(@production.creator).to eq(user)
-      expect(@production.updater).to eq(user)
-      expect(user.created_productions).to include(@production)
-      expect(user.updated_productions).to include(@production)
+      expect(@production.creator).to eq user
+      expect(@production.updater).to eq user
+      expect(user.created_productions).to include @production
+      expect(user.updated_productions).to include @production
     end
   end
 

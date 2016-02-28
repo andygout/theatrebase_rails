@@ -6,15 +6,15 @@ describe UserMailer, type: :mailer do
     let(:mail) { UserMailer.account_activation(user) }
 
     it 'renders the headers' do
-      expect(mail.subject).to eq('Account activation')
-      expect(mail.to).to eq([user.email])
-      expect(mail.from).to eq(['from@example.com'])
+      expect(mail.subject).to eq 'Account activation'
+      expect(mail.to).to eq [user.email]
+      expect(mail.from).to eq ['from@example.com']
     end
 
     it 'renders the body' do
-      expect(mail.body.encoded).to match(user.name)
-      expect(mail.body.encoded).to match(user.activation_token)
-      expect(mail.body.encoded).to match(CGI::escape(user.email))
+      expect(mail.body.encoded).to match user.name
+      expect(mail.body.encoded).to match user.activation_token
+      expect(mail.body.encoded).to match CGI::escape(user.email)
     end
   end
 
@@ -24,16 +24,16 @@ describe UserMailer, type: :mailer do
 
     it 'renders the headers' do
       user.reset_token = User.new_token
-      expect(mail.subject).to eq('Password reset')
-      expect(mail.to).to eq([user.email])
-      expect(mail.from).to eq(['from@example.com'])
+      expect(mail.subject).to eq 'Password reset'
+      expect(mail.to).to eq [user.email]
+      expect(mail.from).to eq ['from@example.com']
     end
 
     it 'renders the body' do
       user.reset_token = User.new_token
-      expect(mail.body.encoded).to match(user.name)
-      expect(mail.body.encoded).to match(user.reset_token)
-      expect(mail.body.encoded).to match(CGI::escape(user.email))
+      expect(mail.body.encoded).to match user.name
+      expect(mail.body.encoded).to match user.reset_token
+      expect(mail.body.encoded).to match CGI::escape(user.email)
     end
   end
 end
