@@ -25,7 +25,7 @@ feature 'User new/create' do
     scenario 'click on \'Add user\' link; display new user form', js: true do
       visit root_path
       click_link 'Add user'
-      expect(current_path).to eq new_user_path
+      expect(page).to have_current_path new_user_path
     end
   end
 
@@ -44,7 +44,7 @@ feature 'User new/create' do
       expect(page).to have_css '.alert-success'
       expect(page).not_to have_css '.alert-error'
       expect(page).not_to have_css '.field_with_errors'
-      expect(current_path).to eq root_path
+      expect(page).to have_current_path root_path
     end
 
     scenario 'user created; creator and updater associations (w/admin) created', js: true do
@@ -73,7 +73,7 @@ feature 'User new/create' do
       expect(page).to have_css '.alert-success'
       expect(page).not_to have_css '.alert-error'
       expect(page).not_to have_css '.field_with_errors'
-      expect(current_path).to eq root_path
+      expect(page).to have_current_path root_path
     end
 
     scenario 'user created; creator and updater associations (w/admin) created', js: true do
@@ -101,7 +101,7 @@ feature 'User new/create' do
       expect(page).to have_css '.alert-error'
       expect(page).to have_css '.field_with_errors'
       expect(page).not_to have_css '.alert-success'
-      expect(current_path).to eq users_path
+      expect(page).to have_current_path users_path
     end
 
     scenario 'invalid email', js: true do
@@ -111,7 +111,7 @@ feature 'User new/create' do
       expect(page).to have_css '.alert-error'
       expect(page).to have_css '.field_with_errors'
       expect(page).not_to have_css '.alert-success'
-      expect(current_path).to eq users_path
+      expect(page).to have_current_path users_path
     end
   end
 
@@ -137,7 +137,7 @@ feature 'User new/create' do
       expect(page).to have_link('Log in', href: log_in_path)
       expect(page).not_to have_link('Profile', href: user_path(new_user))
       expect(page).not_to have_link('Log out', href: log_out_path)
-      expect(current_path).to eq root_path
+      expect(page).to have_current_path root_path
     end
 
     scenario 'activation link not valid if invalid token given', js: true do
@@ -150,7 +150,7 @@ feature 'User new/create' do
       expect(page).to have_link('Log in', href: log_in_path)
       expect(page).not_to have_link('Profile', href: user_path(user))
       expect(page).not_to have_link('Log out', href: log_out_path)
-      expect(current_path).to eq root_path
+      expect(page).to have_current_path root_path
     end
 
     scenario 'activation link not valid if incorrect email given', js: true do
@@ -165,7 +165,7 @@ feature 'User new/create' do
       expect(page).to have_link('Log in', href: log_in_path)
       expect(page).not_to have_link('Profile', href: user_path(user))
       expect(page).not_to have_link('Log out', href: log_out_path)
-      expect(current_path).to eq root_path
+      expect(page).to have_current_path root_path
     end
 
     scenario 'activation link valid if valid token and correct email given', js: true do
@@ -178,7 +178,7 @@ feature 'User new/create' do
       expect(page).to have_link('Profile', href: user_path(user))
       expect(page).to have_link('Log out', href: log_out_path)
       expect(page).not_to have_link('Log in', href: log_in_path)
-      expect(current_path).to eq edit_account_activation_path(account_activation_token)
+      expect(page).to have_current_path edit_account_activation_path(account_activation_token, email: user.email)
     end
   end
 
@@ -197,7 +197,7 @@ feature 'User new/create' do
       expect(page).to have_css '.alert-error'
       expect(page).to have_css '.field_with_errors'
       expect(page).not_to have_css '.alert-success'
-      expect(current_path).to eq account_activation_path(@account_activation_token)
+      expect(page).to have_current_path account_activation_path(@account_activation_token)
     end
 
     scenario 'password cannot be set by entering password and confirmation that are too short', js: true do
@@ -207,7 +207,7 @@ feature 'User new/create' do
       expect(page).to have_css '.alert-error'
       expect(page).to have_css '.field_with_errors'
       expect(page).not_to have_css '.alert-success'
-      expect(current_path).to eq account_activation_path(@account_activation_token)
+      expect(page).to have_current_path account_activation_path(@account_activation_token)
     end
 
     scenario 'password cannot be set by entering non-matching password and confirmation', js: true do
@@ -217,7 +217,7 @@ feature 'User new/create' do
       expect(page).to have_css '.alert-error'
       expect(page).to have_css '.field_with_errors'
       expect(page).not_to have_css '.alert-success'
-      expect(current_path).to eq account_activation_path(@account_activation_token)
+      expect(page).to have_current_path account_activation_path(@account_activation_token)
     end
 
     scenario 'if password not set correctly existing creator and updater associations (w/admin) remain', js: true do
@@ -239,7 +239,7 @@ feature 'User new/create' do
       expect(page).to have_css '.alert-success'
       expect(page).not_to have_css '.alert-error'
       expect(page).not_to have_css '.field_with_errors'
-      expect(current_path).to eq user_path(@new_user)
+      expect(page).to have_current_path user_path(@new_user)
     end
 
     scenario 'password is set; existing creator association (w/admin) remains and updater association (w/itself) updated', js: true do
@@ -275,7 +275,7 @@ feature 'User new/create' do
       expect(page).to have_link('Log in', href: log_in_path)
       expect(page).not_to have_link('Profile')
       expect(page).not_to have_link('Log out', href: log_out_path)
-      expect(current_path).to eq log_in_path
+      expect(page).to have_current_path log_in_path
       fill_in 'session_email',    with: user[:email]
       fill_in 'session_password', with: edit_user[:password]
       click_button 'Log In'
@@ -284,7 +284,7 @@ feature 'User new/create' do
       expect(page).to have_link('Profile', href: user_path(new_user))
       expect(page).to have_link('Log out', href: log_out_path)
       expect(page).not_to have_link('Log in', href: log_in_path)
-      expect(current_path).to eq user_path(new_user)
+      expect(page).to have_current_path user_path(new_user)
     end
   end
 end

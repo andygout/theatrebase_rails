@@ -16,7 +16,7 @@ feature 'User log in' do
       expect(page).to have_link('Profile', href: user_path(user))
       expect(page).to have_link('Log out', href: log_out_path)
       expect(page).not_to have_link('Log in', href: log_in_path)
-      expect(current_path).to eq user_path(user)
+      expect(page).to have_current_path user_path(user)
     end
   end
 
@@ -34,7 +34,7 @@ feature 'User log in' do
       expect(page).to have_link('Log in', href: log_in_path)
       expect(page).not_to have_link('Profile')
       expect(page).not_to have_link('Log out', href: log_out_path)
-      expect(current_path).to eq log_in_path
+      expect(page).to have_current_path log_in_path
     end
 
     scenario 'correct email address but incorrect password', js: true do
@@ -46,7 +46,7 @@ feature 'User log in' do
       expect(page).to have_link('Log in', href: log_in_path)
       expect(page).not_to have_link('Profile')
       expect(page).not_to have_link('Log out', href: log_out_path)
-      expect(current_path).to eq log_in_path
+      expect(page).to have_current_path log_in_path
     end
 
     scenario 'correct password but incorrect email address', js: true do
@@ -58,7 +58,7 @@ feature 'User log in' do
       expect(page).to have_link('Log in', href: log_in_path)
       expect(page).not_to have_link('Profile')
       expect(page).not_to have_link('Log out', href: log_out_path)
-      expect(current_path).to eq log_in_path
+      expect(page).to have_current_path log_in_path
     end
 
     scenario 'error alert will disappear when visiting subsequent page', js: true do
@@ -81,7 +81,7 @@ feature 'User log out' do
       expect(page).to have_link('Log in', href: log_in_path)
       expect(page).not_to have_link('Profile', href: user_path(user))
       expect(page).not_to have_link('Log out', href: log_out_path)
-      expect(current_path).to eq root_path
+      expect(page).to have_current_path root_path
     end
   end
 
@@ -97,7 +97,7 @@ feature 'User log out' do
         expect(page).to have_link('Log in', href: log_in_path)
         expect(page).not_to have_link('Profile', href: user_path(user))
         expect(page).not_to have_link('Log out', href: log_out_path)
-        expect(current_path).to eq root_path
+        expect(page).to have_current_path root_path
       end
     end
   end
@@ -217,13 +217,13 @@ feature 'Friendly forwarding' do
       fill_in 'session_email',    with: user.email
       fill_in 'session_password', with: user.password
       click_button 'Log In'
-      expect(current_path).to eq edit_user_path(user)
+      expect(page).to have_current_path edit_user_path(user)
       click_link 'Log out'
       visit log_in_path
       fill_in 'session_email',    with: user.email
       fill_in 'session_password', with: user.password
       click_button 'Log In'
-      expect(current_path).to eq user_path(user)
+      expect(page).to have_current_path user_path(user)
     end
   end
 
@@ -235,13 +235,13 @@ feature 'Friendly forwarding' do
       click_button 'Log In'
       expect(page).to have_css '.alert-error'
       expect(page).not_to have_css '.alert-success'
-      expect(current_path).to eq root_path
+      expect(page).to have_current_path root_path
       click_link 'Log out'
       visit log_in_path
       fill_in 'session_email',    with: user.email
       fill_in 'session_password', with: user.password
       click_button 'Log In'
-      expect(current_path).to eq user_path(user)
+      expect(page).to have_current_path user_path(user)
     end
   end
 end

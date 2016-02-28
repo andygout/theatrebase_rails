@@ -15,7 +15,7 @@ feature 'Production show page' do
       visit productions_path
       click_link production.title
       expect(page).to have_content production.title
-      expect(current_path).to eq production_path(production)
+      expect(page).to have_current_path production_path(production)
     end
   end
 

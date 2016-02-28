@@ -29,7 +29,7 @@ feature 'Production edit/update' do
       expect(page).not_to have_css '.field_with_errors'
       expect(page).to have_content 'Macbeth', count: 2
       expect(page).not_to have_content production.title
-      expect(current_path).to eq production_path(production)
+      expect(page).to have_current_path production_path(production)
       expect(production.reload.creator).to eq(second_user)
       expect(production.updater).to eq(user)
       expect(second_user.created_productions).to include(production)
@@ -53,7 +53,7 @@ feature 'Production edit/update' do
       expect(page).to have_css '.field_with_errors'
       expect(page).not_to have_css '.alert-success'
       expect(page).to have_content production.title
-      expect(current_path).to eq production_path(production)
+      expect(page).to have_current_path production_path(production)
       expect(production.reload.creator).to eq(second_user)
       expect(production.updater).to eq(second_user)
       expect(second_user.created_productions).to include(production)

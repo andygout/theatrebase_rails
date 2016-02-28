@@ -10,23 +10,23 @@ feature 'User edit/update suspension status' do
     scenario 'attempt edit self (super-admin user): fail and redirect to home page', js: true do
       visit edit_suspension_status_path(super_admin_user)
       expect(page).to have_css '.alert-error'
-      expect(current_path).to eq root_path
+      expect(page).to have_current_path root_path
     end
 
     scenario 'attempt edit another super-admin user: fail and redirect to home page', js: true do
       visit edit_suspension_status_path(second_super_admin_user)
       expect(page).to have_css '.alert-error'
-      expect(current_path).to eq root_path
+      expect(page).to have_current_path root_path
     end
 
     scenario 'attempt edit admin user: render admin user suspension status edit form', js: true do
       visit edit_suspension_status_path(admin_user)
-      expect(current_path).to eq edit_suspension_status_path(admin_user)
+      expect(page).to have_current_path edit_suspension_status_path(admin_user)
     end
 
     scenario 'attempt edit non-admin user: render non-admin user suspension status edit form', js: true do
       visit edit_suspension_status_path(user)
-      expect(current_path).to eq edit_suspension_status_path(user)
+      expect(page).to have_current_path edit_suspension_status_path(user)
     end
   end
 
@@ -39,24 +39,24 @@ feature 'User edit/update suspension status' do
     scenario 'attempt edit super-admin user: fail and redirect to home page', js: true do
       visit edit_suspension_status_path(super_admin_user)
       expect(page).to have_css '.alert-error'
-      expect(current_path).to eq root_path
+      expect(page).to have_current_path root_path
     end
 
     scenario 'attempt edit self (admin user): fail and redirect to home page', js: true do
       visit edit_suspension_status_path(admin_user)
       expect(page).to have_css '.alert-error'
-      expect(current_path).to eq root_path
+      expect(page).to have_current_path root_path
     end
 
     scenario 'attempt edit another admin user: fail and redirect to home page', js: true do
       visit edit_suspension_status_path(second_admin_user)
       expect(page).to have_css '.alert-error'
-      expect(current_path).to eq root_path
+      expect(page).to have_current_path root_path
     end
 
     scenario 'attempt edit non-admin user: fail and redirect to home page', js: true do
       visit edit_suspension_status_path(user)
-      expect(current_path).to eq edit_suspension_status_path(user)
+      expect(page).to have_current_path edit_suspension_status_path(user)
     end
   end
 
@@ -69,25 +69,25 @@ feature 'User edit/update suspension status' do
     scenario 'attempt edit super-admin user: fail and redirect to home page', js: true do
       visit edit_suspension_status_path(super_admin_user)
       expect(page).to have_css '.alert-error'
-      expect(current_path).to eq root_path
+      expect(page).to have_current_path root_path
     end
 
     scenario 'attempt edit admin user: fail and redirect to home page', js: true do
       visit edit_suspension_status_path(admin_user)
       expect(page).to have_css '.alert-error'
-      expect(current_path).to eq root_path
+      expect(page).to have_current_path root_path
     end
 
     scenario 'attempt edit self (non-admin user): fail and redirect to home page', js: true do
       visit edit_suspension_status_path(user)
       expect(page).to have_css '.alert-error'
-      expect(current_path).to eq root_path
+      expect(page).to have_current_path root_path
     end
 
     scenario 'attempt edit another non-admin user: fail and redirect to home page', js: true do
       visit edit_suspension_status_path(second_user)
       expect(page).to have_css '.alert-error'
-      expect(current_path).to eq root_path
+      expect(page).to have_current_path root_path
     end
   end
 
@@ -97,7 +97,7 @@ feature 'User edit/update suspension status' do
     scenario 'fail and redirect to log in page', js: true do
       visit edit_suspension_status_path(user)
       expect(page).to have_css '.alert-error'
-      expect(current_path).to eq log_in_path
+      expect(page).to have_current_path log_in_path
     end
   end
 
@@ -108,7 +108,7 @@ feature 'User edit/update suspension status' do
     scenario 'click on \'Edit Suspension Status\' button on user profile page; display user edit form' do
       visit user_path(user)
       click_button 'Edit Suspension Status'
-      expect(current_path).to eq edit_suspension_status_path(user)
+      expect(page).to have_current_path edit_suspension_status_path(user)
     end
   end
 
@@ -126,7 +126,7 @@ feature 'User edit/update suspension status' do
       expect(page).not_to have_css '.alert-error'
       expect(page).not_to have_css '.field_with_errors'
       expect(user.suspension).to be nil
-      expect(current_path).to eq user_path(user)
+      expect(page).to have_current_path user_path(user)
       visit edit_suspension_status_path(user)
       check('status')
       click_button 'Update Suspension Status'
@@ -134,7 +134,7 @@ feature 'User edit/update suspension status' do
       expect(page).not_to have_css '.alert-error'
       expect(page).not_to have_css '.field_with_errors'
       expect(user.reload.suspension).not_to be nil
-      expect(current_path).to eq user_path(user)
+      expect(page).to have_current_path user_path(user)
       visit edit_suspension_status_path(user)
       uncheck('status')
       click_button 'Update Suspension Status'
@@ -142,7 +142,7 @@ feature 'User edit/update suspension status' do
       expect(page).not_to have_css '.alert-error'
       expect(page).not_to have_css '.field_with_errors'
       expect(user.reload.suspension).to be nil
-      expect(current_path).to eq user_path(user)
+      expect(page).to have_current_path user_path(user)
     end
 
     scenario 'assignor and assignee associations created/destroyed', js: true do
@@ -166,7 +166,7 @@ feature 'User edit/update suspension status' do
       expect(page).not_to have_link('Profile', href: user_path(user))
       expect(page).not_to have_link('Log out', href: log_out_path)
       expect(page).to have_link('Log in', href: log_in_path)
-      expect(current_path).to eq root_path
+      expect(page).to have_current_path root_path
       log_in super_admin_user
       visit edit_suspension_status_path(user)
       uncheck('status')
@@ -177,7 +177,7 @@ feature 'User edit/update suspension status' do
       expect(page).to have_link('Profile', href: user_path(user))
       expect(page).to have_link('Log out', href: log_out_path)
       expect(page).not_to have_link('Log in', href: log_in_path)
-      expect(current_path).to eq user_path(user)
+      expect(page).to have_current_path user_path(user)
     end
   end
 
@@ -199,7 +199,7 @@ feature 'User edit/update suspension status' do
       expect(page).to have_link('Log in', href: log_in_path)
       expect(page).not_to have_link('Profile')
       expect(page).not_to have_link('Log out', href: log_out_path)
-      expect(current_path).to eq root_path
+      expect(page).to have_current_path root_path
     end
   end
 end
