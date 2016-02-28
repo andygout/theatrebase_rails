@@ -16,6 +16,13 @@ FactoryGirl.define do
       email 'fredwhite@example.com'
     end
 
+    factory :created_user do
+      name  'Jack Fraser'
+      email 'jackfraser@example.com'
+      association :creator, factory: :user
+      updater { creator }
+    end
+
     factory :unactivated_user do
       name          'Ted Barnes'
       email         'tedbarnes@example.com'
