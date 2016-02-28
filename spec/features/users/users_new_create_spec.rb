@@ -53,10 +53,10 @@ feature 'User new/create' do
       click_button 'Create User'
       user_email = acquire_email_address ActionMailer::Base.deliveries.last.to_s
       user = User.find_by(email: user_email)
-      expect(user.creator).to eq(super_admin_user)
-      expect(user.updater).to eq(super_admin_user)
-      expect(super_admin_user.created_users).to include(user)
-      expect(super_admin_user.updated_users).to include(user)
+      expect(user.creator).to eq super_admin_user
+      expect(user.updater).to eq super_admin_user
+      expect(super_admin_user.created_users).to include user
+      expect(super_admin_user.updated_users).to include user
     end
   end
 
@@ -82,10 +82,10 @@ feature 'User new/create' do
       click_button 'Create User'
       user_email = acquire_email_address ActionMailer::Base.deliveries.last.to_s
       user = User.find_by(email: user_email)
-      expect(user.creator).to eq(admin_user)
-      expect(user.updater).to eq(admin_user)
-      expect(admin_user.created_users).to include(user)
-      expect(admin_user.updated_users).to include(user)
+      expect(user.creator).to eq admin_user
+      expect(user.updater).to eq admin_user
+      expect(admin_user.created_users).to include user
+      expect(admin_user.updated_users).to include user
     end
   end
 
@@ -225,11 +225,11 @@ feature 'User new/create' do
       fill_in 'user_password_confirmation', with: 'bar'
       click_button 'Set Password'
       user = User.find_by(email: @new_user.email)
-      expect(user.creator).to eq(admin_user)
-      expect(user.updater).to eq(admin_user)
-      expect(admin_user.created_users).to include(user)
-      expect(admin_user.updated_users).to include(user)
-      expect(user.updated_users).not_to include(user)
+      expect(user.creator).to eq admin_user
+      expect(user.updater).to eq admin_user
+      expect(admin_user.created_users).to include user
+      expect(admin_user.updated_users).to include user
+      expect(user.updated_users).not_to include user
     end
 
     scenario 'password is set by entering valid password and confirmation', js: true do
@@ -247,11 +247,11 @@ feature 'User new/create' do
       fill_in 'user_password_confirmation', with: edit_user[:password]
       click_button 'Set Password'
       user = User.find_by(email: @new_user.email)
-      expect(user.creator).to eq(admin_user)
-      expect(user.updater).to eq(user)
-      expect(admin_user.created_users).to include(user)
-      expect(user.updated_users).to include(user)
-      expect(admin_user.updated_users).not_to include(user)
+      expect(user.creator).to eq admin_user
+      expect(user.updater).to eq user
+      expect(admin_user.created_users).to include user
+      expect(user.updated_users).to include user
+      expect(admin_user.updated_users).not_to include user
     end
   end
 
