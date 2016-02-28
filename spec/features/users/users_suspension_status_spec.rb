@@ -148,12 +148,12 @@ feature 'User edit/update suspension status' do
     scenario 'assignor and assignee associations created/destroyed', js: true do
       check('status')
       click_button 'Update Suspension Status'
-      expect(user.suspension_status_assignor).to eq(super_admin_user)
-      expect(super_admin_user.suspension_status_assignees).to include(user)
+      expect(user.suspension_status_assignor).to eq super_admin_user
+      expect(super_admin_user.suspension_status_assignees).to include user
       visit edit_suspension_status_path(user)
       uncheck('status')
       click_button 'Update Suspension Status'
-      expect(user.reload.suspension_status_assignor).to eq(nil)
+      expect(user.reload.suspension_status_assignor).to eq nil
       expect(super_admin_user.suspension_status_assignees).to be_empty
     end
 

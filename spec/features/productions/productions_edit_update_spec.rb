@@ -30,12 +30,12 @@ feature 'Production edit/update' do
       expect(page).to have_content 'Macbeth', count: 2
       expect(page).not_to have_content production.title
       expect(page).to have_current_path production_path(production)
-      expect(production.reload.creator).to eq(second_user)
-      expect(production.updater).to eq(user)
-      expect(second_user.created_productions).to include(production)
-      expect(second_user.updated_productions).not_to include(production)
-      expect(user.created_productions).not_to include(production)
-      expect(user.updated_productions).to include(production)
+      expect(production.reload.creator).to eq second_user
+      expect(production.updater).to eq user
+      expect(second_user.created_productions).to include production
+      expect(second_user.updated_productions).not_to include production
+      expect(user.created_productions).not_to include production
+      expect(user.updated_productions).to include production
     end
   end
 
@@ -54,12 +54,12 @@ feature 'Production edit/update' do
       expect(page).not_to have_css '.alert-success'
       expect(page).to have_content production.title
       expect(page).to have_current_path production_path(production)
-      expect(production.reload.creator).to eq(second_user)
-      expect(production.updater).to eq(second_user)
-      expect(second_user.created_productions).to include(production)
-      expect(second_user.updated_productions).to include(production)
-      expect(user.created_productions).not_to include(production)
-      expect(user.updated_productions).not_to include(production)
+      expect(production.reload.creator).to eq second_user
+      expect(production.updater).to eq second_user
+      expect(second_user.created_productions).to include production
+      expect(second_user.updated_productions).to include production
+      expect(user.created_productions).not_to include production
+      expect(user.updated_productions).not_to include production
     end
   end
 end
