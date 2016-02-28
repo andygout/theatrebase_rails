@@ -11,9 +11,13 @@ user = User.create!(name:                   'Andy Gout',
                 password:               'password',
                 password_confirmation:  'password',
                 activated_at:           Time.zone.now,
-                creator_id:             user.id,
-                updater_id:             user.id
+                creator:                user,
+                updater:                user
               )
 end
 
-SuperAdmin.create!(user_id: user.id)
+SuperAdmin.create!(user: user)
+
+Production.create!( title:    'Hamlet',
+                    creator:  user,
+                    updater:  user)
