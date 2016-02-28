@@ -114,6 +114,7 @@ feature 'User edit/update' do
   context 'updating permitted user profile with valid details' do
     let(:created_user) { create :created_user }
     let(:edit_user) { attributes_for :edit_user }
+    let(:user) { created_user.creator }
 
     before(:each) do
       log_in created_user
@@ -134,7 +135,6 @@ feature 'User edit/update' do
     end
 
     scenario 'valid details; existing creator association remains and updater association (w/itself) updated', js: true do
-      user = created_user.creator
       user_edit_form( edit_user[:name],
                       edit_user[:email],
                       edit_user[:password],
@@ -208,6 +208,7 @@ feature 'User edit/update' do
     let(:created_user) { create :created_user }
     let(:edit_user) { attributes_for :edit_user }
     let(:invalid_user) { attributes_for :invalid_user }
+    let(:user) { created_user.creator }
 
     before(:each) do
       log_in created_user
@@ -288,7 +289,6 @@ feature 'User edit/update' do
     end
 
     scenario 'invalid details; existing creator and updater associations remain', js: true do
-      user = created_user.creator
       user_edit_form( invalid_user[:name],
                       invalid_user[:email],
                       'foo',
