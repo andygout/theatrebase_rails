@@ -9,25 +9,25 @@ feature 'User edit/update' do
 
     scenario 'attempt edit self (super-admin user): render super-admin user edit form', js: true do
       visit edit_user_path(super_admin_user)
-      expect(current_path).to eq edit_user_path(super_admin_user)
+      expect(page).to have_current_path edit_user_path(super_admin_user)
     end
 
     scenario 'attempt edit another super-admin user: fail and redirect to home page', js: true do
       visit edit_user_path(second_super_admin_user)
       expect(page).to have_css '.alert-error'
-      expect(current_path).to eq root_path
+      expect(page).to have_current_path root_path
     end
 
     scenario 'attempt edit admin user: fail and redirect to home page', js: true do
       visit edit_user_path(admin_user)
       expect(page).to have_css '.alert-error'
-      expect(current_path).to eq root_path
+      expect(page).to have_current_path root_path
     end
 
     scenario 'attempt edit non-admin user: fail and redirect to home page', js: true do
       visit edit_user_path(user)
       expect(page).to have_css '.alert-error'
-      expect(current_path).to eq root_path
+      expect(page).to have_current_path root_path
     end
   end
 
@@ -40,24 +40,24 @@ feature 'User edit/update' do
     scenario 'attempt edit super-admin user: fail and redirect to home page', js: true do
       visit edit_user_path(super_admin_user)
       expect(page).to have_css '.alert-error'
-      expect(current_path).to eq root_path
+      expect(page).to have_current_path root_path
     end
 
     scenario 'attempt edit self (admin user): render admin user edit form', js: true do
       visit edit_user_path(admin_user)
-      expect(current_path).to eq edit_user_path(admin_user)
+      expect(page).to have_current_path edit_user_path(admin_user)
     end
 
     scenario 'attempt edit another admin user: fail and redirect to home page', js: true do
       visit edit_user_path(second_admin_user)
       expect(page).to have_css '.alert-error'
-      expect(current_path).to eq root_path
+      expect(page).to have_current_path root_path
     end
 
     scenario 'attempt edit non-admin user: fail and redirect to home page', js: true do
       visit edit_user_path(user)
       expect(page).to have_css '.alert-error'
-      expect(current_path).to eq root_path
+      expect(page).to have_current_path root_path
     end
   end
 
@@ -70,24 +70,24 @@ feature 'User edit/update' do
     scenario 'attempt edit super-admin user: fail and redirect to home page', js: true do
       visit edit_user_path(super_admin_user)
       expect(page).to have_css '.alert-error'
-      expect(current_path).to eq root_path
+      expect(page).to have_current_path root_path
     end
 
     scenario 'attempt edit admin user: fail and redirect to home page', js: true do
       visit edit_user_path(admin_user)
       expect(page).to have_css '.alert-error'
-      expect(current_path).to eq root_path
+      expect(page).to have_current_path root_path
     end
 
     scenario 'attempt edit self (non-admin user): render non-admin user edit form', js: true do
       visit edit_user_path(user)
-      expect(current_path).to eq edit_user_path(user)
+      expect(page).to have_current_path edit_user_path(user)
     end
 
     scenario 'attempt edit another non-admin user: fail and redirect to home page', js: true do
       visit edit_user_path(second_user)
       expect(page).to have_css '.alert-error'
-      expect(current_path).to eq root_path
+      expect(page).to have_current_path root_path
     end
   end
 
@@ -97,7 +97,7 @@ feature 'User edit/update' do
     scenario 'fail and redirect to log in page', js: true do
       visit edit_user_path(user)
       expect(page).to have_css '.alert-error'
-      expect(current_path).to eq log_in_path
+      expect(page).to have_current_path log_in_path
     end
   end
 
@@ -107,7 +107,7 @@ feature 'User edit/update' do
     scenario 'click on \'Edit User\' button on user profile page; display user edit form' do
       visit user_path(user)
       click_button 'Edit User'
-      expect(current_path).to eq edit_user_path(user)
+      expect(page).to have_current_path edit_user_path(user)
     end
   end
 
@@ -129,7 +129,7 @@ feature 'User edit/update' do
       expect(page).not_to have_css '.alert-error'
       expect(page).not_to have_css '.field_with_errors'
       expect(page).to have_content(edit_user[:name])
-      expect(current_path).to eq user_path(user)
+      expect(page).to have_current_path user_path(user)
     end
 
     scenario 'valid details; existing creator association remains and updater association (w/itself) updated', js: true do
@@ -157,7 +157,7 @@ feature 'User edit/update' do
       expect(page).to have_link('Log in', href: log_in_path)
       expect(page).not_to have_link('Profile')
       expect(page).not_to have_link('Log out', href: log_out_path)
-      expect(current_path).to eq log_in_path
+      expect(page).to have_current_path log_in_path
       fill_in 'session_email',    with: edit_user[:email]
       fill_in 'session_password', with: edit_user[:password]
       click_button 'Log In'
@@ -166,7 +166,7 @@ feature 'User edit/update' do
       expect(page).to have_link('Profile', href: user_path(user))
       expect(page).to have_link('Log out', href: log_out_path)
       expect(page).not_to have_link('Log in', href: log_in_path)
-      expect(current_path).to eq user_path(user)
+      expect(page).to have_current_path user_path(user)
     end
 
     scenario 'valid details (retaining existing password); redirect to user profile with success message', js: true do
@@ -178,7 +178,7 @@ feature 'User edit/update' do
       expect(page).to have_css '.alert-success'
       expect(page).not_to have_css '.alert-error'
       expect(page).not_to have_css '.field_with_errors'
-      expect(current_path).to eq user_path(user)
+      expect(page).to have_current_path user_path(user)
     end
 
     scenario 'if existing password is retained it can still be used', js: true do
@@ -197,7 +197,7 @@ feature 'User edit/update' do
       expect(page).to have_link('Profile', href: user_path(user))
       expect(page).to have_link('Log out', href: log_out_path)
       expect(page).not_to have_link('Log in', href: log_in_path)
-      expect(current_path).to eq user_path(user)
+      expect(page).to have_current_path user_path(user)
     end
   end
 
@@ -220,7 +220,7 @@ feature 'User edit/update' do
       expect(page).to have_css '.field_with_errors'
       expect(page).not_to have_css '.alert-success'
       expect(page).to have_content user.name
-      expect(current_path).to eq user_path(user)
+      expect(page).to have_current_path user_path(user)
     end
 
     scenario 'invalid name', js: true do
@@ -232,7 +232,7 @@ feature 'User edit/update' do
       expect(page).to have_css '.alert-error'
       expect(page).to have_css '.field_with_errors'
       expect(page).not_to have_css '.alert-success'
-      expect(current_path).to eq user_path(user)
+      expect(page).to have_current_path user_path(user)
     end
 
     scenario 'invalid email', js: true do
@@ -244,7 +244,7 @@ feature 'User edit/update' do
       expect(page).to have_css '.alert-error'
       expect(page).to have_css '.field_with_errors'
       expect(page).not_to have_css '.alert-success'
-      expect(current_path).to eq user_path(user)
+      expect(page).to have_current_path user_path(user)
     end
 
     scenario 'password as single whitespace (with no confirmation)', js: true do
@@ -256,7 +256,7 @@ feature 'User edit/update' do
       expect(page).to have_css '.alert-error'
       expect(page).to have_css '.field_with_errors'
       expect(page).not_to have_css '.alert-success'
-      expect(current_path).to eq user_path(user)
+      expect(page).to have_current_path user_path(user)
     end
 
     scenario 'password and confirmation too short', js: true do
@@ -268,7 +268,7 @@ feature 'User edit/update' do
       expect(page).to have_css '.alert-error'
       expect(page).to have_css '.field_with_errors'
       expect(page).not_to have_css '.alert-success'
-      expect(current_path).to eq user_path(user)
+      expect(page).to have_current_path user_path(user)
     end
 
     scenario 'non-matching password and confirmation', js: true do
@@ -280,7 +280,7 @@ feature 'User edit/update' do
       expect(page).to have_css '.alert-error'
       expect(page).to have_css '.field_with_errors'
       expect(page).not_to have_css '.alert-success'
-      expect(current_path).to eq user_path(user)
+      expect(page).to have_current_path user_path(user)
     end
 
     scenario 'invalid details; existing creator and updater associations remain', js: true do

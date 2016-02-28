@@ -10,23 +10,23 @@ feature 'User edit/update admin status' do
     scenario 'attempt edit self (super-admin user): fail and redirect to home page', js: true do
       visit edit_admin_status_path(super_admin_user)
       expect(page).to have_css '.alert-error'
-      expect(current_path).to eq root_path
+      expect(page).to have_current_path root_path
     end
 
     scenario 'attempt edit another super-admin user: fail and redirect to home page', js: true do
       visit edit_admin_status_path(second_super_admin_user)
       expect(page).to have_css '.alert-error'
-      expect(current_path).to eq root_path
+      expect(page).to have_current_path root_path
     end
 
     scenario 'attempt edit admin user: render admin user admin status edit form', js: true do
       visit edit_admin_status_path(admin_user)
-      expect(current_path).to eq edit_admin_status_path(admin_user)
+      expect(page).to have_current_path edit_admin_status_path(admin_user)
     end
 
     scenario 'attempt edit non-admin user: render non-admin user admin status edit form', js: true do
       visit edit_admin_status_path(user)
-      expect(current_path).to eq edit_admin_status_path(user)
+      expect(page).to have_current_path edit_admin_status_path(user)
     end
   end
 
@@ -39,25 +39,25 @@ feature 'User edit/update admin status' do
     scenario 'attempt edit super-admin user: fail and redirect to home page', js: true do
       visit edit_admin_status_path(super_admin_user)
       expect(page).to have_css '.alert-error'
-      expect(current_path).to eq root_path
+      expect(page).to have_current_path root_path
     end
 
     scenario 'attempt edit self (admin user): fail and redirect to home page', js: true do
       visit edit_admin_status_path(admin_user)
       expect(page).to have_css '.alert-error'
-      expect(current_path).to eq root_path
+      expect(page).to have_current_path root_path
     end
 
     scenario 'attempt edit another admin user: fail and redirect to home page', js: true do
       visit edit_admin_status_path(second_admin_user)
       expect(page).to have_css '.alert-error'
-      expect(current_path).to eq root_path
+      expect(page).to have_current_path root_path
     end
 
     scenario 'attempt edit non-admin user: fail and redirect to home page', js: true do
       visit edit_admin_status_path(user)
       expect(page).to have_css '.alert-error'
-      expect(current_path).to eq root_path
+      expect(page).to have_current_path root_path
     end
   end
 
@@ -70,25 +70,25 @@ feature 'User edit/update admin status' do
     scenario 'attempt edit super-admin user: fail and redirect to home page', js: true do
       visit edit_admin_status_path(super_admin_user)
       expect(page).to have_css '.alert-error'
-      expect(current_path).to eq root_path
+      expect(page).to have_current_path root_path
     end
 
     scenario 'attempt edit admin user: fail and redirect to home page', js: true do
       visit edit_admin_status_path(admin_user)
       expect(page).to have_css '.alert-error'
-      expect(current_path).to eq root_path
+      expect(page).to have_current_path root_path
     end
 
     scenario 'attempt edit self (non-admin user): fail and redirect to home page', js: true do
       visit edit_admin_status_path(user)
       expect(page).to have_css '.alert-error'
-      expect(current_path).to eq root_path
+      expect(page).to have_current_path root_path
     end
 
     scenario 'attempt edit another non-admin user: fail and redirect to home page', js: true do
       visit edit_admin_status_path(second_user)
       expect(page).to have_css '.alert-error'
-      expect(current_path).to eq root_path
+      expect(page).to have_current_path root_path
     end
   end
 
@@ -98,7 +98,7 @@ feature 'User edit/update admin status' do
     scenario 'fail and redirect to log in page', js: true do
       visit edit_admin_status_path(user)
       expect(page).to have_css '.alert-error'
-      expect(current_path).to eq log_in_path
+      expect(page).to have_current_path log_in_path
     end
   end
 
@@ -109,7 +109,7 @@ feature 'User edit/update admin status' do
     scenario 'click on \'Edit Admin Status\' button on user profile page; display user edit form' do
       visit user_path(user)
       click_button 'Edit Admin Status'
-      expect(current_path).to eq edit_admin_status_path(user)
+      expect(page).to have_current_path edit_admin_status_path(user)
     end
   end
 
@@ -128,7 +128,7 @@ feature 'User edit/update admin status' do
       expect(page).not_to have_css '.alert-error'
       expect(page).not_to have_css '.field_with_errors'
       expect(user.admin).to be nil
-      expect(current_path).to eq user_path(user)
+      expect(page).to have_current_path user_path(user)
       visit edit_admin_status_path(user)
       check('status')
       click_button 'Update Admin Status'
@@ -136,7 +136,7 @@ feature 'User edit/update admin status' do
       expect(page).not_to have_css '.alert-error'
       expect(page).not_to have_css '.field_with_errors'
       expect(user.reload.admin).not_to be nil
-      expect(current_path).to eq user_path(user)
+      expect(page).to have_current_path user_path(user)
       visit edit_admin_status_path(user)
       uncheck('status')
       click_button 'Update Admin Status'
@@ -144,7 +144,7 @@ feature 'User edit/update admin status' do
       expect(page).not_to have_css '.alert-error'
       expect(page).not_to have_css '.field_with_errors'
       expect(user.reload.admin).to be nil
-      expect(current_path).to eq user_path(user)
+      expect(page).to have_current_path user_path(user)
     end
 
     scenario 'assignor and assignee associations created/destroyed', js: true do
@@ -170,7 +170,7 @@ feature 'User edit/update admin status' do
       expect(page).to have_button('Delete User')
       expect(page).not_to have_button('Edit Admin Status')
       expect(page).not_to have_button('Edit User')
-      expect(current_path).to eq user_path(second_user)
+      expect(page).to have_current_path user_path(second_user)
       click_link 'Log out'
       log_in super_admin_user
       visit edit_admin_status_path(user)
@@ -180,7 +180,7 @@ feature 'User edit/update admin status' do
       log_in user
       visit user_path(second_user)
       expect(page).to have_css '.alert-error'
-      expect(current_path).to eq root_path
+      expect(page).to have_current_path root_path
     end
   end
 end

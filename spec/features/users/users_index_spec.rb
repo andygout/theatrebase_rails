@@ -53,7 +53,7 @@ feature 'User index page' do
     scenario 'redirect to home page', js: true do
       visit users_path
       expect(page).to have_css '.alert-error'
-      expect(current_path).to eq root_path
+      expect(page).to have_current_path root_path
     end
   end
 
@@ -61,7 +61,7 @@ feature 'User index page' do
     scenario 'redirect to log in page', js: true do
       visit users_path
       expect(page).to have_css '.alert-error'
-      expect(current_path).to eq log_in_path
+      expect(page).to have_current_path log_in_path
     end
   end
 end

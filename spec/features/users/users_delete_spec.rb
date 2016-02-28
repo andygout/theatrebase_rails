@@ -17,7 +17,7 @@ feature 'User delete' do
       expect(page).to have_css '.alert-success'
       expect(page).not_to have_css '.alert-error'
       expect(page).not_to have_link(user.name, href: user_path(admin_user))
-      expect(current_path).to eq users_path
+      expect(page).to have_current_path users_path
     end
 
     scenario 'delete non-admin user; redirect to user index with success message', js: true do
@@ -28,7 +28,7 @@ feature 'User delete' do
       expect(page).to have_css '.alert-success'
       expect(page).not_to have_css '.alert-error'
       expect(page).not_to have_link(user.name, href: user_path(user))
-      expect(current_path).to eq users_path
+      expect(page).to have_current_path users_path
     end
   end
 
@@ -50,7 +50,7 @@ feature 'User delete' do
       expect(page).to have_link('Log in', href: log_in_path)
       expect(page).not_to have_link('Profile', href: user_path(admin_user))
       expect(page).not_to have_link('Log out', href: log_out_path)
-      expect(current_path).to eq root_path
+      expect(page).to have_current_path root_path
     end
 
     scenario 'delete non-admin user; redirect to user index with success message', js: true do
@@ -61,7 +61,7 @@ feature 'User delete' do
       expect(page).to have_css '.alert-success'
       expect(page).not_to have_css '.alert-error'
       expect(page).not_to have_link(user.name, href: user_path(user))
-      expect(current_path).to eq users_path
+      expect(page).to have_current_path users_path
     end
   end
 
@@ -79,7 +79,7 @@ feature 'User delete' do
       expect(page).to have_link('Log in', href: log_in_path)
       expect(page).not_to have_link('Profile', href: user_path(user))
       expect(page).not_to have_link('Log out', href: log_out_path)
-      expect(current_path).to eq root_path
+      expect(page).to have_current_path root_path
     end
   end
 
@@ -92,7 +92,7 @@ feature 'User delete' do
       expect { click_button 'Cancel' }.to change { User.count }.by 0
       expect(User.exists? user.id).to be true
       expect(page).not_to have_css '.alert-success'
-      expect(current_path).to eq user_path(user)
+      expect(page).to have_current_path user_path(user)
     end
   end
 end
