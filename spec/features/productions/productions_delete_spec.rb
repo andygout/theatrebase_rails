@@ -20,7 +20,7 @@ feature 'Production delete' do
       expect(page).to have_css '.alert-success'
       expect(page).not_to have_css '.alert-error'
       expect(page).not_to have_content production.title, count: 2
-      expect(current_path).to eq productions_path
+      expect(page).to have_current_path productions_path
     end
   end
 end

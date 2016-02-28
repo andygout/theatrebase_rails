@@ -26,7 +26,7 @@ feature 'Production new/create' do
       expect(page).not_to have_css '.field_with_errors'
       expect(page).to have_content 'Hamlet', count: 2
       @production = Production.last
-      expect(current_path).to eq production_path(@production)
+      expect(page).to have_current_path production_path(@production)
       expect(@production.creator).to eq(user)
       expect(@production.updater).to eq(user)
       expect(user.created_productions).to include(@production)
@@ -46,7 +46,7 @@ feature 'Production new/create' do
       expect(page).to have_css '.field_with_errors'
       expect(page).not_to have_css '.alert-success'
       expect(page).to have_content 'New production'
-      expect(current_path).to eq productions_path
+      expect(page).to have_current_path productions_path
     end
   end
 end

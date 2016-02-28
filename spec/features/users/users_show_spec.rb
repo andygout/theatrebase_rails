@@ -15,7 +15,7 @@ feature 'User profile' do
       expect(page).not_to have_button('Edit Admin Status')
       expect(page).not_to have_button('Edit Suspension Status')
       expect(page).not_to have_button('Delete User')
-      expect(current_path).to eq user_path(super_admin_user)
+      expect(page).to have_current_path user_path(super_admin_user)
     end
 
     scenario 'viewing another super-admin user profile: show super-admin user profile page', js: true do
@@ -26,7 +26,7 @@ feature 'User profile' do
       expect(page).not_to have_button('Edit Admin Status')
       expect(page).not_to have_button('Edit Suspension Status')
       expect(page).not_to have_button('Delete User')
-      expect(current_path).to eq user_path(second_super_admin_user)
+      expect(page).to have_current_path user_path(second_super_admin_user)
     end
 
     scenario 'viewing admin user profile: show admin user profile page', js: true do
@@ -37,7 +37,7 @@ feature 'User profile' do
       expect(page).to have_button('Edit Admin Status')
       expect(page).to have_button('Edit Suspension Status')
       expect(page).to have_button('Delete User')
-      expect(current_path).to eq user_path(admin_user)
+      expect(page).to have_current_path user_path(admin_user)
     end
 
     scenario 'viewing non-admin user profile: show non-admin user profile page', js: true do
@@ -48,7 +48,7 @@ feature 'User profile' do
       expect(page).to have_button('Edit Admin Status')
       expect(page).to have_button('Edit Suspension Status')
       expect(page).not_to have_button('Edit User')
-      expect(current_path).to eq user_path(user)
+      expect(page).to have_current_path user_path(user)
     end
   end
 
@@ -66,7 +66,7 @@ feature 'User profile' do
       expect(page).not_to have_button('Edit Admin Status')
       expect(page).not_to have_button('Edit Suspension Status')
       expect(page).not_to have_button('Delete User')
-      expect(current_path).to eq user_path(super_admin_user)
+      expect(page).to have_current_path user_path(super_admin_user)
     end
 
     scenario 'viewing own user admin user profile: show own admin user profile page', js: true do
@@ -77,7 +77,7 @@ feature 'User profile' do
       expect(page).not_to have_button('Edit Admin Status')
       expect(page).not_to have_button('Edit Suspension Status')
       expect(page).to have_button('Delete User')
-      expect(current_path).to eq user_path(admin_user)
+      expect(page).to have_current_path user_path(admin_user)
     end
 
     scenario 'viewing another admin user profile: show admin user profile page', js: true do
@@ -88,7 +88,7 @@ feature 'User profile' do
       expect(page).not_to have_button('Edit Admin Status')
       expect(page).not_to have_button('Edit Suspension Status')
       expect(page).not_to have_button('Delete User')
-      expect(current_path).to eq user_path(second_admin_user)
+      expect(page).to have_current_path user_path(second_admin_user)
     end
 
     scenario 'viewing non-admin user profile: show non-admin user profile page', js: true do
@@ -99,7 +99,7 @@ feature 'User profile' do
       expect(page).not_to have_button('Edit Admin Status')
       expect(page).to have_button('Edit Suspension Status')
       expect(page).not_to have_button('Edit User')
-      expect(current_path).to eq user_path(user)
+      expect(page).to have_current_path user_path(user)
     end
   end
 
@@ -112,13 +112,13 @@ feature 'User profile' do
     scenario 'attempting to view super-admin user profile: redirect to home page', js: true do
       visit user_path(super_admin_user)
       expect(page).to have_css '.alert-error'
-      expect(current_path).to eq root_path
+      expect(page).to have_current_path root_path
     end
 
     scenario 'attempting to view admin user profile: redirect to home page', js: true do
       visit user_path(admin_user)
       expect(page).to have_css '.alert-error'
-      expect(current_path).to eq root_path
+      expect(page).to have_current_path root_path
     end
 
     scenario 'viewing own non-admin user profile: show own non-admin user profile page', js: true do
@@ -129,13 +129,13 @@ feature 'User profile' do
       expect(page).not_to have_button('Edit Admin Status')
       expect(page).not_to have_button('Edit Suspension Status')
       expect(page).to have_button('Delete User')
-      expect(current_path).to eq user_path(user)
+      expect(page).to have_current_path user_path(user)
     end
 
     scenario 'attempting to view another non-admin user profile: redirect to home page', js: true do
       visit user_path(second_user)
       expect(page).to have_css '.alert-error'
-      expect(current_path).to eq root_path
+      expect(page).to have_current_path root_path
     end
   end
 
@@ -145,7 +145,7 @@ feature 'User profile' do
     scenario 'redirect to log in page', js: true do
       visit user_path(user)
       expect(page).to have_css '.alert-error'
-      expect(current_path).to eq log_in_path
+      expect(page).to have_current_path log_in_path
     end
   end
 end
