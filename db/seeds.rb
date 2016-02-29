@@ -18,6 +18,9 @@ end
 
 SuperAdmin.create!(user: user)
 
-Production.create!( title:    'Hamlet',
-                    creator:  user,
-                    updater:  user)
+Production.create!( title:      'Hamlet',
+                    first_date: '05/08/2015',
+                    press_date: '25/08/2015',
+                    last_date:  '31/10/2015',
+                    creator:    user,
+                    updater:    user)

@@ -27,6 +27,9 @@ ActiveRecord::Schema.define(version: 20160225202000) do
 
   create_table "productions", force: :cascade do |t|
     t.string   "title"
+    t.date     "first_date"
+    t.date     "press_date"
+    t.date     "last_date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer  "creator_id"

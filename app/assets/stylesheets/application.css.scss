@@ -57,6 +57,18 @@ a {
   margin-bottom: 0;
 }
 
+.section-header {
+  display:inline-block;
+  color: #404040;
+  font-size: small;
+  font-weight: bold;
+  border: 1px solid #949494;
+  background-color: #D0D0D0;
+  padding: 0 5px 0 5px;
+  margin-top: 20px;
+  border-radius: 2px;
+}
+
 .container {
   width: 1000px;
   background: white;
@@ -104,6 +116,15 @@ a {
   color: $content_color;
   font-size: small;
   font-weight: normal;
+}
+
+.dates-table {
+  margin-left: 6px;
+  & td {
+    padding: 5px 20px 0 0;
+    max-width: 427px;
+    vertical-align: top;
+  }
 }
 
 .footer {
@@ -172,6 +193,10 @@ a {
 .input {
   display: block;
   width: 99.5%;
+}
+
+.date-input {
+  width: 125px;
 }
 
 .field_with_errors {

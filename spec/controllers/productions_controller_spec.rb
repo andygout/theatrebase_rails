@@ -55,44 +55,46 @@ describe ProductionsController, type: :controller do
   end
 
   context 'attempt create production' do
+    let(:production_params) { { title: add_production[:title], first_date: add_production[:first_date], last_date: add_production[:last_date] } }
+
     it 'as super-admin: succeed and redirect to production display page' do
       session[:user_id] = super_admin_user.id
-      expect { post :create, production: { title: add_production[:title] } }.to change { Production.count }.by 1
+      expect { post :create, production: production_params }.to change { Production.count }.by 1
       expect(response).to redirect_to production_path(Production.last)
     end
 
     it 'as admin: succeed and redirect to production display page' do
       session[:user_id] = admin_user.id
-      expect { post :create, production: { title: add_production[:title] } }.to change { Production.count }.by 1
+      expect { post :create, production: production_params }.to change { Production.count }.by 1
       expect(response).to redirect_to production_path(Production.last)
     end
 
     it 'as non-admin: succeed and redirect to production display page' do
       session[:user_id] = user.id
-      expect { post :create, production: { title: add_production[:title] } }.to change { Production.count }.by 1
+      expect { post :create, production: production_params }.to change { Production.count }.by 1
       expect(response).to redirect_to production_path(Production.last)
     end
 
     it 'as suspended super-admin: fail and redirect to home page' do
       session[:user_id] = suspended_super_admin_user.id
-      expect { post :create, production: { title: add_production[:title] } }.to change { Production.count }.by 0
+      expect { post :create, production: production_params }.to change { Production.count }.by 0
       expect(response).to redirect_to root_path
     end
 
     it 'as suspended admin: fail and redirect to home page' do
       session[:user_id] = suspended_admin_user.id
-      expect { post :create, production: { title: add_production[:title] } }.to change { Production.count }.by 0
+      expect { post :create, production: { title: add_production[:title], first_date: add_production[:first_date], last_date: add_production[:last_date] } }.to change { Production.count }.by 0
       expect(response).to redirect_to root_path
     end
 
     it 'as suspended non-admin: fail and redirect to home page' do
       session[:user_id] = suspended_user.id
-      expect { post :create, production: { title: add_production[:title] } }.to change { Production.count }.by 0
+      expect { post :create, production: { title: add_production[:title], first_date: add_production[:first_date], last_date: add_production[:last_date] } }.to change { Production.count }.by 0
       expect(response).to redirect_to root_path
     end
 
     it 'when not logged in: fail and redirect to log in page' do
-      expect { post :create, production: { title: add_production[:title] } }.to change { Production.count }.by 0
+      expect { post :create, production: { title: add_production[:title], first_date: add_production[:first_date], last_date: add_production[:last_date] } }.to change { Production.count }.by 0
       expect(response).to redirect_to log_in_path
     end
   end

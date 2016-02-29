@@ -2,6 +2,12 @@
 
 <h1 class='header-text'><%= @production.title %></h1>
 
+<p class='section-header'>Dates</p>
+
+<table class='dates-table'>
+  <%= @dates %>
+</table>
+
 <% if logged_in? %>
   <%= button_to 'Edit Production', edit_production_path(@production), method: :get, class: 'button' %>
   <%= button_to 'Delete Production', @production, method: :delete, class: 'button', data: { confirm: 'Really delete this production?' } %>

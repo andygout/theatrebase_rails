@@ -1,5 +1,7 @@
 class ProductionsController < ApplicationController
 
+  include ProductionsShowHelper
+
   before_action :get_production,      only: [:edit, :update, :destroy, :show]
   before_action :logged_in_user,      only: [:new, :create, :edit, :update, :destroy]
   before_action :not_suspended_user,  only: [:new, :create, :edit, :update, :destroy]
@@ -39,6 +41,7 @@ class ProductionsController < ApplicationController
   end
 
   def show
+    @dates = create_dates_markup(@production).html_safe
   end
 
   def index
@@ -50,7 +53,10 @@ class ProductionsController < ApplicationController
     def production_params
       params
         .require(:production)
-        .permit(:title)
+        .permit(:title,
+                :first_date,
+                :press_date,
+                :last_date)
         .merge(updater_id: current_user.id)
     end
 

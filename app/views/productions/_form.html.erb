@@ -8,6 +8,24 @@
       <%= render partial: 'partials/error', collection: @production.errors[:title] %>
     </div>
 
+    <div class='form-item'>
+      <%= production.label :first_date, class: 'label' %>
+      <%= production.date_field :first_date, class: 'input date-input' %>
+      <%= render partial: 'partials/error', collection: @production.errors[:first_date] %>
+    </div>
+
+    <div class='form-item'>
+      <%= production.label :press_date, class: 'label' %>
+      <%= production.date_field :press_date, class: 'input date-input' %>
+      <%= render partial: 'partials/error', collection: @production.errors[:press_date] %>
+    </div>
+
+    <div class='form-item'>
+      <%= production.label :last_date, class: 'label' %>
+      <%= production.date_field :last_date, class: 'input date-input' %>
+      <%= render partial: 'partials/error', collection: @production.errors[:last_date] %>
+    </div>
+
     <%= production.submit nil, class: 'button' %>
   <% end %>
 </fieldset>
