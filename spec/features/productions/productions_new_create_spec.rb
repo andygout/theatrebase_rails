@@ -20,6 +20,8 @@ feature 'Production new/create' do
       visit productions_path
       click_link 'Add production'
       fill_in 'production_title', with: production[:title]
+      fill_in 'production_first_date', with: production[:first_date]
+      fill_in 'production_last_date', with: production[:last_date]
       expect { click_button 'Create Production' }.to change { Production.count }.by 1
       expect(page).to have_css '.alert-success'
       expect(page).not_to have_css '.alert-error'
@@ -36,11 +38,14 @@ feature 'Production new/create' do
 
   context 'creating productions with invalid details' do
     let!(:user) { create_logged_in_user }
+    let(:production) { attributes_for :production }
 
     scenario 'invalid title given; re-renders add form with error message', js: true do
       visit productions_path
       click_link 'Add production'
       fill_in 'production_title', with: ' '
+      fill_in 'production_first_date', with: production[:first_date]
+      fill_in 'production_last_date', with: production[:last_date]
       expect { click_button 'Create Production' }.to change { Production.count }.by 0
       expect(page).to have_css '.alert-error'
       expect(page).to have_css '.field_with_errors'

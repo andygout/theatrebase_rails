@@ -21,6 +21,11 @@
 
 en:
   errors:
+    attributes:
+      first_date:
+        blank: '%{attribute} must be in a valid format'
+      last_date:
+        blank: '%{attribute} must be in a valid format'
     messages:
       blank: "%{attribute} cannot be blank"
       too_short: "%{attribute} is too short (minimum length: %{count} characters)"
