@@ -96,6 +96,18 @@ describe User, type: :model do
       user.password = user.password_confirmation = 'a' * 73
       expect(user.valid?).to be false
     end
+
+    it 'should not be valid if password and confirmation do not match' do
+      user.password = 'foobar'
+      user.password_confirmation = 'barfoo'
+      expect(user.valid?).to be false
+    end
+
+    it 'should be valid if password and confirmation match and meet criteria' do
+      user.password = 'foobar'
+      user.password_confirmation = 'foobar'
+      expect(user.valid?).to be true
+    end
   end
 
   context 'authentication' do

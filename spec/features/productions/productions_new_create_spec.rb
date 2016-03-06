@@ -40,7 +40,7 @@ feature 'Production new/create' do
     let!(:user) { create_logged_in_user }
     let(:production) { attributes_for :production }
 
-    scenario 'invalid title given; re-renders add form with error message', js: true do
+    scenario 'invalid title given; re-renders form with error message', js: true do
       visit productions_path
       click_link 'Add production'
       fill_in 'production_title', with: ' '

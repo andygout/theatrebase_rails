@@ -82,29 +82,9 @@ feature 'User password reset' do
       @user = click_resource_link @msg, 'password_reset'
     end
 
-    scenario 'password cannot be reset without entering new password & confirmation', js: true do
+    scenario 'password cannot be reset without entering valid new password & confirmation', js: true do
       fill_in 'user_password',              with: ''
       fill_in 'user_password_confirmation', with: ''
-      click_button 'Reset Password'
-      expect(page).to have_css '.alert-error'
-      expect(page).to have_css '.field_with_errors'
-      expect(page).not_to have_css '.alert-success'
-      expect(page).to have_current_path password_reset_path(@password_reset_token)
-    end
-
-    scenario 'password cannot be reset by entering password and confirmation that are too short', js: true do
-      fill_in 'user_password',              with: 'foo'
-      fill_in 'user_password_confirmation', with: 'foo'
-      click_button 'Reset Password'
-      expect(page).to have_css '.alert-error'
-      expect(page).to have_css '.field_with_errors'
-      expect(page).not_to have_css '.alert-success'
-      expect(page).to have_current_path password_reset_path(@password_reset_token)
-    end
-
-    scenario 'password cannot be reset by entering non-matching password and confirmation', js: true do
-      fill_in 'user_password',              with: 'foobar'
-      fill_in 'user_password_confirmation', with: 'barfoo'
       click_button 'Reset Password'
       expect(page).to have_css '.alert-error'
       expect(page).to have_css '.field_with_errors'

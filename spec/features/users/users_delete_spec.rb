@@ -1,26 +1,11 @@
 require 'rails_helper'
 
 feature 'User delete' do
-  context 'logged in as super-admin' do
-    let!(:super_admin_user) { create_logged_in_super_admin_user }
-    let(:second_super_admin_user) { create :second_super_admin_user }
-    let(:admin_user) { create :admin_user }
+  context 'attempt delete user' do
+    let!(:admin_user) { create_logged_in_admin_user }
     let(:user) { create :user }
 
-    scenario 'delete admin user; redirect to user index with success message', js: true do
-      visit user_path(admin_user)
-      click_button 'Delete User'
-      expect { click_button 'OK' }.to change { User.count }.by(-1)
-                                 .and change { Admin.count }.by(-1)
-      expect(User.exists? admin_user.id).to be false
-      expect(Admin.exists? user_id: admin_user.id).to be false
-      expect(page).to have_css '.alert-success'
-      expect(page).not_to have_css '.alert-error'
-      expect(page).not_to have_link(user.name, href: user_path(admin_user))
-      expect(page).to have_current_path users_path
-    end
-
-    scenario 'delete non-admin user; redirect to user index with success message', js: true do
+    scenario 'delete permitted user; redirect to user index with success message', js: true do
       visit user_path(user)
       click_button 'Delete User'
       expect { click_button 'OK' }.to change { User.count }.by -1
@@ -30,15 +15,8 @@ feature 'User delete' do
       expect(page).not_to have_link(user.name, href: user_path(user))
       expect(page).to have_current_path users_path
     end
-  end
 
-  context 'logged in as admin' do
-    let!(:admin_user) { create_logged_in_admin_user }
-    let(:super_admin_user) { create :super_admin_user }
-    let(:second_admin_user) { create :second_admin_user }
-    let(:user) { create :user }
-
-    scenario 'delete self (admin user); redirect to home page with success message', js: true do
+    scenario 'delete permitted user (self); logged out; redirect to home page with success message', js: true do
       visit user_path(admin_user)
       click_button 'Delete User'
       expect { click_button 'OK' }.to change { User.count }.by(-1)
@@ -49,35 +27,6 @@ feature 'User delete' do
       expect(page).not_to have_css '.alert-error'
       expect(page).to have_link('Log in', href: log_in_path)
       expect(page).not_to have_link('Profile', href: user_path(admin_user))
-      expect(page).not_to have_link('Log out', href: log_out_path)
-      expect(page).to have_current_path root_path
-    end
-
-    scenario 'delete non-admin user; redirect to user index with success message', js: true do
-      visit user_path(user)
-      click_button 'Delete User'
-      expect { click_button 'OK' }.to change { User.count }.by -1
-      expect(User.exists? user.id).to be false
-      expect(page).to have_css '.alert-success'
-      expect(page).not_to have_css '.alert-error'
-      expect(page).not_to have_link(user.name, href: user_path(user))
-      expect(page).to have_current_path users_path
-    end
-  end
-
-  context 'logged in as non-admin' do
-    let(:user) { create_logged_in_user }
-
-    scenario 'delete self (non-admin user); redirect to home page with success message', js: true do
-      visit user_path(user)
-      click_button 'Delete User'
-      expect { click_button 'OK' }.to change { User.count }.by -1
-      expect(User.exists? user.id).to be false
-      expect(Admin.exists? user_id: user).to be false
-      expect(page).to have_css '.alert-success'
-      expect(page).not_to have_css '.alert-error'
-      expect(page).to have_link('Log in', href: log_in_path)
-      expect(page).not_to have_link('Profile', href: user_path(user))
       expect(page).not_to have_link('Log out', href: log_out_path)
       expect(page).to have_current_path root_path
     end

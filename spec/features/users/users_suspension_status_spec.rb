@@ -1,103 +1,20 @@
 require 'rails_helper'
 
 feature 'User edit/update suspension status' do
-  context 'logged in as super-admin user; attempt edit suspension status of another user' do
+  context 'attempt edit suspension status of user' do
     let!(:super_admin_user) { create_logged_in_super_admin_user }
     let(:second_super_admin_user) { create :second_super_admin_user }
-    let(:admin_user) { create :admin_user }
     let(:user) { create :user }
 
-    scenario 'attempt edit self (super-admin user): fail and redirect to home page', js: true do
-      visit edit_suspension_status_path(super_admin_user)
-      expect(page).to have_css '.alert-error'
-      expect(page).to have_current_path root_path
+    scenario 'attempt edit permitted user: render suspension status edit form', js: true do
+      visit edit_suspension_status_path(user)
+      expect(page).to have_current_path edit_suspension_status_path(user)
     end
 
-    scenario 'attempt edit another super-admin user: fail and redirect to home page', js: true do
+    scenario 'attempt edit unpermitted user: fail and redirect to home page', js: true do
       visit edit_suspension_status_path(second_super_admin_user)
       expect(page).to have_css '.alert-error'
       expect(page).to have_current_path root_path
-    end
-
-    scenario 'attempt edit admin user: render admin user suspension status edit form', js: true do
-      visit edit_suspension_status_path(admin_user)
-      expect(page).to have_current_path edit_suspension_status_path(admin_user)
-    end
-
-    scenario 'attempt edit non-admin user: render non-admin user suspension status edit form', js: true do
-      visit edit_suspension_status_path(user)
-      expect(page).to have_current_path edit_suspension_status_path(user)
-    end
-  end
-
-  context 'logged in as admin user; attempt edit suspension status of another user' do
-    let!(:admin_user) { create_logged_in_admin_user }
-    let(:super_admin_user) { create :super_admin_user }
-    let(:second_admin_user) { create :second_admin_user }
-    let(:user) { create :user }
-
-    scenario 'attempt edit super-admin user: fail and redirect to home page', js: true do
-      visit edit_suspension_status_path(super_admin_user)
-      expect(page).to have_css '.alert-error'
-      expect(page).to have_current_path root_path
-    end
-
-    scenario 'attempt edit self (admin user): fail and redirect to home page', js: true do
-      visit edit_suspension_status_path(admin_user)
-      expect(page).to have_css '.alert-error'
-      expect(page).to have_current_path root_path
-    end
-
-    scenario 'attempt edit another admin user: fail and redirect to home page', js: true do
-      visit edit_suspension_status_path(second_admin_user)
-      expect(page).to have_css '.alert-error'
-      expect(page).to have_current_path root_path
-    end
-
-    scenario 'attempt edit non-admin user: fail and redirect to home page', js: true do
-      visit edit_suspension_status_path(user)
-      expect(page).to have_current_path edit_suspension_status_path(user)
-    end
-  end
-
-  context 'logged in as non-admin user; attempt edit suspension status of another user' do
-    let!(:user) { create_logged_in_user }
-    let(:super_admin_user) { create :super_admin_user }
-    let(:admin_user) { create :admin_user }
-    let(:second_user) { create :second_user }
-
-    scenario 'attempt edit super-admin user: fail and redirect to home page', js: true do
-      visit edit_suspension_status_path(super_admin_user)
-      expect(page).to have_css '.alert-error'
-      expect(page).to have_current_path root_path
-    end
-
-    scenario 'attempt edit admin user: fail and redirect to home page', js: true do
-      visit edit_suspension_status_path(admin_user)
-      expect(page).to have_css '.alert-error'
-      expect(page).to have_current_path root_path
-    end
-
-    scenario 'attempt edit self (non-admin user): fail and redirect to home page', js: true do
-      visit edit_suspension_status_path(user)
-      expect(page).to have_css '.alert-error'
-      expect(page).to have_current_path root_path
-    end
-
-    scenario 'attempt edit another non-admin user: fail and redirect to home page', js: true do
-      visit edit_suspension_status_path(second_user)
-      expect(page).to have_css '.alert-error'
-      expect(page).to have_current_path root_path
-    end
-  end
-
-  context 'not logged in; attempt edit suspension status of another user' do
-    let(:user) { create :user }
-
-    scenario 'fail and redirect to log in page', js: true do
-      visit edit_suspension_status_path(user)
-      expect(page).to have_css '.alert-error'
-      expect(page).to have_current_path log_in_path
     end
   end
 
