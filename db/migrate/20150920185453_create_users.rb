@@ -1,4 +1,5 @@
 class CreateUsers < ActiveRecord::Migration
+
   def change
     create_table :users do |t|
       t.string      :name
@@ -24,6 +25,7 @@ class CreateUsers < ActiveRecord::Migration
       t.index :email,
         unique: true
     end
+
     add_foreign_key :users,
       :users,
       column: :creator_id
@@ -32,4 +34,5 @@ class CreateUsers < ActiveRecord::Migration
       :users,
       column: :updater_id
   end
+
 end

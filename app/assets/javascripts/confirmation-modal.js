@@ -62,7 +62,7 @@ function createOverlay() {
 
 function createModal(link) {
   var modalHTML = "<div class='modal'>" +
-                  "<h1 class='header-text'>" + link.attr('data-confirm') + "</h1>" +
+                  "<p class='title-text'>" + link.attr('data-confirm') + "</p>" +
                   "<button class='button confirm'>OK</button>" +
                   "<button class='button cancel'>Cancel</button>" +
                   "</div>";

@@ -1,12 +1,12 @@
 <% provide(:title, 'Request password reset link') %>
 
-<h1 class='header-text'>Request password reset link</h1>
+<p class='title-text'>Request password reset link</p>
 
 <fieldset class='form'>
   <%= form_for(:password_reset, url: password_resets_path) do |user| %>
     <div class='form-item'>
       <%= user.label :email, class: 'label' %>
-      <%= user.email_field :email, class: 'input' %>
+      <%= user.email_field :email, class: 'input text-input' %>
     </div>
 
     <%= user.submit 'Submit', class: 'button' %>

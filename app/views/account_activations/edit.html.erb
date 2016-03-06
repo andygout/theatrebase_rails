@@ -1,6 +1,6 @@
 <% provide(:title, "Set password: #{@page_title}") %>
 
-<h1 class='header-text'>Set password: <%= @page_title %></h1>
+<p class='title-text'>Set password: <%= @page_title %></p>
 
 <fieldset class='form'>
   <%= form_for(@user, url: account_activation_path(params[:id])) do |user| %>
@@ -10,13 +10,13 @@
 
     <div class='form-item'>
       <%= user.label :password, class: 'label' %>
-      <%= user.password_field :password, class: 'input' %>
+      <%= user.password_field :password, class: 'input text-input' %>
       <%= render partial: 'partials/error', collection: @user.errors[:password] %>
     </div>
 
     <div class='form-item'>
       <%= user.label :password_confirmation, class: 'label' %>
-      <%= user.password_field :password_confirmation, class: 'input' %>
+      <%= user.password_field :password_confirmation, class: 'input text-input' %>
       <%= render partial: 'partials/error', collection: @user.errors[:password_confirmation] %>
     </div>
 

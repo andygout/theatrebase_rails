@@ -1,5 +1,5 @@
 <% if count > 0 %>
   <p class='form-alert alert-error'>
-    There <% if count == 1 %>is<% else %>are<% end %> <%= pluralize(count, 'error') %> on this page that need<% if count == 1 %>s<% end %> amending before submission can be successful.
+    There <% if count == 1 %>is<% else %>are<% end %> <%= pluralize(count, 'error') %> on this page that need<% if count == 1 %>s<% end %> amending before submission can be successful
   </p>
 <% end %>

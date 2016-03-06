@@ -1,4 +1,5 @@
 class CreateSuspensions < ActiveRecord::Migration
+
   def change
     create_table :suspensions, id: false do |t|
       t.belongs_to :user,
@@ -11,8 +12,10 @@ class CreateSuspensions < ActiveRecord::Migration
       t.belongs_to :assignor,
         index: true
     end
+
     add_foreign_key :suspensions,
       :users,
       column: :assignor_id
   end
+
 end
