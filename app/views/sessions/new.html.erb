@@ -1,17 +1,17 @@
 <% provide(:title, 'Log in') %>
 
-<h1 class='header-text'>Log in</h1>
+<p class='title-text'>Log in</p>
 
 <fieldset class='form'>
   <%= form_for(:session, url: log_in_path) do |session| %>
     <div class='form-item'>
       <%= session.label :email, class: 'label' %>
-      <%= session.email_field :email, class: 'input' %>
+      <%= session.email_field :email, class: 'input text-input' %>
     </div>
 
     <div class='form-item'>
       <%= session.label :password, class: 'label' %>
-      <%= session.password_field :password, class: 'input' %>
+      <%= session.password_field :password, class: 'input text-input' %>
     </div>
 
     <div class='form-item'>

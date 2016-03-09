@@ -29,84 +29,31 @@ feature 'User new/create' do
     end
   end
 
-  context 'logged in as super-admin user; submit add new user form using valid details' do
-    before(:each) do
-      click_link 'Log out'
-      log_in super_admin_user
-      visit new_user_path
-    end
-
-    scenario 'user created; redirect to home page with success message; account activation email sent', js: true do
-      fill_in 'user_name',  with: user[:name]
-      fill_in 'user_email', with: user[:email]
-      expect { click_button 'Create User' }.to change { User.count }.by(1)
-                                          .and change { ActionMailer::Base.deliveries.count }.by(1)
-      expect(page).to have_css '.alert-success'
-      expect(page).not_to have_css '.alert-error'
-      expect(page).not_to have_css '.field_with_errors'
-      expect(page).to have_current_path root_path
-    end
-
-    scenario 'user created; creator and updater associations (w/admin) created', js: true do
-      fill_in 'user_name',  with: user[:name]
-      fill_in 'user_email', with: user[:email]
-      click_button 'Create User'
-      user_email = acquire_email_address ActionMailer::Base.deliveries.last.to_s
-      user = User.find_by(email: user_email)
-      expect(user.creator).to eq super_admin_user
-      expect(user.updater).to eq super_admin_user
-      expect(super_admin_user.created_users).to include user
-      expect(super_admin_user.updated_users).to include user
-    end
-  end
-
   context 'logged in as admin user; submit add new user form using valid details' do
-    before(:each) do
+    scenario 'user created; redirect to home page with success message; account activation email sent; creator and updater associations (w/admin) created', js: true do
       visit new_user_path
-    end
-
-    scenario 'user created; redirect to home page with success message; account activation email sent', js: true do
       fill_in 'user_name',  with: user[:name]
       fill_in 'user_email', with: user[:email]
       expect { click_button 'Create User' }.to change { User.count }.by(1)
                                           .and change { ActionMailer::Base.deliveries.count }.by(1)
-      expect(page).to have_css '.alert-success'
-      expect(page).not_to have_css '.alert-error'
-      expect(page).not_to have_css '.field_with_errors'
-      expect(page).to have_current_path root_path
-    end
-
-    scenario 'user created; creator and updater associations (w/admin) created', js: true do
-      fill_in 'user_name',  with: user[:name]
-      fill_in 'user_email', with: user[:email]
-      click_button 'Create User'
       user_email = acquire_email_address ActionMailer::Base.deliveries.last.to_s
       user = User.find_by(email: user_email)
       expect(user.creator).to eq admin_user
       expect(user.updater).to eq admin_user
       expect(admin_user.created_users).to include user
       expect(admin_user.updated_users).to include user
+      expect(page).to have_css '.alert-success'
+      expect(page).not_to have_css '.alert-error'
+      expect(page).not_to have_css '.field_with_errors'
+      expect(page).to have_current_path root_path
     end
   end
 
-  context 'submit add new user form using invalid details; all re-render form with error message' do
-    before(:each) do
+  context 'logged in as admin user; submit add new user form using invalid details' do
+    scenario 'invalid name given; re-renders form with error message', js: true do
       visit new_user_path
-    end
-
-    scenario 'invalid name', js: true do
       fill_in 'user_name',  with: invalid_user[:name]
       fill_in 'user_email', with: user[:email]
-      expect { click_button 'Create User' }.to change { User.count }.by 0
-      expect(page).to have_css '.alert-error'
-      expect(page).to have_css '.field_with_errors'
-      expect(page).not_to have_css '.alert-success'
-      expect(page).to have_current_path users_path
-    end
-
-    scenario 'invalid email', js: true do
-      fill_in 'user_name',  with: user[:name]
-      fill_in 'user_email', with: invalid_user[:email]
       expect { click_button 'Create User' }.to change { User.count }.by 0
       expect(page).to have_css '.alert-error'
       expect(page).to have_css '.field_with_errors'
@@ -190,39 +137,9 @@ feature 'User new/create' do
       @account_activation_token = acquire_token msg
     end
 
-    scenario 'password cannot be set without entering new password & confirmation', js: true do
+    scenario 'if password not set correctly existing creator and updater associations (w/admin) remain', js: true do
       fill_in 'user_password',              with: ''
       fill_in 'user_password_confirmation', with: ''
-      click_button 'Set Password'
-      expect(page).to have_css '.alert-error'
-      expect(page).to have_css '.field_with_errors'
-      expect(page).not_to have_css '.alert-success'
-      expect(page).to have_current_path account_activation_path(@account_activation_token)
-    end
-
-    scenario 'password cannot be set by entering password and confirmation that are too short', js: true do
-      fill_in 'user_password',              with: 'foo'
-      fill_in 'user_password_confirmation', with: 'foo'
-      click_button 'Set Password'
-      expect(page).to have_css '.alert-error'
-      expect(page).to have_css '.field_with_errors'
-      expect(page).not_to have_css '.alert-success'
-      expect(page).to have_current_path account_activation_path(@account_activation_token)
-    end
-
-    scenario 'password cannot be set by entering non-matching password and confirmation', js: true do
-      fill_in 'user_password',              with: 'foobar'
-      fill_in 'user_password_confirmation', with: 'barfoo'
-      click_button 'Set Password'
-      expect(page).to have_css '.alert-error'
-      expect(page).to have_css '.field_with_errors'
-      expect(page).not_to have_css '.alert-success'
-      expect(page).to have_current_path account_activation_path(@account_activation_token)
-    end
-
-    scenario 'if password not set correctly existing creator and updater associations (w/admin) remain', js: true do
-      fill_in 'user_password',              with: 'foo'
-      fill_in 'user_password_confirmation', with: 'bar'
       click_button 'Set Password'
       user = User.find_by(email: @new_user.email)
       expect(user.creator).to eq admin_user
@@ -230,19 +147,13 @@ feature 'User new/create' do
       expect(admin_user.created_users).to include user
       expect(admin_user.updated_users).to include user
       expect(user.updated_users).not_to include user
+      expect(page).to have_css '.alert-error'
+      expect(page).to have_css '.field_with_errors'
+      expect(page).not_to have_css '.alert-success'
+      expect(page).to have_current_path account_activation_path(@account_activation_token)
     end
 
-    scenario 'password is set by entering valid password and confirmation', js: true do
-      fill_in 'user_password',              with: edit_user[:password]
-      fill_in 'user_password_confirmation', with: edit_user[:password]
-      click_button 'Set Password'
-      expect(page).to have_css '.alert-success'
-      expect(page).not_to have_css '.alert-error'
-      expect(page).not_to have_css '.field_with_errors'
-      expect(page).to have_current_path user_path(@new_user)
-    end
-
-    scenario 'password is set; existing creator association (w/admin) remains and updater association (w/itself) updated', js: true do
+    scenario 'password is set by entering valid password and confirmation; existing creator association (w/admin) remains and updater association (w/itself) updated', js: true do
       fill_in 'user_password',              with: edit_user[:password]
       fill_in 'user_password_confirmation', with: edit_user[:password]
       click_button 'Set Password'
@@ -252,6 +163,10 @@ feature 'User new/create' do
       expect(admin_user.created_users).to include user
       expect(user.updated_users).to include user
       expect(admin_user.updated_users).not_to include user
+      expect(page).to have_css '.alert-success'
+      expect(page).not_to have_css '.alert-error'
+      expect(page).not_to have_css '.field_with_errors'
+      expect(page).to have_current_path user_path(@new_user)
     end
   end
 

@@ -1,4 +1,5 @@
 class CreateSuperAdmins < ActiveRecord::Migration
+
   def change
     create_table :super_admins, id: false do |t|
       t.belongs_to :user,
@@ -9,4 +10,5 @@ class CreateSuperAdmins < ActiveRecord::Migration
       t.datetime :created_at
     end
   end
+
 end

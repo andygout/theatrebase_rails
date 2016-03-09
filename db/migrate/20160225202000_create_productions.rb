@@ -1,4 +1,5 @@
 class CreateProductions < ActiveRecord::Migration
+
   def change
     create_table :productions do |t|
       t.string      :title
@@ -13,6 +14,7 @@ class CreateProductions < ActiveRecord::Migration
       t.belongs_to :updater,
         index: true
     end
+
     add_foreign_key :productions,
       :users,
       column: :creator_id
@@ -21,4 +23,5 @@ class CreateProductions < ActiveRecord::Migration
       :users,
       column: :updater_id
   end
+
 end
