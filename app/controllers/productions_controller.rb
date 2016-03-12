@@ -51,13 +51,30 @@ class ProductionsController < ApplicationController
   private
 
     def production_params
+      nullify_unused_params
+
       params
         .require(:production)
         .permit(:title,
                 :first_date,
                 :press_date,
-                :last_date)
+                :last_date,
+                :press_date_tbc,
+                :previews_only,
+                :dates_info,
+                :press_date_wording,
+                :dates_tbc_note,
+                :dates_note,
+                :second_press_date)
         .merge(updater_id: current_user.id)
+    end
+
+    def nullify_unused_params
+      [:press_date_tbc, :previews_only, :dates_info]
+        .map { |p| params[:production][p] = nil if params[:production][p].to_i == 0 }
+
+      [:press_date_wording, :dates_tbc_note, :dates_note]
+      .map { |p| params[:production][p] = nil if params[:production][p].empty? }
     end
 
     def get_production
