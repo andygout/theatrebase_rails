@@ -24,6 +24,15 @@ class Production < ActiveRecord::Base
 
   validate :previews_only_absence, if: :press_date
 
+  validates :press_date_wording,
+    length: { maximum: 255 }
+
+  validates :dates_tbc_note,
+    length: { maximum: 255 }
+
+  validates :dates_note,
+    length: { maximum: 255 }
+
   validates :second_press_date,
     date_format: true, if: :press_date
 
