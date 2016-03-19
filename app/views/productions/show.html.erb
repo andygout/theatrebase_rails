@@ -2,15 +2,7 @@
 
 <p class='title-text'><%= @production.title %></p>
 
-<p class='section-header'>Dates</p>
-
-<table class='dates-table'>
-  <%= @dates %>
-</table>
-
-<% if @production.dates_note.present? %>
-  <p class='note-text emphasis-text'><%= @production.dates_note %></p>
-<% end %>
+<%= @dates %>
 
 <% if logged_in? %>
   <%= button_to 'Edit Production', edit_production_path(@production), method: :get, class: 'button' %>

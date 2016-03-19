@@ -22,6 +22,10 @@ module ProductionsShowHelper
     single_date(p) && last_date_tbc(p)
   end
 
+  def dates_single_date_tbc p
+    dates_tbc(p) || single_date_tbc(p)
+  end
+
   def open_first_date p
     p.first_date == p.press_date
   end
@@ -61,26 +65,37 @@ module ProductionsShowHelper
     " class='emphasis-text'" if apply_class
   end
 
+  def apply_outer_markup rows_markup
+    "<p class='section-header'>Dates</p>"\
+    "<table class='dates-table'>"\
+      "#{rows_markup}"\
+    "</table>"
+  end
+
   def compile_markup dates
-    dates.map { |d| "<tr>"\
-                      "<td class='description-text'>#{d[0]}</td>"\
-                      "<td#{tbc_class(d[2])}>#{format(d[1])}</td>"\
-                    "</tr>"
-              }.join('')
+    apply_outer_markup dates.map  { |d| "<tr>"\
+                                          "<td class='description-text'>#{d[0]}</td>"\
+                                          "<td#{tbc_class(d[2])}>#{format(d[1])}</td>"\
+                                        "</tr>"
+                                  }.join('')
   end
 
   def create_dates_markup p
-    dates_tbc_note = ": #{p.dates_tbc_note}" if p.dates_tbc_note
-    return "<tr><td class='emphasis-text'>TBC#{dates_tbc_note}</td></tr>" if dates_tbc(p) || single_date_tbc(p)
+    dates_tbc_note = ": #{p.dates_tbc_note}" if p.dates_tbc_note && dates_single_date_tbc(p)
+    dates_tbc_markup = "<tr><td class='emphasis-text'>TBC#{dates_tbc_note}</td></tr>" if dates_single_date_tbc(p)
+    return apply_outer_markup(dates_tbc_markup) if dates_tbc(p) || single_date_tbc(p)
 
-    booking_until = ' (booking until)' if booking_until(p)
+    booking_until = ' (booking until)' if booking_until(p) && single_date(p)
     return compile_markup([["Performs#{booking_until}:", p.first_date, booking_until(p)]]) if single_date(p)
 
     dates = []
     dates << get_first_date(p)
     dates << get_press_date(p) if p.press_date || p.press_date_tbc
     dates << get_last_date(p) unless single_date(p)
-    compile_markup(dates.compact)
+
+    dates_note = p.dates_note.present? ? "<p class='note-text emphasis-text'>#{p.dates_note}</p>" : ''
+
+    compile_markup(dates.compact) + dates_note
   end
 
 end
