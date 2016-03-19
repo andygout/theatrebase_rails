@@ -86,5 +86,70 @@ describe Production, type: :model do
       production.press_date = '31/10/2015'
       expect(production.valid?).to be true
     end
+
+    it 'invalid if press date given and "press date TBC" checked' do
+      production.press_date = '25/08/2015'
+      production.press_date_tbc = true
+      expect(production.valid?).to be false
+    end
+
+    it 'valid if no press date given and "press date TBC" checked' do
+      production.press_date_tbc = true
+      expect(production.valid?).to be true
+    end
+
+    it 'invalid if press date given and "previews only" checked' do
+      production.press_date = '25/08/2015'
+      production.previews_only = true
+      expect(production.valid?).to be false
+    end
+
+    it 'valid if no press date given and "previews only" checked' do
+      production.previews_only = true
+      expect(production.valid?).to be true
+    end
+  end
+
+  context 'second press date validation' do
+    it 'invalid if second press date given without press date' do
+      production.second_press_date = '26/08/2015'
+      expect(production.valid?).to be false
+    end
+
+    it 'invalid if date not given in correct format (but press date given)' do
+      production.press_date = '25/08/2015'
+      production.second_press_date = 'The twenty-sixth day of August in the year two-thousand and fifteen'
+      expect(production.valid?).to be false
+    end
+
+    it 'invalid if second press date before press date' do
+      production.press_date = '25/08/2015'
+      production.second_press_date = '24/08/2015'
+      expect(production.valid?).to be false
+    end
+
+    it 'invalid if second press date equal to press date' do
+      production.press_date = '25/08/2015'
+      production.second_press_date = '25/08/2015'
+      expect(production.valid?).to be false
+    end
+
+    it 'invalid if second press date after last date' do
+      production.press_date = '25/08/2015'
+      production.second_press_date = '01/11/2015'
+      expect(production.valid?).to be false
+    end
+
+    it 'valid if second press date after press date and before last date' do
+      production.press_date = '25/08/2015'
+      production.second_press_date = '26/08/2015'
+      expect(production.valid?).to be true
+    end
+
+    it 'valid if second press date after press date and equal to last date' do
+      production.press_date = '25/08/2015'
+      production.second_press_date = '31/10/2015'
+      expect(production.valid?).to be true
+    end
   end
 end

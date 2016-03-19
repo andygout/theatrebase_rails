@@ -6,6 +6,13 @@ class CreateProductions < ActiveRecord::Migration
       t.date        :first_date
       t.date        :press_date
       t.date        :last_date
+      t.boolean     :press_date_tbc
+      t.boolean     :previews_only
+      t.integer     :dates_info
+      t.string      :press_date_wording
+      t.string      :dates_tbc_note
+      t.string      :dates_note
+      t.date        :second_press_date
       t.timestamps  null: false
 
       t.belongs_to :creator,

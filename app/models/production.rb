@@ -16,11 +16,18 @@ class Production < ActiveRecord::Base
   validates :press_date,
     date_format: true
 
-  validate :first_last_date_chronological,
-    if: [:first_date, :last_date]
+  validate :first_last_date_chronological, if: [:first_date, :last_date]
 
-  validate :press_date_chronological,
-    if: [:first_date, :press_date, :last_date]
+  validate :press_date_chronological, if: [:first_date, :press_date, :last_date]
+
+  validate :press_date_tbc_absence, if: :press_date
+
+  validate :previews_only_absence, if: :press_date
+
+  validates :second_press_date,
+    date_format: true, if: :press_date
+
+  validate :second_press_date_valid, if: :second_press_date
 
   belongs_to :creator,
     class_name: :User,

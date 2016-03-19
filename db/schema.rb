@@ -30,8 +30,15 @@ ActiveRecord::Schema.define(version: 20160225202000) do
     t.date     "first_date"
     t.date     "press_date"
     t.date     "last_date"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.boolean  "press_date_tbc"
+    t.boolean  "previews_only"
+    t.integer  "dates_info"
+    t.string   "press_date_wording"
+    t.string   "dates_tbc_note"
+    t.string   "dates_note"
+    t.date     "second_press_date"
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
     t.integer  "creator_id"
     t.integer  "updater_id"
   end
