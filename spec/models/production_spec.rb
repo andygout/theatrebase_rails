@@ -7,7 +7,7 @@ describe Production, type: :model do
   end
 
   let(:production) { build :production }
-  LENGTH_LIMIT = 255
+  LENGTH_MAX = 255
 
   context 'valid details' do
     it 'should be valid' do
@@ -22,12 +22,12 @@ describe Production, type: :model do
     end
 
     it 'invalid if title exceeds length limit' do
-      production.title = 'a' * (LENGTH_LIMIT + 1)
+      production.title = 'a' * (LENGTH_MAX + 1)
       expect(production.valid?).to be false
     end
 
     it 'valid if title present and does not exceed length limit' do
-      production.title = 'a' * LENGTH_LIMIT
+      production.title = 'a' * LENGTH_MAX
       expect(production.valid?).to be true
     end
   end
@@ -118,32 +118,32 @@ describe Production, type: :model do
 
   context 'date text fields validation' do
     it 'invalid if "press date wording" exceeds length limit' do
-      production.press_date_wording = 'a' * (LENGTH_LIMIT + 1)
+      production.press_date_wording = 'a' * (LENGTH_MAX + 1)
       expect(production.valid?).to be false
     end
 
     it 'valid if "press date wording" does not exceed length limit' do
-      production.press_date_wording = 'a' * LENGTH_LIMIT
+      production.press_date_wording = 'a' * LENGTH_MAX
       expect(production.valid?).to be true
     end
 
     it 'invalid if "dates TBC note" exceeds length limit' do
-      production.dates_tbc_note = 'a' * (LENGTH_LIMIT + 1)
+      production.dates_tbc_note = 'a' * (LENGTH_MAX + 1)
       expect(production.valid?).to be false
     end
 
     it 'valid if "dates TBC note" does not exceed length limit' do
-      production.dates_tbc_note = 'a' * LENGTH_LIMIT
+      production.dates_tbc_note = 'a' * LENGTH_MAX
       expect(production.valid?).to be true
     end
 
     it 'invalid if "dates note" exceeds length limit' do
-      production.dates_note = 'a' * (LENGTH_LIMIT + 1)
+      production.dates_note = 'a' * (LENGTH_MAX + 1)
       expect(production.valid?).to be false
     end
 
     it 'valid if "dates note" does not exceed length limit' do
-      production.dates_note = 'a' * LENGTH_LIMIT
+      production.dates_note = 'a' * LENGTH_MAX
       expect(production.valid?).to be true
     end
   end

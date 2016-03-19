@@ -6,7 +6,7 @@
   <%= form_for(:password_reset, url: password_resets_path) do |user| %>
     <div class='form-item'>
       <%= user.label :email, class: 'label' %>
-      <%= user.email_field :email, class: 'input text-input' %>
+      <%= user.email_field :email, class: 'input text-input', maxlength: 255 %>
     </div>
 
     <%= user.submit 'Submit', class: 'button' %>

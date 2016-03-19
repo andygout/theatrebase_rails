@@ -6,12 +6,12 @@
   <%= form_for(:session, url: log_in_path) do |session| %>
     <div class='form-item'>
       <%= session.label :email, class: 'label' %>
-      <%= session.email_field :email, class: 'input text-input' %>
+      <%= session.email_field :email, class: 'input text-input', maxlength: 255 %>
     </div>
 
     <div class='form-item'>
       <%= session.label :password, class: 'label' %>
-      <%= session.password_field :password, class: 'input text-input' %>
+      <%= session.password_field :password, class: 'input text-input', maxlength: 72 %>
     </div>
 
     <div class='form-item'>
