@@ -27,7 +27,7 @@ feature 'Production edit/update' do
       expect(page).to have_css '.alert-success'
       expect(page).not_to have_css '.alert-error'
       expect(page).not_to have_css '.field_with_errors'
-      expect(page).to have_content 'Macbeth', count: 2
+      expect(page).to have_content 'Macbeth'
       expect(page).not_to have_content production.title
       expect(page).to have_current_path production_path(production)
       expect(production.reload.creator).to eq second_user

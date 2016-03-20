@@ -19,7 +19,7 @@ class UsersController < ApplicationController
     @user = current_user.created_users.build_with_user(user_create_params, current_user)
     if @user.save
       @user.send_activation_email
-      flash[:success] = "Account activation instructions for #{@user.name} sent to: #{@user.email}"
+      flash[:success] = 'Account activation instructions sent successfully'
       redirect_to root_path
     else
       render :new
@@ -32,7 +32,7 @@ class UsersController < ApplicationController
 
   def update
     if @user.update(user_update_params)
-      flash[:success] = "User updated successfully: #{@user.name}"
+      flash[:success] = 'User updated successfully'
       redirect_to @user
     else
       @user_name_email = User.find(params[:id])
@@ -43,7 +43,7 @@ class UsersController < ApplicationController
 
   def destroy
     @user.destroy
-    flash[:success] = "User deleted successfully: #{@user.name}"
+    flash[:success] = "User deleted successfully"
     if current_user == @user
       session.delete :user_id
       redirect_to root_path

@@ -23,7 +23,7 @@ class SessionsController < ApplicationController
     else
       log_in user
       params[:session][:remember_me] == '1' ? remember(user) : forget(user)
-      flash[:success] = "Successfully logged in as #{user.name} (#{user.email})"
+      flash[:success] = 'Successfully logged in'
       redirect_back_or user
     end
   end

@@ -13,7 +13,7 @@ class AdminStatusController < ApplicationController
 
   def update
     @user.update(user_params)
-    flash[:success] = "Admin status updated successfully: #{@user.name}"
+    flash[:success] = 'Admin status updated successfully'
     redirect_to @user
   end
 

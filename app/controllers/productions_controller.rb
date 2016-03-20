@@ -14,7 +14,7 @@ class ProductionsController < ApplicationController
   def create
     @production = current_user.created_productions.build_with_user(production_params, current_user)
     if @production.save
-      flash[:success] = "Production created successfully: #{@production.title}"
+      flash[:success] = 'Production created successfully'
       redirect_to @production
     else
       render :new
@@ -27,7 +27,7 @@ class ProductionsController < ApplicationController
 
   def update
     if @production.update(production_params)
-      flash[:success] = "Production updated successfully: #{@production.title}"
+      flash[:success] = 'Production updated successfully'
       redirect_to production_path(@production)
     else
       @page_title = Production.find(params[:id]).title
@@ -37,7 +37,7 @@ class ProductionsController < ApplicationController
 
   def destroy
     @production.destroy
-    flash[:success] = "Production deleted successfully: #{@production.title}"
+    flash[:success] = 'Production deleted successfully'
     redirect_to productions_path
   end
 
