@@ -109,14 +109,18 @@ a {
   font-size: small;
 }
 
-.section-header {
+.content-label {
   display: inline-block;
-  margin-top: 20px;
   padding: 0 5px;
-  border: 1px solid $border-color;
   border-radius: 2px;
   background-color: $box-shadow-color;
   font-weight: bold;
+  margin-top: 30px;
+  border: 1px solid $border-color;
+  &.content-header {
+    margin: 5px 0 20px 0;
+    border-width: 2px;
+  }
 }
 
 .dates-table {

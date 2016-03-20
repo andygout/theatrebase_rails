@@ -5,6 +5,7 @@ class ProductionsController < ApplicationController
   before_action :get_production,      only: [:edit, :update, :destroy, :show]
   before_action :logged_in_user,      only: [:new, :create, :edit, :update, :destroy]
   before_action :not_suspended_user,  only: [:new, :create, :edit, :update, :destroy]
+  before_action :get_page_header,     only: [:new, :edit, :show]
 
   def new
     @production = Production.new
@@ -79,6 +80,10 @@ class ProductionsController < ApplicationController
 
     def get_production
       @production = Production.find(params[:id])
+    end
+
+    def get_page_header
+      @content_header = "<p class='content-label content-header'>PRODUCTION</p>".html_safe
     end
 
 end

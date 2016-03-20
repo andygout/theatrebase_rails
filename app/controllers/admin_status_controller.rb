@@ -8,6 +8,7 @@ class AdminStatusController < ApplicationController
   def edit
     @user.admin || @user.build_admin
     @page_title = "#{@user.name} (#{@user.email})"
+    @content_header = "<p class='content-label content-header'>USER</p>".html_safe
   end
 
   def update

@@ -9,6 +9,7 @@ class UsersController < ApplicationController
   before_action :correct_user,      only: [:edit, :update]
   before_action :destroy_user,      only: :destroy
   before_action :show_user,         only: :show
+  before_action :get_page_header,   only: [:new, :edit, :show]
 
   def new
     @user = User.new
@@ -100,6 +101,10 @@ class UsersController < ApplicationController
 
     def show_user
       validate_user valid_show_user? @user
+    end
+
+    def get_page_header
+      @content_header = "<p class='content-label content-header'>USER</p>".html_safe
     end
 
 end

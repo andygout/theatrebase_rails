@@ -1,5 +1,7 @@
 <% provide(:title, "Edit user admin status: #{@page_title}") %>
 
+<%= @content_header %>
+
 <p class='title-text'>Edit user admin status: <%= @page_title %></p>
 
 <%= form_for @user, html: { class: 'form' }, url: admin_status_path(params[:user_id]) do |user| %>
