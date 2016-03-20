@@ -3,6 +3,8 @@ class Production < ActiveRecord::Base
   include ActiveModel::Validations
   include ProductionsValidationsHelper
 
+  before_validation :strip_whitespace
+
   validates :title,
     presence: true,
     length: { maximum: 255 }
@@ -45,5 +47,11 @@ class Production < ActiveRecord::Base
   belongs_to :updater,
     class_name: :User,
     foreign_key: :updater_id
+
+  private
+
+    def strip_whitespace
+      self.attributes.keys.map { |k| self[k] = self[k].strip if self[k].class == String }
+    end
 
 end

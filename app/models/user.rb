@@ -2,8 +2,9 @@ class User < ActiveRecord::Base
 
   attr_accessor :remember_token, :activation_token, :reset_token
 
-  before_save   :downcase_email
-  before_create :create_activation_digest
+  before_validation :strip_whitespace, only: :name
+  before_save       :downcase_email
+  before_create     :create_activation_digest
 
   validates :name,
     presence: true,
@@ -142,6 +143,10 @@ class User < ActiveRecord::Base
   end
 
   private
+
+    def strip_whitespace
+      self.name = self.name.strip
+    end
 
     def downcase_email
       self.email = email.downcase
