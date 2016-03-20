@@ -1,78 +1,76 @@
-<fieldset class='form'>
-  <%= form_for @production do |production| %>
-    <%= render 'partials/error_count', count: @production.errors.count %>
+<%= form_for @production, html: { class: 'form' } do |production| %>
+  <%= render 'partials/error_count', count: @production.errors.count %>
 
-    <div class='form-item'>
-      <%= production.label :title, class: 'label mandatory' %>
-      <%= production.text_field :title, class: 'input text-input', maxlength: 8 %>
-      <%= render partial: 'partials/error', collection: @production.errors[:title] %>
-    </div>
+  <div class='form-item'>
+    <%= production.label :title, class: 'label mandatory' %>
+    <%= production.text_field :title, class: 'input text-input', maxlength: 255 %>
+    <%= render partial: 'partials/error', collection: @production.errors[:title] %>
+  </div>
 
-    <div class='form-item'>
-      <%= production.label :first_date, class: 'label mandatory' %>
-      <%= production.date_field :first_date, class: 'input date-input' %>
-      <%= render partial: 'partials/error', collection: @production.errors[:first_date] %>
-    </div>
+  <div class='form-item'>
+    <%= production.label :first_date, class: 'label mandatory' %>
+    <%= production.date_field :first_date, class: 'input date-input' %>
+    <%= render partial: 'partials/error', collection: @production.errors[:first_date] %>
+  </div>
 
-    <div class='form-item'>
-      <%= production.label :press_date, class: 'label' %>
-      <%= production.date_field :press_date, class: 'input date-input' %>
-      <%= render partial: 'partials/error', collection: @production.errors[:press_date] %>
-    </div>
+  <div class='form-item'>
+    <%= production.label :press_date, class: 'label' %>
+    <%= production.date_field :press_date, class: 'input date-input' %>
+    <%= render partial: 'partials/error', collection: @production.errors[:press_date] %>
+  </div>
 
-    <div class='form-item'>
-      <%= production.label :last_date, class: 'label mandatory' %>
-      <%= production.date_field :last_date, class: 'input date-input' %>
-      <%= render partial: 'partials/error', collection: @production.errors[:last_date] %>
-    </div>
+  <div class='form-item'>
+    <%= production.label :last_date, class: 'label mandatory' %>
+    <%= production.date_field :last_date, class: 'input date-input' %>
+    <%= render partial: 'partials/error', collection: @production.errors[:last_date] %>
+  </div>
 
-    <div class='form-item checkbox'>
-      <%= production.check_box :press_date_tbc %>
-      <%= production.label :press_date_tbc, 'Press date TBC' %>
-      <%= render partial: 'partials/error', collection: @production.errors[:press_date_tbc] %>
-    </div>
+  <div class='form-item checkbox'>
+    <%= production.check_box :press_date_tbc %>
+    <%= production.label :press_date_tbc, 'Press date TBC' %>
+    <%= render partial: 'partials/error', collection: @production.errors[:press_date_tbc] %>
+  </div>
 
-    <div class='form-item checkbox'>
-      <%= production.check_box :previews_only %>
-      <%= production.label :previews_only %>
-      <%= render partial: 'partials/error', collection: @production.errors[:previews_only] %>
-    </div>
+  <div class='form-item checkbox'>
+    <%= production.check_box :previews_only %>
+    <%= production.label :previews_only %>
+    <%= render partial: 'partials/error', collection: @production.errors[:previews_only] %>
+  </div>
 
-    <div class='form-item'>
-      <%= production.radio_button :dates_info, nil %>
-      <%= production.label :dates_info, 'Dates info N/A', value: nil %>
-      <%= production.radio_button :dates_info, 1 %>
-      <%= production.label :dates_info, 'Booking until', value: 1 %>
-      <%= production.radio_button :dates_info, 2 %>
-      <%= production.label :dates_info, 'Last date TBC', value: 2 %>
-      <%= production.radio_button :dates_info, 3 %>
-      <%= production.label :dates_info, 'Dates TBC', value: 3 %>
-    </div>
+  <div class='form-item'>
+    <%= production.radio_button :dates_info, nil %>
+    <%= production.label :dates_info, 'Dates info N/A', value: nil %>
+    <%= production.radio_button :dates_info, 1 %>
+    <%= production.label :dates_info, 'Booking until', value: 1 %>
+    <%= production.radio_button :dates_info, 2 %>
+    <%= production.label :dates_info, 'Last date TBC', value: 2 %>
+    <%= production.radio_button :dates_info, 3 %>
+    <%= production.label :dates_info, 'Dates TBC', value: 3 %>
+  </div>
 
-    <div class='form-item'>
-      <%= production.label :press_date_wording, class: 'label' %>
-      <%= production.text_field :press_date_wording, class: 'input text-input', maxlength: 255 %>
-      <%= render partial: 'partials/error', collection: @production.errors[:press_date_wording] %>
-    </div>
+  <div class='form-item'>
+    <%= production.label :press_date_wording, class: 'label' %>
+    <%= production.text_field :press_date_wording, class: 'input text-input', maxlength: 255 %>
+    <%= render partial: 'partials/error', collection: @production.errors[:press_date_wording] %>
+  </div>
 
-    <div class='form-item'>
-      <%= production.label :dates_tbc_note, 'Dates TBC note', class: 'label' %>
-      <%= production.text_field :dates_tbc_note, class: 'input text-input', maxlength: 255 %>
-      <%= render partial: 'partials/error', collection: @production.errors[:dates_tbc_note] %>
-    </div>
+  <div class='form-item'>
+    <%= production.label :dates_tbc_note, 'Dates TBC note', class: 'label' %>
+    <%= production.text_field :dates_tbc_note, class: 'input text-input', maxlength: 255 %>
+    <%= render partial: 'partials/error', collection: @production.errors[:dates_tbc_note] %>
+  </div>
 
-    <div class='form-item'>
-      <%= production.label :dates_note, class: 'label' %>
-      <%= production.text_field :dates_note, class: 'input text-input', maxlength: 255 %>
-      <%= render partial: 'partials/error', collection: @production.errors[:dates_note] %>
-    </div>
+  <div class='form-item'>
+    <%= production.label :dates_note, class: 'label' %>
+    <%= production.text_field :dates_note, class: 'input text-input', maxlength: 255 %>
+    <%= render partial: 'partials/error', collection: @production.errors[:dates_note] %>
+  </div>
 
-    <div class='form-item'>
-      <%= production.label :second_press_date, class: 'label' %>
-      <%= production.date_field :second_press_date, class: 'input date-input' %>
-      <%= render partial: 'partials/error', collection: @production.errors[:second_press_date] %>
-    </div>
+  <div class='form-item'>
+    <%= production.label :second_press_date, class: 'label' %>
+    <%= production.date_field :second_press_date, class: 'input date-input' %>
+    <%= render partial: 'partials/error', collection: @production.errors[:second_press_date] %>
+  </div>
 
-    <%= production.submit nil, class: 'button' %>
-  <% end %>
-</fieldset>
+  <%= production.submit nil, class: 'button' %>
+<% end %>
