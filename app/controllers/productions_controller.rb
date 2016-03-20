@@ -75,7 +75,7 @@ class ProductionsController < ApplicationController
         .map { |p| params[:production][p] = nil if params[:production][p].to_i == 0 }
 
       [:press_date_wording, :dates_tbc_note, :dates_note]
-      .map { |p| params[:production][p] = nil if params[:production][p].empty? }
+        .map { |p| params[:production][p] = nil if params[:production][p].empty? }
     end
 
     def get_production
