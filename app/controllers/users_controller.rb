@@ -9,6 +9,7 @@ class UsersController < ApplicationController
   before_action :correct_user,      only: [:edit, :update]
   before_action :destroy_user,      only: :destroy
   before_action :show_user,         only: :show
+  before_action :get_page_header,   only: [:new, :edit, :show]
 
   def new
     @user = User.new
@@ -18,7 +19,7 @@ class UsersController < ApplicationController
     @user = current_user.created_users.build_with_user(user_create_params, current_user)
     if @user.save
       @user.send_activation_email
-      flash[:success] = "Account activation instructions for #{@user.name} sent to: #{@user.email}"
+      flash[:success] = 'Account activation instructions sent successfully'
       redirect_to root_path
     else
       render :new
@@ -31,7 +32,7 @@ class UsersController < ApplicationController
 
   def update
     if @user.update(user_update_params)
-      flash[:success] = "User updated successfully: #{@user.name}"
+      flash[:success] = 'User updated successfully'
       redirect_to @user
     else
       @user_name_email = User.find(params[:id])
@@ -42,7 +43,7 @@ class UsersController < ApplicationController
 
   def destroy
     @user.destroy
-    flash[:success] = "User deleted successfully: #{@user.name}"
+    flash[:success] = "User deleted successfully"
     if current_user == @user
       session.delete :user_id
       redirect_to root_path
@@ -100,6 +101,10 @@ class UsersController < ApplicationController
 
     def show_user
       validate_user valid_show_user? @user
+    end
+
+    def get_page_header
+      @content_header = "<p class='content-label content-header'>USER</p>".html_safe
     end
 
 end

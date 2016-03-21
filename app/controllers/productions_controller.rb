@@ -5,6 +5,7 @@ class ProductionsController < ApplicationController
   before_action :get_production,      only: [:edit, :update, :destroy, :show]
   before_action :logged_in_user,      only: [:new, :create, :edit, :update, :destroy]
   before_action :not_suspended_user,  only: [:new, :create, :edit, :update, :destroy]
+  before_action :get_page_header,     only: [:new, :edit, :show]
 
   def new
     @production = Production.new
@@ -13,7 +14,7 @@ class ProductionsController < ApplicationController
   def create
     @production = current_user.created_productions.build_with_user(production_params, current_user)
     if @production.save
-      flash[:success] = "Production created successfully: #{@production.title}"
+      flash[:success] = 'Production created successfully'
       redirect_to @production
     else
       render :new
@@ -26,7 +27,7 @@ class ProductionsController < ApplicationController
 
   def update
     if @production.update(production_params)
-      flash[:success] = "Production updated successfully: #{@production.title}"
+      flash[:success] = 'Production updated successfully'
       redirect_to production_path(@production)
     else
       @page_title = Production.find(params[:id]).title
@@ -36,7 +37,7 @@ class ProductionsController < ApplicationController
 
   def destroy
     @production.destroy
-    flash[:success] = "Production deleted successfully: #{@production.title}"
+    flash[:success] = 'Production deleted successfully'
     redirect_to productions_path
   end
 
@@ -74,11 +75,15 @@ class ProductionsController < ApplicationController
         .map { |p| params[:production][p] = nil if params[:production][p].to_i == 0 }
 
       [:press_date_wording, :dates_tbc_note, :dates_note]
-      .map { |p| params[:production][p] = nil if params[:production][p].empty? }
+        .map { |p| params[:production][p] = nil if params[:production][p].empty? }
     end
 
     def get_production
       @production = Production.find(params[:id])
+    end
+
+    def get_page_header
+      @content_header = "<p class='content-label content-header'>PRODUCTION</p>".html_safe
     end
 
 end

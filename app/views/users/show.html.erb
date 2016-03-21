@@ -1,5 +1,7 @@
 <% provide(:title, "#{@page_title} (user)") %>
 
+<%= @content_header %>
+
 <p class='title-text'><%= @page_title %></p>
 
 <% if current_user? @user %>

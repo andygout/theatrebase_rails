@@ -2,13 +2,11 @@
 
 <p class='title-text'>Request password reset link</p>
 
-<fieldset class='form'>
-  <%= form_for(:password_reset, url: password_resets_path) do |user| %>
-    <div class='form-item'>
-      <%= user.label :email, class: 'label' %>
-      <%= user.email_field :email, class: 'input text-input', maxlength: 255 %>
-    </div>
+<%= form_for :password_reset, html: { class: 'form' }, url: password_resets_path do |user| %>
+  <div class='form-item'>
+    <%= user.label :email, class: 'label' %>
+    <%= user.email_field :email, class: 'input text-input', maxlength: 255 %>
+  </div>
 
-    <%= user.submit 'Submit', class: 'button' %>
-  <% end %>
-</fieldset>
+  <%= user.submit 'Submit', class: 'button' %>
+<% end %>

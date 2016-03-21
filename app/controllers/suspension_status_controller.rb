@@ -8,11 +8,12 @@ class SuspensionStatusController < ApplicationController
   def edit
     @user.suspension || @user.build_suspension
     @page_title = "#{@user.name} (#{@user.email})"
+    @content_header = "<p class='content-label content-header'>USER</p>".html_safe
   end
 
   def update
     @user.update(user_params)
-    flash[:success] = "Suspension status updated successfully: #{@user.name}"
+    flash[:success] = 'Suspension status updated successfully'
     redirect_to @user
   end
 
