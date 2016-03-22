@@ -32,4 +32,9 @@ module FormHelper
     compile_created_updated_markup(values)
   end
 
+  def create_status_assigned_markup status
+    assigned = status ? "#{format_datetime(status.created_at)} by #{status.assignor.name}" : 'TBC'
+    compile_created_updated_markup([['Assigned:', assigned]])
+  end
+
 end
