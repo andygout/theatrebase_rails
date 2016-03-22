@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
 
   include UsersHelper
+  include FormHelper
 
   before_action :get_user,          only: [:edit, :update, :destroy, :show]
   before_action :logged_in_user
@@ -13,6 +14,7 @@ class UsersController < ApplicationController
 
   def new
     @user = User.new
+    get_created_updated_table
   end
 
   def create
@@ -28,6 +30,7 @@ class UsersController < ApplicationController
 
   def edit
     @page_title = "#{@user.name} (#{@user.email})"
+    get_created_updated_table
   end
 
   def update
@@ -37,6 +40,7 @@ class UsersController < ApplicationController
     else
       @user_name_email = User.find(params[:id])
       @page_title = "#{@user_name_email.name} (#{@user_name_email.email})"
+      get_created_updated_table
       render :edit
     end
   end
@@ -101,6 +105,10 @@ class UsersController < ApplicationController
 
     def show_user
       validate_user valid_show_user? @user
+    end
+
+    def get_created_updated_table
+      @created_updated_info = create_created_updated_markup(@user).html_safe
     end
 
     def get_page_header

@@ -123,6 +123,21 @@ a {
   }
 }
 
+.content-container {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 10px;
+  background-color: $form-bg-color;
+  border: 2px solid $border-color;
+  border-radius: 5px;
+}
+
+.content-table {
+  & td:first-child {
+    padding: 5px 20px 5px 0;
+  }
+}
+
 .dates-table {
   margin-left: 6px;
   & td {

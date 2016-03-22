@@ -1,3 +1,5 @@
+<%= @created_updated_info %>
+
 <%= form_for @user, html: { class: 'form' } do |user| %>
   <%= render 'partials/error_count', count: @user.errors.count %>
 
