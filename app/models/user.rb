@@ -97,8 +97,8 @@ class User < ActiveRecord::Base
 
   def remember
     self.remember_token = User.new_token
-    update( remember_digest:      User.digest(remember_token),
-            remember_created_at:  Time.zone.now)
+    update_columns( remember_digest:      User.digest(remember_token),
+                    remember_created_at:  Time.zone.now)
   end
 
   def authenticated? attribute, token
@@ -109,19 +109,19 @@ class User < ActiveRecord::Base
 
   def set_log_in_data
     self.log_in_count = 0 if log_in_count == nil
-    update( current_log_in_at:  Time.zone.now,
-            last_log_in_at:     current_log_in_at,
-            log_in_count:       log_in_count + 1)
+    update_columns( current_log_in_at:  Time.zone.now,
+                    last_log_in_at:     current_log_in_at,
+                    log_in_count:       log_in_count + 1)
   end
 
   def forget
-    update( remember_digest:      nil,
-            remember_created_at:  nil)
+    update_columns( remember_digest:      nil,
+                    remember_created_at:  nil)
   end
 
   def activate
-    update( activation_digest:  nil,
-            activated_at:       Time.zone.now)
+    update_columns( activation_digest:  nil,
+                    activated_at:       Time.zone.now)
   end
 
   def send_activation_email
@@ -130,8 +130,8 @@ class User < ActiveRecord::Base
 
   def create_reset_digest
     self.reset_token = User.new_token
-    update( reset_digest:  User.digest(reset_token),
-            reset_sent_at: Time.zone.now)
+    update_columns( reset_digest:   User.digest(reset_token),
+                    reset_sent_at:  Time.zone.now)
   end
 
   def send_password_reset_email
