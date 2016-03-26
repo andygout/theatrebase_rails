@@ -1,16 +1,17 @@
 class ProductionsController < ApplicationController
 
+  include SharedViewsComponentsHelper
   include FormsHelper
   include ProductionsDatesShowHelper
 
-  before_action :get_production,      only: [:edit, :update, :destroy, :show]
-  before_action :logged_in_user,      only: [:new, :create, :edit, :update, :destroy]
-  before_action :not_suspended_user,  only: [:new, :create, :edit, :update, :destroy]
-  before_action :get_page_header,     only: [:new, :edit, :show]
+  before_action :logged_in_user,        only: [:new, :create, :edit, :update, :destroy]
+  before_action :not_suspended_user,    only: [:new, :create, :edit, :update, :destroy]
+  before_action :get_production,        only: [:new, :create, :edit, :update, :destroy, :show]
+  before_action :get_views_components,  only: [:new, :create, :edit, :update, :show]
+  before_action :get_form_components,   only: [:new, :create, :edit, :update]
+  before_action :get_show_components,   only: [:show]
 
   def new
-    @production = Production.new
-    get_created_updated_table
   end
 
   def create
@@ -25,7 +26,6 @@ class ProductionsController < ApplicationController
 
   def edit
     @page_title = @production.title
-    get_created_updated_table
   end
 
   def update
@@ -34,7 +34,6 @@ class ProductionsController < ApplicationController
       redirect_to production_path(@production)
     else
       @page_title = Production.find(params[:id]).title
-      get_created_updated_table
       render :edit
     end
   end
@@ -46,7 +45,6 @@ class ProductionsController < ApplicationController
   end
 
   def show
-    @dates = create_dates_markup(@production).html_safe
   end
 
   def index
@@ -83,15 +81,19 @@ class ProductionsController < ApplicationController
     end
 
     def get_production
-      @production = Production.find(params[:id])
+      @production = params[:id] ? Production.find(params[:id]) : Production.new
     end
 
-    def get_created_updated_table
-      @created_updated_info = create_created_updated_markup(@production).html_safe
+    def get_views_components
+      get_content_header 'production'
     end
 
-    def get_page_header
-      @content_header = "<p class='content-label content-header'>PRODUCTION</p>".html_safe
+    def get_form_components
+      get_created_updated_info @production
+    end
+
+    def get_show_components
+      get_dates @production
     end
 
 end

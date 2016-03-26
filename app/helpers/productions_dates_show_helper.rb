@@ -70,8 +70,8 @@ module ProductionsDatesShowHelper
   def dates_table p
     if dates_tbc(p) || single_date_tbc(p)
       dates_tbc_note = ": #{p.dates_tbc_note}" if p.dates_tbc_note && dates_single_date_tbc(p)
-      dates_tbc_markup = "<tr><td class='emphasis-text'>TBC#{dates_tbc_note}</td></tr>" if dates_single_date_tbc(p)
-      return bookend_table_tags(dates_tbc_markup, 'dates-table')
+      dates_tbc_row = "<tr><td class='emphasis-text'>TBC#{dates_tbc_note}</td></tr>" if dates_single_date_tbc(p)
+      return bookend_table_tags(dates_tbc_row, 'dates-table')
     end
 
     if single_date(p)
@@ -88,9 +88,10 @@ module ProductionsDatesShowHelper
     bookend_table_tags(compile_rows(dates.compact), 'dates-table')
   end
 
-  def create_dates_markup p
+  def get_dates p
     dates_note = p.dates_note.present? ? "<p class='note-text emphasis-text'>#{p.dates_note}</p>" : ''
-    "<p class='content-label'>Dates</p>" + dates_table(p) + dates_note
+    dates_markup = "<p class='content-label'>Dates</p>" + dates_table(p) + dates_note
+    @dates = dates_markup.html_safe
   end
 
 end
