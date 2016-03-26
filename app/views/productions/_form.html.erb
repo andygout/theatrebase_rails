@@ -1,3 +1,5 @@
+<%= @created_updated_info %>
+
 <%= form_for @production, html: { class: 'form' } do |production| %>
   <%= render 'partials/error_count', count: @production.errors.count %>
 

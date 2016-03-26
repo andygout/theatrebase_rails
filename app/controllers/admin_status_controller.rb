@@ -1,11 +1,14 @@
 class AdminStatusController < ApplicationController
 
+  include FormHelper
+
   before_action :get_user
   before_action :logged_in_user
   before_action :not_suspended_user
   before_action :admin_status_assignor
 
   def edit
+    @status_assigned_info = create_status_assigned_markup(@user.admin || false).html_safe
     @user.admin || @user.build_admin
     @page_title = "#{@user.name} (#{@user.email})"
     @content_header = "<p class='content-label content-header'>USER</p>".html_safe

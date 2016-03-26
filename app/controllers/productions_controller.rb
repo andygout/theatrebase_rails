@@ -1,5 +1,6 @@
 class ProductionsController < ApplicationController
 
+  include FormHelper
   include ProductionsShowHelper
 
   before_action :get_production,      only: [:edit, :update, :destroy, :show]
@@ -9,6 +10,7 @@ class ProductionsController < ApplicationController
 
   def new
     @production = Production.new
+    get_created_updated_table
   end
 
   def create
@@ -23,6 +25,7 @@ class ProductionsController < ApplicationController
 
   def edit
     @page_title = @production.title
+    get_created_updated_table
   end
 
   def update
@@ -31,6 +34,7 @@ class ProductionsController < ApplicationController
       redirect_to production_path(@production)
     else
       @page_title = Production.find(params[:id]).title
+      get_created_updated_table
       render :edit
     end
   end
@@ -80,6 +84,10 @@ class ProductionsController < ApplicationController
 
     def get_production
       @production = Production.find(params[:id])
+    end
+
+    def get_created_updated_table
+      @created_updated_info = create_created_updated_markup(@production).html_safe
     end
 
     def get_page_header
