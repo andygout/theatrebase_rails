@@ -115,7 +115,7 @@ a {
   border-radius: 2px;
   background-color: $box-shadow-color;
   font-weight: bold;
-  margin-top: 30px;
+  margin: 30px 0 5px 0;
   border: 1px solid $border-color;
   &.content-header {
     margin: 5px 0 20px 0;
@@ -132,7 +132,7 @@ a {
   border-radius: 5px;
 }
 
-.content-table {
+.table {
   & td:first-child {
     padding: 5px 20px 5px 0;
   }
@@ -140,11 +140,6 @@ a {
 
 .dates-table {
   margin-left: 6px;
-  & td {
-    max-width: 427px;
-    padding: 5px 20px 0 0;
-    vertical-align: top;
-  }
 }
 
 .footer {

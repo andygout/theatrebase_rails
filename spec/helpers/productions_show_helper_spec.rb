@@ -9,7 +9,7 @@ describe ProductionsShowHelper, type: :helper do
       markup = create_dates_markup(production)
       expect(markup).to eq \
         "<p class='content-label'>Dates</p>"\
-        "<table class='dates-table'>"\
+        "<table class='table dates-table'>"\
           "<tr><td class='description-text'>Performs:</td><td>Wed, 05 Aug 2015</td></tr>"\
         "</table>"
     end
@@ -20,7 +20,7 @@ describe ProductionsShowHelper, type: :helper do
       markup = create_dates_markup(production)
       expect(markup).to eq \
         "<p class='content-label'>Dates</p>"\
-        "<table class='dates-table'>"\
+        "<table class='table dates-table'>"\
           "<tr><td class='description-text'>Performs (booking until):</td><td class='emphasis-text'>Wed, 05 Aug 2015</td></tr>"\
         "</table>"
     end
@@ -31,7 +31,7 @@ describe ProductionsShowHelper, type: :helper do
       markup = create_dates_markup(production)
       expect(markup).to eq \
         "<p class='content-label'>Dates</p>"\
-        "<table class='dates-table'>"\
+        "<table class='table dates-table'>"\
           "<tr><td class='emphasis-text'>TBC</td></tr>"\
         "</table>"
     end
@@ -40,7 +40,7 @@ describe ProductionsShowHelper, type: :helper do
       markup = create_dates_markup(production)
       expect(markup).to eq \
         "<p class='content-label'>Dates</p>"\
-        "<table class='dates-table'>"\
+        "<table class='table dates-table'>"\
           "<tr><td class='description-text'>First performance:</td><td>Wed, 05 Aug 2015</td></tr>"\
           "<tr><td class='description-text'>Last performance:</td><td>Sat, 31 Oct 2015</td></tr>"\
         "</table>"
@@ -51,7 +51,7 @@ describe ProductionsShowHelper, type: :helper do
       markup = create_dates_markup(production)
       expect(markup).to eq \
         "<p class='content-label'>Dates</p>"\
-        "<table class='dates-table'>"\
+        "<table class='table dates-table'>"\
           "<tr><td class='description-text'>First preview:</td><td>Wed, 05 Aug 2015</td></tr>"\
           "<tr><td class='description-text'>Press performance:</td><td class='emphasis-text'>TBC</td></tr>"\
           "<tr><td class='description-text'>Last performance:</td><td>Sat, 31 Oct 2015</td></tr>"\
@@ -63,7 +63,7 @@ describe ProductionsShowHelper, type: :helper do
       markup = create_dates_markup(production)
       expect(markup).to eq \
         "<p class='content-label'>Dates</p>"\
-        "<table class='dates-table'>"\
+        "<table class='table dates-table'>"\
           "<tr><td class='description-text'>First performance:</td><td>Wed, 05 Aug 2015</td></tr>"\
           "<tr><td class='description-text'>Booking until:</td><td class='emphasis-text'>Sat, 31 Oct 2015</td></tr>"\
         "</table>"
@@ -74,7 +74,7 @@ describe ProductionsShowHelper, type: :helper do
       markup = create_dates_markup(production)
       expect(markup).to eq \
         "<p class='content-label'>Dates</p>"\
-        "<table class='dates-table'>"\
+        "<table class='table dates-table'>"\
           "<tr><td class='description-text'>First performance:</td><td>Wed, 05 Aug 2015</td></tr>"\
           "<tr><td class='description-text'>Last performance:</td><td class='emphasis-text'>TBC</td></tr>"\
         "</table>"
@@ -85,7 +85,7 @@ describe ProductionsShowHelper, type: :helper do
       markup = create_dates_markup(production)
       expect(markup).to eq \
         "<p class='content-label'>Dates</p>"\
-        "<table class='dates-table'>"\
+        "<table class='table dates-table'>"\
           "<tr><td class='description-text'>First preview:</td><td>Wed, 05 Aug 2015</td></tr>"\
           "<tr><td class='description-text'>Press performance:</td><td>Tue, 25 Aug 2015</td></tr>"\
           "<tr><td class='description-text'>Last performance:</td><td>Sat, 31 Oct 2015</td></tr>"\
@@ -97,7 +97,7 @@ describe ProductionsShowHelper, type: :helper do
       markup = create_dates_markup(production)
       expect(markup).to eq \
         "<p class='content-label'>Dates</p>"\
-        "<table class='dates-table'>"\
+        "<table class='table dates-table'>"\
           "<tr><td class='description-text'>Opening performance:</td><td>Wed, 05 Aug 2015</td></tr>"\
           "<tr><td class='description-text'>Last performance:</td><td>Sat, 31 Oct 2015</td></tr>"\
         "</table>"
@@ -109,7 +109,7 @@ describe ProductionsShowHelper, type: :helper do
       markup = create_dates_markup(production)
       expect(markup).to eq \
         "<p class='content-label'>Dates</p>"\
-        "<table class='dates-table'>"\
+        "<table class='table dates-table'>"\
           "<tr><td class='description-text'>Performs:</td><td>Wed, 05 Aug 2015</td></tr>"\
         "</table>"
     end
@@ -120,7 +120,7 @@ describe ProductionsShowHelper, type: :helper do
       markup = create_dates_markup(production)
       expect(markup).to eq \
         "<p class='content-label'>Dates</p>"\
-        "<table class='dates-table'>"\
+        "<table class='table dates-table'>"\
           "<tr><td class='description-text'>First preview:</td><td>Wed, 05 Aug 2015</td></tr>"\
           "<tr><td class='description-text'>Press performance:</td><td>Tue, 25 Aug 2015</td></tr>"\
           "<tr><td class='description-text'>Booking until:</td><td class='emphasis-text'>Sat, 31 Oct 2015</td></tr>"\
@@ -133,7 +133,7 @@ describe ProductionsShowHelper, type: :helper do
       markup = create_dates_markup(production)
       expect(markup).to eq \
         "<p class='content-label'>Dates</p>"\
-        "<table class='dates-table'>"\
+        "<table class='table dates-table'>"\
           "<tr><td class='description-text'>First preview:</td><td>Wed, 05 Aug 2015</td></tr>"\
           "<tr><td class='description-text'>Press performance:</td><td>Tue, 25 Aug 2015</td></tr>"\
           "<tr><td class='description-text'>Last performance:</td><td class='emphasis-text'>TBC</td></tr>"\
@@ -146,7 +146,7 @@ describe ProductionsShowHelper, type: :helper do
       markup = create_dates_markup(production)
       expect(markup).to eq \
         "<p class='content-label'>Dates</p>"\
-        "<table class='dates-table'>"\
+        "<table class='table dates-table'>"\
           "<tr><td class='description-text'>First preview:</td><td>Wed, 05 Aug 2015</td></tr>"\
           "<tr><td class='description-text'>Gala night:</td><td>Tue, 25 Aug 2015</td></tr>"\
           "<tr><td class='description-text'>Last performance:</td><td>Sat, 31 Oct 2015</td></tr>"\
@@ -159,7 +159,7 @@ describe ProductionsShowHelper, type: :helper do
       markup = create_dates_markup(production)
       expect(markup).to eq \
         "<p class='content-label'>Dates</p>"\
-        "<table class='dates-table'>"\
+        "<table class='table dates-table'>"\
           "<tr><td class='description-text'>First preview:</td><td>Wed, 05 Aug 2015</td></tr>"\
           "<tr><td class='description-text'>Gala night:</td><td class='emphasis-text'>TBC</td></tr>"\
           "<tr><td class='description-text'>Last performance:</td><td>Sat, 31 Oct 2015</td></tr>"\
@@ -171,7 +171,7 @@ describe ProductionsShowHelper, type: :helper do
       markup = create_dates_markup(production)
       expect(markup).to eq \
         "<p class='content-label'>Dates</p>"\
-        "<table class='dates-table'>"\
+        "<table class='table dates-table'>"\
           "<tr><td class='emphasis-text'>TBC</td></tr>"\
         "</table>"
     end
@@ -182,7 +182,7 @@ describe ProductionsShowHelper, type: :helper do
       markup = create_dates_markup(production)
       expect(markup).to eq \
         "<p class='content-label'>Dates</p>"\
-        "<table class='dates-table'>"\
+        "<table class='table dates-table'>"\
           "<tr><td class='emphasis-text'>TBC: Summer 2015</td></tr>"\
         "</table>"
     end
@@ -193,7 +193,7 @@ describe ProductionsShowHelper, type: :helper do
       markup = create_dates_markup(production)
       expect(markup).to eq \
         "<p class='content-label'>Dates</p>"\
-        "<table class='dates-table'>"\
+        "<table class='table dates-table'>"\
           "<tr><td class='description-text'>First preview:</td><td>Wed, 05 Aug 2015</td></tr>"\
           "<tr><td class='description-text'>Press performances:</td><td>Tue, 25 Aug 2015 and Wed, 26 Aug 2015</td></tr>"\
           "<tr><td class='description-text'>Last performance:</td><td>Sat, 31 Oct 2015</td></tr>"\
@@ -205,7 +205,7 @@ describe ProductionsShowHelper, type: :helper do
       markup = create_dates_markup(production)
       expect(markup).to eq \
         "<p class='content-label'>Dates</p>"\
-        "<table class='dates-table'>"\
+        "<table class='table dates-table'>"\
           "<tr><td class='description-text'>First performance:</td><td>Wed, 05 Aug 2015</td></tr>"\
           "<tr><td class='description-text'>Last performance:</td><td>Sat, 31 Oct 2015</td></tr>"\
         "</table>"\

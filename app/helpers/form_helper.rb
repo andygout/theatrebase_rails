@@ -2,7 +2,7 @@ module FormHelper
 
   def apply_created_updated_outer_markup rows_markup
     "<div class='content-container'>"\
-      "<table class='content-table'>"\
+      "<table class='table'>"\
         "#{rows_markup}"\
       "</table>"\
     "</div>"

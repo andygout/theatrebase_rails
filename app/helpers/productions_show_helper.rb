@@ -67,7 +67,7 @@ module ProductionsShowHelper
 
   def apply_outer_markup rows_markup
     "<p class='content-label'>Dates</p>"\
-    "<table class='dates-table'>"\
+    "<table class='table dates-table'>"\
       "#{rows_markup}"\
     "</table>"
   end
