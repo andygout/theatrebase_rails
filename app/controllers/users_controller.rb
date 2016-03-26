@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
 
   include UsersHelper
-  include FormHelper
+  include FormsHelper
 
   before_action :get_user,          only: [:edit, :update, :destroy, :show]
   before_action :logged_in_user

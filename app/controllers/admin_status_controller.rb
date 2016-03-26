@@ -1,6 +1,6 @@
 class AdminStatusController < ApplicationController
 
-  include FormHelper
+  include FormsHelper
 
   before_action :get_user
   before_action :logged_in_user
