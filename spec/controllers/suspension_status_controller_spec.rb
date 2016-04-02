@@ -194,8 +194,8 @@ describe SuspensionStatusController, type: :controller do
       [
         {user: super_admin_user, type: 'super_admin_user', count: 0, response: root_path},
         {user: second_super_admin_user, type: 'second_super_admin_user', count: 0, response: root_path},
-        {user: admin_user, type: 'admin_user', count: 1, response: user_path(admin_user)},
-        {user: user, type: 'user', count: 1, response: user_path(user)}
+        {user: admin_user, type: 'admin_user', count: 1, response: admin_user},
+        {user: user, type: 'user', count: 1, response: user}
       ].each do |u|
         session[:user_id] = super_admin_user.id
         expect { patch :update, user_id: u[:user], user: { suspension_attributes: { _destroy: '0' } } }.to change { Suspension.count }.by u[:count]
@@ -206,8 +206,8 @@ describe SuspensionStatusController, type: :controller do
     it 'update suspension status of suspended user types: various responses' do
       [
         {user: suspended_super_admin_user, type: 'suspended_super_admin_user', count: 0, response: root_path},
-        {user: suspended_admin_user, type: 'suspended_admin_user', count: -1, response: user_path(suspended_admin_user)},
-        {user: suspended_user, type: 'suspended_user', count: -1, response: user_path(suspended_user)}
+        {user: suspended_admin_user, type: 'suspended_admin_user', count: -1, response: suspended_admin_user},
+        {user: suspended_user, type: 'suspended_user', count: -1, response: suspended_user}
       ].each do |u|
         session[:user_id] = super_admin_user.id
         expect { patch :update, user_id: u[:user], user: { suspension_attributes: { _destroy: '1', id: u[:user].id } } }.to change { Suspension.count }.by u[:count]
@@ -249,7 +249,7 @@ describe SuspensionStatusController, type: :controller do
         {user: super_admin_user, type: 'super_admin_user', count: 0, response: root_path},
         {user: admin_user, type: 'admin_user', count: 0, response: root_path},
         {user: second_admin_user, type: 'second_admin_user', count: 0, response: root_path},
-        {user: user, type: 'user', count: 1, response: user_path(user)}
+        {user: user, type: 'user', count: 1, response: user}
       ].each do |u|
         session[:user_id] = admin_user.id
         expect { patch :update, user_id: u[:user], user: { suspension_attributes: { _destroy: '0' } } }.to change { Suspension.count }.by u[:count]
@@ -261,7 +261,7 @@ describe SuspensionStatusController, type: :controller do
       [
         {user: suspended_super_admin_user, type: 'suspended_super_admin_user', count: 0, response: root_path},
         {user: suspended_admin_user, type: 'suspended_admin_user', count: 0, response: root_path},
-        {user: suspended_user, type: 'suspended_user', count: -1, response: user_path(suspended_user)}
+        {user: suspended_user, type: 'suspended_user', count: -1, response: suspended_user}
       ].each do |u|
         session[:user_id] = admin_user.id
         expect { patch :update, user_id: u[:user], user: { suspension_attributes: { _destroy: '1', id: u[:user].id } } }.to change { Suspension.count }.by u[:count]

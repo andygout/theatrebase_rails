@@ -31,7 +31,7 @@ class ProductionsController < ApplicationController
   def update
     if @production.update(production_params)
       flash[:success] = 'Production updated successfully'
-      redirect_to production_path(@production)
+      redirect_to @production
     else
       @page_title = Production.find(params[:id]).title
       render :edit

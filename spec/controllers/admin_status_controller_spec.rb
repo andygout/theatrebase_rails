@@ -194,8 +194,8 @@ describe AdminStatusController, type: :controller do
       [
         {user: super_admin_user, type: 'super_admin_user', destroy: '0', id: nil, count: 0, response: root_path},
         {user: second_super_admin_user, type: 'second_super_admin_user', destroy: '0', id: nil, count: 0, response: root_path},
-        {user: admin_user, type: 'admin_user', destroy: '1', id: admin_user.id, count: -1, response: user_path(admin_user)},
-        {user: user, type: 'user', destroy: '0', id: nil, count: 1, response: user_path(user)}
+        {user: admin_user, type: 'admin_user', destroy: '1', id: admin_user.id, count: -1, response: admin_user},
+        {user: user, type: 'user', destroy: '0', id: nil, count: 1, response: user}
       ].each do |u|
         session[:user_id] = super_admin_user.id
         expect { patch :update, user_id: u[:user], user: { admin_attributes: { _destroy: u[:destroy], id: u[:id] } } }.to change { Admin.count }.by u[:count]
@@ -206,8 +206,8 @@ describe AdminStatusController, type: :controller do
     it 'update admin status of suspended user types: various responses' do
       [
         {user: suspended_super_admin_user, type: 'suspended_super_admin_user', destroy: '0', id: nil, count: 0, response: root_path},
-        {user: suspended_admin_user, type: 'suspended_admin_user', destroy: '1', id: suspended_admin_user.id, count: -1, response: user_path(suspended_admin_user)},
-        {user: suspended_user, type: 'suspended_user', destroy: '0', id: nil, count: 1, response: user_path(suspended_user)}
+        {user: suspended_admin_user, type: 'suspended_admin_user', destroy: '1', id: suspended_admin_user.id, count: -1, response: suspended_admin_user},
+        {user: suspended_user, type: 'suspended_user', destroy: '0', id: nil, count: 1, response: suspended_user}
       ].each do |u|
         session[:user_id] = super_admin_user.id
         expect { patch :update, user_id: u[:user], user: { admin_attributes: { _destroy: u[:destroy], id: u[:id] } } }.to change { Admin.count }.by u[:count]
@@ -362,7 +362,7 @@ describe AdminStatusController, type: :controller do
     it 'as super-admin user: update super-admin status of user: fail but response as expected' do
       session[:user_id] = super_admin_user.id
       expect { patch :update, user_id: user, user: { admin_attributes: { }, super_admin_attributes: { _destroy: '0' } } }.to change { SuperAdmin.count }.by 0
-      expect(response).to redirect_to user_path(user)
+      expect(response).to redirect_to user
     end
 
     it 'when not logged in: fail and redirect to log in page' do

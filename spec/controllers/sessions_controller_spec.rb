@@ -25,7 +25,7 @@ describe SessionsController, type: :controller do
       ].each do |u|
         post :create, session: { email: u[:user].email, password: u[:user].password }
         expect(session[:user_id]).to eq u[:user].id
-        expect(response).to redirect_to(user_path(u[:user])), "Failed: #{u[:type]}"
+        expect(response).to redirect_to(u[:user]), "Failed: #{u[:type]}"
       end
     end
   end
