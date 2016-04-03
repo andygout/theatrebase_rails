@@ -1,7 +1,7 @@
 class Production < ActiveRecord::Base
 
   include ActiveModel::Validations
-  include ProductionsValidationsHelper
+  include Productions::ValidationsHelper
 
   before_validation :strip_whitespace
 

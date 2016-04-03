@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe ProductionsDatesShowHelper, type: :helper do
+describe Productions::DatesShowHelper, type: :helper do
   let(:production) { create :production }
 
   context 'outputting dates markup' do

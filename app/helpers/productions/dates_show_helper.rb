@@ -1,4 +1,4 @@
-module ProductionsDatesShowHelper
+module Productions::DatesShowHelper
 
   include MarkupHelper
 
