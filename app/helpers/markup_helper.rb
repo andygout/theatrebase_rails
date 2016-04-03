@@ -12,8 +12,8 @@ module MarkupHelper
   end
 
   def bookend_table_tags rows_markup, table_class=nil
-    table_class = table_class || ''
-    "<table class='table #{table_class}'>"\
+    table_class = table_class ? " #{table_class}" : ''
+    "<table class='table#{table_class}'>"\
       "#{rows_markup}"\
     "</table>"\
   end
