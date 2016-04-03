@@ -7,32 +7,38 @@ describe FormsHelper, type: :helper do
   let(:suspended_user) { create :suspended_user }
 
   context "outputting 'created + updated' info markup" do
-    it 'info for new user' do
-      markup = get_created_updated_info(User.new)
-      expect(markup).to eq \
-        "<div class='content-container'><table class='table'>"\
-          "<tr><td class='description-text'>First created:</td><td>"\
-              "TBC"\
-          "</td></tr>"\
-          "<tr><td class='description-text'>Last updated:</td><td>"\
-              "TBC"\
-          "</td></tr>"\
-        "</table></div>"
+    it 'info for new model instance' do
+      vars = [User.new, Production.new]
+      vars.each do |var|
+        markup = get_created_updated_info(var)
+        expect(markup).to eq \
+          "<div class='content-container'><table class='table'>"\
+            "<tr><td class='description-text'>First created:</td><td>"\
+                "TBC"\
+            "</td></tr>"\
+            "<tr><td class='description-text'>Last updated:</td><td>"\
+                "TBC"\
+            "</td></tr>"\
+          "</table></div>"
+      end
     end
 
-    it 'info for existing user' do
-      markup = get_created_updated_info(created_user)
-      expect(markup).to eq \
-        "<div class='content-container'><table class='table'>"\
-          "<tr><td class='description-text'>First created:</td><td>"\
-              "#{created_user.created_at.strftime('%a, %d %b %Y at %H:%M')} "\
-              "by #{created_user.creator.name} (#{created_user.creator.email})"\
-          "</td></tr>"\
-          "<tr><td class='description-text'>Last updated:</td><td>"\
-              "#{created_user.updated_at.strftime('%a, %d %b %Y at %H:%M')} "\
-              "by #{created_user.updater.name} (#{created_user.updater.email})"\
-          "</td></tr>"\
-        "</table></div>"
+    it 'info for existing model instance' do
+      vars = [created_user, production]
+      vars.each do |var|
+        markup = get_created_updated_info(var)
+        expect(markup).to eq \
+          "<div class='content-container'><table class='table'>"\
+            "<tr><td class='description-text'>First created:</td><td>"\
+                "#{var.created_at.strftime('%a, %d %b %Y at %H:%M')} "\
+                "by #{var.creator.name} (#{var.creator.email})"\
+            "</td></tr>"\
+            "<tr><td class='description-text'>Last updated:</td><td>"\
+                "#{var.updated_at.strftime('%a, %d %b %Y at %H:%M')} "\
+                "by #{var.updater.name} (#{var.updater.email})"\
+            "</td></tr>"\
+          "</table></div>"
+      end
     end
 
     it 'info for existing user created by default (i.e. no created info) but with updated info' do
@@ -44,34 +50,6 @@ describe FormsHelper, type: :helper do
           "<tr><td class='description-text'>Last updated:</td><td>"\
               "#{created_user.updated_at.strftime('%a, %d %b %Y at %H:%M')} "\
               "by #{created_user.updater.name} (#{created_user.updater.email})"\
-          "</td></tr>"\
-        "</table></div>"
-    end
-
-    it 'info for new production' do
-      markup = get_created_updated_info(Production.new)
-      expect(markup).to eq \
-        "<div class='content-container'><table class='table'>"\
-          "<tr><td class='description-text'>First created:</td><td>"\
-              "TBC"\
-          "</td></tr>"\
-          "<tr><td class='description-text'>Last updated:</td><td>"\
-              "TBC"\
-          "</td></tr>"\
-        "</table></div>"
-    end
-
-    it 'info for existing production' do
-      markup = get_created_updated_info(production)
-      expect(markup).to eq \
-        "<div class='content-container'><table class='table'>"\
-          "<tr><td class='description-text'>First created:</td><td>"\
-              "#{production.created_at.strftime('%a, %d %b %Y at %H:%M')} "\
-              "by #{production.creator.name} (#{production.creator.email})"\
-          "</td></tr>"\
-          "<tr><td class='description-text'>Last updated:</td><td>"\
-              "#{production.updated_at.strftime('%a, %d %b %Y at %H:%M')} "\
-              "by #{production.updater.name} (#{production.updater.email})"\
           "</td></tr>"\
         "</table></div>"
     end

@@ -2,7 +2,11 @@ class Suspension < ActiveRecord::Base
 
   self.primary_key = :user_id
 
-  validates_presence_of :user
+  validates :user,
+    presence: true
+
+  validates :assignor,
+    presence: true
 
   belongs_to :user
 
