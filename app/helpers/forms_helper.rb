@@ -3,7 +3,7 @@ module FormsHelper
   include MarkupHelper
 
   def datetime_format datetime_value
-    datetime_value.strftime('%a, %d %b %Y at %H:%M')
+    datetime_value.localtime.strftime('%a, %d %b %Y at %H:%M')
   end
 
   def created_updated_text at, by
