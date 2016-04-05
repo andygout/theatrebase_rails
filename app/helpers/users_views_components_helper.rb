@@ -6,7 +6,7 @@ module UsersViewsComponentsHelper
     admin_status = @user.super_admin ? 'Super admin' : @user.admin ? 'Admin' : 'Standard'
     suspension_status = @user.suspension ? 'Suspended' : 'Not suspended'
     values = [['Admin status:', admin_status], ['Suspension status:', suspension_status]]
-    @status_info = bookend_div_tags(bookend_table_tags(compile_rows(values)), 'content-container').html_safe
+    @status_info = create_content_container(values)
   end
 
 end
