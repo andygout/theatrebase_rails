@@ -1,4 +1,4 @@
-module UsersViewsComponentsHelper
+module Users::ViewsComponentsHelper
 
   include MarkupHelper
 

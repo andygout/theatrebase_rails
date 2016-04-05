@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
 
   include UsersHelper
-  include UsersViewsComponentsHelper
+  include Users::ViewsComponentsHelper
   include SharedViewsComponentsHelper
   include FormsHelper
 
