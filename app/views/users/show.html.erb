@@ -4,6 +4,8 @@
 
 <p class='title-text'><%= @page_title %></p>
 
+<%= @status_info %>
+
 <% if current_user? @user %>
   <%= button_to 'Edit User', edit_user_path(@user), method: :get, class: 'button' %>
 <% end %>

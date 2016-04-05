@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
 
   include UsersHelper
+  include UsersViewsComponentsHelper
   include SharedViewsComponentsHelper
   include FormsHelper
 
@@ -106,6 +107,7 @@ class UsersController < ApplicationController
 
     def get_views_components
       get_content_header 'user'
+      get_status_info
     end
 
     def get_form_components
