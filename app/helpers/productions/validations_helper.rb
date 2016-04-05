@@ -1,4 +1,4 @@
-module ProductionsValidationsHelper
+module Productions::ValidationsHelper
 
   def first_last_date_chronological
     if first_date > last_date

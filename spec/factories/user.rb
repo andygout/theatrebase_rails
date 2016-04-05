@@ -41,7 +41,7 @@ FactoryGirl.define do
       name  'Anthony Croft'
       email 'anthonycroft@example.com'
       after(:create) do |user|
-        create(:suspension, user_id: user.id)
+        create(:suspension, user_id: user.id, assignor: create(:assignor_super_admin_user))
       end
     end
 
@@ -74,7 +74,7 @@ FactoryGirl.define do
       email 'markwilson@example.com'
       after(:create) do |user|
         create(:super_admin, user_id: user.id)
-        create(:suspension, user_id: user.id)
+        create(:suspension, user_id: user.id, assignor: create(:assignor_super_admin_user))
       end
     end
 
@@ -83,7 +83,7 @@ FactoryGirl.define do
       email 'kurthyslop@example.com'
       after(:create) do |user|
         create(:super_admin, user_id: user.id)
-        create(:suspension, user_id: user.id)
+        create(:suspension, user_id: user.id, assignor: create(:assignor_super_admin_user))
       end
     end
 
@@ -99,7 +99,7 @@ FactoryGirl.define do
       name  'Charlie Brown'
       email 'charliebrown@example.com'
       after(:create) do |user|
-        create(:admin, user_id: user.id)
+        create(:admin, user_id: user.id, assignor: create(:assignor_super_admin_user))
       end
     end
 
@@ -116,8 +116,8 @@ FactoryGirl.define do
       name  'Terence Johnson'
       email 'terencejohnson@example.com'
       after(:create) do |user|
-        create(:admin, user_id: user.id)
-        create(:suspension, user_id: user.id)
+        create(:admin, user_id: user.id, assignor: create(:assignor_super_admin_user))
+        create(:suspension, user_id: user.id, assignor: create(:assignor_super_admin_user))
       end
     end
 

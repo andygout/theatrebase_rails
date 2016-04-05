@@ -325,7 +325,7 @@ describe UsersController, type: :controller do
   context 'attempt update as super-admin user' do
     it 'update unsuspended user types: various responses' do
       [
-        {user: super_admin_user, type: 'super_admin_user', name: edit_user[:name], response: user_path(super_admin_user)},
+        {user: super_admin_user, type: 'super_admin_user', name: edit_user[:name], response: super_admin_user},
         {user: second_super_admin_user, type: 'second_super_admin_user', name: second_super_admin_user.name, response: root_path},
         {user: admin_user, type: 'admin_user', name: admin_user.name, response: root_path},
         {user: user, type: 'user', name: user.name, response: root_path}
@@ -384,7 +384,7 @@ describe UsersController, type: :controller do
     it 'update unsuspended user types: various responses' do
       [
         {user: super_admin_user, type: 'super_admin_user', name: super_admin_user.name, response: root_path},
-        {user: admin_user, type: 'admin_user', name: edit_user[:name], response: user_path(admin_user)},
+        {user: admin_user, type: 'admin_user', name: edit_user[:name], response: admin_user},
         {user: second_admin_user, type: 'second_admin_user', name: second_admin_user.name, response: root_path},
         {user: user, type: 'user', name: user.name, response: root_path}
       ].each do |u|
@@ -443,7 +443,7 @@ describe UsersController, type: :controller do
       [
         {user: super_admin_user, type: 'super_admin_user', name: super_admin_user.name, response: root_path},
         {user: admin_user, type: 'admin_user', name: admin_user.name, response: root_path},
-        {user: user, type: 'user', name: edit_user[:name], response: user_path(user)},
+        {user: user, type: 'user', name: edit_user[:name], response: user},
         {user: second_user, type: 'second_user', name: second_user.name, response: root_path}
       ].each do |u|
         session[:user_id] = user.id
