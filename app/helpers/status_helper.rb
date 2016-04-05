@@ -2,10 +2,12 @@ module StatusHelper
 
   include FormsHelper
   include SharedViewsComponentsHelper
+  include Users::ViewsComponentsHelper
 
   def get_status_edit_components status_type
     get_user_page_title @user
     get_content_header 'user'
+    get_status_info
     get_status_assigned_info(@user.send(status_type) || nil)
   end
 
