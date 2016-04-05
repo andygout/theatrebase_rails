@@ -28,12 +28,11 @@ module UsersHelper
   end
 
   def valid_suspension_status_assignor? user
-    (current_user.super_admin && !user.super_admin) ||
-    (current_user.admin && !user.super_admin && !user.admin)
+    lower_rank?(user)
   end
 
   def valid_show_user? user
-    current_user?(user) || super_or_admin?(current_user)
+    current_user?(user) || lower_rank?(user)
   end
 
   def valid_destroy_user? user
@@ -52,6 +51,11 @@ module UsersHelper
 
   def super_admin_delete_admin? user
     current_user.super_admin && user.admin
+  end
+
+  def lower_rank? user
+    (current_user.super_admin && !user.super_admin) ||
+    (current_user.admin && !user.super_admin && !user.admin)
   end
 
   def super_or_admin? user
