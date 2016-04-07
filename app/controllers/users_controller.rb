@@ -59,7 +59,9 @@ class UsersController < ApplicationController
   end
 
   def index
-    @users = User.order(:id).paginate(page: params[:page])
+    @users = current_user.super_admin ?
+      User.non_super_admin(current_user).order(:id).paginate(page: params[:page]) :
+      User.non_super_admin(current_user).non_admin(current_user).order(:id).paginate(page: params[:page])
   end
 
   private
