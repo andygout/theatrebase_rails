@@ -31,26 +31,16 @@ module UsersHelper
     lower_rank?(user)
   end
 
+  def valid_destroy_user? user
+    delete_self_and_not_super_admin?(user) || lower_rank?(user)
+  end
+
   def valid_show_user? user
     current_user?(user) || lower_rank?(user)
   end
 
-  def valid_destroy_user? user
-    delete_self_and_not_super_admin?(user) ||
-    super_admin_or_admin_delete_non_admin?(user) ||
-    super_admin_delete_admin?(user)
-  end
-
   def delete_self_and_not_super_admin? user
     current_user?(user) && !current_user.super_admin
-  end
-
-  def super_admin_or_admin_delete_non_admin? user
-    super_or_admin?(current_user) && not_super_or_admin?(user)
-  end
-
-  def super_admin_delete_admin? user
-    current_user.super_admin && user.admin
   end
 
   def lower_rank? user
@@ -60,10 +50,6 @@ module UsersHelper
 
   def super_or_admin? user
     user.super_admin || user.admin
-  end
-
-  def not_super_or_admin? user
-    !user.super_admin && !user.admin
   end
 
 end
