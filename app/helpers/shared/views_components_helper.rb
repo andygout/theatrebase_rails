@@ -1,4 +1,4 @@
-module SharedViewsComponentsHelper
+module Shared::ViewsComponentsHelper
 
   def get_content_header model
     @content_header = "<p class='content-label content-header'>#{model.upcase}</p>".html_safe

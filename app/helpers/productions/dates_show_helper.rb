@@ -1,6 +1,6 @@
 module Productions::DatesShowHelper
 
-  include MarkupHelper
+  include Shared::MarkupHelper
 
   def booking_until? p
     p.dates_info == 1

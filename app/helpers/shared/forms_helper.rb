@@ -1,6 +1,6 @@
-module FormsHelper
+module Shared::FormsHelper
 
-  include MarkupHelper
+  include Shared::MarkupHelper
 
   def datetime_format datetime_value
     datetime_value.localtime.strftime('%a, %d %b %Y at %H:%M')
