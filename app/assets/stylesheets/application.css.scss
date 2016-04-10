@@ -26,6 +26,9 @@ $border-color: #949494;
 $box-shadow-color: #D0D0D0;
 $error-color: #FF3232;
 $success-color: #629632;
+$gold-color: gold;
+$silver-color: #949494;
+$bronze-color: #CD7F32;
 
 * {
   margin: 0;
@@ -133,13 +136,97 @@ a {
 }
 
 .table {
-  & td:first-child {
+  td:not(:last-child) {
     padding: 5px 20px 5px 0;
+  }
+
+  &.listing {
+    margin-top: 20px;
+    border-collapse: separate;
+    width: 100%;
+
+    & tr {
+      background-color: #D0D0D0;
+      padding-left: 5px;
+
+      &:last-child td {
+        border-bottom: 2px solid $border-color;
+      }
+
+      &:nth-child(odd) {
+        background-color:#F8F8F8;
+      }
+
+      &:nth-child(even) {
+        background-color:#E8E8E8;
+      }
+
+      & th {
+        background-color: #D0D0D0;
+        padding: 5px 20px 5px 5px;
+        border-top: 2px solid $border-color;
+
+        &:first-child {
+          border-left: 2px solid $border-color;
+          border-top-left-radius: 5px;
+        }
+
+        &:last-child {
+          border-right: 2px solid $border-color;
+          border-top-right-radius: 5px;
+          padding-right: 5px;
+        }
+      }
+
+      & td {
+        padding-left: 5px;
+        border-top: 1px solid $border-color;
+
+        &:first-child {
+          border-left: 2px solid $border-color;
+        }
+
+        &:last-child {
+          padding-right: 5px;
+          border-right: 2px solid $border-color;
+        }
+      }
+
+      &:last-child td {
+        &:first-child {
+          border-bottom-left-radius: 5px;
+        }
+
+        &:last-child {
+          border-bottom-right-radius: 5px;
+        }
+      }
+    }
   }
 }
 
 .dates-table {
   margin-left: 6px;
+}
+
+.gold {
+  color: $gold-color;
+}
+
+.silver {
+  color: $silver-color;
+}
+
+.bronze {
+  color: $bronze-color;
+}
+
+.suspended {
+  color: $error-color;
+}
+
+.not-suspended {
+  color: $success-color;
 }
 
 .footer {

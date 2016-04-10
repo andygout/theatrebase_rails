@@ -30,4 +30,16 @@ module Shared::MarkupHelper
     bookend_div_tags(bookend_table_tags(compile_rows(values)), 'content-container').html_safe
   end
 
+  def compile_user_index_table_rows row_values, header_values, colwidth_values
+    rows_markup = row_values.map do |row_value|
+      "<tr>" + row_value.map { |v| "<td#{apply_class(v[:class])}>#{v[:content]}</td>" }.join('').to_s + "</tr>"
+    end
+
+    header_markup = "<tr>" + header_values.map { |v| "<th>#{v[:content]}</th>" }.join('').to_s + "</tr>"
+
+    coldwidth_markup = colwidth_values.map { |v| "<col width=#{v[:width]}%>" }.join('').to_s
+
+    rows_markup = coldwidth_markup + header_markup + rows_markup.join('')
+  end
+
 end
