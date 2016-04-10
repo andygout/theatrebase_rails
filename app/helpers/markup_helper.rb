@@ -26,4 +26,8 @@ module MarkupHelper
                 }.join('')
   end
 
+  def create_content_container values
+    bookend_div_tags(bookend_table_tags(compile_rows(values)), 'content-container').html_safe
+  end
+
 end

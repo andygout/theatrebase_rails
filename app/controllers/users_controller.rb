@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
 
   include UsersHelper
+  include Users::ViewsComponentsHelper
   include SharedViewsComponentsHelper
   include FormsHelper
 
@@ -58,7 +59,9 @@ class UsersController < ApplicationController
   end
 
   def index
-    @users = User.order(:id).paginate(page: params[:page])
+    @users = current_user.super_admin ?
+      User.non_super_admin(current_user).order(:id).paginate(page: params[:page]) :
+      User.non_super_admin(current_user).non_admin(current_user).order(:id).paginate(page: params[:page])
   end
 
   private
@@ -106,6 +109,7 @@ class UsersController < ApplicationController
 
     def get_views_components
       get_content_header 'user'
+      get_status_info
     end
 
     def get_form_components

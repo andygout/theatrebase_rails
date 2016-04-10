@@ -755,28 +755,28 @@ describe UsersController, type: :controller do
   end
 
   context 'attempt visit user display page as super-admin user' do
-    it 'visit unsuspended user types: render user display page' do
+    it 'visit unsuspended user types: render user display page for self and users of a lower rank' do
       [
-        {user: super_admin_user, type: 'super_admin_user'},
-        {user: second_super_admin_user, type: 'second_super_admin_user'},
-        {user: admin_user, type: 'admin_user'},
-        {user: user, type: 'user'}
+        {user: super_admin_user, type: 'super_admin_user', response: render_template(:show)},
+        {user: second_super_admin_user, type: 'second_super_admin_user', response: redirect_to(root_path)},
+        {user: admin_user, type: 'admin_user', response: render_template(:show)},
+        {user: user, type: 'user', response: render_template(:show)}
       ].each do |u|
         session[:user_id] = super_admin_user.id
         get :show, id: u[:user]
-        expect(response).to render_template(:show), "Failed: #{u[:type]}"
+        expect(response).to u[:response], "Failed: #{u[:type]}"
       end
     end
 
-    it 'visit suspended user types: render user display page' do
+    it 'visit suspended user types: render user display page for users of a lower rank' do
       [
-        {user: suspended_super_admin_user, type: 'suspended_super_admin_user'},
-        {user: suspended_admin_user, type: 'suspended_admin_user'},
-        {user: suspended_user, type: 'suspended_user'}
+        {user: suspended_super_admin_user, type: 'suspended_super_admin_user', response: redirect_to(root_path)},
+        {user: suspended_admin_user, type: 'suspended_admin_user', response: render_template(:show)},
+        {user: suspended_user, type: 'suspended_user', response: render_template(:show)}
       ].each do |u|
         session[:user_id] = super_admin_user.id
         get :show, id: u[:user]
-        expect(response).to render_template(:show), "Failed: #{u[:type]}"
+        expect(response).to u[:response], "Failed: #{u[:type]}"
       end
     end
   end
@@ -809,28 +809,28 @@ describe UsersController, type: :controller do
   end
 
   context 'attempt visit user display page as admin user' do
-    it 'visit unsuspended user types: render user display page' do
+    it 'visit unsuspended user types: render user display page for self and users of a lower rank' do
       [
-        {user: super_admin_user, type: 'super_admin_user'},
-        {user: admin_user, type: 'admin_user'},
-        {user: second_admin_user, type: 'second_admin_user'},
-        {user: user, type: 'user'}
+        {user: super_admin_user, type: 'super_admin_user', response: redirect_to(root_path)},
+        {user: admin_user, type: 'admin_user', response: render_template(:show)},
+        {user: second_admin_user, type: 'second_admin_user', response: redirect_to(root_path)},
+        {user: user, type: 'user', response: render_template(:show)}
       ].each do |u|
         session[:user_id] = admin_user.id
         get :show, id: u[:user]
-        expect(response).to render_template(:show), "Failed: #{u[:type]}"
+        expect(response).to u[:response], "Failed: #{u[:type]}"
       end
     end
 
-    it 'visit suspended user types: render user display page' do
+    it 'visit suspended user types: render user display page for users of a lower rank' do
       [
-        {user: suspended_super_admin_user, type: 'suspended_super_admin_user'},
-        {user: suspended_admin_user, type: 'suspended_admin_user'},
-        {user: suspended_user, type: 'suspended_user'}
+        {user: suspended_super_admin_user, type: 'suspended_super_admin_user', response: redirect_to(root_path)},
+        {user: suspended_admin_user, type: 'suspended_admin_user', response: redirect_to(root_path)},
+        {user: suspended_user, type: 'suspended_user', response: render_template(:show)}
       ].each do |u|
         session[:user_id] = admin_user.id
         get :show, id: u[:user]
-        expect(response).to render_template(:show), "Failed: #{u[:type]}"
+        expect(response).to u[:response], "Failed: #{u[:type]}"
       end
     end
   end

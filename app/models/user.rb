@@ -86,6 +86,14 @@ class User < ActiveRecord::Base
     class_name: :Production,
     foreign_key: :updater_id
 
+  scope :non_admin, ->(current_user_id) {
+    where.not(:id => Admin.select(:user_id).where.not(user_id: current_user_id).uniq)
+  }
+
+  scope :non_super_admin, ->(current_user_id) {
+    where.not(:id => SuperAdmin.select(:user_id).where.not(user_id: current_user_id).uniq)
+  }
+
   def User.digest string
     cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST : BCrypt::Engine.cost
     BCrypt::Password.create(string, cost: cost)
