@@ -1,6 +1,6 @@
 module Users::ViewsComponentsHelper
 
-  include MarkupHelper
+  include Shared::MarkupHelper
 
   def get_status_info
     admin_status = @user.super_admin ? 'Super admin' : @user.admin ? 'Admin' : 'Standard'

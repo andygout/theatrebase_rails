@@ -1,7 +1,7 @@
-module StatusHelper
+module Shared::StatusHelper
 
-  include FormsHelper
-  include SharedViewsComponentsHelper
+  include Shared::FormsHelper
+  include Shared::ViewsComponentsHelper
   include Users::ViewsComponentsHelper
 
   def get_status_edit_components status_type

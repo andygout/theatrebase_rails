@@ -1,4 +1,4 @@
-module MarkupHelper
+module Shared::MarkupHelper
 
   def apply_class class_string
     " class='#{class_string}'" if class_string

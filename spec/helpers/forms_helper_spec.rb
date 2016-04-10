@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe FormsHelper, type: :helper do
+describe Shared::FormsHelper, type: :helper do
   let(:production) { create :production }
   let(:created_user) { create :created_user }
   let(:admin_user) { create :admin_user }
