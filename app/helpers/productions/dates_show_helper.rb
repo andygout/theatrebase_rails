@@ -44,7 +44,7 @@ module Productions::DatesShowHelper
     wording = p.press_date ?
       !open_first_date?(p) ? 'First preview:' : 'Opening performance:' :
       p.press_date_tbc ? 'First preview:' : 'First performance:'
-    [wording, date_format(p.first_date)]
+    [{ content: wording, class: 'description-text' }, { content: date_format(p.first_date) }]
   end
 
   def get_press_date p
@@ -57,14 +57,20 @@ module Productions::DatesShowHelper
       "#{p.press_date_wording}:"
 
     !p.press_date_tbc ?
-      open_first_date?(p) ? nil : [wording, date_value] :
-      [wording, 'TBC', 'emphasis-text']
+      open_first_date?(p) ? nil : [{ content: wording, class: 'description-text' }, { content: date_value }] :
+      [{ content: wording, class: 'description-text' }, { content: 'TBC', class: 'emphasis-text' }]
   end
 
   def get_last_date p
-    return ['Booking until:', date_format(p.last_date), 'emphasis-text'] if booking_until?(p)
-    return ['Last performance:', 'TBC', 'emphasis-text'] if last_date_tbc?(p)
-    ['Last performance:', date_format(p.last_date)]
+    return [
+        { content: 'Booking until:', class: 'description-text' },
+        { content: date_format(p.last_date), class: 'emphasis-text' }
+      ] if booking_until?(p)
+    return [
+        { content: 'Last performance:', class: 'description-text' },
+        { content: 'TBC', class: 'emphasis-text' }
+      ] if last_date_tbc?(p)
+    [{ content: 'Last performance:', class: 'description-text' }, { content: date_format(p.last_date) }]
   end
 
   def dates_table p
@@ -77,8 +83,11 @@ module Productions::DatesShowHelper
     if single_date?(p)
       booking_until_text = ' (booking until)' if booking_until?(p)
       booking_until_class = booking_until?(p) ? 'emphasis-text' : nil
-      row_values = ["Performs#{booking_until_text}:", date_format(p.first_date), booking_until_class]
-      return bookend_table_tags(compile_rows([row_values]), 'dates-table')
+      row_values = [[
+          { content: "Performs#{booking_until_text}:", class: 'description-text' },
+          { content: date_format(p.first_date), class: booking_until_class }
+        ]]
+      return bookend_table_tags(compile_rows(row_values), 'dates-table')
     end
 
     dates = []

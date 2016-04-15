@@ -19,11 +19,12 @@ module Users::ViewsComponentsHelper
   end
 
   def get_status_info
-    values =  [
-                ['Admin status:', admin_status_wording(@user)],
-                ['Suspension status:', suspension_status_wording(@user)]
-              ]
-    @status_info = create_content_container(values)
+    row_values = [
+        [{ content: 'Admin status:', class: 'description-text' }, { content: admin_status_wording(@user) }],
+        [{ content: 'Suspension status:', class: 'description-text' }, { content: suspension_status_wording(@user) }]
+      ]
+
+    @status_info = create_content_container(row_values)
   end
 
   def get_user_index_table
@@ -40,7 +41,7 @@ module Users::ViewsComponentsHelper
     colwidth_values = [{ width: 60 }, { width: 20 }, { width: 20 }]
 
     @user_index_table = bookend_table_tags(
-        compile_user_index_table_rows(row_values, header_values, colwidth_values),
+        compile_rows(row_values, header_values, colwidth_values),
         'listing'
       ).html_safe
   end
