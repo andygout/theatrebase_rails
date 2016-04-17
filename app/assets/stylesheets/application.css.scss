@@ -140,6 +140,10 @@ a {
     padding: 5px 20px 5px 0;
   }
 
+  &.dates-table {
+    margin-left: 6px;
+  }
+
   &.listing {
     margin-top: 20px;
     border-collapse: separate;
@@ -203,10 +207,6 @@ a {
       }
     }
   }
-}
-
-.dates-table {
-  margin-left: 6px;
 }
 
 .gold {
