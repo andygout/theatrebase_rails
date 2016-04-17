@@ -15,7 +15,7 @@ module Users::ViewsComponentsHelper
   end
 
   def suspension_status_class user
-    user.suspension ? 'suspended' : 'not-suspended'
+    user.suspension ? 'negative' : 'positive'
   end
 
   def get_status_info

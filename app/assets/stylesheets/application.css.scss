@@ -24,8 +24,8 @@ $form-bg-color: #F8F8F8;
 $button-bg-color: #E8E8E8;
 $border-color: #949494;
 $box-shadow-color: #D0D0D0;
-$error-color: #FF3232;
-$success-color: #629632;
+$positive-color: #629632;
+$negative-color: #FF3232;
 $gold-color: gold;
 $silver-color: #949494;
 $bronze-color: #CD7F32;
@@ -221,12 +221,12 @@ a {
   color: $bronze-color;
 }
 
-.suspended {
-  color: $error-color;
+.positive {
+  color: $positive-color;
 }
 
-.not-suspended {
-  color: $success-color;
+.negative {
+  color: $negative-color;
 }
 
 .footer {
@@ -309,10 +309,10 @@ a {
 }
 
 .field_with_errors {
-  color: $error-color;
+  color: $negative-color;
   list-style-position: inside;
   .input {
-    border-color: $error-color;
+    border-color: $negative-color;
   }
 }
 
@@ -322,11 +322,11 @@ a {
 }
 
 .alert-success {
-  color: $success-color;
+  color: $positive-color;
 }
 
 .alert-error {
-  color: $error-color;
+  color: $negative-color;
 }
 
 .pagination {
