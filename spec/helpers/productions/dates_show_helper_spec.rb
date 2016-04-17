@@ -9,7 +9,7 @@ describe Productions::DatesShowHelper, type: :helper do
       expect(get_dates(production)).to eq \
         "<p class='content-label'>Dates</p>"\
         "<table class='table dates-table'>"\
-          "<tr><td class='description-text'>Performs:</td><td>Wed, 05 Aug 2015</td></tr>"\
+          "<tr><td>Performs:</td><td>Wed, 05 Aug 2015</td></tr>"\
         "</table>"
     end
 
@@ -19,7 +19,7 @@ describe Productions::DatesShowHelper, type: :helper do
       expect(get_dates(production)).to eq \
         "<p class='content-label'>Dates</p>"\
         "<table class='table dates-table'>"\
-          "<tr><td class='description-text'>Performs (booking until):</td><td class='emphasis-text'>Wed, 05 Aug 2015</td></tr>"\
+          "<tr><td>Performs (booking until):</td><td class='emphasis-text'>Wed, 05 Aug 2015</td></tr>"\
         "</table>"
     end
 
@@ -28,7 +28,7 @@ describe Productions::DatesShowHelper, type: :helper do
       production.dates_info = 2
       expect(get_dates(production)).to eq \
         "<p class='content-label'>Dates</p>"\
-        "<table class='table dates-table'>"\
+        "<table class='table dates-tbc-table'>"\
           "<tr><td class='emphasis-text'>TBC</td></tr>"\
         "</table>"
     end
@@ -37,8 +37,8 @@ describe Productions::DatesShowHelper, type: :helper do
       expect(get_dates(production)).to eq \
         "<p class='content-label'>Dates</p>"\
         "<table class='table dates-table'>"\
-          "<tr><td class='description-text'>First performance:</td><td>Wed, 05 Aug 2015</td></tr>"\
-          "<tr><td class='description-text'>Last performance:</td><td>Sat, 31 Oct 2015</td></tr>"\
+          "<tr><td>First performance:</td><td>Wed, 05 Aug 2015</td></tr>"\
+          "<tr><td>Last performance:</td><td>Sat, 31 Oct 2015</td></tr>"\
         "</table>"
     end
 
@@ -47,9 +47,9 @@ describe Productions::DatesShowHelper, type: :helper do
       expect(get_dates(production)).to eq \
         "<p class='content-label'>Dates</p>"\
         "<table class='table dates-table'>"\
-          "<tr><td class='description-text'>First preview:</td><td>Wed, 05 Aug 2015</td></tr>"\
-          "<tr><td class='description-text'>Press performance:</td><td class='emphasis-text'>TBC</td></tr>"\
-          "<tr><td class='description-text'>Last performance:</td><td>Sat, 31 Oct 2015</td></tr>"\
+          "<tr><td>First preview:</td><td>Wed, 05 Aug 2015</td></tr>"\
+          "<tr><td>Press performance:</td><td class='emphasis-text'>TBC</td></tr>"\
+          "<tr><td>Last performance:</td><td>Sat, 31 Oct 2015</td></tr>"\
         "</table>"
     end
 
@@ -58,8 +58,8 @@ describe Productions::DatesShowHelper, type: :helper do
       expect(get_dates(production)).to eq \
         "<p class='content-label'>Dates</p>"\
         "<table class='table dates-table'>"\
-          "<tr><td class='description-text'>First performance:</td><td>Wed, 05 Aug 2015</td></tr>"\
-          "<tr><td class='description-text'>Booking until:</td><td class='emphasis-text'>Sat, 31 Oct 2015</td></tr>"\
+          "<tr><td>First performance:</td><td>Wed, 05 Aug 2015</td></tr>"\
+          "<tr><td>Booking until:</td><td class='emphasis-text'>Sat, 31 Oct 2015</td></tr>"\
         "</table>"
     end
 
@@ -68,8 +68,8 @@ describe Productions::DatesShowHelper, type: :helper do
       expect(get_dates(production)).to eq \
         "<p class='content-label'>Dates</p>"\
         "<table class='table dates-table'>"\
-          "<tr><td class='description-text'>First performance:</td><td>Wed, 05 Aug 2015</td></tr>"\
-          "<tr><td class='description-text'>Last performance:</td><td class='emphasis-text'>TBC</td></tr>"\
+          "<tr><td>First performance:</td><td>Wed, 05 Aug 2015</td></tr>"\
+          "<tr><td>Last performance:</td><td class='emphasis-text'>TBC</td></tr>"\
         "</table>"
     end
 
@@ -78,9 +78,9 @@ describe Productions::DatesShowHelper, type: :helper do
       expect(get_dates(production)).to eq \
         "<p class='content-label'>Dates</p>"\
         "<table class='table dates-table'>"\
-          "<tr><td class='description-text'>First preview:</td><td>Wed, 05 Aug 2015</td></tr>"\
-          "<tr><td class='description-text'>Press performance:</td><td>Tue, 25 Aug 2015</td></tr>"\
-          "<tr><td class='description-text'>Last performance:</td><td>Sat, 31 Oct 2015</td></tr>"\
+          "<tr><td>First preview:</td><td>Wed, 05 Aug 2015</td></tr>"\
+          "<tr><td>Press performance:</td><td>Tue, 25 Aug 2015</td></tr>"\
+          "<tr><td>Last performance:</td><td>Sat, 31 Oct 2015</td></tr>"\
         "</table>"
     end
 
@@ -89,8 +89,8 @@ describe Productions::DatesShowHelper, type: :helper do
       expect(get_dates(production)).to eq \
         "<p class='content-label'>Dates</p>"\
         "<table class='table dates-table'>"\
-          "<tr><td class='description-text'>Opening performance:</td><td>Wed, 05 Aug 2015</td></tr>"\
-          "<tr><td class='description-text'>Last performance:</td><td>Sat, 31 Oct 2015</td></tr>"\
+          "<tr><td>Opening performance:</td><td>Wed, 05 Aug 2015</td></tr>"\
+          "<tr><td>Last performance:</td><td>Sat, 31 Oct 2015</td></tr>"\
         "</table>"
     end
 
@@ -100,7 +100,7 @@ describe Productions::DatesShowHelper, type: :helper do
       expect(get_dates(production)).to eq \
         "<p class='content-label'>Dates</p>"\
         "<table class='table dates-table'>"\
-          "<tr><td class='description-text'>Performs:</td><td>Wed, 05 Aug 2015</td></tr>"\
+          "<tr><td>Performs:</td><td>Wed, 05 Aug 2015</td></tr>"\
         "</table>"
     end
 
@@ -110,9 +110,9 @@ describe Productions::DatesShowHelper, type: :helper do
       expect(get_dates(production)).to eq \
         "<p class='content-label'>Dates</p>"\
         "<table class='table dates-table'>"\
-          "<tr><td class='description-text'>First preview:</td><td>Wed, 05 Aug 2015</td></tr>"\
-          "<tr><td class='description-text'>Press performance:</td><td>Tue, 25 Aug 2015</td></tr>"\
-          "<tr><td class='description-text'>Booking until:</td><td class='emphasis-text'>Sat, 31 Oct 2015</td></tr>"\
+          "<tr><td>First preview:</td><td>Wed, 05 Aug 2015</td></tr>"\
+          "<tr><td>Press performance:</td><td>Tue, 25 Aug 2015</td></tr>"\
+          "<tr><td>Booking until:</td><td class='emphasis-text'>Sat, 31 Oct 2015</td></tr>"\
         "</table>"
     end
 
@@ -122,9 +122,9 @@ describe Productions::DatesShowHelper, type: :helper do
       expect(get_dates(production)).to eq \
         "<p class='content-label'>Dates</p>"\
         "<table class='table dates-table'>"\
-          "<tr><td class='description-text'>First preview:</td><td>Wed, 05 Aug 2015</td></tr>"\
-          "<tr><td class='description-text'>Press performance:</td><td>Tue, 25 Aug 2015</td></tr>"\
-          "<tr><td class='description-text'>Last performance:</td><td class='emphasis-text'>TBC</td></tr>"\
+          "<tr><td>First preview:</td><td>Wed, 05 Aug 2015</td></tr>"\
+          "<tr><td>Press performance:</td><td>Tue, 25 Aug 2015</td></tr>"\
+          "<tr><td>Last performance:</td><td class='emphasis-text'>TBC</td></tr>"\
         "</table>"
     end
 
@@ -134,9 +134,9 @@ describe Productions::DatesShowHelper, type: :helper do
       expect(get_dates(production)).to eq \
         "<p class='content-label'>Dates</p>"\
         "<table class='table dates-table'>"\
-          "<tr><td class='description-text'>First preview:</td><td>Wed, 05 Aug 2015</td></tr>"\
-          "<tr><td class='description-text'>Gala night:</td><td>Tue, 25 Aug 2015</td></tr>"\
-          "<tr><td class='description-text'>Last performance:</td><td>Sat, 31 Oct 2015</td></tr>"\
+          "<tr><td>First preview:</td><td>Wed, 05 Aug 2015</td></tr>"\
+          "<tr><td>Gala night:</td><td>Tue, 25 Aug 2015</td></tr>"\
+          "<tr><td>Last performance:</td><td>Sat, 31 Oct 2015</td></tr>"\
         "</table>"
     end
 
@@ -146,9 +146,9 @@ describe Productions::DatesShowHelper, type: :helper do
       expect(get_dates(production)).to eq \
         "<p class='content-label'>Dates</p>"\
         "<table class='table dates-table'>"\
-          "<tr><td class='description-text'>First preview:</td><td>Wed, 05 Aug 2015</td></tr>"\
-          "<tr><td class='description-text'>Gala night:</td><td class='emphasis-text'>TBC</td></tr>"\
-          "<tr><td class='description-text'>Last performance:</td><td>Sat, 31 Oct 2015</td></tr>"\
+          "<tr><td>First preview:</td><td>Wed, 05 Aug 2015</td></tr>"\
+          "<tr><td>Gala night:</td><td class='emphasis-text'>TBC</td></tr>"\
+          "<tr><td>Last performance:</td><td>Sat, 31 Oct 2015</td></tr>"\
         "</table>"
     end
 
@@ -156,7 +156,7 @@ describe Productions::DatesShowHelper, type: :helper do
       production.dates_info = 3
       expect(get_dates(production)).to eq \
         "<p class='content-label'>Dates</p>"\
-        "<table class='table dates-table'>"\
+        "<table class='table dates-tbc-table'>"\
           "<tr><td class='emphasis-text'>TBC</td></tr>"\
         "</table>"
     end
@@ -166,7 +166,7 @@ describe Productions::DatesShowHelper, type: :helper do
       production.dates_tbc_note = 'Summer 2015'
       expect(get_dates(production)).to eq \
         "<p class='content-label'>Dates</p>"\
-        "<table class='table dates-table'>"\
+        "<table class='table dates-tbc-table'>"\
           "<tr><td class='emphasis-text'>TBC: Summer 2015</td></tr>"\
         "</table>"
     end
@@ -177,9 +177,9 @@ describe Productions::DatesShowHelper, type: :helper do
       expect(get_dates(production)).to eq \
         "<p class='content-label'>Dates</p>"\
         "<table class='table dates-table'>"\
-          "<tr><td class='description-text'>First preview:</td><td>Wed, 05 Aug 2015</td></tr>"\
-          "<tr><td class='description-text'>Press performances:</td><td>Tue, 25 Aug 2015 and Wed, 26 Aug 2015</td></tr>"\
-          "<tr><td class='description-text'>Last performance:</td><td>Sat, 31 Oct 2015</td></tr>"\
+          "<tr><td>First preview:</td><td>Wed, 05 Aug 2015</td></tr>"\
+          "<tr><td>Press performances:</td><td>Tue, 25 Aug 2015 and Wed, 26 Aug 2015</td></tr>"\
+          "<tr><td>Last performance:</td><td>Sat, 31 Oct 2015</td></tr>"\
         "</table>"
     end
 
@@ -188,8 +188,8 @@ describe Productions::DatesShowHelper, type: :helper do
       expect(get_dates(production)).to eq \
         "<p class='content-label'>Dates</p>"\
         "<table class='table dates-table'>"\
-          "<tr><td class='description-text'>First performance:</td><td>Wed, 05 Aug 2015</td></tr>"\
-          "<tr><td class='description-text'>Last performance:</td><td>Sat, 31 Oct 2015</td></tr>"\
+          "<tr><td>First performance:</td><td>Wed, 05 Aug 2015</td></tr>"\
+          "<tr><td>Last performance:</td><td>Sat, 31 Oct 2015</td></tr>"\
         "</table>"\
         "<p class='note-text emphasis-text'>Press night postponed</p>"
     end

@@ -12,54 +12,54 @@ describe Users::ViewsComponentsHelper, type: :helper do
     it 'unsuspended non-admin user' do
       @user = user
       expect(get_status_info).to eq \
-        "<div class='content-container'><table class='table'>"\
-          "<tr><td class='description-text'>Admin status:</td><td class='bronze'>Standard</td></tr><tr>"\
-          "<td class='description-text'>Suspension status:</td><td class='positive'>Not suspended</td></tr>"\
+        "<div class='content-container'><table class='table content-table'>"\
+          "<tr><td>Admin status:</td><td class='bronze'>Standard</td></tr><tr>"\
+          "<td>Suspension status:</td><td class='positive'>Not suspended</td></tr>"\
         "</table></div>"
     end
 
     it 'suspended non-admin user' do
       @user = suspended_user
       expect(get_status_info).to eq \
-        "<div class='content-container'><table class='table'>"\
-          "<tr><td class='description-text'>Admin status:</td><td class='bronze'>Standard</td></tr><tr>"\
-          "<td class='description-text'>Suspension status:</td><td class='negative'>Suspended</td></tr>"\
+        "<div class='content-container'><table class='table content-table'>"\
+          "<tr><td>Admin status:</td><td class='bronze'>Standard</td></tr><tr>"\
+          "<td>Suspension status:</td><td class='negative'>Suspended</td></tr>"\
         "</table></div>"
     end
 
     it 'unsuspended admin user' do
       @user = admin_user
       expect(get_status_info).to eq \
-        "<div class='content-container'><table class='table'>"\
-          "<tr><td class='description-text'>Admin status:</td><td class='silver'>Admin</td></tr><tr>"\
-          "<td class='description-text'>Suspension status:</td><td class='positive'>Not suspended</td></tr>"\
+        "<div class='content-container'><table class='table content-table'>"\
+          "<tr><td>Admin status:</td><td class='silver'>Admin</td></tr><tr>"\
+          "<td>Suspension status:</td><td class='positive'>Not suspended</td></tr>"\
         "</table></div>"
     end
 
     it 'suspended admin user' do
       @user = suspended_admin_user
       expect(get_status_info).to eq \
-        "<div class='content-container'><table class='table'>"\
-          "<tr><td class='description-text'>Admin status:</td><td class='silver'>Admin</td></tr><tr>"\
-          "<td class='description-text'>Suspension status:</td><td class='negative'>Suspended</td></tr>"\
+        "<div class='content-container'><table class='table content-table'>"\
+          "<tr><td>Admin status:</td><td class='silver'>Admin</td></tr><tr>"\
+          "<td>Suspension status:</td><td class='negative'>Suspended</td></tr>"\
         "</table></div>"
     end
 
     it 'unsuspended super-admin user' do
       @user = super_admin_user
       expect(get_status_info).to eq \
-        "<div class='content-container'><table class='table'>"\
-          "<tr><td class='description-text'>Admin status:</td><td class='gold'>Super admin</td></tr><tr>"\
-          "<td class='description-text'>Suspension status:</td><td class='positive'>Not suspended</td></tr>"\
+        "<div class='content-container'><table class='table content-table'>"\
+          "<tr><td>Admin status:</td><td class='gold'>Super admin</td></tr><tr>"\
+          "<td>Suspension status:</td><td class='positive'>Not suspended</td></tr>"\
         "</table></div>"
     end
 
     it 'suspended super-admin user' do
       @user = suspended_super_admin_user
       expect(get_status_info).to eq \
-        "<div class='content-container'><table class='table'>"\
-          "<tr><td class='description-text'>Admin status:</td><td class='gold'>Super admin</td></tr><tr>"\
-          "<td class='description-text'>Suspension status:</td><td class='negative'>Suspended</td></tr>"\
+        "<div class='content-container'><table class='table content-table'>"\
+          "<tr><td>Admin status:</td><td class='gold'>Super admin</td></tr><tr>"\
+          "<td>Suspension status:</td><td class='negative'>Suspended</td></tr>"\
         "</table></div>"
     end
   end

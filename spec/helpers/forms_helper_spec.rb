@@ -12,11 +12,11 @@ describe Shared::FormsHelper, type: :helper do
       vars.each do |var|
         markup = get_created_updated_info(var)
         expect(markup).to eq \
-          "<div class='content-container'><table class='table'>"\
-            "<tr><td class='description-text'>First created:</td><td>"\
+          "<div class='content-container'><table class='table content-table'>"\
+            "<tr><td>First created:</td><td>"\
                 "TBC"\
             "</td></tr>"\
-            "<tr><td class='description-text'>Last updated:</td><td>"\
+            "<tr><td>Last updated:</td><td>"\
                 "TBC"\
             "</td></tr>"\
           "</table></div>"
@@ -28,12 +28,12 @@ describe Shared::FormsHelper, type: :helper do
       vars.each do |var|
         markup = get_created_updated_info(var)
         expect(markup).to eq \
-          "<div class='content-container'><table class='table'>"\
-            "<tr><td class='description-text'>First created:</td><td>"\
+          "<div class='content-container'><table class='table content-table'>"\
+            "<tr><td>First created:</td><td>"\
                 "#{var.created_at.localtime.strftime('%a, %d %b %Y at %H:%M')} "\
                 "by #{var.creator.name} (#{var.creator.email})"\
             "</td></tr>"\
-            "<tr><td class='description-text'>Last updated:</td><td>"\
+            "<tr><td>Last updated:</td><td>"\
                 "#{var.updated_at.localtime.strftime('%a, %d %b %Y at %H:%M')} "\
                 "by #{var.updater.name} (#{var.updater.email})"\
             "</td></tr>"\
@@ -45,9 +45,9 @@ describe Shared::FormsHelper, type: :helper do
       created_user.creator = nil
       markup = get_created_updated_info(created_user)
       expect(markup).to eq \
-        "<div class='content-container'><table class='table'>"\
-          "<tr><td class='description-text'>First created:</td><td>TBC</td></tr>"\
-          "<tr><td class='description-text'>Last updated:</td><td>"\
+        "<div class='content-container'><table class='table content-table'>"\
+          "<tr><td>First created:</td><td>TBC</td></tr>"\
+          "<tr><td>Last updated:</td><td>"\
               "#{created_user.updated_at.localtime.strftime('%a, %d %b %Y at %H:%M')} "\
               "by #{created_user.updater.name} (#{created_user.updater.email})"\
           "</td></tr>"\
@@ -59,16 +59,16 @@ describe Shared::FormsHelper, type: :helper do
     it 'info for user without admin or suspension status' do
       markup = get_status_assigned_info(nil)
       expect(markup).to eq \
-        "<div class='content-container'><table class='table'>"\
-          "<tr><td class='description-text'>Assigned:</td><td>TBC</td></tr>"\
+        "<div class='content-container'><table class='table content-table'>"\
+          "<tr><td>Assigned:</td><td>TBC</td></tr>"\
         "</table></div>"
     end
 
     it 'info for user with admin status' do
       markup = get_status_assigned_info(admin_user.admin)
       expect(markup).to eq \
-        "<div class='content-container'><table class='table'>"\
-          "<tr><td class='description-text'>Assigned:</td><td>"\
+        "<div class='content-container'><table class='table content-table'>"\
+          "<tr><td>Assigned:</td><td>"\
             "#{admin_user.admin.created_at.localtime.strftime('%a, %d %b %Y at %H:%M')} "\
             "by #{admin_user.admin.assignor.name} (#{admin_user.admin.assignor.email})"\
           "</td></tr>"\
@@ -78,8 +78,8 @@ describe Shared::FormsHelper, type: :helper do
     it 'info for user with suspension status' do
       markup = get_status_assigned_info(suspended_user.suspension)
       expect(markup).to eq \
-        "<div class='content-container'><table class='table'>"\
-          "<tr><td class='description-text'>Assigned:</td><td>"\
+        "<div class='content-container'><table class='table content-table'>"\
+          "<tr><td>Assigned:</td><td>"\
             "#{suspended_user.suspension.created_at.localtime.strftime('%a, %d %b %Y at %H:%M')} "\
             "by #{suspended_user.suspension.assignor.name} (#{suspended_user.suspension.assignor.email})"\
           "</td></tr>"\

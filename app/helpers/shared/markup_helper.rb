@@ -39,7 +39,7 @@ module Shared::MarkupHelper
   end
 
   def create_content_container row_values
-    bookend_div_tags(bookend_table_tags(compile_rows(row_values)), 'content-container').html_safe
+    bookend_div_tags(bookend_table_tags(compile_rows(row_values), 'content-table'), 'content-container').html_safe
   end
 
 end
