@@ -21,11 +21,11 @@ module Users::ViewsComponentsHelper
   def get_status_info
     row_values = [
         [
-          { content: 'Admin status:', class: 'description-text' },
+          { content: 'Admin status:' },
           { content: admin_status_wording(@user), class: admin_status_class(@user) }
         ],
         [
-          { content: 'Suspension status:', class: 'description-text' },
+          { content: 'Suspension status:' },
           { content: suspension_status_wording(@user), class: suspension_status_class(@user) }
         ]
       ]

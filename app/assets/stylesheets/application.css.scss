@@ -98,10 +98,6 @@ a {
   color: $theme-color;
 }
 
-.description-text {
-  font-weight: bold;
-}
-
 .emphasis-text {
   font-style: italic;
 }
@@ -138,6 +134,18 @@ a {
 .table {
   td:not(:last-child) {
     padding: 5px 20px 5px 0;
+  }
+
+  &.content-table,
+  &.dates-table {
+    & td:first-child {
+      font-weight: bold;
+    }
+  }
+
+  &.dates-table,
+  &.dates-tbc-table {
+    margin-left: 6px;
   }
 
   &.listing {
@@ -203,10 +211,6 @@ a {
       }
     }
   }
-}
-
-.dates-table {
-  margin-left: 6px;
 }
 
 .gold {

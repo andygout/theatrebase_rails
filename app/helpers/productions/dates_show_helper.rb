@@ -44,7 +44,7 @@ module Productions::DatesShowHelper
     wording = p.press_date ?
       !open_first_date?(p) ? 'First preview:' : 'Opening performance:' :
       p.press_date_tbc ? 'First preview:' : 'First performance:'
-    [{ content: wording, class: 'description-text' }, { content: date_format(p.first_date) }]
+    [{ content: wording }, { content: date_format(p.first_date) }]
   end
 
   def get_press_date p
@@ -57,34 +57,32 @@ module Productions::DatesShowHelper
       "#{p.press_date_wording}:"
 
     !p.press_date_tbc ?
-      open_first_date?(p) ? nil : [{ content: wording, class: 'description-text' }, { content: date_value }] :
-      [{ content: wording, class: 'description-text' }, { content: 'TBC', class: 'emphasis-text' }]
+      open_first_date?(p) ? nil : [{ content: wording }, { content: date_value }] :
+      [{ content: wording }, { content: 'TBC', class: 'emphasis-text' }]
   end
 
   def get_last_date p
     return [
-        { content: 'Booking until:', class: 'description-text' },
-        { content: date_format(p.last_date), class: 'emphasis-text' }
+        { content: 'Booking until:' }, { content: date_format(p.last_date), class: 'emphasis-text' }
       ] if booking_until?(p)
     return [
-        { content: 'Last performance:', class: 'description-text' },
-        { content: 'TBC', class: 'emphasis-text' }
+        { content: 'Last performance:' }, { content: 'TBC', class: 'emphasis-text' }
       ] if last_date_tbc?(p)
-    [{ content: 'Last performance:', class: 'description-text' }, { content: date_format(p.last_date) }]
+    [{ content: 'Last performance:' }, { content: date_format(p.last_date) }]
   end
 
   def dates_table p
     if dates_tbc?(p) || single_date_tbc?(p)
       dates_tbc_note = ": #{p.dates_tbc_note}" if p.dates_tbc_note && dates_single_date_tbc?(p)
       dates_tbc_row = "<tr><td class='emphasis-text'>TBC#{dates_tbc_note}</td></tr>" if dates_single_date_tbc?(p)
-      return bookend_table_tags(dates_tbc_row, 'dates-table')
+      return bookend_table_tags(dates_tbc_row, 'dates-tbc-table')
     end
 
     if single_date?(p)
       booking_until_text = ' (booking until)' if booking_until?(p)
       booking_until_class = booking_until?(p) ? 'emphasis-text' : nil
       row_values = [[
-          { content: "Performs#{booking_until_text}:", class: 'description-text' },
+          { content: "Performs#{booking_until_text}:" },
           { content: date_format(p.first_date), class: booking_until_class }
         ]]
       return bookend_table_tags(compile_rows(row_values), 'dates-table')
