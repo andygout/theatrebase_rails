@@ -13,8 +13,8 @@ describe Users::ViewsComponentsHelper, type: :helper do
       @user = user
       expect(get_status_info).to eq \
         "<div class='content-container'><table class='table'>"\
-          "<tr><td class='description-text'>Admin status:</td><td>Standard</td></tr><tr>"\
-          "<td class='description-text'>Suspension status:</td><td>Not suspended</td></tr>"\
+          "<tr><td class='description-text'>Admin status:</td><td class='bronze'>Standard</td></tr><tr>"\
+          "<td class='description-text'>Suspension status:</td><td class='positive'>Not suspended</td></tr>"\
         "</table></div>"
     end
 
@@ -22,8 +22,8 @@ describe Users::ViewsComponentsHelper, type: :helper do
       @user = suspended_user
       expect(get_status_info).to eq \
         "<div class='content-container'><table class='table'>"\
-          "<tr><td class='description-text'>Admin status:</td><td>Standard</td></tr><tr>"\
-          "<td class='description-text'>Suspension status:</td><td>Suspended</td></tr>"\
+          "<tr><td class='description-text'>Admin status:</td><td class='bronze'>Standard</td></tr><tr>"\
+          "<td class='description-text'>Suspension status:</td><td class='negative'>Suspended</td></tr>"\
         "</table></div>"
     end
 
@@ -31,8 +31,8 @@ describe Users::ViewsComponentsHelper, type: :helper do
       @user = admin_user
       expect(get_status_info).to eq \
         "<div class='content-container'><table class='table'>"\
-          "<tr><td class='description-text'>Admin status:</td><td>Admin</td></tr><tr>"\
-          "<td class='description-text'>Suspension status:</td><td>Not suspended</td></tr>"\
+          "<tr><td class='description-text'>Admin status:</td><td class='silver'>Admin</td></tr><tr>"\
+          "<td class='description-text'>Suspension status:</td><td class='positive'>Not suspended</td></tr>"\
         "</table></div>"
     end
 
@@ -40,8 +40,8 @@ describe Users::ViewsComponentsHelper, type: :helper do
       @user = suspended_admin_user
       expect(get_status_info).to eq \
         "<div class='content-container'><table class='table'>"\
-          "<tr><td class='description-text'>Admin status:</td><td>Admin</td></tr><tr>"\
-          "<td class='description-text'>Suspension status:</td><td>Suspended</td></tr>"\
+          "<tr><td class='description-text'>Admin status:</td><td class='silver'>Admin</td></tr><tr>"\
+          "<td class='description-text'>Suspension status:</td><td class='negative'>Suspended</td></tr>"\
         "</table></div>"
     end
 
@@ -49,8 +49,8 @@ describe Users::ViewsComponentsHelper, type: :helper do
       @user = super_admin_user
       expect(get_status_info).to eq \
         "<div class='content-container'><table class='table'>"\
-          "<tr><td class='description-text'>Admin status:</td><td>Super admin</td></tr><tr>"\
-          "<td class='description-text'>Suspension status:</td><td>Not suspended</td></tr>"\
+          "<tr><td class='description-text'>Admin status:</td><td class='gold'>Super admin</td></tr><tr>"\
+          "<td class='description-text'>Suspension status:</td><td class='positive'>Not suspended</td></tr>"\
         "</table></div>"
     end
 
@@ -58,8 +58,8 @@ describe Users::ViewsComponentsHelper, type: :helper do
       @user = suspended_super_admin_user
       expect(get_status_info).to eq \
         "<div class='content-container'><table class='table'>"\
-          "<tr><td class='description-text'>Admin status:</td><td>Super admin</td></tr><tr>"\
-          "<td class='description-text'>Suspension status:</td><td>Suspended</td></tr>"\
+          "<tr><td class='description-text'>Admin status:</td><td class='gold'>Super admin</td></tr><tr>"\
+          "<td class='description-text'>Suspension status:</td><td class='negative'>Suspended</td></tr>"\
         "</table></div>"
     end
   end

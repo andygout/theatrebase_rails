@@ -62,6 +62,7 @@ class UsersController < ApplicationController
     @users = current_user.super_admin ?
       User.non_super_admin(current_user).order(:id).paginate(page: params[:page]) :
       User.non_super_admin(current_user).non_admin(current_user).order(:id).paginate(page: params[:page])
+    get_user_index_table
   end
 
   private

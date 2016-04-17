@@ -13,15 +13,19 @@ module Shared::FormsHelper
   def get_created_updated_info var
     created = created_updated_text(var.created_at, var.creator)
     updated = created_updated_text(var.updated_at, var.updater)
-    values = [['First created:', created], ['Last updated:', updated]]
-    @created_updated_info = create_content_container(values)
+    row_values = [
+        [{ content: 'First created:', class: 'description-text' }, { content: created }],
+        [{ content: 'Last updated:', class: 'description-text' }, { content: updated }]
+      ]
+    @created_updated_info = create_content_container(row_values)
   end
 
   def get_status_assigned_info status
     assigned = status ?
       "#{datetime_format(status.created_at)} by #{status.assignor.name} (#{status.assignor.email})" :
       'TBC'
-    @status_assigned_info = create_content_container([['Assigned:', assigned]])
+    row_values = [[{ content: 'Assigned:', class: 'description-text' }, { content: assigned }]]
+    @status_assigned_info = create_content_container(row_values)
   end
 
 end
