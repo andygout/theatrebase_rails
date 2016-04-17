@@ -329,8 +329,12 @@ a {
   color: $error-color;
 }
 
-.pagination .current {
-  font-style: normal;
+.pagination {
+  margin-top: 20px;
+
+  & .current {
+    font-style: normal;
+  }
 }
 
 .overflow-y-hidden {
