@@ -86,12 +86,8 @@ class User < ActiveRecord::Base
     class_name: :Production,
     foreign_key: :updater_id
 
-  scope :non_admin, ->(current_user_id) {
-    where.not(:id => Admin.select(:user_id).where.not(user_id: current_user_id).uniq)
-  }
-
-  scope :non_super_admin, ->(current_user_id) {
-    where.not(:id => SuperAdmin.select(:user_id).where.not(user_id: current_user_id).uniq)
+  scope :non_admin, ->(current_user_id, admin_type) {
+    where.not(:id => admin_type.select(:user_id).where.not(user_id: current_user_id).uniq)
   }
 
   def User.digest string
