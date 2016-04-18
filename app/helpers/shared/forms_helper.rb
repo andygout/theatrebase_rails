@@ -11,7 +11,7 @@ module Shared::FormsHelper
   end
 
   def created_updated_text at, by
-    at && by ? "#{datetime_format(at)} by #{name_markup(by)} (#{by.email})" : 'TBC'
+    at && by ? "#{datetime_format(at)} by #{name_markup(by)}" : 'TBC'
   end
 
   def get_created_updated_info var
