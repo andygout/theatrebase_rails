@@ -6,8 +6,12 @@ module Shared::FormsHelper
     datetime_value.localtime.strftime('%a, %d %b %Y at %H:%M')
   end
 
+  def name_markup user
+    valid_show_user?(user) ? link_markup('users', user.id, user.name) : user.name
+  end
+
   def created_updated_text at, by
-    at && by ? "#{datetime_format(at)} by #{link_markup('users', by.id, by.name)} (#{by.email})" : 'TBC'
+    at && by ? "#{datetime_format(at)} by #{name_markup(by)} (#{by.email})" : 'TBC'
   end
 
   def get_created_updated_info var
