@@ -6,8 +6,12 @@ module Shared::FormsHelper
     datetime_value.localtime.strftime('%a, %d %b %Y at %H:%M')
   end
 
+  def name_markup user
+    valid_show_user?(user) ? link_markup('users', user.id, user.name) : user.name
+  end
+
   def created_updated_text at, by
-    at && by ? "#{datetime_format(at)} by #{by.name} (#{by.email})" : 'TBC'
+    at && by ? "#{datetime_format(at)} by #{name_markup(by)}" : 'TBC'
   end
 
   def get_created_updated_info var
@@ -21,9 +25,9 @@ module Shared::FormsHelper
   end
 
   def get_status_assigned_info status
-    assigned = status ?
-      "#{datetime_format(status.created_at)} by #{status.assignor.name} (#{status.assignor.email})" :
-      'TBC'
+    at = status ? status.created_at : nil
+    by = status ? status.assignor : nil
+    assigned = created_updated_text(at, by)
     row_values = [[{ content: 'Assigned:' }, { content: assigned }]]
     @status_assigned_info = create_content_container(row_values)
   end

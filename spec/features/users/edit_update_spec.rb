@@ -27,6 +27,24 @@ feature 'User edit/update' do
     end
   end
 
+  context 'displaying creator + updater info on edit form' do
+    let(:created_user) { create :created_user }
+    let(:user) { created_user.creator }
+    let(:edit_user) { attributes_for :edit_user }
+
+    scenario 'creator and updater will only display as link if profile page accessible by user' do
+      log_in created_user
+      visit edit_user_path(created_user)
+      expect(page).to have_content(user[:name])
+      expect(page).not_to have_link(user[:name], href: user_path(user))
+      fill_in 'user_name', with: edit_user[:name]
+      click_button 'Update User'
+      visit edit_user_path(created_user.reload)
+      expect(page).to have_content(created_user[:name])
+      expect(page).to have_link(created_user[:name], href: user_path(created_user))
+    end
+  end
+
   context 'updating permitted user profile with valid details' do
     let(:created_user) { create :created_user }
     let(:edit_user) { attributes_for :edit_user }

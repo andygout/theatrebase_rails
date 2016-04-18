@@ -1,5 +1,9 @@
 module Shared::MarkupHelper
 
+  def link_markup path, id, text
+    "<a href='/#{path}/#{id}'>#{text}</a>"
+  end
+
   def apply_class class_string
     " class='#{class_string}'" if class_string
   end
