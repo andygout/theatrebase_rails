@@ -31,11 +31,11 @@ describe Shared::FormsHelper, type: :helper do
           "<div class='content-container'><table class='table content-table'>"\
             "<tr><td>First created:</td><td>"\
                 "#{var.created_at.localtime.strftime('%a, %d %b %Y at %H:%M')} "\
-                "by #{var.creator.name} (#{var.creator.email})"\
+                "by <a href='/users/#{var.creator.id}'>#{var.creator.name}</a> (#{var.creator.email})"\
             "</td></tr>"\
             "<tr><td>Last updated:</td><td>"\
                 "#{var.updated_at.localtime.strftime('%a, %d %b %Y at %H:%M')} "\
-                "by #{var.updater.name} (#{var.updater.email})"\
+                "by <a href='/users/#{var.updater.id}'>#{var.updater.name}</a> (#{var.updater.email})"\
             "</td></tr>"\
           "</table></div>"
       end
@@ -49,7 +49,8 @@ describe Shared::FormsHelper, type: :helper do
           "<tr><td>First created:</td><td>TBC</td></tr>"\
           "<tr><td>Last updated:</td><td>"\
               "#{created_user.updated_at.localtime.strftime('%a, %d %b %Y at %H:%M')} "\
-              "by #{created_user.updater.name} (#{created_user.updater.email})"\
+              "by <a href='/users/#{created_user.updater.id}'>#{created_user.updater.name}</a> "\
+              "(#{created_user.updater.email})"\
           "</td></tr>"\
         "</table></div>"
     end
@@ -70,7 +71,8 @@ describe Shared::FormsHelper, type: :helper do
         "<div class='content-container'><table class='table content-table'>"\
           "<tr><td>Assigned:</td><td>"\
             "#{admin_user.admin.created_at.localtime.strftime('%a, %d %b %Y at %H:%M')} "\
-            "by #{admin_user.admin.assignor.name} (#{admin_user.admin.assignor.email})"\
+            "by <a href='/users/#{admin_user.admin.assignor.id}'>#{admin_user.admin.assignor.name}</a> "\
+            "(#{admin_user.admin.assignor.email})"\
           "</td></tr>"\
         "</table></div>"
     end
@@ -81,7 +83,9 @@ describe Shared::FormsHelper, type: :helper do
         "<div class='content-container'><table class='table content-table'>"\
           "<tr><td>Assigned:</td><td>"\
             "#{suspended_user.suspension.created_at.localtime.strftime('%a, %d %b %Y at %H:%M')} "\
-            "by #{suspended_user.suspension.assignor.name} (#{suspended_user.suspension.assignor.email})"\
+            "by <a href='/users/#{suspended_user.suspension.assignor.id}'>"\
+            "#{suspended_user.suspension.assignor.name}</a> "\
+            "(#{suspended_user.suspension.assignor.email})"\
           "</td></tr>"\
         "</table></div>"
     end

@@ -7,7 +7,7 @@ module Shared::FormsHelper
   end
 
   def created_updated_text at, by
-    at && by ? "#{datetime_format(at)} by #{by.name} (#{by.email})" : 'TBC'
+    at && by ? "#{datetime_format(at)} by #{link_markup('users', by.id, by.name)} (#{by.email})" : 'TBC'
   end
 
   def get_created_updated_info var
@@ -21,9 +21,9 @@ module Shared::FormsHelper
   end
 
   def get_status_assigned_info status
-    assigned = status ?
-      "#{datetime_format(status.created_at)} by #{status.assignor.name} (#{status.assignor.email})" :
-      'TBC'
+    at = status ? status.created_at : nil
+    by = status ? status.assignor : nil
+    assigned = created_updated_text(at, by)
     row_values = [[{ content: 'Assigned:' }, { content: assigned }]]
     @status_assigned_info = create_content_container(row_values)
   end
