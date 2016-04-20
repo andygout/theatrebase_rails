@@ -1,90 +1,13 @@
 class User < ActiveRecord::Base
 
+  include Validations::User
+  include Associations::User
+
   attr_accessor :remember_token, :activation_token, :reset_token
 
   before_validation :strip_whitespace, only: :name
   before_save       :downcase_email
   before_create     :create_activation_digest
-
-  validates :name,
-    presence: true,
-    length: { maximum: 255 }
-
-  VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i
-  validates :email,
-    presence: true,
-    length: { maximum: 255 },
-    format: { with: VALID_EMAIL_REGEX },
-    uniqueness: { case_sensitive: false }
-
-  has_secure_password
-  validates :password,
-    presence: true,
-    length: { minimum: 6 },
-    allow_nil: true
-
-  has_one :admin,
-    dependent: :destroy
-
-  accepts_nested_attributes_for :admin,
-    allow_destroy: true
-
-  has_one :admin_status_assignor,
-    through: :admin,
-    source: :assignor
-
-  has_many :admins,
-    foreign_key: :assignor_id
-
-  has_many :admin_status_assignees,
-    through: :admins,
-    source: :user
-
-  has_one :super_admin,
-    dependent: :destroy
-
-  has_one :suspension,
-    dependent: :destroy
-
-  accepts_nested_attributes_for :suspension,
-    allow_destroy: true
-
-  has_one :suspension_status_assignor,
-    through: :suspension,
-    source: :assignor
-
-  has_many :suspensions,
-    foreign_key: :assignor_id
-
-  has_many :suspension_status_assignees,
-    through: :suspensions,
-    source: :user
-
-  belongs_to :creator,
-    class_name: :User,
-    foreign_key: :creator_id
-
-  has_many :created_users,
-    -> { extending WithUserAssociationExtension },
-    class_name: :User,
-    foreign_key: :creator_id
-
-  belongs_to :updater,
-    class_name: :User,
-    foreign_key: :updater_id
-
-  has_many :updated_users,
-    class_name: :User,
-    foreign_key: :updater_id
-
-  has_many :created_productions,
-    -> { extending WithUserAssociationExtension },
-    class_name: :Production,
-    foreign_key: :creator_id
-
-  has_many :updated_productions,
-    class_name: :Production,
-    foreign_key: :updater_id
 
   scope :non_admin, ->(current_user_id, admin_type) {
     where.not(:id => admin_type.select(:user_id).where.not(user_id: current_user_id).uniq)
