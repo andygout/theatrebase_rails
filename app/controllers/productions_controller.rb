@@ -2,6 +2,7 @@ class ProductionsController < ApplicationController
 
   include Shared::ViewsComponentsHelper
   include Shared::FormsHelper
+  include Shared::ParamsHelper
   include Productions::DatesShowHelper
 
   before_action :logged_in_user,        only: [:new, :create, :edit, :update, :destroy]
@@ -48,17 +49,19 @@ class ProductionsController < ApplicationController
   end
 
   def index
-    @productions = Production.all
+    @productions = Production.order('COALESCE(alphabetise, title)')
   end
 
   private
 
     def production_params
+      params[:production][:alphabetise] = extract_alphabetise_value(params[:production][:title])
       nullify_unused_params
 
       params
         .require(:production)
         .permit(:title,
+                :alphabetise,
                 :first_date,
                 :press_date,
                 :last_date,
