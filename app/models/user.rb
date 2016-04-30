@@ -2,10 +2,11 @@ class User < ActiveRecord::Base
 
   include Validations::User
   include Associations::User
+  include Shared::ParamsHelper
 
   attr_accessor :remember_token, :activation_token, :reset_token
 
-  before_validation :strip_whitespace, only: :name
+  before_validation :strip_whitespace
   before_save       :downcase_email
   before_create     :create_activation_digest
 
@@ -70,10 +71,6 @@ class User < ActiveRecord::Base
   end
 
   private
-
-    def strip_whitespace
-      self.name = self.name.strip
-    end
 
     def downcase_email
       self.email = email.downcase
