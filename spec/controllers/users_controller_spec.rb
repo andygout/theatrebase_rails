@@ -153,6 +153,16 @@ describe UsersController, type: :controller do
     end
   end
 
+  context 'create user with leading and trailing whitespace on name and email' do
+    it 'will remove leading and trailing whitespace' do
+      session[:user_id] = admin_user.id
+      post :create, user: { name: ' ' + third_user[:name] + ' ', email: ' ' + third_user[:email] + ' ' }
+      user = User.last
+      expect(user.name).to eq third_user[:name]
+      expect(user.email).to eq third_user[:email]
+    end
+  end
+
   context 'attempt edit as super-admin user' do
     it 'edit unsuspended user types: various responses' do
       [
@@ -546,6 +556,16 @@ describe UsersController, type: :controller do
       expect { patch :update, id: user, user: { name: edit_user[:name], email: edit_user[:email], suspension_attributes: { _destroy: '0' } } }.to change { Suspension.count }.by 0
       expect(user.name).to eq user.reload.name
       expect(response).to redirect_to log_in_path
+    end
+  end
+
+  context 'update user with leading and trailing whitespace on name and email' do
+    it 'will remove leading and trailing whitespace' do
+      session[:user_id] = user.id
+      post :update, id: user, user: { name: ' ' + third_user[:name] + ' ', email: ' ' + third_user[:email] + ' ' }
+      user.reload
+      expect(user.name).to eq third_user[:name]
+      expect(user.email).to eq third_user[:email]
     end
   end
 

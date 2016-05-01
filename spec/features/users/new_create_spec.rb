@@ -171,12 +171,15 @@ feature 'User new/create' do
   end
 
   context 'using newly set password to log in' do
-    scenario 'once account activated and email and password are updated only new details can be used', js: true do
+    before(:each) do
       create_user user
-      new_user = click_resource_link ActionMailer::Base.deliveries.last.to_s, 'account_activation'
+      @new_user = click_resource_link ActionMailer::Base.deliveries.last.to_s, 'account_activation'
       cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST : BCrypt::Engine.cost
       password_digest = BCrypt::Password.create(user[:password], cost: cost)
-      new_user.update_attribute(:password_digest, password_digest)
+      @new_user.update_attribute(:password_digest, password_digest)
+    end
+
+    scenario 'once account activated and password updated only new details can be used', js: true do
       fill_in 'user_password',              with: edit_user[:password]
       fill_in 'user_password_confirmation', with: edit_user[:password]
       click_button 'Set Password'
@@ -196,10 +199,36 @@ feature 'User new/create' do
       click_button 'Log In'
       expect(page).to have_css '.alert-success'
       expect(page).not_to have_css '.alert-error'
-      expect(page).to have_link('Profile', href: user_path(new_user))
+      expect(page).to have_link('Profile', href: user_path(@new_user))
       expect(page).to have_link('Log out', href: log_out_path)
       expect(page).not_to have_link('Log in', href: log_in_path)
-      expect(page).to have_current_path user_path(new_user)
+      expect(page).to have_current_path user_path(@new_user)
+    end
+
+    scenario 'password can contain leading and trailing whitespace', js: true do
+      fill_in 'user_password',              with: ' ' + edit_user[:password] + ' '
+      fill_in 'user_password_confirmation', with: ' ' + edit_user[:password] + ' '
+      click_button 'Set Password'
+      click_link 'Log out'
+      visit log_in_path
+      fill_in 'session_email',    with: user[:email]
+      fill_in 'session_password', with: edit_user[:password]
+      click_button 'Log In'
+      expect(page).to have_css '.alert-error'
+      expect(page).not_to have_css '.alert-success'
+      expect(page).to have_link('Log in', href: log_in_path)
+      expect(page).not_to have_link('Profile')
+      expect(page).not_to have_link('Log out', href: log_out_path)
+      expect(page).to have_current_path log_in_path
+      fill_in 'session_email',    with: user[:email]
+      fill_in 'session_password', with: ' ' + edit_user[:password] + ' '
+      click_button 'Log In'
+      expect(page).to have_css '.alert-success'
+      expect(page).not_to have_css '.alert-error'
+      expect(page).to have_link('Profile', href: user_path(@new_user))
+      expect(page).to have_link('Log out', href: log_out_path)
+      expect(page).not_to have_link('Log in', href: log_in_path)
+      expect(page).to have_current_path user_path(@new_user)
     end
   end
 end
