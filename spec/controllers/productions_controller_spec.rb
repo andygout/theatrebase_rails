@@ -270,7 +270,7 @@ describe ProductionsController, type: :controller do
     end
   end
 
-  context 'attempt visit production display page' do
+  context 'attempt show production display page' do
     it 'as super-admin: render production display page' do
       session[:user_id] = super_admin_user.id
       get :show, id: production
@@ -313,7 +313,7 @@ describe ProductionsController, type: :controller do
     end
   end
 
-  context 'attempt visit production index' do
+  context 'attempt view production index' do
     it 'as super-admin: render production display page' do
       session[:user_id] = super_admin_user.id
       get :index

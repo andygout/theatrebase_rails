@@ -774,8 +774,8 @@ describe UsersController, type: :controller do
     end
   end
 
-  context 'attempt visit user display page as super-admin user' do
-    it 'visit unsuspended user types: render user display page for self and users of a lower rank' do
+  context 'attempt show user display page as super-admin user' do
+    it 'show unsuspended user types: render user display page for self and users of a lower rank' do
       [
         {user: super_admin_user, type: 'super_admin_user', response: render_template(:show)},
         {user: second_super_admin_user, type: 'second_super_admin_user', response: redirect_to(root_path)},
@@ -788,7 +788,7 @@ describe UsersController, type: :controller do
       end
     end
 
-    it 'visit suspended user types: render user display page for users of a lower rank' do
+    it 'show suspended user types: render user display page for users of a lower rank' do
       [
         {user: suspended_super_admin_user, type: 'suspended_super_admin_user', response: redirect_to(root_path)},
         {user: suspended_admin_user, type: 'suspended_admin_user', response: render_template(:show)},
@@ -801,8 +801,8 @@ describe UsersController, type: :controller do
     end
   end
 
-  context 'attempt visit user display page as suspended super-admin user' do
-    it 'visit unsuspended user types: fail and redirect to home page' do
+  context 'attempt show user display page as suspended super-admin user' do
+    it 'show unsuspended user types: fail and redirect to home page' do
       [
         {user: super_admin_user, type: 'super_admin_user'},
         {user: admin_user, type: 'admin_user'},
@@ -814,7 +814,7 @@ describe UsersController, type: :controller do
       end
     end
 
-    it 'visit suspended user types: fail and redirect to home page' do
+    it 'show suspended user types: fail and redirect to home page' do
       [
         {user: suspended_super_admin_user, type: 'suspended_super_admin_user'},
         {user: second_suspended_super_admin_user, type: 'second_suspended_super_admin_user'},
@@ -828,8 +828,8 @@ describe UsersController, type: :controller do
     end
   end
 
-  context 'attempt visit user display page as admin user' do
-    it 'visit unsuspended user types: render user display page for self and users of a lower rank' do
+  context 'attempt show user display page as admin user' do
+    it 'show unsuspended user types: render user display page for self and users of a lower rank' do
       [
         {user: super_admin_user, type: 'super_admin_user', response: redirect_to(root_path)},
         {user: admin_user, type: 'admin_user', response: render_template(:show)},
@@ -842,7 +842,7 @@ describe UsersController, type: :controller do
       end
     end
 
-    it 'visit suspended user types: render user display page for users of a lower rank' do
+    it 'show suspended user types: render user display page for users of a lower rank' do
       [
         {user: suspended_super_admin_user, type: 'suspended_super_admin_user', response: redirect_to(root_path)},
         {user: suspended_admin_user, type: 'suspended_admin_user', response: redirect_to(root_path)},
@@ -855,8 +855,8 @@ describe UsersController, type: :controller do
     end
   end
 
-  context 'attempt visit user display page as suspended admin user' do
-    it 'visit unsuspended user types: fail and redirect to home page' do
+  context 'attempt show user display page as suspended admin user' do
+    it 'show unsuspended user types: fail and redirect to home page' do
       [
         {user: super_admin_user, type: 'super_admin_user'},
         {user: admin_user, type: 'admin_user'},
@@ -868,7 +868,7 @@ describe UsersController, type: :controller do
       end
     end
 
-    it 'visit suspended user types: fail and redirect to home page' do
+    it 'show suspended user types: fail and redirect to home page' do
       [
         {user: suspended_super_admin_user, type: 'suspended_super_admin_user'},
         {user: suspended_admin_user, type: 'suspended_admin_user'},
@@ -882,8 +882,8 @@ describe UsersController, type: :controller do
     end
   end
 
-  context 'attempt visit user display page as non-admin user' do
-    it 'visit unsuspended user types: various responses' do
+  context 'attempt show user display page as non-admin user' do
+    it 'show unsuspended user types: various responses' do
       [
         {user: super_admin_user, type: 'super_admin_user', response: redirect_to(root_path)},
         {user: admin_user, type: 'admin_user', response: redirect_to(root_path)},
@@ -896,7 +896,7 @@ describe UsersController, type: :controller do
       end
     end
 
-    it 'visit suspended user types: fail and redirect to home page' do
+    it 'show suspended user types: fail and redirect to home page' do
       [
         {user: suspended_super_admin_user, type: 'suspended_super_admin_user'},
         {user: suspended_admin_user, type: 'suspended_admin_user'},
@@ -909,8 +909,8 @@ describe UsersController, type: :controller do
     end
   end
 
-  context 'attempt visit user display page as suspended non-admin user' do
-    it 'visit unsuspended user types: fail and redirect to home page' do
+  context 'attempt show user display page as suspended non-admin user' do
+    it 'show unsuspended user types: fail and redirect to home page' do
       [
         {user: super_admin_user, type: 'super_admin_user'},
         {user: admin_user, type: 'admin_user'},
@@ -922,7 +922,7 @@ describe UsersController, type: :controller do
       end
     end
 
-    it 'visit suspended user types: fail and redirect to home page' do
+    it 'show suspended user types: fail and redirect to home page' do
       [
         {user: suspended_super_admin_user, type: 'suspended_super_admin_user'},
         {user: suspended_admin_user, type: 'suspended_admin_user'},
@@ -936,14 +936,14 @@ describe UsersController, type: :controller do
     end
   end
 
-  context 'attempt visit user page when not logged in' do
+  context 'attempt show user page when not logged in' do
     it 'redirect to log in page' do
       get :show, id: user
       expect(response).to redirect_to log_in_path
     end
   end
 
-  context 'attempt visit user index' do
+  context 'attempt view user index' do
     it 'as super-admin user: render user index' do
       session[:user_id] = super_admin_user.id
       get :index
