@@ -27,6 +27,7 @@ ActiveRecord::Schema.define(version: 20160225202000) do
 
   create_table "productions", force: :cascade do |t|
     t.string   "title"
+    t.string   "alphabetise"
     t.date     "first_date"
     t.date     "press_date"
     t.date     "last_date"
