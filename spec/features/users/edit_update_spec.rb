@@ -73,7 +73,7 @@ feature 'User edit/update' do
       expect(page).to have_current_path user_path(created_user)
     end
 
-    scenario 'after email and password are updated only new details can be used', js: true do
+    scenario 'once email and password updated only new details can be used', js: true do
       user_edit_form( edit_user[:name],
                       edit_user[:email],
                       edit_user[:password],
@@ -89,6 +89,34 @@ feature 'User edit/update' do
       expect(page).to have_current_path log_in_path
       fill_in 'session_email',    with: edit_user[:email]
       fill_in 'session_password', with: edit_user[:password]
+      click_button 'Log In'
+      expect(page).to have_css '.alert-success'
+      expect(page).not_to have_css '.alert-error'
+      expect(page).to have_link('Profile', href: user_path(created_user))
+      expect(page).to have_link('Log out', href: log_out_path)
+      expect(page).not_to have_link('Log in', href: log_in_path)
+      expect(page).to have_current_path user_path(created_user)
+    end
+
+    scenario 'password can contain leading and trailing whitespace', js: true do
+      user_edit_form( created_user.name,
+                      created_user.email,
+                      ' ' + edit_user[:password] + ' ',
+                      ' ' + edit_user[:password] + ' ')
+      click_button 'Update User'
+      click_link 'Log out'
+      visit log_in_path
+      fill_in 'session_email',    with: created_user.email
+      fill_in 'session_password', with: edit_user[:password]
+      click_button 'Log In'
+      expect(page).to have_css '.alert-error'
+      expect(page).not_to have_css '.alert-success'
+      expect(page).to have_link('Log in', href: log_in_path)
+      expect(page).not_to have_link('Profile')
+      expect(page).not_to have_link('Log out', href: log_out_path)
+      expect(page).to have_current_path log_in_path
+      fill_in 'session_email',    with: created_user.email
+      fill_in 'session_password', with: ' ' + edit_user[:password] + ' '
       click_button 'Log In'
       expect(page).to have_css '.alert-success'
       expect(page).not_to have_css '.alert-error'
