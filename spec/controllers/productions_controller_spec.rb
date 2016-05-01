@@ -64,6 +64,15 @@ describe ProductionsController, type: :controller do
       dates_note: ''
     } }
 
+    let(:production_whitespace_params) { {
+      title: ' ' + add_production[:title] + ' ',
+      first_date: add_production[:first_date],
+      last_date: add_production[:last_date],
+      press_date_wording: ' ' + add_production[:press_date_wording] + ' ',
+      dates_tbc_note: ' ' + add_production[:dates_tbc_note] + ' ',
+      dates_note: ' ' + add_production[:dates_note] + ' '
+    } }
+
     it 'as super-admin: succeed and redirect to production display page' do
       session[:user_id] = super_admin_user.id
       expect { post :create, production: production_params }.to change { Production.count }.by 1
@@ -103,6 +112,16 @@ describe ProductionsController, type: :controller do
     it 'when not logged in: fail and redirect to log in page' do
       expect { post :create, production: { title: add_production[:title], first_date: add_production[:first_date], last_date: add_production[:last_date] } }.to change { Production.count }.by 0
       expect(response).to redirect_to log_in_path
+    end
+
+    it 'permitted create will remove leading and trailing whitespace from string fields' do
+      session[:user_id] = user.id
+      post :create, production: production_whitespace_params
+      production = Production.last
+      expect(production.title).to eq add_production[:title]
+      expect(production.press_date_wording).to eq add_production[:press_date_wording]
+      expect(production.dates_tbc_note).to eq add_production[:dates_tbc_note]
+      expect(production.dates_note).to eq add_production[:dates_note]
     end
   end
 
@@ -159,6 +178,15 @@ describe ProductionsController, type: :controller do
       dates_note: ''
     } }
 
+    let(:edit_production_whitespace_params) { {
+      title: ' ' + edit_production[:title] + ' ',
+      first_date: edit_production[:first_date],
+      last_date: edit_production[:last_date],
+      press_date_wording: ' ' + edit_production[:press_date_wording] + ' ',
+      dates_tbc_note: ' ' + edit_production[:dates_tbc_note] + ' ',
+      dates_note: ' ' + edit_production[:dates_note] + ' '
+    } }
+
     it 'as super-admin: succeed and redirect to production display page' do
       session[:user_id] = super_admin_user.id
       patch :update, id: production, production: edit_production_params
@@ -205,6 +233,16 @@ describe ProductionsController, type: :controller do
       patch :update, id: production, production: edit_production_params
       expect(production.title).to eq production.reload.title
       expect(response).to redirect_to log_in_path
+    end
+
+    it 'permitted update will remove leading and trailing whitespace from string fields' do
+      session[:user_id] = user.id
+      post :update, id: production, production: edit_production_whitespace_params
+      production.reload
+      expect(production.title).to eq edit_production[:title]
+      expect(production.press_date_wording).to eq edit_production[:press_date_wording]
+      expect(production.dates_tbc_note).to eq edit_production[:dates_tbc_note]
+      expect(production.dates_note).to eq edit_production[:dates_note]
     end
   end
 

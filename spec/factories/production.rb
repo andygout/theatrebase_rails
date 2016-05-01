@@ -9,10 +9,16 @@ FactoryGirl.define do
 
     factory :add_production do
       title 'Othello'
+      press_date_wording 'Press day'
+      dates_tbc_note 'Jan 2016'
+      dates_note 'Press day postponed'
     end
 
     factory :edit_production do
       title 'Macbeth'
+      press_date_wording 'Press day'
+      dates_tbc_note 'Jan 2016'
+      dates_note 'Press day postponed'
     end
   end
 
