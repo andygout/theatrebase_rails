@@ -8,6 +8,11 @@ module Shared::MarkupHelper
     " class='#{class_string}'" if class_string
   end
 
+  def bookend_span_tags markup, span_class=nil
+    span_class = span_class ? " class='#{span_class}'" : ''
+    "<span#{span_class}>#{markup}</span>"
+  end
+
   def bookend_div_tags table_markup, div_class=nil
     div_class = div_class ? " class='#{div_class}'" : ''
     "<div#{div_class}>"\
