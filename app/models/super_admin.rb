@@ -1,7 +1,7 @@
 class SuperAdmin < ActiveRecord::Base
 
-  include Validations::SuperAdmin
   include Associations::SuperAdmin
+  include Validations::SuperAdmin
 
   self.primary_key = :user_id
 

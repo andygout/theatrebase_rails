@@ -2,8 +2,8 @@ class UsersController < ApplicationController
 
   include UsersHelper
   include Users::ViewsComponentsHelper
-  include Shared::ViewsComponentsHelper
   include Shared::FormsHelper
+  include Shared::ViewsComponentsHelper
 
   before_action :get_user,              only: [:new, :create, :edit, :update, :destroy, :show]
   before_action :logged_in_user
