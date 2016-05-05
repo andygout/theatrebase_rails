@@ -23,9 +23,9 @@ module Productions::DatesTableHelper
   end
 
   def get_press_date p
-    date_value = p.second_press_date ?
-      "#{date_table_format(p.press_date)} and #{date_table_format(p.second_press_date)}" :
-      date_table_format(p.press_date)
+    date_value = !p.second_press_date ?
+      date_table_format(p.press_date) :
+      "#{date_table_format(p.press_date)} and #{date_table_format(p.second_press_date)}"
 
     wording = !p.press_date_wording.present? ?
       "Press performance#{:s if p.second_press_date}:" :
