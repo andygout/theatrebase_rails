@@ -29,6 +29,8 @@ module Validations::Production
     validates :dates_tbc_note,
       length: { maximum: 15 }
 
+    validate :dates_tbc_note_valid_presence, if: :dates_tbc_note
+
     validates :dates_note,
       length: { maximum: 255 }
 

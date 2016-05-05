@@ -23,6 +23,7 @@ describe ProductionsController, type: :controller do
     title: ' ' + add_production[:title] + ' ',
     first_date: add_production[:first_date],
     last_date: add_production[:last_date],
+    dates_info: 3,
     press_date_wording: ' ' + add_production[:press_date_wording] + ' ',
     dates_tbc_note: ' ' + add_production[:dates_tbc_note] + ' ',
     dates_note: ' ' + add_production[:dates_note] + ' '

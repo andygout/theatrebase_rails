@@ -129,12 +129,20 @@ describe Production, type: :model do
       expect(production.valid?).to be true
     end
 
+    it 'invalid if "dates TBC note" has content without "dates TBC" being set' do
+      production.dates_info = 0
+      production.dates_tbc_note = 'a' * (DATES_TBC_NOTE_MAX_LENGTH)
+      expect(production.valid?).to be false
+    end
+
     it 'invalid if "dates TBC note" exceeds length limit' do
+      production.dates_info = 3
       production.dates_tbc_note = 'a' * (DATES_TBC_NOTE_MAX_LENGTH + 1)
       expect(production.valid?).to be false
     end
 
     it 'valid if "dates TBC note" does not exceed length limit' do
+      production.dates_info = 3
       production.dates_tbc_note = 'a' * DATES_TBC_NOTE_MAX_LENGTH
       expect(production.valid?).to be true
     end
