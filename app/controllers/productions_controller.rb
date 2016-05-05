@@ -1,5 +1,6 @@
 class ProductionsController < ApplicationController
 
+  include Productions::ViewsComponentsHelper
   include Shared::ViewsComponentsHelper
   include Shared::FormsHelper
   include Shared::ParamsHelper
@@ -50,6 +51,7 @@ class ProductionsController < ApplicationController
 
   def index
     @productions = Production.order('COALESCE(alphabetise, title)')
+    @production_index_table = get_production_index_table
   end
 
   private

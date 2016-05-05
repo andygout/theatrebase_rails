@@ -1,7 +1,1 @@
-<% if @productions.any? %>
-  <% @productions.each do |production| %>
-    <p><%= link_to production.title, production_path(production) %></p>
-  <% end %>
-<% else %>
-  <p class='title-text'>No productions yet</p>
-<% end %>
+<%= @production_index_table %>
