@@ -58,7 +58,7 @@
 
   <div class='form-item'>
     <%= production.label :dates_tbc_note, 'Dates TBC note', class: 'label' %>
-    <%= production.text_field :dates_tbc_note, class: 'input text-input', maxlength: 255 %>
+    <%= production.text_field :dates_tbc_note, class: 'input text-input', maxlength: 15 %>
     <%= render partial: 'partials/error', collection: @production.errors[:dates_tbc_note] %>
   </div>
 

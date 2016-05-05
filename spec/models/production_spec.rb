@@ -8,6 +8,7 @@ describe Production, type: :model do
 
   let(:production) { build :production }
   LENGTH_MAX = 255
+  DATES_TBC_NOTE_MAX_LENGTH = 15
 
   context 'valid details' do
     it 'should be valid' do
@@ -128,12 +129,12 @@ describe Production, type: :model do
     end
 
     it 'invalid if "dates TBC note" exceeds length limit' do
-      production.dates_tbc_note = 'a' * (LENGTH_MAX + 1)
+      production.dates_tbc_note = 'a' * (DATES_TBC_NOTE_MAX_LENGTH + 1)
       expect(production.valid?).to be false
     end
 
     it 'valid if "dates TBC note" does not exceed length limit' do
-      production.dates_tbc_note = 'a' * LENGTH_MAX
+      production.dates_tbc_note = 'a' * DATES_TBC_NOTE_MAX_LENGTH
       expect(production.valid?).to be true
     end
 
