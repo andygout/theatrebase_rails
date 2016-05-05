@@ -132,8 +132,13 @@ a {
 }
 
 .table {
-  td:not(:last-child) {
+  td {
+    vertical-align: top;
     padding: 5px 20px 5px 0;
+  }
+
+  td:last-child {
+    padding-right: 5px;
   }
 
   &.content-table,
@@ -145,7 +150,7 @@ a {
 
   &.dates-table,
   &.dates-tbc-table {
-    margin-left: 6px;
+    margin: 0 6px;
   }
 
   &.listing {
@@ -154,8 +159,8 @@ a {
     width: 100%;
 
     & tr {
-      background-color: #D0D0D0;
       padding-left: 5px;
+      background-color: #D0D0D0;
 
       &:last-child td {
         border-bottom: 2px solid $border-color;
@@ -170,9 +175,9 @@ a {
       }
 
       & th {
-        background-color: #D0D0D0;
         padding: 5px 20px 5px 5px;
         border-top: 2px solid $border-color;
+        background-color: #D0D0D0;
 
         &:first-child {
           border-left: 2px solid $border-color;
@@ -180,9 +185,9 @@ a {
         }
 
         &:last-child {
+          padding-right: 5px;
           border-right: 2px solid $border-color;
           border-top-right-radius: 5px;
-          padding-right: 5px;
         }
       }
 
