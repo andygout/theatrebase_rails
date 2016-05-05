@@ -52,7 +52,7 @@
 
   <div class='form-item'>
     <%= production.label :press_date_wording, class: 'label' %>
-    <%= production.text_field :press_date_wording, class: 'input text-input', maxlength: 255 %>
+    <%= production.text_field :press_date_wording, class: 'input text-input', maxlength: 25 %>
     <%= render partial: 'partials/error', collection: @production.errors[:press_date_wording] %>
   </div>
 

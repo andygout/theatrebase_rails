@@ -8,6 +8,7 @@ describe Production, type: :model do
 
   let(:production) { build :production }
   LENGTH_MAX = 255
+  PRESS_DATE_WORDING_MAX_LENGTH = 25
   DATES_TBC_NOTE_MAX_LENGTH = 15
 
   context 'valid details' do
@@ -119,12 +120,12 @@ describe Production, type: :model do
 
   context 'date text fields validation' do
     it 'invalid if "press date wording" exceeds length limit' do
-      production.press_date_wording = 'a' * (LENGTH_MAX + 1)
+      production.press_date_wording = 'a' * (PRESS_DATE_WORDING_MAX_LENGTH + 1)
       expect(production.valid?).to be false
     end
 
     it 'valid if "press date wording" does not exceed length limit' do
-      production.press_date_wording = 'a' * LENGTH_MAX
+      production.press_date_wording = 'a' * PRESS_DATE_WORDING_MAX_LENGTH
       expect(production.valid?).to be true
     end
 
