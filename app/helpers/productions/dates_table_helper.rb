@@ -11,13 +11,13 @@ module Productions::DatesTableHelper
     dates_tbc?(p) || single_date_tbc?(p)
   end
 
-  def open_first_date? p
+  def opening_first_date? p
     p.first_date == p.press_date
   end
 
   def get_first_date p
     wording = p.press_date ?
-      !open_first_date?(p) ? 'First preview:' : 'Opening performance:' :
+      !opening_first_date?(p) ? 'First preview:' : 'Opening performance:' :
       p.press_date_tbc ? 'First preview:' : 'First performance:'
     [{ content: wording }, { content: date_table_format(p.first_date) }]
   end
@@ -32,7 +32,7 @@ module Productions::DatesTableHelper
       "#{p.press_date_wording}:"
 
     !p.press_date_tbc ?
-      open_first_date?(p) ? nil : [{ content: wording }, { content: date_value }] :
+      opening_first_date?(p) ? nil : [{ content: wording }, { content: date_value }] :
       [{ content: wording }, { content: 'TBC', class: 'emphasis-text' }]
   end
 
