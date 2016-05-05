@@ -46,7 +46,7 @@ module Users::ViewsComponentsHelper
 
     colwidth_values = [{ width: 60 }, { width: 20 }, { width: 20 }]
 
-    @user_index_table = bookend_table_tags(
+    bookend_table_tags(
         compile_rows(row_values, header_values, colwidth_values),
         'listing'
       ).html_safe
