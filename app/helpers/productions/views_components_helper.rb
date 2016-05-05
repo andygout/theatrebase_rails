@@ -13,7 +13,7 @@ module Productions::ViewsComponentsHelper
       ]
     end
 
-    header_values = [{ content: 'Productions' }]
+    header_values = [{ content: 'Productions', colspan: 2 }]
 
     colwidth_values = [{ width: 80 }, { width: 20 }]
 
