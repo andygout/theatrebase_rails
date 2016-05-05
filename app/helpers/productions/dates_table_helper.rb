@@ -1,4 +1,4 @@
-module Productions::DatesShowHelper
+module Productions::DatesTableHelper
 
   include Productions::DatesHelper
   include Shared::MarkupHelper
@@ -19,13 +19,13 @@ module Productions::DatesShowHelper
     wording = p.press_date ?
       !open_first_date?(p) ? 'First preview:' : 'Opening performance:' :
       p.press_date_tbc ? 'First preview:' : 'First performance:'
-    [{ content: wording }, { content: date_format(p.first_date) }]
+    [{ content: wording }, { content: date_table_format(p.first_date) }]
   end
 
   def get_press_date p
     date_value = p.second_press_date ?
-      "#{date_format(p.press_date)} and #{date_format(p.second_press_date)}" :
-      date_format(p.press_date)
+      "#{date_table_format(p.press_date)} and #{date_table_format(p.second_press_date)}" :
+      date_table_format(p.press_date)
 
     wording = !p.press_date_wording.present? ?
       "Press performance#{:s if p.second_press_date}:" :
@@ -38,12 +38,12 @@ module Productions::DatesShowHelper
 
   def get_last_date p
     return [
-        { content: 'Booking until:' }, { content: date_format(p.last_date), class: 'emphasis-text' }
+        { content: 'Booking until:' }, { content: date_table_format(p.last_date), class: 'emphasis-text' }
       ] if booking_until?(p)
     return [
         { content: 'Last performance:' }, { content: 'TBC', class: 'emphasis-text' }
       ] if last_date_tbc?(p)
-    [{ content: 'Last performance:' }, { content: date_format(p.last_date) }]
+    [{ content: 'Last performance:' }, { content: date_table_format(p.last_date) }]
   end
 
   def dates_table p
@@ -58,7 +58,7 @@ module Productions::DatesShowHelper
       booking_until_class = booking_until?(p) ? 'emphasis-text' : nil
       row_values = [[
           { content: "Performs#{booking_until_text}:" },
-          { content: date_format(p.first_date), class: booking_until_class }
+          { content: date_table_format(p.first_date), class: booking_until_class }
         ]]
       return bookend_table_tags(compile_rows(row_values), 'dates-table')
     end

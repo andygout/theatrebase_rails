@@ -4,7 +4,7 @@ class ProductionsController < ApplicationController
   include Shared::ViewsComponentsHelper
   include Shared::FormsHelper
   include Shared::ParamsHelper
-  include Productions::DatesShowHelper
+  include Productions::DatesTableHelper
 
   before_action :logged_in_user,        only: [:new, :create, :edit, :update, :destroy]
   before_action :not_suspended_user,    only: [:new, :create, :edit, :update, :destroy]
