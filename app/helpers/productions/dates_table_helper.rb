@@ -47,7 +47,7 @@ module Productions::DatesTableHelper
   end
 
   def dates_table p
-    if dates_tbc?(p) || single_date_tbc?(p)
+    if dates_single_date_tbc?(p)
       dates_tbc_note = ": #{p.dates_tbc_note}" if p.dates_tbc_note && dates_single_date_tbc?(p)
       dates_tbc_row = "<tr><td class='emphasis-text'>TBC#{dates_tbc_note}</td></tr>" if dates_single_date_tbc?(p)
       return bookend_table_tags(dates_tbc_row, 'dates-tbc-table')
