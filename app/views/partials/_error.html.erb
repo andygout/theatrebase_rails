@@ -1,1 +1,1 @@
-<%= content_tag(:li, error.capitalize, class: 'field_with_errors') unless error == 'no_display' %>
+<%= content_tag(:li, error.sub(/./, &:capitalize), class: 'field_with_errors') unless error == 'no_display' %>
