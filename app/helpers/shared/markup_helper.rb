@@ -1,33 +1,32 @@
 module Shared::MarkupHelper
 
+  def join_arr array
+    array.join('').to_s
+  end
+
   def link_markup path, id, text
     "<a href='/#{path}/#{id}'>#{text}</a>"
   end
 
-  def apply_class class_string
-    " class='#{class_string}'" if class_string
-  end
-
-  def add_colspan cols
-    cols ? " colspan='#{cols}'" : ''
-  end
-
-  def bookend_tags element, markup, element_class=nil
+  def bookend_tags element, markup, element_class=nil, colspan=nil
     element_class = element_class ? " class='#{element_class}'" : ''
-    "<#{element}#{element_class}>#{markup}</#{element}>"
+    colspan = colspan ? " colspan='#{colspan}'" : ''
+    "<#{element}#{element_class}#{colspan}>#{markup}</#{element}>"
   end
 
   def compile_header_markup header_values
-    "<tr>" + header_values.map { |v| "<th#{add_colspan(v[:colspan])}>#{v[:content]}</th>" }.join('').to_s + "</tr>"
+    header_markup = join_arr(header_values.map { |v| bookend_tags('th', v[:content], nil, v[:colspan]) })
+    bookend_tags('tr', header_markup)
   end
 
   def compile_colwidth_markup colwidth_values
-    colwidth_values.map { |v| "<col width=#{v[:width]}%>" }.join('').to_s
+    join_arr(colwidth_values.map { |v| "<col width=#{v[:width]}%>" })
   end
 
   def compile_rows row_values, header_values=nil, colwidth_values=nil
     rows_markup = row_values.map do |row_value|
-      "<tr>" + row_value.map { |v| "<td#{apply_class(v[:class])}>#{v[:content]}</td>" }.join('').to_s + "</tr>"
+      row_markup = join_arr(row_value.map { |v| bookend_tags('td', v[:content], v[:class]) })
+      bookend_tags('tr', row_markup)
     end
     header_markup = header_values ? compile_header_markup(header_values) : ''
     coldwidth_markup = colwidth_values ? compile_colwidth_markup(colwidth_values) : ''
