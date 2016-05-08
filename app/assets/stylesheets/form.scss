@@ -1,0 +1,75 @@
+.button_to {
+  display: inline;
+}
+
+.button {
+  margin-top: 60px;
+  height: 22px;
+  width: 170px;
+  background-color: $button-bg-color;
+  &:focus {
+    outline:0;
+  }
+}
+
+.form {
+  margin-top: 20px;
+  padding: 5px 10px 20px;
+  background-color: $form-bg-color;
+  border: 2px solid $border-color;
+  border-radius: 5px;
+  .button {
+    margin-top: 40px;
+  }
+}
+
+.form-item {
+  margin-top: 10px;
+}
+
+.label {
+  display: table-cell;
+  padding-left: 6px;
+  font-weight: bold;
+}
+
+.mandatory:after {
+  content: ' *'
+}
+
+.input {
+  display: block;
+}
+
+.text-input {
+  width: 872px;
+}
+
+.date-input {
+  width: 125px;
+}
+
+.checkbox div.field_with_errors {
+  display: inline;
+}
+
+.field_with_errors {
+  color: $negative-color;
+  list-style-position: inside;
+  .input {
+    border-color: $negative-color;
+  }
+}
+
+.head-alert {
+  margin: 0 6px;
+  height: 15px;
+}
+
+.alert-success {
+  color: $positive-color;
+}
+
+.alert-error {
+  color: $negative-color;
+}

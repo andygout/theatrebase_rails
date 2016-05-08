@@ -1,10 +1,10 @@
 class Production < ActiveRecord::Base
 
-  include Validations::Production
-  include Associations::Production
-  include Shared::ParamsHelper
   include ActiveModel::Validations
   include Productions::ValidationsHelper
+  include Shared::ParamsHelper
+  include Associations::Production
+  include Validations::Production
 
   before_validation :strip_whitespace
 

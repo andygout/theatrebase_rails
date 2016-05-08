@@ -24,10 +24,12 @@ module Validations::Production
     validate :previews_only_absence, if: :press_date
 
     validates :press_date_wording,
-      length: { maximum: 255 }
+      length: { maximum: 25 }
 
     validates :dates_tbc_note,
-      length: { maximum: 255 }
+      length: { maximum: 15 }
+
+    validate :dates_tbc_note_valid_presence, if: :dates_tbc_note
 
     validates :dates_note,
       length: { maximum: 255 }

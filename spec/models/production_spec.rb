@@ -7,7 +7,9 @@ describe Production, type: :model do
   end
 
   let(:production) { build :production }
-  LENGTH_MAX = 255
+  MAX_LENGTH = 255
+  PRESS_DATE_WORDING_MAX_LENGTH = 25
+  DATES_TBC_NOTE_MAX_LENGTH = 15
 
   context 'valid details' do
     it 'should be valid' do
@@ -22,12 +24,12 @@ describe Production, type: :model do
     end
 
     it 'invalid if title exceeds length limit' do
-      production.title = 'a' * (LENGTH_MAX + 1)
+      production.title = 'a' * (MAX_LENGTH + 1)
       expect(production.valid?).to be false
     end
 
     it 'valid if title present and does not exceed length limit' do
-      production.title = 'a' * LENGTH_MAX
+      production.title = 'a' * MAX_LENGTH
       expect(production.valid?).to be true
     end
   end
@@ -118,32 +120,40 @@ describe Production, type: :model do
 
   context 'date text fields validation' do
     it 'invalid if "press date wording" exceeds length limit' do
-      production.press_date_wording = 'a' * (LENGTH_MAX + 1)
+      production.press_date_wording = 'a' * (PRESS_DATE_WORDING_MAX_LENGTH + 1)
       expect(production.valid?).to be false
     end
 
     it 'valid if "press date wording" does not exceed length limit' do
-      production.press_date_wording = 'a' * LENGTH_MAX
+      production.press_date_wording = 'a' * PRESS_DATE_WORDING_MAX_LENGTH
       expect(production.valid?).to be true
     end
 
+    it 'invalid if "dates TBC note" has content without "dates TBC" being set' do
+      production.dates_info = 0
+      production.dates_tbc_note = 'a' * (DATES_TBC_NOTE_MAX_LENGTH)
+      expect(production.valid?).to be false
+    end
+
     it 'invalid if "dates TBC note" exceeds length limit' do
-      production.dates_tbc_note = 'a' * (LENGTH_MAX + 1)
+      production.dates_info = 3
+      production.dates_tbc_note = 'a' * (DATES_TBC_NOTE_MAX_LENGTH + 1)
       expect(production.valid?).to be false
     end
 
     it 'valid if "dates TBC note" does not exceed length limit' do
-      production.dates_tbc_note = 'a' * LENGTH_MAX
+      production.dates_info = 3
+      production.dates_tbc_note = 'a' * DATES_TBC_NOTE_MAX_LENGTH
       expect(production.valid?).to be true
     end
 
     it 'invalid if "dates note" exceeds length limit' do
-      production.dates_note = 'a' * (LENGTH_MAX + 1)
+      production.dates_note = 'a' * (MAX_LENGTH + 1)
       expect(production.valid?).to be false
     end
 
     it 'valid if "dates note" does not exceed length limit' do
-      production.dates_note = 'a' * LENGTH_MAX
+      production.dates_note = 'a' * MAX_LENGTH
       expect(production.valid?).to be true
     end
   end

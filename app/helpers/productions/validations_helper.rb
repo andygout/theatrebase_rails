@@ -34,6 +34,12 @@ module Productions::ValidationsHelper
     end
   end
 
+  def dates_tbc_note_valid_presence
+    if dates_info != 3
+      errors.add(:dates_tbc_note, 'Must be left empty unless Dates TBC has been checked')
+    end
+  end
+
   def second_press_date_valid
     if !press_date
       errors.add(:second_press_date, 'Must be left empty unless a valid press date is given')

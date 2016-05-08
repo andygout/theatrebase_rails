@@ -20,15 +20,19 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  errors:
+  activerecord:
     attributes:
-      first_date:
-        blank: '%{attribute} must be in a valid format'
-      last_date:
-        blank: '%{attribute} must be in a valid format'
-    messages:
-      blank: "%{attribute} cannot be blank"
-      too_short: "%{attribute} is too short (minimum length: %{count} characters)"
-      too_long: "%{attribute} is too long (maximum length: %{count} characters)"
-      invalid: "%{attribute} must be in a valid format"
-      taken: "%{attribute} is already taken"
+      production:
+        dates_tbc_note: "Dates TBC"
+    errors:
+      attributes:
+        first_date:
+          blank: '%{attribute} must be in a valid format'
+        last_date:
+          blank: '%{attribute} must be in a valid format'
+      messages:
+        blank: "%{attribute} cannot be blank"
+        too_short: "%{attribute} is too short (minimum length: %{count} characters)"
+        too_long: "%{attribute} is too long (maximum length: %{count} characters)"
+        invalid: "%{attribute} must be in a valid format"
+        taken: "%{attribute} is already taken"

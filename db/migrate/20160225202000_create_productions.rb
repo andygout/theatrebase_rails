@@ -9,7 +9,7 @@ class CreateProductions < ActiveRecord::Migration
       t.date        :last_date
       t.boolean     :press_date_tbc
       t.boolean     :previews_only
-      t.integer     :dates_info
+      t.integer     :dates_info, limit: 2
       t.string      :press_date_wording
       t.string      :dates_tbc_note
       t.string      :dates_note

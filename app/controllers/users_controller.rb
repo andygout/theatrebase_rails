@@ -2,8 +2,8 @@ class UsersController < ApplicationController
 
   include UsersHelper
   include Users::ViewsComponentsHelper
-  include Shared::ViewsComponentsHelper
   include Shared::FormsHelper
+  include Shared::ViewsComponentsHelper
 
   before_action :get_user,              only: [:new, :create, :edit, :update, :destroy, :show]
   before_action :logged_in_user
@@ -62,7 +62,7 @@ class UsersController < ApplicationController
     @users = current_user.super_admin ?
       User.non_admin(current_user, SuperAdmin).order(:id).paginate(page: params[:page]) :
       User.non_admin(current_user, SuperAdmin).non_admin(current_user, Admin).order(:id).paginate(page: params[:page])
-    get_user_index_table
+    @user_index_table = get_user_index_table
   end
 
   private

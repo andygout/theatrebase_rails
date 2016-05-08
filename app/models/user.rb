@@ -1,8 +1,8 @@
 class User < ActiveRecord::Base
 
-  include Validations::User
-  include Associations::User
   include Shared::ParamsHelper
+  include Associations::User
+  include Validations::User
 
   attr_accessor :remember_token, :activation_token, :reset_token
 

@@ -26,7 +26,7 @@ module Productions::DatesHelper
     end
   end
 
-  def date_format date_value
+  def date_table_format date_value
     date_string(date_value, '%a, %d %b %Y')
   end
 

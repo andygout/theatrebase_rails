@@ -20,9 +20,9 @@ describe User, type: :model do
   end
 
   let(:user) { build :user }
-  TEXT_LENGTH_MAX = 255
-  PASSWORD_LENGTH_MIN = 6
-  PASSWORD_LENGTH_MAX = 255
+  TEXT_MAX_LENGTH = 255
+  PASSWORD_MIN_LENGTH = 6
+  PASSWORD_MAX_LENGTH = 255
 
   context 'valid details' do
     it 'should be valid' do
@@ -37,7 +37,7 @@ describe User, type: :model do
     end
 
     it 'invalid if name exceeds length limit' do
-      user.name = 'a' * (TEXT_LENGTH_MAX + 1)
+      user.name = 'a' * (TEXT_MAX_LENGTH + 1)
       expect(user.valid?).to be false
     end
   end
@@ -49,7 +49,7 @@ describe User, type: :model do
     end
 
     it 'invalid if email exceeds length limit' do
-      user.email = 'a' * (TEXT_LENGTH_MAX - 11) + '@example.com'
+      user.email = 'a' * (TEXT_MAX_LENGTH - 11) + '@example.com'
       expect(user.valid?).to be false
     end
 
@@ -86,17 +86,17 @@ describe User, type: :model do
 
   context 'password validation' do
     it 'invalid if less than minimum length' do
-      user.password = user.password_confirmation = 'a' * (PASSWORD_LENGTH_MIN - 1)
+      user.password = user.password_confirmation = 'a' * (PASSWORD_MIN_LENGTH - 1)
       expect(user.valid?).to be false
     end
 
     it 'invalid if comprised solely of blank spaces' do
-      user.password = user.password_confirmation = ' ' * PASSWORD_LENGTH_MIN
+      user.password = user.password_confirmation = ' ' * PASSWORD_MIN_LENGTH
       expect(user.valid?).to be false
     end
 
     it 'invalid if exceeds length limit' do
-      user.password = user.password_confirmation = 'a' * (PASSWORD_LENGTH_MAX + 1)
+      user.password = user.password_confirmation = 'a' * (PASSWORD_MAX_LENGTH + 1)
       expect(user.valid?).to be false
     end
 
