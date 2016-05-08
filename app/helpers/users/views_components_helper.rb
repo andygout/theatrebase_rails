@@ -44,7 +44,7 @@ module Users::ViewsComponentsHelper
     header_values = [{ content: 'User' }, { content: 'Admin status' }, { content: 'Suspension status' }]
     colwidth_values = [{ width: 60 }, { width: 20 }, { width: 20 }]
     rows_markup = compile_rows(row_values, header_values, colwidth_values)
-    bookend_tags('table', rows_markup, 'table listing').html_safe
+    bookend_tags('table', rows_markup, 'listing').html_safe
   end
 
 end

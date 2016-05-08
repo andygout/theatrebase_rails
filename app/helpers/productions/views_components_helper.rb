@@ -17,7 +17,7 @@ module Productions::ViewsComponentsHelper
 
     colwidth_values = [{ width: 80 }, { width: 20 }]
 
-    bookend_tags('table', compile_rows(row_values, header_values, colwidth_values), 'table listing').html_safe
+    bookend_tags('table', compile_rows(row_values, header_values, colwidth_values), 'listing').html_safe
   end
 
 end
