@@ -41,12 +41,10 @@ module Users::ViewsComponentsHelper
         { content: suspension_status_wording(user), class: suspension_status_class(user) }
       ]
     end
-
     header_values = [{ content: 'User' }, { content: 'Admin status' }, { content: 'Suspension status' }]
-
     colwidth_values = [{ width: 60 }, { width: 20 }, { width: 20 }]
-
-    bookend_table_tags(compile_rows(row_values, header_values, colwidth_values), 'listing').html_safe
+    rows_markup = compile_rows(row_values, header_values, colwidth_values)
+    bookend_tags('table', rows_markup, 'table listing').html_safe
   end
 
 end
