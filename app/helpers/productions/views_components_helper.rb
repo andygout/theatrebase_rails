@@ -12,12 +12,10 @@ module Productions::ViewsComponentsHelper
         { content: listing_dates(production) }
       ]
     end
-
     header_values = [{ content: 'Productions', colspan: 2 }]
-
     colwidth_values = [{ width: 80 }, { width: 20 }]
-
-    bookend_tags('table', compile_rows(row_values, header_values, colwidth_values), 'listing').html_safe
+    rows_markup = compile_rows(row_values, header_values, colwidth_values)
+    bookend_tags('table', rows_markup, 'listing').html_safe
   end
 
 end
