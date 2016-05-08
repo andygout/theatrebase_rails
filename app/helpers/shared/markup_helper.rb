@@ -24,13 +24,13 @@ module Shared::MarkupHelper
   end
 
   def compile_rows row_values, header_values=nil, colwidth_values=nil
-    rows_markup = row_values.map do |row_value|
-      row_markup = join_arr(row_value.map { |v| bookend_tags('td', v[:content], v[:class]) })
-      bookend_tags('tr', row_markup)
+    rows_markup = row_values.map do |data_cell_values|
+      data_cells_markup = join_arr(data_cell_values.map { |v| bookend_tags('td', v[:content], v[:class]) })
+      bookend_tags('tr', data_cells_markup)
     end
     header_markup = header_values ? compile_header_markup(header_values) : ''
     coldwidth_markup = colwidth_values ? compile_colwidth_markup(colwidth_values) : ''
-    rows_markup = coldwidth_markup + header_markup + rows_markup.join('')
+    coldwidth_markup + header_markup + rows_markup.join('')
   end
 
   def create_content_container row_values
