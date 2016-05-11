@@ -66,6 +66,7 @@ GEM
       thor (~> 0.19.1)
     database_cleaner (1.4.1)
     debug_inspector (0.0.2)
+    diacritics (0.0.8)
     diff-lcs (1.2.5)
     docile (1.1.5)
     domain_name (0.5.24)
@@ -235,6 +236,7 @@ DEPENDENCIES
   coffee-rails (~> 4.1.0)
   coveralls
   database_cleaner
+  diacritics (~> 0.0.8)
   factory_girl_rails
   faker
   jbuilder (~> 2.0)
