@@ -4,6 +4,7 @@ class CreateProductions < ActiveRecord::Migration
     create_table :productions do |t|
       t.string      :title
       t.string      :alphabetise
+      t.string      :url, index: true
       t.date        :first_date
       t.date        :press_date
       t.date        :last_date

@@ -58,12 +58,14 @@ class ProductionsController < ApplicationController
 
     def production_params
       params[:production][:alphabetise] = extract_alphabetise_value(params[:production][:title])
+      params[:production][:url] = generate_url(params[:production][:title])
       nullify_unused_params
 
       params
         .require(:production)
         .permit(:title,
                 :alphabetise,
+                :url,
                 :first_date,
                 :press_date,
                 :last_date,
