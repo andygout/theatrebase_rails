@@ -4,7 +4,8 @@ module Validations::Production
   included do
     validates :title,
       presence: true,
-      length: { maximum: 255 }
+      length: { maximum: 255 },
+      generate_url: true
 
     validates :first_date,
       presence: true

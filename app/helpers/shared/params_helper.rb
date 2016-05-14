@@ -12,4 +12,8 @@ module Shared::ParamsHelper
     string[/^(A |An |The |\W+)(\S+.*)$/i, 2]
   end
 
+  def generate_url string
+    string.permanent
+  end
+
 end
