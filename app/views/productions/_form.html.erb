@@ -1,6 +1,9 @@
 <%= @created_updated_info %>
 
-<%= form_for @production, html: { class: 'form' } do |production| %>
+<%= form_for @production,
+    url: (@production.new_record? ? nil : production_path(@production.id, url: @production.url)),
+    html: { class: 'form' } do |production| %>
+
   <%= render 'partials/error_count', count: @production.errors.count %>
 
   <div class='form-item'>

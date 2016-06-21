@@ -7,6 +7,14 @@
 <%= @dates %>
 
 <% if logged_in? %>
-  <%= button_to 'Edit Production', edit_production_path(@production), method: :get, class: 'button' %>
-  <%= button_to 'Delete Production', @production, method: :delete, class: 'button', data: { confirm: 'Really delete this production?' } %>
+  <%= button_to 'Edit Production',
+      edit_production_path(@production.id, @production.url),
+      method: :get,
+      class: 'button' %>
+
+  <%= button_to 'Delete Production',
+      production_path(@production.id, @production.url),
+      method: :delete,
+      class: 'button',
+      data: { confirm: 'Really delete this production?' } %>
 <% end %>

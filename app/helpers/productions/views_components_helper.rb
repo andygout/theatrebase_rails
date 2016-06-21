@@ -8,7 +8,7 @@ module Productions::ViewsComponentsHelper
 
     row_values = @productions.map do |production|
       [
-        { content: "#{link_markup('productions', production.id, production.title)}" },
+        { content: link_markup('productions', "#{production.id}/#{production.url}", production.title) },
         { content: listing_dates(production) }
       ]
     end

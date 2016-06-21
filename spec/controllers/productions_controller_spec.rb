@@ -76,19 +76,22 @@ describe ProductionsController, type: :controller do
     it 'as super-admin: succeed and redirect to production display page' do
       session[:user_id] = super_admin_user.id
       expect { post :create, production: production_params }.to change { Production.count }.by 1
-      expect(response).to redirect_to Production.last
+      production = Production.last
+      expect(response).to redirect_to production_path(production.id, production.url)
     end
 
     it 'as admin: succeed and redirect to production display page' do
       session[:user_id] = admin_user.id
       expect { post :create, production: production_params }.to change { Production.count }.by 1
-      expect(response).to redirect_to Production.last
+      production = Production.last
+      expect(response).to redirect_to production_path(production.id, production.url)
     end
 
     it 'as non-admin: succeed and redirect to production display page' do
       session[:user_id] = user.id
       expect { post :create, production: production_params }.to change { Production.count }.by 1
-      expect(response).to redirect_to Production.last
+      production = Production.last
+      expect(response).to redirect_to production_path(production.id, production.url)
     end
 
     it 'as suspended super-admin: fail and redirect to home page' do
@@ -128,42 +131,42 @@ describe ProductionsController, type: :controller do
   context 'attempt edit production' do
     it 'as super-admin: redirect to production edit form' do
       session[:user_id] = super_admin_user.id
-      get :edit, id: production
+      get :edit, id: production.id, url: production.url
       expect(response).to render_template :edit
     end
 
     it 'as admin: redirect to production edit form' do
       session[:user_id] = admin_user.id
-      get :edit, id: production
+      get :edit, id: production.id, url: production.url
       expect(response).to render_template :edit
     end
 
     it 'as non-admin: redirect to production edit form' do
       session[:user_id] = user.id
-      get :edit, id: production
+      get :edit, id: production.id, url: production.url
       expect(response).to render_template :edit
     end
 
     it 'as suspended super-admin: fail and redirect to home page' do
       session[:user_id] = suspended_super_admin_user.id
-      get :edit, id: production
+      get :edit, id: production.id, url: production.url
       expect(response).to redirect_to root_path
     end
 
     it 'as suspended admin: fail and redirect to home page' do
       session[:user_id] = suspended_admin_user.id
-      get :edit, id: production
+      get :edit, id: production.id, url: production.url
       expect(response).to redirect_to root_path
     end
 
     it 'as suspended non-admin: fail and redirect to home page' do
       session[:user_id] = suspended_user.id
-      get :edit, id: production
+      get :edit, id: production.id, url: production.url
       expect(response).to redirect_to root_path
     end
 
     it 'when not logged in: fail and redirect to log in page' do
-      get :edit, id: production
+      get :edit, id: production, url: production.url
       expect(response).to redirect_to log_in_path
     end
   end
@@ -171,55 +174,55 @@ describe ProductionsController, type: :controller do
   context 'attempt update production' do
     it 'as super-admin: succeed and redirect to production display page' do
       session[:user_id] = super_admin_user.id
-      patch :update, id: production, production: production_params
+      patch :update, id: production.id, url: production.url, production: production_params
       expect(add_production[:title]).to eq production.reload.title
-      expect(response).to redirect_to production
+      expect(response).to redirect_to production_path(production.id, production.url)
     end
 
     it 'as admin: succeed and redirect to production display page' do
       session[:user_id] = admin_user.id
-      patch :update, id: production, production: production_params
+      patch :update, id: production.id, url: production.url, production: production_params
       expect(add_production[:title]).to eq production.reload.title
-      expect(response).to redirect_to production
+      expect(response).to redirect_to production_path(production.id, production.url)
     end
 
     it 'as non-admin: succeed and redirect to production display page' do
       session[:user_id] = user.id
-      patch :update, id: production, production: production_params
+      patch :update, id: production.id, url: production.url, production: production_params
       expect(add_production[:title]).to eq production.reload.title
-      expect(response).to redirect_to production
+      expect(response).to redirect_to production_path(production.id, production.url)
     end
 
     it 'as suspended super-admin: fail and redirect to home page' do
       session[:user_id] = suspended_super_admin_user.id
-      patch :update, id: production, production: production_params
+      patch :update, id: production.id, url: production.url, production: production_params
       expect(production.title).to eq production.reload.title
       expect(response).to redirect_to root_path
     end
 
     it 'as suspended admin: fail and redirect to home page' do
       session[:user_id] = suspended_admin_user.id
-      patch :update, id: production, production: production_params
+      patch :update, id: production.id, url: production.url, production: production_params
       expect(production.title).to eq production.reload.title
       expect(response).to redirect_to root_path
     end
 
     it 'as suspended non-admin: fail and redirect to home page' do
       session[:user_id] = suspended_user.id
-      patch :update, id: production, production: production_params
+      patch :update, id: production.id, url: production.url, production: production_params
       expect(production.title).to eq production.reload.title
       expect(response).to redirect_to root_path
     end
 
     it 'when not logged in: fail and redirect to log in page' do
-      patch :update, id: production, production: production_params
+      patch :update, id: production.id, url: production.url, production: production_params
       expect(production.title).to eq production.reload.title
       expect(response).to redirect_to log_in_path
     end
 
     it 'permitted update will remove leading and trailing whitespace from string fields' do
       session[:user_id] = user.id
-      post :update, id: production, production: production_whitespace_params
+      post :update, id: production.id, url: production.url, production: production_whitespace_params
       production.reload
       expect(production.title).to eq add_production[:title]
       expect(production.press_date_wording).to eq add_production[:press_date_wording]
@@ -231,42 +234,42 @@ describe ProductionsController, type: :controller do
   context 'attempt delete production' do
     it 'as super-admin: succeed and redirect to home page' do
       session[:user_id] = super_admin_user.id
-      expect { delete :destroy, id: production }.to change { Production.count }.by -1
+      expect { delete :destroy, id: production.id, url: production.url }.to change { Production.count }.by -1
       expect(response).to redirect_to productions_path
     end
 
     it 'as admin: succeed and redirect to home page' do
       session[:user_id] = admin_user.id
-      expect { delete :destroy, id: production }.to change { Production.count }.by -1
+      expect { delete :destroy, id: production.id, url: production.url }.to change { Production.count }.by -1
       expect(response).to redirect_to productions_path
     end
 
     it 'as non-admin: succeed and redirect to home page' do
       session[:user_id] = user.id
-      expect { delete :destroy, id: production }.to change { Production.count }.by -1
+      expect { delete :destroy, id: production.id, url: production.url }.to change { Production.count }.by -1
       expect(response).to redirect_to productions_path
     end
 
     it 'as suspended super-admin: fail and redirect to home page' do
       session[:user_id] = suspended_super_admin_user.id
-      expect { delete :destroy, id: production }.to change { Production.count }.by 0
+      expect { delete :destroy, id: production.id, url: production.url }.to change { Production.count }.by 0
       expect(response).to redirect_to root_path
     end
 
     it 'as suspended admin: fail and redirect to home page' do
       session[:user_id] = suspended_admin_user.id
-      expect { delete :destroy, id: production }.to change { Production.count }.by 0
+      expect { delete :destroy, id: production.id, url: production.url }.to change { Production.count }.by 0
       expect(response).to redirect_to root_path
     end
 
     it 'as suspended non-admin: fail and redirect to home page' do
       session[:user_id] = suspended_user.id
-      expect { delete :destroy, id: production }.to change { Production.count }.by 0
+      expect { delete :destroy, id: production.id, url: production.url }.to change { Production.count }.by 0
       expect(response).to redirect_to root_path
     end
 
     it 'when not logged in: fail and redirect to log in page' do
-      expect { delete :destroy, id: production }.to change { Production.count }.by 0
+      expect { delete :destroy, id: production.id, url: production.url }.to change { Production.count }.by 0
       expect(response).to redirect_to log_in_path
     end
   end
@@ -274,42 +277,42 @@ describe ProductionsController, type: :controller do
   context 'attempt show production display page' do
     it 'as super-admin: render production display page' do
       session[:user_id] = super_admin_user.id
-      get :show, id: production
+      get :show, id: production.id, url: production.url
       expect(response).to render_template :show
     end
 
     it 'as admin: render production display page' do
       session[:user_id] = admin_user.id
-      get :show, id: production
+      get :show, id: production.id, url: production.url
       expect(response).to render_template :show
     end
 
     it 'as non-admin: render production display page' do
       session[:user_id] = user.id
-      get :show, id: production
+      get :show, id: production.id, url: production.url
       expect(response).to render_template :show
     end
 
     it 'as suspended super-admin: render production display page' do
       session[:user_id] = suspended_super_admin_user.id
-      get :show, id: production
+      get :show, id: production.id, url: production.url
       expect(response).to render_template :show
     end
 
     it 'as suspended admin: render production display page' do
       session[:user_id] = suspended_admin_user.id
-      get :show, id: production
+      get :show, id: production.id, url: production.url
       expect(response).to render_template :show
     end
 
     it 'as suspended non-admin: render production display page' do
       session[:user_id] = suspended_user.id
-      get :show, id: production
+      get :show, id: production.id, url: production.url
       expect(response).to render_template :show
     end
 
     it 'when not logged in: render production display page' do
-      get :show, id: production
+      get :show, id: production.id, url: production.url
       expect(response).to render_template :show
     end
   end
