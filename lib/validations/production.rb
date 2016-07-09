@@ -1,11 +1,13 @@
 module Validations::Production
   extend ActiveSupport::Concern
 
+  MAX_LENGTH = 255
+
   included do
     validates :title,
       presence: true,
-      length: { maximum: 255 },
-      generate_url: true
+      length: { maximum: MAX_LENGTH },
+      generate_url: { if: proc { |p| p.title.present? && p.title.length <= MAX_LENGTH } }
 
     validates :first_date,
       presence: true
@@ -33,7 +35,7 @@ module Validations::Production
     validate :dates_tbc_note_valid_presence, if: :dates_tbc_note
 
     validates :dates_note,
-      length: { maximum: 255 }
+      length: { maximum: MAX_LENGTH }
 
     validates :second_press_date,
       date_format: true, if: :press_date

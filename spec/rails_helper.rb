@@ -10,6 +10,7 @@ require 'capybara/poltergeist'
 require 'capybara/rails'
 require 'support/database_cleaner'
 require 'support/helper_methods'
+require 'with_model'
 
 Capybara.current_driver = :poltergeist
 Capybara.default_max_wait_time = 5
@@ -61,4 +62,5 @@ RSpec.configure do |config|
   # https://relishapp.com/rspec/rspec-rails/docs
   config.infer_spec_type_from_file_location!
   config.include ShowMeTheCookies, :type => :feature
+  config.extend WithModel
 end

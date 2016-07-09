@@ -35,6 +35,7 @@ gem 'bcrypt', '~> 3.1.7'
 gem 'diacritics', '~> 0.0.8'
 gem 'normalize-rails'
 gem 'will_paginate', '~> 3.0.7'
+gem 'with_model'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
