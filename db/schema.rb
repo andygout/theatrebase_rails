@@ -28,6 +28,7 @@ ActiveRecord::Schema.define(version: 20160225202000) do
   create_table "productions", force: :cascade do |t|
     t.string   "title"
     t.string   "alphabetise"
+    t.string   "url"
     t.date     "first_date"
     t.date     "press_date"
     t.date     "last_date"
@@ -46,6 +47,7 @@ ActiveRecord::Schema.define(version: 20160225202000) do
 
   add_index "productions", ["creator_id"], name: "index_productions_on_creator_id", using: :btree
   add_index "productions", ["updater_id"], name: "index_productions_on_updater_id", using: :btree
+  add_index "productions", ["url"], name: "index_productions_on_url", using: :btree
 
   create_table "super_admins", id: false, force: :cascade do |t|
     t.integer  "user_id"

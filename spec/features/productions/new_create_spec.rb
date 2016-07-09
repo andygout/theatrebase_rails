@@ -27,12 +27,12 @@ feature 'Production new/create' do
       expect(page).not_to have_css '.alert-error'
       expect(page).not_to have_css '.field_with_errors'
       expect(page).to have_content 'Hamlet'
-      @production = Production.last
-      expect(page).to have_current_path production_path(@production)
-      expect(@production.creator).to eq user
-      expect(@production.updater).to eq user
-      expect(user.created_productions).to include @production
-      expect(user.updated_productions).to include @production
+      production = Production.last
+      expect(page).to have_current_path production_path(production.id, production.url)
+      expect(production.creator).to eq user
+      expect(production.updater).to eq user
+      expect(user.created_productions).to include production
+      expect(user.updated_productions).to include production
     end
   end
 

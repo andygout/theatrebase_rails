@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-ENTRIES_PER_PAGE = 30
+ENTRIES_PER_PAGE ||= 30
 
 feature 'User index page' do
   context 'view user index page as permitted user' do

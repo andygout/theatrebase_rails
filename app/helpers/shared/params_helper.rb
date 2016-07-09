@@ -12,4 +12,14 @@ module Shared::ParamsHelper
     string[/^(A |An |The |\W+)(\S+.*)$/i, 2]
   end
 
+  def generate_url string
+    string
+      .gsub(/&/, 'and')               # convert '&' to 'and'
+      .gsub(/\'(d |ll |m |re |s |t |ve )|\'(d|ll|m|re|s|t|ve)$/, '\1\2')  # remove apostrophes from certain grammatical instances
+      .gsub(/[^\p{Alnum}*!+()]/, ' ') # convert non-alphanumeric characters (save some exceptions) to whitespace
+      .strip                          # remove leading and trailing whitespace
+      .permanent                      # apply diacritics permanent method
+      .gsub(/-+/, '-')                # convert double hyphens (resulting from double whitespace) to single hyphens
+  end
+
 end
