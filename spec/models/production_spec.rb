@@ -7,9 +7,9 @@ describe Production, type: :model do
   end
 
   let(:production) { build :production }
-  MAX_LENGTH = 255
-  PRESS_DATE_WORDING_MAX_LENGTH = 25
-  DATES_TBC_NOTE_MAX_LENGTH = 15
+  MAX_LENGTH ||= 255
+  PRESS_DATE_WORDING_MAX_LENGTH ||= 25
+  DATES_TBC_NOTE_MAX_LENGTH ||= 15
 
   context 'valid details' do
     it 'should be valid' do

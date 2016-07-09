@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-MAX_LENGTH = 255
+MAX_LENGTH ||= 255
 
 describe GenerateUrlValidator, type: :validator do
   context 'production URL validation' do
