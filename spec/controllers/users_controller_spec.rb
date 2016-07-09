@@ -166,10 +166,10 @@ describe UsersController, type: :controller do
   context 'attempt edit as super-admin user' do
     it 'edit unsuspended user types: various responses' do
       [
-        {user: super_admin_user, type: 'super_admin_user', response: render_template(:edit)},
-        {user: second_super_admin_user, type: 'second_super_admin_user', response: redirect_to(root_path)},
-        {user: admin_user, type: 'admin_user', response: redirect_to(root_path)},
-        {user: user, type: 'user', response: redirect_to(root_path)}
+        { user: super_admin_user, type: 'super_admin_user', response: render_template(:edit) },
+        { user: second_super_admin_user, type: 'second_super_admin_user', response: redirect_to(root_path) },
+        { user: admin_user, type: 'admin_user', response: redirect_to(root_path) },
+        { user: user, type: 'user', response: redirect_to(root_path) }
       ].each do |u|
         session[:user_id] = super_admin_user.id
         get :edit, id: u[:user]
@@ -179,9 +179,9 @@ describe UsersController, type: :controller do
 
     it 'edit suspended user types: fail and redirect to home page' do
       [
-        {user: suspended_super_admin_user, type: 'suspended_super_admin_user'},
-        {user: suspended_admin_user, type: 'suspended_admin_user'},
-        {user: suspended_user, type: 'suspended_user'}
+        { user: suspended_super_admin_user, type: 'suspended_super_admin_user' },
+        { user: suspended_admin_user, type: 'suspended_admin_user' },
+        { user: suspended_user, type: 'suspended_user' }
       ].each do |u|
         session[:user_id] = super_admin_user.id
         get :edit, id: u[:user]
@@ -193,9 +193,9 @@ describe UsersController, type: :controller do
   context 'attempt edit as suspended super-admin user' do
     it 'edit unsuspended user types: fail and redirect to home page' do
       [
-        {user: super_admin_user, type: 'super_admin_user'},
-        {user: admin_user, type: 'admin_user'},
-        {user: user, type: 'user'}
+        { user: super_admin_user, type: 'super_admin_user' },
+        { user: admin_user, type: 'admin_user' },
+        { user: user, type: 'user' }
       ].each do |u|
         session[:user_id] = suspended_super_admin_user.id
         get :edit, id: u[:user]
@@ -205,10 +205,10 @@ describe UsersController, type: :controller do
 
     it 'edit suspended user types: fail and redirect to home page' do
       [
-        {user: suspended_super_admin_user, type: 'suspended_super_admin_user'},
-        {user: second_suspended_super_admin_user, type: 'suspended_super_admin_user'},
-        {user: suspended_admin_user, type: 'suspended_admin_user'},
-        {user: suspended_user, type: 'suspended_user'}
+        { user: suspended_super_admin_user, type: 'suspended_super_admin_user' },
+        { user: second_suspended_super_admin_user, type: 'suspended_super_admin_user' },
+        { user: suspended_admin_user, type: 'suspended_admin_user' },
+        { user: suspended_user, type: 'suspended_user' }
       ].each do |u|
         session[:user_id] = suspended_super_admin_user.id
         get :edit, id: u[:user]
@@ -220,10 +220,10 @@ describe UsersController, type: :controller do
   context 'attempt edit as admin user' do
     it 'edit unsuspended user types: various responses' do
       [
-        {user: super_admin_user, type: 'super_admin_user', response: redirect_to(root_path)},
-        {user: admin_user, type: 'admin_user', response: render_template(:edit)},
-        {user: second_admin_user, type: 'second_admin_user', response: redirect_to(root_path)},
-        {user: user, type: 'user', response: redirect_to(root_path)}
+        { user: super_admin_user, type: 'super_admin_user', response: redirect_to(root_path) },
+        { user: admin_user, type: 'admin_user', response: render_template(:edit) },
+        { user: second_admin_user, type: 'second_admin_user', response: redirect_to(root_path) },
+        { user: user, type: 'user', response: redirect_to(root_path) }
       ].each do |u|
         session[:user_id] = admin_user.id
         get :edit, id: u[:user]
@@ -233,9 +233,9 @@ describe UsersController, type: :controller do
 
     it 'edit suspended user types: fail and redirect to home page' do
       [
-        {user: suspended_super_admin_user, type: 'suspended_super_admin_user'},
-        {user: suspended_admin_user, type: 'suspended_admin_user'},
-        {user: suspended_user, type: 'suspended_user'}
+        { user: suspended_super_admin_user, type: 'suspended_super_admin_user' },
+        { user: suspended_admin_user, type: 'suspended_admin_user' },
+        { user: suspended_user, type: 'suspended_user' }
       ].each do |u|
         session[:user_id] = admin_user.id
         get :edit, id: u[:user]
@@ -247,9 +247,9 @@ describe UsersController, type: :controller do
   context 'attempt edit as suspended admin user' do
     it 'edit suspended types: fail and redirect to home page' do
       [
-        {user: super_admin_user, type: 'super_admin_user'},
-        {user: admin_user, type: 'admin_user'},
-        {user: user, type: 'user'}
+        { user: super_admin_user, type: 'super_admin_user' },
+        { user: admin_user, type: 'admin_user' },
+        { user: user, type: 'user' }
       ].each do |u|
         session[:user_id] = suspended_admin_user.id
         get :edit, id: u[:user]
@@ -259,10 +259,10 @@ describe UsersController, type: :controller do
 
     it 'edit suspended user types: fail and redirect to home page' do
       [
-        {user: suspended_super_admin_user, type: 'suspended_super_admin_user'},
-        {user: suspended_admin_user, type: 'suspended_admin_user'},
-        {user: second_suspended_admin_user, type: 'second_suspended_admin_user'},
-        {user: suspended_user, type: 'suspended_user'}
+        { user: suspended_super_admin_user, type: 'suspended_super_admin_user' },
+        { user: suspended_admin_user, type: 'suspended_admin_user' },
+        { user: second_suspended_admin_user, type: 'second_suspended_admin_user' },
+        { user: suspended_user, type: 'suspended_user' }
       ].each do |u|
         session[:user_id] = suspended_admin_user.id
         get :edit, id: u[:user]
@@ -274,10 +274,10 @@ describe UsersController, type: :controller do
   context 'attempt edit as non-admin user' do
     it 'edit unsuspended user types: various responses' do
       [
-        {user: super_admin_user, type: 'super_admin_user', response: redirect_to(root_path)},
-        {user: admin_user, type: 'admin_user', response: redirect_to(root_path)},
-        {user: user, type: 'user', response: render_template(:edit)},
-        {user: second_user, type: 'second_user', response: redirect_to(root_path)}
+        { user: super_admin_user, type: 'super_admin_user', response: redirect_to(root_path) },
+        { user: admin_user, type: 'admin_user', response: redirect_to(root_path) },
+        { user: user, type: 'user', response: render_template(:edit) },
+        { user: second_user, type: 'second_user', response: redirect_to(root_path) }
       ].each do |u|
         session[:user_id] = user.id
         get :edit, id: u[:user]
@@ -287,9 +287,9 @@ describe UsersController, type: :controller do
 
     it 'edit suspended user types: fail and redirect to home page' do
       [
-        {user: suspended_super_admin_user, type: 'suspended_super_admin_user'},
-        {user: suspended_admin_user, type: 'suspended_admin_user'},
-        {user: suspended_user, type: 'suspended_user'}
+        { user: suspended_super_admin_user, type: 'suspended_super_admin_user' },
+        { user: suspended_admin_user, type: 'suspended_admin_user' },
+        { user: suspended_user, type: 'suspended_user' }
       ].each do |u|
         session[:user_id] = user.id
         get :edit, id: u[:user]
@@ -301,9 +301,9 @@ describe UsersController, type: :controller do
   context 'attempt edit as suspended non-admin user' do
     it 'edit unsuspended user types: fail and redirect to home page' do
       [
-        {user: super_admin_user, type: 'super_admin_user'},
-        {user: admin_user, type: 'admin_user'},
-        {user: user, type: 'user'}
+        { user: super_admin_user, type: 'super_admin_user' },
+        { user: admin_user, type: 'admin_user' },
+        { user: user, type: 'user' }
       ].each do |u|
         session[:user_id] = suspended_user.id
         get :edit, id: u[:user]
@@ -313,10 +313,10 @@ describe UsersController, type: :controller do
 
     it 'edit suspended user types: fail and redirect to home page' do
       [
-        {user: suspended_super_admin_user, type: 'suspended_super_admin_user'},
-        {user: suspended_admin_user, type: 'suspended_admin_user'},
-        {user: suspended_user, type: 'suspended_user'},
-        {user: second_suspended_user, type: 'second_suspended_user'}
+        { user: suspended_super_admin_user, type: 'suspended_super_admin_user' },
+        { user: suspended_admin_user, type: 'suspended_admin_user' },
+        { user: suspended_user, type: 'suspended_user' },
+        { user: second_suspended_user, type: 'second_suspended_user' }
       ].each do |u|
         session[:user_id] = suspended_user.id
         get :edit, id: u[:user]
@@ -335,10 +335,10 @@ describe UsersController, type: :controller do
   context 'attempt update as super-admin user' do
     it 'update unsuspended user types: various responses' do
       [
-        {user: super_admin_user, type: 'super_admin_user', name: edit_user[:name], response: super_admin_user},
-        {user: second_super_admin_user, type: 'second_super_admin_user', name: second_super_admin_user.name, response: root_path},
-        {user: admin_user, type: 'admin_user', name: admin_user.name, response: root_path},
-        {user: user, type: 'user', name: user.name, response: root_path}
+        { user: super_admin_user, type: 'super_admin_user', name: edit_user[:name], response: super_admin_user },
+        { user: second_super_admin_user, type: 'second_super_admin_user', name: second_super_admin_user.name, response: root_path },
+        { user: admin_user, type: 'admin_user', name: admin_user.name, response: root_path },
+        { user: user, type: 'user', name: user.name, response: root_path }
       ].each do |u|
         session[:user_id] = super_admin_user.id
         patch :update, id: u[:user], user: { name: edit_user[:name], email: edit_user[:email] }
@@ -349,9 +349,9 @@ describe UsersController, type: :controller do
 
     it 'update suspended user types: fail and redirect to home page' do
       [
-        {user: suspended_super_admin_user, type: 'suspended_super_admin_user'},
-        {user: suspended_admin_user, type: 'suspended_admin_user'},
-        {user: suspended_user, type: 'suspended_user'}
+        { user: suspended_super_admin_user, type: 'suspended_super_admin_user' },
+        { user: suspended_admin_user, type: 'suspended_admin_user' },
+        { user: suspended_user, type: 'suspended_user' }
       ].each do |u|
         session[:user_id] = super_admin_user.id
         patch :update, id: u[:user], user: { name: edit_user[:name], email: edit_user[:email] }
@@ -364,9 +364,9 @@ describe UsersController, type: :controller do
   context 'attempt update as suspended super-admin user' do
     it 'update unsuspended user types: fail and redirect to home page' do
       [
-        {user: super_admin_user, type: 'super_admin_user'},
-        {user: admin_user, type: 'admin_user'},
-        {user: user, type: 'user'}
+        { user: super_admin_user, type: 'super_admin_user' },
+        { user: admin_user, type: 'admin_user' },
+        { user: user, type: 'user' }
       ].each do |u|
         session[:user_id] = suspended_super_admin_user.id
         patch :update, id: u[:user], user: { name: edit_user[:name], email: edit_user[:email] }
@@ -377,10 +377,10 @@ describe UsersController, type: :controller do
 
     it 'update suspended user types: fail and redirect to home page' do
       [
-        {user: suspended_super_admin_user, type: 'suspended_super_admin_user'},
-        {user: second_suspended_super_admin_user, type: 'suspended_super_admin_user'},
-        {user: suspended_admin_user, type: 'suspended_admin_user'},
-        {user: suspended_user, type: 'suspended_user'}
+        { user: suspended_super_admin_user, type: 'suspended_super_admin_user' },
+        { user: second_suspended_super_admin_user, type: 'suspended_super_admin_user' },
+        { user: suspended_admin_user, type: 'suspended_admin_user' },
+        { user: suspended_user, type: 'suspended_user' }
       ].each do |u|
         session[:user_id] = suspended_super_admin_user.id
         patch :update, id: u[:user], user: { name: edit_user[:name], email: edit_user[:email] }
@@ -393,10 +393,10 @@ describe UsersController, type: :controller do
   context 'attempt update as admin user' do
     it 'update unsuspended user types: various responses' do
       [
-        {user: super_admin_user, type: 'super_admin_user', name: super_admin_user.name, response: root_path},
-        {user: admin_user, type: 'admin_user', name: edit_user[:name], response: admin_user},
-        {user: second_admin_user, type: 'second_admin_user', name: second_admin_user.name, response: root_path},
-        {user: user, type: 'user', name: user.name, response: root_path}
+        { user: super_admin_user, type: 'super_admin_user', name: super_admin_user.name, response: root_path },
+        { user: admin_user, type: 'admin_user', name: edit_user[:name], response: admin_user },
+        { user: second_admin_user, type: 'second_admin_user', name: second_admin_user.name, response: root_path },
+        { user: user, type: 'user', name: user.name, response: root_path }
       ].each do |u|
         session[:user_id] = admin_user.id
         patch :update, id: u[:user], user: { name: edit_user[:name], email: edit_user[:email] }
@@ -407,9 +407,9 @@ describe UsersController, type: :controller do
 
     it 'update suspended user types: fail and redirect to home page' do
       [
-        {user: suspended_super_admin_user, type: 'suspended_super_admin_user'},
-        {user: suspended_admin_user, type: 'suspended_admin_user'},
-        {user: suspended_user, type: 'suspended_user'}
+        { user: suspended_super_admin_user, type: 'suspended_super_admin_user' },
+        { user: suspended_admin_user, type: 'suspended_admin_user' },
+        { user: suspended_user, type: 'suspended_user' }
       ].each do |u|
         session[:user_id] = admin_user.id
         patch :update, id: u[:user], user: { name: edit_user[:name], email: edit_user[:email] }
@@ -422,9 +422,9 @@ describe UsersController, type: :controller do
   context 'attempt update as suspended admin user' do
     it 'update unsuspended user types: fail and redirect to home page' do
       [
-        {user: super_admin_user, type: 'super_admin_user'},
-        {user: admin_user, type: 'admin_user'},
-        {user: user, type: 'user'}
+        { user: super_admin_user, type: 'super_admin_user' },
+        { user: admin_user, type: 'admin_user' },
+        { user: user, type: 'user' }
       ].each do |u|
         session[:user_id] = suspended_admin_user.id
         patch :update, id: u[:user], user: { name: edit_user[:name], email: edit_user[:email] }
@@ -435,10 +435,10 @@ describe UsersController, type: :controller do
 
     it 'update suspended user types: fail and redirect to home page' do
       [
-        {user: suspended_super_admin_user, type: 'suspended_super_admin_user'},
-        {user: suspended_admin_user, type: 'suspended_admin_user'},
-        {user: second_suspended_admin_user, type: 'second_suspended_admin_user'},
-        {user: suspended_user, type: 'suspended_user'}
+        { user: suspended_super_admin_user, type: 'suspended_super_admin_user' },
+        { user: suspended_admin_user, type: 'suspended_admin_user' },
+        { user: second_suspended_admin_user, type: 'second_suspended_admin_user' },
+        { user: suspended_user, type: 'suspended_user' }
       ].each do |u|
         session[:user_id] = suspended_admin_user.id
         patch :update, id: u[:user], user: { name: edit_user[:name], email: edit_user[:email] }
@@ -451,10 +451,10 @@ describe UsersController, type: :controller do
   context 'attempt update as non-admin user' do
     it 'update unsuspended user types: various responses' do
       [
-        {user: super_admin_user, type: 'super_admin_user', name: super_admin_user.name, response: root_path},
-        {user: admin_user, type: 'admin_user', name: admin_user.name, response: root_path},
-        {user: user, type: 'user', name: edit_user[:name], response: user},
-        {user: second_user, type: 'second_user', name: second_user.name, response: root_path}
+        { user: super_admin_user, type: 'super_admin_user', name: super_admin_user.name, response: root_path },
+        { user: admin_user, type: 'admin_user', name: admin_user.name, response: root_path },
+        { user: user, type: 'user', name: edit_user[:name], response: user },
+        { user: second_user, type: 'second_user', name: second_user.name, response: root_path }
       ].each do |u|
         session[:user_id] = user.id
         patch :update, id: u[:user], user: { name: edit_user[:name], email: edit_user[:email] }
@@ -465,9 +465,9 @@ describe UsersController, type: :controller do
 
     it 'update suspended user types: fail and redirect to home page' do
       [
-        {user: suspended_super_admin_user, type: 'suspended_super_admin_user'},
-        {user: suspended_admin_user, type: 'suspended_admin_user'},
-        {user: suspended_user, type: 'suspended_user'}
+        { user: suspended_super_admin_user, type: 'suspended_super_admin_user' },
+        { user: suspended_admin_user, type: 'suspended_admin_user' },
+        { user: suspended_user, type: 'suspended_user' }
       ].each do |u|
         session[:user_id] = user.id
         patch :update, id: u[:user], user: { name: edit_user[:name], email: edit_user[:email] }
@@ -480,9 +480,9 @@ describe UsersController, type: :controller do
   context 'attempt update as suspended non-admin user' do
     it 'update different user types: fail and redirect to home page' do
       [
-        {user: super_admin_user, type: 'super_admin_user'},
-        {user: admin_user, type: 'admin_user'},
-        {user: user, type: 'user'}
+        { user: super_admin_user, type: 'super_admin_user' },
+        { user: admin_user, type: 'admin_user' },
+        { user: user, type: 'user' }
       ].each do |u|
         session[:user_id] = suspended_user.id
         patch :update, id: u[:user], user: { name: edit_user[:name], email: edit_user[:email] }
@@ -493,10 +493,10 @@ describe UsersController, type: :controller do
 
     it 'update suspended user types: fail and redirect to home page' do
       [
-        {user: suspended_super_admin_user, type: 'suspended_super_admin_user'},
-        {user: suspended_admin_user, type: 'suspended_admin_user'},
-        {user: suspended_user, type: 'suspended_user'},
-        {user: second_suspended_user, type: 'second_suspended_user'}
+        { user: suspended_super_admin_user, type: 'suspended_super_admin_user' },
+        { user: suspended_admin_user, type: 'suspended_admin_user' },
+        { user: suspended_user, type: 'suspended_user' },
+        { user: second_suspended_user, type: 'second_suspended_user' }
       ].each do |u|
         session[:user_id] = suspended_user.id
         patch :update, id: u[:user], user: { name: edit_user[:name], email: edit_user[:email] }
@@ -572,10 +572,10 @@ describe UsersController, type: :controller do
   context 'attempt delete as super-admin user' do
     it 'delete unsuspended user types: various responses' do
       [
-        {user: super_admin_user, type: 'super_admin_user', user_count: 0, admin_count: 0, response: root_path},
-        {user: second_super_admin_user, type: 'second_super_admin_user', user_count: 0, admin_count: 0, response: root_path},
-        {user: admin_user, type: 'admin_user', user_count: -1, admin_count: -1, response: users_path},
-        {user: user, type: 'user', user_count: -1, admin_count: 0, response: users_path}
+        { user: super_admin_user, type: 'super_admin_user', user_count: 0, admin_count: 0, response: root_path },
+        { user: second_super_admin_user, type: 'second_super_admin_user', user_count: 0, admin_count: 0, response: root_path },
+        { user: admin_user, type: 'admin_user', user_count: -1, admin_count: -1, response: users_path },
+        { user: user, type: 'user', user_count: -1, admin_count: 0, response: users_path }
       ].each do |u|
         session[:user_id] = super_admin_user.id
         expect { delete :destroy, id: u[:user] }
@@ -588,9 +588,9 @@ describe UsersController, type: :controller do
 
     it 'delete suspended user types: various responses' do
       [
-        {user: suspended_super_admin_user, type: 'suspended_super_admin_user', user_count: 0, admin_count: 0, response: root_path},
-        {user: suspended_admin_user, type: 'suspended_admin_user', user_count: -1, admin_count: -1, response: users_path},
-        {user: suspended_user, type: 'suspended_user', user_count: -1, admin_count: 0, response: users_path}
+        { user: suspended_super_admin_user, type: 'suspended_super_admin_user', user_count: 0, admin_count: 0, response: root_path },
+        { user: suspended_admin_user, type: 'suspended_admin_user', user_count: -1, admin_count: -1, response: users_path },
+        { user: suspended_user, type: 'suspended_user', user_count: -1, admin_count: 0, response: users_path }
       ].each do |u|
         session[:user_id] = super_admin_user.id
         expect { delete :destroy, id: u[:user] }
@@ -605,9 +605,9 @@ describe UsersController, type: :controller do
   context 'attempt delete as suspended super-admin user' do
     it 'delete unsuspended user types: fail and redirect to home page' do
       [
-        {user: super_admin_user, type: 'super_admin_user'},
-        {user: admin_user, type: 'admin_user'},
-        {user: user, type: 'user'}
+        { user: super_admin_user, type: 'super_admin_user' },
+        { user: admin_user, type: 'admin_user' },
+        { user: user, type: 'user' }
       ].each do |u|
         session[:user_id] = suspended_super_admin_user.id
         expect { delete :destroy, id: u[:user] }
@@ -620,10 +620,10 @@ describe UsersController, type: :controller do
 
     it 'delete suspended user types: fail and redirect to home page' do
       [
-        {user: suspended_super_admin_user, type: 'suspended_super_admin_user'},
-        {user: second_suspended_super_admin_user, type: 'second_suspended_super_admin_user'},
-        {user: suspended_admin_user, type: 'suspended_admin_user'},
-        {user: suspended_user, type: 'suspended_user'}
+        { user: suspended_super_admin_user, type: 'suspended_super_admin_user' },
+        { user: second_suspended_super_admin_user, type: 'second_suspended_super_admin_user' },
+        { user: suspended_admin_user, type: 'suspended_admin_user' },
+        { user: suspended_user, type: 'suspended_user' }
       ].each do |u|
         session[:user_id] = suspended_super_admin_user.id
         expect { delete :destroy, id: u[:user] }
@@ -638,10 +638,10 @@ describe UsersController, type: :controller do
   context 'attempt delete as admin user' do
     it 'delete unsuspended user types: various responses' do
       [
-        {user: super_admin_user, type: 'super_admin_user', user_count: 0, admin_count: 0, response: root_path},
-        {user: admin_user, type: 'admin_user', user_count: -1, admin_count: -1, response: root_path},
-        {user: second_admin_user, type: 'second_admin_user', user_count: 0, admin_count: 0, response: root_path},
-        {user: user, type: 'user', user_count: -1, admin_count: 0, response: users_path}
+        { user: super_admin_user, type: 'super_admin_user', user_count: 0, admin_count: 0, response: root_path },
+        { user: admin_user, type: 'admin_user', user_count: -1, admin_count: -1, response: root_path },
+        { user: second_admin_user, type: 'second_admin_user', user_count: 0, admin_count: 0, response: root_path },
+        { user: user, type: 'user', user_count: -1, admin_count: 0, response: users_path }
       ].each do |u|
         session[:user_id] = admin_user.id
         expect { delete :destroy, id: u[:user] }
@@ -654,9 +654,9 @@ describe UsersController, type: :controller do
 
     it 'delete suspended user types: various responses' do
       [
-        {user: suspended_super_admin_user, type: 'suspended_super_admin_user', user_count: 0, admin_count: 0, response: root_path},
-        {user: suspended_admin_user, type: 'suspended_admin_user', user_count: 0, admin_count: 0, response: root_path},
-        {user: suspended_user, type: 'suspended_user', user_count: -1, admin_count: 0, response: users_path}
+        { user: suspended_super_admin_user, type: 'suspended_super_admin_user', user_count: 0, admin_count: 0, response: root_path },
+        { user: suspended_admin_user, type: 'suspended_admin_user', user_count: 0, admin_count: 0, response: root_path },
+        { user: suspended_user, type: 'suspended_user', user_count: -1, admin_count: 0, response: users_path }
       ].each do |u|
         session[:user_id] = admin_user.id
         expect { delete :destroy, id: u[:user] }
@@ -671,9 +671,9 @@ describe UsersController, type: :controller do
   context 'attempt delete as suspended admin user' do
     it 'delete unsuspended user types: fail and redirect to home page' do
       [
-        {user: super_admin_user, type: 'super_admin_user'},
-        {user: admin_user, type: 'admin_user'},
-        {user: user, type: 'user'}
+        { user: super_admin_user, type: 'super_admin_user' },
+        { user: admin_user, type: 'admin_user' },
+        { user: user, type: 'user' }
       ].each do |u|
         session[:user_id] = suspended_admin_user.id
         expect { delete :destroy, id: u[:user] }
@@ -686,10 +686,10 @@ describe UsersController, type: :controller do
 
     it 'delete suspended user types: fail and redirect to home page' do
       [
-        {user: suspended_super_admin_user, type: 'suspended_super_admin_user'},
-        {user: suspended_admin_user, type: 'suspended_admin_user'},
-        {user: second_suspended_admin_user, type: 'second_suspended_admin_user'},
-        {user: suspended_user, type: 'suspended_user'}
+        { user: suspended_super_admin_user, type: 'suspended_super_admin_user' },
+        { user: suspended_admin_user, type: 'suspended_admin_user' },
+        { user: second_suspended_admin_user, type: 'second_suspended_admin_user' },
+        { user: suspended_user, type: 'suspended_user' }
       ].each do |u|
         session[:user_id] = suspended_admin_user.id
         expect { delete :destroy, id: u[:user] }
@@ -704,10 +704,10 @@ describe UsersController, type: :controller do
   context 'attempt delete as non-admin user' do
     it 'delete unsuspended user types: various responses' do
       [
-        {user: super_admin_user, type: 'super_admin_user', user_count: 0},
-        {user: admin_user, type: 'admin_user', user_count: 0},
-        {user: user, type: 'user', user_count: -1},
-        {user: second_user, type: 'second_user', user_count: 0}
+        { user: super_admin_user, type: 'super_admin_user', user_count: 0 },
+        { user: admin_user, type: 'admin_user', user_count: 0 },
+        { user: user, type: 'user', user_count: -1 },
+        { user: second_user, type: 'second_user', user_count: 0 }
       ].each do |u|
         session[:user_id] = user.id
         expect { delete :destroy, id: u[:user] }
@@ -720,9 +720,9 @@ describe UsersController, type: :controller do
 
     it 'delete suspended user types: fail and redirect to home page' do
       [
-        {user: suspended_super_admin_user, type: 'suspended_super_admin_user'},
-        {user: suspended_admin_user, type: 'suspended_admin_user'},
-        {user: suspended_user, type: 'suspended_user'}
+        { user: suspended_super_admin_user, type: 'suspended_super_admin_user' },
+        { user: suspended_admin_user, type: 'suspended_admin_user' },
+        { user: suspended_user, type: 'suspended_user' }
       ].each do |u|
         session[:user_id] = user.id
         expect { delete :destroy, id: u[:user] }
@@ -737,9 +737,9 @@ describe UsersController, type: :controller do
   context 'attempt delete as suspended non-admin user' do
     it 'delete unsuspended user types: fail and redirect to home page' do
       [
-        {user: super_admin_user, type: 'super_admin_user'},
-        {user: admin_user, type: 'admin_user'},
-        {user: user, type: 'user'}
+        { user: super_admin_user, type: 'super_admin_user' },
+        { user: admin_user, type: 'admin_user' },
+        { user: user, type: 'user' }
       ].each do |u|
         session[:user_id] = suspended_user.id
         expect { delete :destroy, id: u[:user] }
@@ -752,10 +752,10 @@ describe UsersController, type: :controller do
 
     it 'delete suspended user types: fail and redirect to home page' do
       [
-        {user: suspended_super_admin_user, type: 'suspended_super_admin_user'},
-        {user: suspended_admin_user, type: 'suspended_admin_user'},
-        {user: suspended_user, type: 'suspended_user'},
-        {user: second_suspended_user, type: 'second_suspended_user'}
+        { user: suspended_super_admin_user, type: 'suspended_super_admin_user' },
+        { user: suspended_admin_user, type: 'suspended_admin_user' },
+        { user: suspended_user, type: 'suspended_user' },
+        { user: second_suspended_user, type: 'second_suspended_user' }
       ].each do |u|
         session[:user_id] = suspended_user.id
         expect { delete :destroy, id: u[:user] }
@@ -777,10 +777,10 @@ describe UsersController, type: :controller do
   context 'attempt show user display page as super-admin user' do
     it 'show unsuspended user types: render user display page for self and users of a lower rank' do
       [
-        {user: super_admin_user, type: 'super_admin_user', response: render_template(:show)},
-        {user: second_super_admin_user, type: 'second_super_admin_user', response: redirect_to(root_path)},
-        {user: admin_user, type: 'admin_user', response: render_template(:show)},
-        {user: user, type: 'user', response: render_template(:show)}
+        { user: super_admin_user, type: 'super_admin_user', response: render_template(:show) },
+        { user: second_super_admin_user, type: 'second_super_admin_user', response: redirect_to(root_path) },
+        { user: admin_user, type: 'admin_user', response: render_template(:show) },
+        { user: user, type: 'user', response: render_template(:show) }
       ].each do |u|
         session[:user_id] = super_admin_user.id
         get :show, id: u[:user]
@@ -790,9 +790,9 @@ describe UsersController, type: :controller do
 
     it 'show suspended user types: render user display page for users of a lower rank' do
       [
-        {user: suspended_super_admin_user, type: 'suspended_super_admin_user', response: redirect_to(root_path)},
-        {user: suspended_admin_user, type: 'suspended_admin_user', response: render_template(:show)},
-        {user: suspended_user, type: 'suspended_user', response: render_template(:show)}
+        { user: suspended_super_admin_user, type: 'suspended_super_admin_user', response: redirect_to(root_path) },
+        { user: suspended_admin_user, type: 'suspended_admin_user', response: render_template(:show) },
+        { user: suspended_user, type: 'suspended_user', response: render_template(:show) }
       ].each do |u|
         session[:user_id] = super_admin_user.id
         get :show, id: u[:user]
@@ -804,9 +804,9 @@ describe UsersController, type: :controller do
   context 'attempt show user display page as suspended super-admin user' do
     it 'show unsuspended user types: fail and redirect to home page' do
       [
-        {user: super_admin_user, type: 'super_admin_user'},
-        {user: admin_user, type: 'admin_user'},
-        {user: user, type: 'user'}
+        { user: super_admin_user, type: 'super_admin_user' },
+        { user: admin_user, type: 'admin_user' },
+        { user: user, type: 'user' }
       ].each do |u|
         session[:user_id] = suspended_super_admin_user.id
         get :show, id: u[:user]
@@ -816,10 +816,10 @@ describe UsersController, type: :controller do
 
     it 'show suspended user types: fail and redirect to home page' do
       [
-        {user: suspended_super_admin_user, type: 'suspended_super_admin_user'},
-        {user: second_suspended_super_admin_user, type: 'second_suspended_super_admin_user'},
-        {user: suspended_admin_user, type: 'suspended_admin_user'},
-        {user: suspended_user, type: 'suspended_user'}
+        { user: suspended_super_admin_user, type: 'suspended_super_admin_user' },
+        { user: second_suspended_super_admin_user, type: 'second_suspended_super_admin_user' },
+        { user: suspended_admin_user, type: 'suspended_admin_user' },
+        { user: suspended_user, type: 'suspended_user' }
       ].each do |u|
         session[:user_id] = suspended_super_admin_user.id
         get :show, id: u[:user]
@@ -831,10 +831,10 @@ describe UsersController, type: :controller do
   context 'attempt show user display page as admin user' do
     it 'show unsuspended user types: render user display page for self and users of a lower rank' do
       [
-        {user: super_admin_user, type: 'super_admin_user', response: redirect_to(root_path)},
-        {user: admin_user, type: 'admin_user', response: render_template(:show)},
-        {user: second_admin_user, type: 'second_admin_user', response: redirect_to(root_path)},
-        {user: user, type: 'user', response: render_template(:show)}
+        { user: super_admin_user, type: 'super_admin_user', response: redirect_to(root_path) },
+        { user: admin_user, type: 'admin_user', response: render_template(:show) },
+        { user: second_admin_user, type: 'second_admin_user', response: redirect_to(root_path) },
+        { user: user, type: 'user', response: render_template(:show) }
       ].each do |u|
         session[:user_id] = admin_user.id
         get :show, id: u[:user]
@@ -844,9 +844,9 @@ describe UsersController, type: :controller do
 
     it 'show suspended user types: render user display page for users of a lower rank' do
       [
-        {user: suspended_super_admin_user, type: 'suspended_super_admin_user', response: redirect_to(root_path)},
-        {user: suspended_admin_user, type: 'suspended_admin_user', response: redirect_to(root_path)},
-        {user: suspended_user, type: 'suspended_user', response: render_template(:show)}
+        { user: suspended_super_admin_user, type: 'suspended_super_admin_user', response: redirect_to(root_path) },
+        { user: suspended_admin_user, type: 'suspended_admin_user', response: redirect_to(root_path) },
+        { user: suspended_user, type: 'suspended_user', response: render_template(:show) }
       ].each do |u|
         session[:user_id] = admin_user.id
         get :show, id: u[:user]
@@ -858,9 +858,9 @@ describe UsersController, type: :controller do
   context 'attempt show user display page as suspended admin user' do
     it 'show unsuspended user types: fail and redirect to home page' do
       [
-        {user: super_admin_user, type: 'super_admin_user'},
-        {user: admin_user, type: 'admin_user'},
-        {user: user, type: 'user'}
+        { user: super_admin_user, type: 'super_admin_user' },
+        { user: admin_user, type: 'admin_user' },
+        { user: user, type: 'user' }
       ].each do |u|
         session[:user_id] = suspended_admin_user.id
         get :show, id: u[:user]
@@ -870,10 +870,10 @@ describe UsersController, type: :controller do
 
     it 'show suspended user types: fail and redirect to home page' do
       [
-        {user: suspended_super_admin_user, type: 'suspended_super_admin_user'},
-        {user: suspended_admin_user, type: 'suspended_admin_user'},
-        {user: second_suspended_admin_user, type: 'second_suspended_admin_user'},
-        {user: suspended_user, type: 'suspended_user'}
+        { user: suspended_super_admin_user, type: 'suspended_super_admin_user' },
+        { user: suspended_admin_user, type: 'suspended_admin_user' },
+        { user: second_suspended_admin_user, type: 'second_suspended_admin_user' },
+        { user: suspended_user, type: 'suspended_user' }
       ].each do |u|
         session[:user_id] = suspended_admin_user.id
         get :show, id: u[:user]
@@ -885,10 +885,10 @@ describe UsersController, type: :controller do
   context 'attempt show user display page as non-admin user' do
     it 'show unsuspended user types: various responses' do
       [
-        {user: super_admin_user, type: 'super_admin_user', response: redirect_to(root_path)},
-        {user: admin_user, type: 'admin_user', response: redirect_to(root_path)},
-        {user: user, type: 'user', response: render_template(:show)},
-        {user: second_user, type: 'second_user', response: redirect_to(root_path)}
+        { user: super_admin_user, type: 'super_admin_user', response: redirect_to(root_path) },
+        { user: admin_user, type: 'admin_user', response: redirect_to(root_path) },
+        { user: user, type: 'user', response: render_template(:show) },
+        { user: second_user, type: 'second_user', response: redirect_to(root_path) }
       ].each do |u|
         session[:user_id] = user.id
         get :show, id: u[:user]
@@ -898,9 +898,9 @@ describe UsersController, type: :controller do
 
     it 'show suspended user types: fail and redirect to home page' do
       [
-        {user: suspended_super_admin_user, type: 'suspended_super_admin_user'},
-        {user: suspended_admin_user, type: 'suspended_admin_user'},
-        {user: suspended_user, type: 'suspended_user'}
+        { user: suspended_super_admin_user, type: 'suspended_super_admin_user' },
+        { user: suspended_admin_user, type: 'suspended_admin_user' },
+        { user: suspended_user, type: 'suspended_user' }
       ].each do |u|
         session[:user_id] = user.id
         get :show, id: u[:user]
@@ -912,9 +912,9 @@ describe UsersController, type: :controller do
   context 'attempt show user display page as suspended non-admin user' do
     it 'show unsuspended user types: fail and redirect to home page' do
       [
-        {user: super_admin_user, type: 'super_admin_user'},
-        {user: admin_user, type: 'admin_user'},
-        {user: user, type: 'user'}
+        { user: super_admin_user, type: 'super_admin_user' },
+        { user: admin_user, type: 'admin_user' },
+        { user: user, type: 'user' }
       ].each do |u|
         session[:user_id] = suspended_user.id
         get :show, id: u[:user]
@@ -924,10 +924,10 @@ describe UsersController, type: :controller do
 
     it 'show suspended user types: fail and redirect to home page' do
       [
-        {user: suspended_super_admin_user, type: 'suspended_super_admin_user'},
-        {user: suspended_admin_user, type: 'suspended_admin_user'},
-        {user: suspended_user, type: 'suspended_user'},
-        {user: second_suspended_user, type: 'second_suspended_user'}
+        { user: suspended_super_admin_user, type: 'suspended_super_admin_user' },
+        { user: suspended_admin_user, type: 'suspended_admin_user' },
+        { user: suspended_user, type: 'suspended_user' },
+        { user: second_suspended_user, type: 'second_suspended_user' }
       ].each do |u|
         session[:user_id] = suspended_user.id
         get :show, id: u[:user]

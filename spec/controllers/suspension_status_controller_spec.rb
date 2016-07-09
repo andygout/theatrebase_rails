@@ -23,10 +23,10 @@ describe SuspensionStatusController, type: :controller do
   context 'attempt suspension status edit as super-admin user' do
     it 'edit suspension status of unsuspended user types: various responses' do
       [
-        {user: super_admin_user, type: 'super_admin_user', response: redirect_to(root_path)},
-        {user: second_super_admin_user, type: 'second_super_admin_user', response: redirect_to(root_path)},
-        {user: admin_user, type: 'admin_user', response: render_template(:edit)},
-        {user: user, type: 'user', response: render_template(:edit)}
+        { user: super_admin_user, type: 'super_admin_user', response: redirect_to(root_path) },
+        { user: second_super_admin_user, type: 'second_super_admin_user', response: redirect_to(root_path) },
+        { user: admin_user, type: 'admin_user', response: render_template(:edit) },
+        { user: user, type: 'user', response: render_template(:edit) }
       ].each do |u|
         session[:user_id] = super_admin_user.id
         get :edit, user_id: u[:user]
@@ -36,9 +36,9 @@ describe SuspensionStatusController, type: :controller do
 
     it 'edit suspension status of suspended user types: various responses' do
       [
-        {user: suspended_super_admin_user, type: 'suspended_super_admin_user', response: redirect_to(root_path)},
-        {user: suspended_admin_user, type: 'suspended_admin_user', response: render_template(:edit)},
-        {user: suspended_user, type: 'suspended_user', response: render_template(:edit)}
+        { user: suspended_super_admin_user, type: 'suspended_super_admin_user', response: redirect_to(root_path) },
+        { user: suspended_admin_user, type: 'suspended_admin_user', response: render_template(:edit) },
+        { user: suspended_user, type: 'suspended_user', response: render_template(:edit) }
       ].each do |u|
         session[:user_id] = super_admin_user.id
         get :edit, user_id: u[:user]
@@ -50,9 +50,9 @@ describe SuspensionStatusController, type: :controller do
   context 'attempt suspension status edit as suspended super-admin user' do
     it 'edit suspension status of unsuspended user types: all fail and redirect to home page' do
       [
-        {user: super_admin_user, type: 'super_admin_user'},
-        {user: admin_user, type: 'admin_user'},
-        {user: user, type: 'user'}
+        { user: super_admin_user, type: 'super_admin_user' },
+        { user: admin_user, type: 'admin_user' },
+        { user: user, type: 'user' }
       ].each do |u|
         session[:user_id] = suspended_super_admin_user.id
         get :edit, user_id: u[:user]
@@ -62,10 +62,10 @@ describe SuspensionStatusController, type: :controller do
 
     it 'edit suspension status of suspended user types: all fail and redirect to home page' do
       [
-        {user: suspended_super_admin_user, type: 'suspended_super_admin_user'},
-        {user: second_suspended_super_admin_user, type: 'second_suspended_super_admin_user'},
-        {user: suspended_admin_user, type: 'suspended_admin_user'},
-        {user: suspended_user, type: 'suspended_user'}
+        { user: suspended_super_admin_user, type: 'suspended_super_admin_user' },
+        { user: second_suspended_super_admin_user, type: 'second_suspended_super_admin_user' },
+        { user: suspended_admin_user, type: 'suspended_admin_user' },
+        { user: suspended_user, type: 'suspended_user' }
       ].each do |u|
         session[:user_id] = suspended_super_admin_user.id
         get :edit, user_id: u[:user]
@@ -77,10 +77,10 @@ describe SuspensionStatusController, type: :controller do
   context 'attempt suspension status edit as admin user' do
     it 'edit suspension status of unsuspended user types: various responses' do
       [
-        {user: super_admin_user, type: 'super_admin_user', response: redirect_to(root_path)},
-        {user: admin_user, type: 'admin_user', response: redirect_to(root_path)},
-        {user: second_admin_user, type: 'second_admin_user', response: redirect_to(root_path)},
-        {user: user, type: 'user', response: render_template(:edit)}
+        { user: super_admin_user, type: 'super_admin_user', response: redirect_to(root_path) },
+        { user: admin_user, type: 'admin_user', response: redirect_to(root_path) },
+        { user: second_admin_user, type: 'second_admin_user', response: redirect_to(root_path) },
+        { user: user, type: 'user', response: render_template(:edit) }
       ].each do |u|
         session[:user_id] = admin_user.id
         get :edit, user_id: u[:user]
@@ -90,9 +90,9 @@ describe SuspensionStatusController, type: :controller do
 
     it 'edit suspension status of suspended user types: various responses' do
       [
-        {user: suspended_super_admin_user, type: 'suspended_super_admin_user', response: redirect_to(root_path)},
-        {user: suspended_admin_user, type: 'suspended_admin_user', response: redirect_to(root_path)},
-        {user: suspended_user, type: 'suspended_user', response: render_template(:edit)}
+        { user: suspended_super_admin_user, type: 'suspended_super_admin_user', response: redirect_to(root_path) },
+        { user: suspended_admin_user, type: 'suspended_admin_user', response: redirect_to(root_path) },
+        { user: suspended_user, type: 'suspended_user', response: render_template(:edit) }
       ].each do |u|
         session[:user_id] = admin_user.id
         get :edit, user_id: u[:user]
@@ -104,9 +104,9 @@ describe SuspensionStatusController, type: :controller do
   context 'attempt suspension status edit as suspended admin user' do
     it 'edit suspension status of unsuspended user types: all fail and redirect to home page' do
       [
-        {user: super_admin_user, type: 'super_admin_user'},
-        {user: admin_user, type: 'admin_user'},
-        {user: user, type: 'user'}
+        { user: super_admin_user, type: 'super_admin_user' },
+        { user: admin_user, type: 'admin_user' },
+        { user: user, type: 'user' }
       ].each do |u|
         session[:user_id] = suspended_admin_user.id
         get :edit, user_id: u[:user]
@@ -116,10 +116,10 @@ describe SuspensionStatusController, type: :controller do
 
     it 'edit suspension status of suspended user types: all fail and redirect to home page' do
       [
-        {user: suspended_super_admin_user, type: 'suspended_super_admin_user'},
-        {user: suspended_admin_user, type: 'suspended_admin_user'},
-        {user: second_suspended_admin_user, type: 'second_suspended_admin_user'},
-        {user: suspended_user, type: 'suspended_user'}
+        { user: suspended_super_admin_user, type: 'suspended_super_admin_user' },
+        { user: suspended_admin_user, type: 'suspended_admin_user' },
+        { user: second_suspended_admin_user, type: 'second_suspended_admin_user' },
+        { user: suspended_user, type: 'suspended_user' }
       ].each do |u|
         session[:user_id] = suspended_admin_user.id
         get :edit, user_id: u[:user]
@@ -131,10 +131,10 @@ describe SuspensionStatusController, type: :controller do
   context 'attempt suspension status edit as non-admin user' do
     it 'edit suspension status of unsuspended user types: all fail and redirect to home page' do
       [
-        {user: super_admin_user, type: 'super_admin_user'},
-        {user: admin_user, type: 'admin_user'},
-        {user: user, type: 'user'},
-        {user: second_user, type: 'second_user'}
+        { user: super_admin_user, type: 'super_admin_user' },
+        { user: admin_user, type: 'admin_user' },
+        { user: user, type: 'user' },
+        { user: second_user, type: 'second_user' }
       ].each do |u|
         session[:user_id] = user.id
         get :edit, user_id: u[:user]
@@ -144,9 +144,9 @@ describe SuspensionStatusController, type: :controller do
 
     it 'edit suspension status of suspended user types: all fail and redirect to home page' do
       [
-        {user: suspended_super_admin_user, type: 'suspended_super_admin_user'},
-        {user: suspended_admin_user, type: 'suspended_admin_user'},
-        {user: suspended_user, type: 'suspended_user'}
+        { user: suspended_super_admin_user, type: 'suspended_super_admin_user' },
+        { user: suspended_admin_user, type: 'suspended_admin_user' },
+        { user: suspended_user, type: 'suspended_user' }
       ].each do |u|
         session[:user_id] = user.id
         get :edit, user_id: u[:user]
@@ -158,9 +158,9 @@ describe SuspensionStatusController, type: :controller do
   context 'attempt suspension status edit as suspended non-admin user' do
     it 'edit suspension status of unsuspended user types: all fail and redirect to home page' do
       [
-        {user: super_admin_user, type: 'super_admin_user'},
-        {user: admin_user, type: 'admin_user'},
-        {user: user, type: 'user'}
+        { user: super_admin_user, type: 'super_admin_user' },
+        { user: admin_user, type: 'admin_user' },
+        { user: user, type: 'user' }
       ].each do |u|
         session[:user_id] = suspended_user.id
         get :edit, user_id: u[:user]
@@ -170,10 +170,10 @@ describe SuspensionStatusController, type: :controller do
 
     it 'edit suspension status of suspended user types: all fail and redirect to home page' do
       [
-        {user: suspended_super_admin_user, type: 'suspended_super_admin_user'},
-        {user: suspended_admin_user, type: 'suspended_admin_user'},
-        {user: suspended_user, type: 'suspended_user'},
-        {user: second_suspended_user, type: 'second_suspended_user'}
+        { user: suspended_super_admin_user, type: 'suspended_super_admin_user' },
+        { user: suspended_admin_user, type: 'suspended_admin_user' },
+        { user: suspended_user, type: 'suspended_user' },
+        { user: second_suspended_user, type: 'second_suspended_user' }
       ].each do |u|
         session[:user_id] = suspended_user.id
         get :edit, user_id: u[:user]
@@ -192,10 +192,10 @@ describe SuspensionStatusController, type: :controller do
   context 'attempt suspension status update as super-admin user' do
     it 'update suspension status of unsuspended user types: various responses' do
       [
-        {user: super_admin_user, type: 'super_admin_user', count: 0, response: root_path},
-        {user: second_super_admin_user, type: 'second_super_admin_user', count: 0, response: root_path},
-        {user: admin_user, type: 'admin_user', count: 1, response: admin_user},
-        {user: user, type: 'user', count: 1, response: user}
+        { user: super_admin_user, type: 'super_admin_user', count: 0, response: root_path },
+        { user: second_super_admin_user, type: 'second_super_admin_user', count: 0, response: root_path },
+        { user: admin_user, type: 'admin_user', count: 1, response: admin_user },
+        { user: user, type: 'user', count: 1, response: user }
       ].each do |u|
         session[:user_id] = super_admin_user.id
         expect { patch :update, user_id: u[:user], user: { suspension_attributes: { _destroy: '0' } } }.to change { Suspension.count }.by u[:count]
@@ -205,9 +205,9 @@ describe SuspensionStatusController, type: :controller do
 
     it 'update suspension status of suspended user types: various responses' do
       [
-        {user: suspended_super_admin_user, type: 'suspended_super_admin_user', count: 0, response: root_path},
-        {user: suspended_admin_user, type: 'suspended_admin_user', count: -1, response: suspended_admin_user},
-        {user: suspended_user, type: 'suspended_user', count: -1, response: suspended_user}
+        { user: suspended_super_admin_user, type: 'suspended_super_admin_user', count: 0, response: root_path },
+        { user: suspended_admin_user, type: 'suspended_admin_user', count: -1, response: suspended_admin_user },
+        { user: suspended_user, type: 'suspended_user', count: -1, response: suspended_user }
       ].each do |u|
         session[:user_id] = super_admin_user.id
         expect { patch :update, user_id: u[:user], user: { suspension_attributes: { _destroy: '1', id: u[:user].id } } }.to change { Suspension.count }.by u[:count]
@@ -219,9 +219,9 @@ describe SuspensionStatusController, type: :controller do
   context 'attempt suspension status update as suspended super-admin user' do
     it 'update suspension status of unsuspended user types: all fail and redirect to home page' do
       [
-        {user: super_admin_user, type: 'super_admin_user'},
-        {user: admin_user, type: 'admin_user'},
-        {user: user, type: 'user'}
+        { user: super_admin_user, type: 'super_admin_user' },
+        { user: admin_user, type: 'admin_user' },
+        { user: user, type: 'user' }
       ].each do |u|
         session[:user_id] = suspended_super_admin_user.id
         expect { patch :update, user_id: u[:user], user: { suspension_attributes: { _destroy: '0' } } }.to change { Suspension.count }.by 0
@@ -231,10 +231,10 @@ describe SuspensionStatusController, type: :controller do
 
     it 'update suspension status of suspended user types: all fail and redirect to home page' do
       [
-        {user: suspended_super_admin_user, type: 'suspended_super_admin_user'},
-        {user: second_suspended_super_admin_user, type: 'second_suspended_super_admin_user'},
-        {user: suspended_admin_user, type: 'suspended_admin_user'},
-        {user: suspended_user, type: 'suspended_user'}
+        { user: suspended_super_admin_user, type: 'suspended_super_admin_user' },
+        { user: second_suspended_super_admin_user, type: 'second_suspended_super_admin_user' },
+        { user: suspended_admin_user, type: 'suspended_admin_user' },
+        { user: suspended_user, type: 'suspended_user' }
       ].each do |u|
         session[:user_id] = suspended_super_admin_user.id
         expect { patch :update, user_id: u[:user], user: { suspension_attributes: { _destroy: '1', id: u[:user].id } } }.to change { Suspension.count }.by 0
@@ -246,10 +246,10 @@ describe SuspensionStatusController, type: :controller do
   context 'attempt suspension status update as admin user' do
     it 'update suspension status of unsuspended user types: various responses' do
       [
-        {user: super_admin_user, type: 'super_admin_user', count: 0, response: root_path},
-        {user: admin_user, type: 'admin_user', count: 0, response: root_path},
-        {user: second_admin_user, type: 'second_admin_user', count: 0, response: root_path},
-        {user: user, type: 'user', count: 1, response: user}
+        { user: super_admin_user, type: 'super_admin_user', count: 0, response: root_path },
+        { user: admin_user, type: 'admin_user', count: 0, response: root_path },
+        { user: second_admin_user, type: 'second_admin_user', count: 0, response: root_path },
+        { user: user, type: 'user', count: 1, response: user }
       ].each do |u|
         session[:user_id] = admin_user.id
         expect { patch :update, user_id: u[:user], user: { suspension_attributes: { _destroy: '0' } } }.to change { Suspension.count }.by u[:count]
@@ -259,9 +259,9 @@ describe SuspensionStatusController, type: :controller do
 
     it 'update suspension status of suspended user types: various responses' do
       [
-        {user: suspended_super_admin_user, type: 'suspended_super_admin_user', count: 0, response: root_path},
-        {user: suspended_admin_user, type: 'suspended_admin_user', count: 0, response: root_path},
-        {user: suspended_user, type: 'suspended_user', count: -1, response: suspended_user}
+        { user: suspended_super_admin_user, type: 'suspended_super_admin_user', count: 0, response: root_path },
+        { user: suspended_admin_user, type: 'suspended_admin_user', count: 0, response: root_path },
+        { user: suspended_user, type: 'suspended_user', count: -1, response: suspended_user }
       ].each do |u|
         session[:user_id] = admin_user.id
         expect { patch :update, user_id: u[:user], user: { suspension_attributes: { _destroy: '1', id: u[:user].id } } }.to change { Suspension.count }.by u[:count]
@@ -273,9 +273,9 @@ describe SuspensionStatusController, type: :controller do
   context 'attempt suspension status update as suspended admin user' do
     it 'update suspension status of unsuspended user types: all fail and redirect to home page' do
       [
-        {user: super_admin_user, type: 'super_admin_user'},
-        {user: admin_user, type: 'admin_user'},
-        {user: user, type: 'user'}
+        { user: super_admin_user, type: 'super_admin_user' },
+        { user: admin_user, type: 'admin_user' },
+        { user: user, type: 'user' }
       ].each do |u|
         session[:user_id] = suspended_admin_user.id
         expect { patch :update, user_id: u[:user], user: { suspension_attributes: { _destroy: '0' } } }.to change { Suspension.count }.by 0
@@ -285,10 +285,10 @@ describe SuspensionStatusController, type: :controller do
 
     it 'update suspension status of suspended user types: all fail and redirect to home page' do
       [
-        {user: suspended_super_admin_user, type: 'suspended_super_admin_user'},
-        {user: suspended_admin_user, type: 'suspended_admin_user'},
-        {user: second_suspended_admin_user, type: 'second_suspended_admin_user'},
-        {user: suspended_user, type: 'suspended_user'}
+        { user: suspended_super_admin_user, type: 'suspended_super_admin_user' },
+        { user: suspended_admin_user, type: 'suspended_admin_user' },
+        { user: second_suspended_admin_user, type: 'second_suspended_admin_user' },
+        { user: suspended_user, type: 'suspended_user' }
       ].each do |u|
         session[:user_id] = suspended_admin_user.id
         expect { patch :update, user_id: u[:user], user: { suspension_attributes: { _destroy: '1', id: u[:user].id } } }.to change { Suspension.count }.by 0
@@ -300,10 +300,10 @@ describe SuspensionStatusController, type: :controller do
   context 'attempt suspension status update as non-admin user' do
     it 'update suspension status of unsuspended user types: all fail and redirect to home page' do
       [
-        {user: super_admin_user, type: 'super_admin_user'},
-        {user: admin_user, type: 'admin_user'},
-        {user: user, type: 'user'},
-        {user: second_user, type: 'second_user'}
+        { user: super_admin_user, type: 'super_admin_user' },
+        { user: admin_user, type: 'admin_user' },
+        { user: user, type: 'user' },
+        { user: second_user, type: 'second_user' }
       ].each do |u|
         session[:user_id] = user.id
         expect { patch :update, user_id: u[:user], user: { suspension_attributes: { _destroy: '0' } } }.to change { Suspension.count }.by 0
@@ -313,9 +313,9 @@ describe SuspensionStatusController, type: :controller do
 
     it 'update suspension status of suspended user types: all fail and redirect to home page' do
       [
-        {user: suspended_super_admin_user, type: 'suspended_super_admin_user'},
-        {user: suspended_admin_user, type: 'suspended_admin_user'},
-        {user: suspended_user, type: 'suspended_user'}
+        { user: suspended_super_admin_user, type: 'suspended_super_admin_user' },
+        { user: suspended_admin_user, type: 'suspended_admin_user' },
+        { user: suspended_user, type: 'suspended_user' }
       ].each do |u|
         session[:user_id] = user.id
         expect { patch :update, user_id: u[:user], user: { suspension_attributes: { _destroy: '1', id: u[:user].id } } }.to change { Suspension.count }.by 0
@@ -327,9 +327,9 @@ describe SuspensionStatusController, type: :controller do
   context 'attempt suspension status update as suspended non-admin user' do
     it 'update suspension status of unsuspended user types: all fail and redirect to home page' do
       [
-        {user: super_admin_user, type: 'super_admin_user'},
-        {user: admin_user, type: 'admin_user'},
-        {user: user, type: 'user'}
+        { user: super_admin_user, type: 'super_admin_user' },
+        { user: admin_user, type: 'admin_user' },
+        { user: user, type: 'user' }
       ].each do |u|
         session[:user_id] = suspended_user.id
         expect { patch :update, user_id: u[:user], user: { suspension_attributes: { _destroy: '0' } } }.to change { Suspension.count }.by 0
@@ -339,10 +339,10 @@ describe SuspensionStatusController, type: :controller do
 
     it 'update suspension status of suspended user types: all fail and redirect to home page' do
       [
-        {user: suspended_super_admin_user, type: 'suspended_super_admin_user'},
-        {user: suspended_admin_user, type: 'suspended_admin_user'},
-        {user: suspended_user, type: 'suspended_user'},
-        {user: second_suspended_user, type: 'second_suspended_user'}
+        { user: suspended_super_admin_user, type: 'suspended_super_admin_user' },
+        { user: suspended_admin_user, type: 'suspended_admin_user' },
+        { user: suspended_user, type: 'suspended_user' },
+        { user: second_suspended_user, type: 'second_suspended_user' }
       ].each do |u|
         session[:user_id] = suspended_user.id
         expect { patch :update, user_id: u[:user], user: { suspension_attributes: { _destroy: '1', id: u[:user].id } } }.to change { Suspension.count }.by 0
