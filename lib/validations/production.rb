@@ -1,13 +1,15 @@
 module Validations::Production
   extend ActiveSupport::Concern
 
-  MAX_LENGTH = 255
+  TEXT_MAX_LENGTH = 255
+  PRESS_DATE_WORDING_MAX_LENGTH = 25
+  DATES_TBC_NOTE_MAX_LENGTH = 15
 
   included do
     validates :title,
       presence: true,
-      length: { maximum: MAX_LENGTH },
-      generate_url: { if: proc { |p| p.title.present? && p.title.length <= MAX_LENGTH } }
+      length: { maximum: TEXT_MAX_LENGTH },
+      generate_url: { if: proc { |p| p.title.present? && p.title.length <= TEXT_MAX_LENGTH } }
 
     validates :first_date,
       presence: true
@@ -27,15 +29,15 @@ module Validations::Production
     validate :previews_only_absence, if: :press_date
 
     validates :press_date_wording,
-      length: { maximum: 25 }
+      length: { maximum: PRESS_DATE_WORDING_MAX_LENGTH }
 
     validates :dates_tbc_note,
-      length: { maximum: 15 }
+      length: { maximum: DATES_TBC_NOTE_MAX_LENGTH }
 
     validate :dates_tbc_note_valid_presence, if: :dates_tbc_note
 
     validates :dates_note,
-      length: { maximum: MAX_LENGTH }
+      length: { maximum: TEXT_MAX_LENGTH }
 
     validates :second_press_date,
       date_format: true, if: :press_date

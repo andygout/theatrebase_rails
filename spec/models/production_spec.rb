@@ -7,7 +7,8 @@ describe Production, type: :model do
   end
 
   let(:production) { build :production }
-  MAX_LENGTH ||= 255
+
+  TEXT_MAX_LENGTH ||= 255
   PRESS_DATE_WORDING_MAX_LENGTH ||= 25
   DATES_TBC_NOTE_MAX_LENGTH ||= 15
 
@@ -24,12 +25,12 @@ describe Production, type: :model do
     end
 
     it 'invalid if title exceeds length limit' do
-      production.title = 'a' * (MAX_LENGTH + 1)
+      production.title = 'a' * (TEXT_MAX_LENGTH + 1)
       expect(production.valid?).to be false
     end
 
     it 'valid if title present and does not exceed length limit' do
-      production.title = 'a' * MAX_LENGTH
+      production.title = 'a' * TEXT_MAX_LENGTH
       expect(production.valid?).to be true
     end
   end
@@ -148,12 +149,12 @@ describe Production, type: :model do
     end
 
     it 'invalid if "dates note" exceeds length limit' do
-      production.dates_note = 'a' * (MAX_LENGTH + 1)
+      production.dates_note = 'a' * (TEXT_MAX_LENGTH + 1)
       expect(production.valid?).to be false
     end
 
     it 'valid if "dates note" does not exceed length limit' do
-      production.dates_note = 'a' * MAX_LENGTH
+      production.dates_note = 'a' * TEXT_MAX_LENGTH
       expect(production.valid?).to be true
     end
   end

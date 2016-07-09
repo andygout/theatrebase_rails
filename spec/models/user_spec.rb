@@ -20,9 +20,10 @@ describe User, type: :model do
   end
 
   let(:user) { build :user }
+
   TEXT_MAX_LENGTH ||= 255
   PASSWORD_MIN_LENGTH ||= 6
-  PASSWORD_MAX_LENGTH ||= 255
+  PASSWORD_MAX_LENGTH ||= 72
 
   context 'valid details' do
     it 'should be valid' do
