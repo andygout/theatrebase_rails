@@ -47,6 +47,10 @@ describe Shared::ParamsHelper, type: :helper do
       expect(generate_url('He\'d they\'ll I\'m we\'re she\'s didn\'t should\'ve')).to eq 'hed-theyll-im-were-shes-didnt-shouldve'
     end
 
+    it 'will remove apostrophes from certain grammatical instances (including uppercase)' do
+      expect(generate_url('HE\'D THEY\'LL I\'M WE\'RE SHE\'S DIDN\'T SHOULD\'VE')).to eq 'hed-theyll-im-were-shes-didnt-shouldve'
+    end
+
     it 'will convert apostrophes to hyphens (outside of main grammatical instances)' do
       expect(generate_url('Peter O\'Toole')).to eq 'peter-o-toole'
       expect(generate_url('O\'Malley\'s')).to eq 'o-malleys'
