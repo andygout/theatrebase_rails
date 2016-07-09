@@ -8,8 +8,8 @@ module Shared::ParamsHelper
     self.attributes.keys.map { |k| self[k] = self[k].strip if strip_reqd(k) }
   end
 
-  def extract_alphabetise_value string
-    string[/^(A |An |The |\W+)(\S+.*)$/i, 2]
+  def get_alphabetise_value string
+    string.strip[/^(A |An |The |\W+)(\S+.*)$/i, 2]
   end
 
   def generate_url string

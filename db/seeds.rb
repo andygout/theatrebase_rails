@@ -20,7 +20,7 @@ SuperAdmin.create!(user: user)
 
 production = Production.new
 Production.create!( title:        'Hamlet',
-                    alphabetise:  production.extract_alphabetise_value('Hamlet'),
+                    alphabetise:  production.get_alphabetise_value('Hamlet'),
                     url:          production.generate_url('Hamlet'),
                     first_date:   '05/08/2015',
                     press_date:   '25/08/2015',
