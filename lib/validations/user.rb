@@ -1,4 +1,5 @@
 module Validations::User
+
   extend ActiveSupport::Concern
 
   TEXT_MAX_LENGTH = 255
@@ -22,4 +23,5 @@ module Validations::User
       length: { minimum: PASSWORD_MIN_LENGTH },
       allow_nil: true
   end
+
 end

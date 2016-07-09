@@ -1,4 +1,5 @@
 module Validations::Production
+
   extend ActiveSupport::Concern
 
   TEXT_MAX_LENGTH = 255
@@ -44,4 +45,5 @@ module Validations::Production
 
     validate :second_press_date_valid, if: :second_press_date
   end
+
 end
