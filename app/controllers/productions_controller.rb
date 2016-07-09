@@ -60,8 +60,9 @@ class ProductionsController < ApplicationController
   private
 
     def production_params
-      params[:production][:alphabetise] = extract_alphabetise_value(params[:production][:title])
-      params[:production][:url] = generate_url(params[:production][:title])
+      title = params[:production][:title]
+      params[:production][:alphabetise] = extract_alphabetise_value(title)
+      params[:production][:url] = generate_url(title)
       nullify_unused_params
 
       params
