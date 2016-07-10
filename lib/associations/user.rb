@@ -1,4 +1,5 @@
 module Associations::User
+
   extend ActiveSupport::Concern
 
   included do
@@ -65,4 +66,5 @@ module Associations::User
       class_name: :Production,
       foreign_key: :updater_id
   end
+
 end

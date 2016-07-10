@@ -1,4 +1,5 @@
 module Validations::Status
+
   extend ActiveSupport::Concern
 
   included do
@@ -8,4 +9,5 @@ module Validations::Status
     validates :assignor,
       presence: true
   end
+
 end

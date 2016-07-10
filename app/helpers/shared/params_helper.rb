@@ -8,14 +8,14 @@ module Shared::ParamsHelper
     self.attributes.keys.map { |k| self[k] = self[k].strip if strip_reqd(k) }
   end
 
-  def extract_alphabetise_value string
-    string[/^(A |An |The |\W+)(\S+.*)$/i, 2]
+  def get_alphabetise_value string
+    string.strip[/^(A |An |The |\W+)(\S+.*)$/i, 2]
   end
 
   def generate_url string
     string
       .gsub(/&/, 'and')               # convert '&' to 'and'
-      .gsub(/\'(d |ll |m |re |s |t |ve )|\'(d|ll|m|re|s|t|ve)$/, '\1\2')  # remove apostrophes from certain grammatical instances
+      .gsub(/\'(d |ll |m |re |s |t |ve )|\'(d|ll|m|re|s|t|ve)$/i, '\1\2')  # remove apostrophes from certain grammatical instances
       .gsub(/[^\p{Alnum}*!+()]/, ' ') # convert non-alphanumeric characters (save some exceptions) to whitespace
       .strip                          # remove leading and trailing whitespace
       .permanent                      # apply diacritics permanent method

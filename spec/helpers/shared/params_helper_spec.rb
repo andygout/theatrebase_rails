@@ -1,27 +1,35 @@
 require 'rails_helper'
 
 describe Shared::ParamsHelper, type: :helper do
-  context 'extracting alphabetise value with no leading article present in string' do
+  context 'getting alphabetise value with no leading article present in string' do
     it 'will return nil' do
-      expect(extract_alphabetise_value('Adler & Gibb')).to eq nil
+      expect(get_alphabetise_value('Adler & Gibb')).to eq nil
+    end
+
+    it 'will remove whitespace before getting alphabetise value' do
+      expect(get_alphabetise_value(' Adler & Gibb ')).to eq nil
     end
   end
 
   context 'extracting alphabetise value with leading article present in string' do
     it 'will return string with leading article (A) removed' do
-      expect(extract_alphabetise_value('A Number')).to eq 'Number'
+      expect(get_alphabetise_value('A Number')).to eq 'Number'
     end
 
     it 'will return string with leading article (An) removed' do
-      expect(extract_alphabetise_value('An Oak Tree')).to eq 'Oak Tree'
+      expect(get_alphabetise_value('An Oak Tree')).to eq 'Oak Tree'
     end
 
     it 'will return string with leading article (The) removed' do
-      expect(extract_alphabetise_value('The Tempest')).to eq 'Tempest'
+      expect(get_alphabetise_value('The Tempest')).to eq 'Tempest'
     end
 
     it 'will return string with leading non-alphanumeric character (\') removed' do
-      expect(extract_alphabetise_value('\'Tis Pity She\'s A Whore')).to eq 'Tis Pity She\'s A Whore'
+      expect(get_alphabetise_value('\'Tis Pity She\'s A Whore')).to eq 'Tis Pity She\'s A Whore'
+    end
+
+    it 'will remove whitespace before getting alphabetise value' do
+      expect(get_alphabetise_value(' A Number')).to eq 'Number'
     end
   end
 
@@ -37,6 +45,10 @@ describe Shared::ParamsHelper, type: :helper do
     it 'will remove apostrophes from certain grammatical instances' do
       expect(generate_url('Duke of York\'s Theatre')).to eq 'duke-of-yorks-theatre'
       expect(generate_url('He\'d they\'ll I\'m we\'re she\'s didn\'t should\'ve')).to eq 'hed-theyll-im-were-shes-didnt-shouldve'
+    end
+
+    it 'will remove apostrophes from certain grammatical instances (including uppercase)' do
+      expect(generate_url('HE\'D THEY\'LL I\'M WE\'RE SHE\'S DIDN\'T SHOULD\'VE')).to eq 'hed-theyll-im-were-shes-didnt-shouldve'
     end
 
     it 'will convert apostrophes to hyphens (outside of main grammatical instances)' do

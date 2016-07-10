@@ -14,7 +14,7 @@ require 'with_model'
 
 Capybara.current_driver = :poltergeist
 Capybara.default_max_wait_time = 5
-options = {js_errors: false}
+options = { js_errors: false }
 Capybara.register_driver :poltergeist do |app|
   Capybara::Poltergeist::Driver.new(app, timeout: 5)
 end
