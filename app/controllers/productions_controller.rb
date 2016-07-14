@@ -96,7 +96,7 @@ class ProductionsController < ApplicationController
     end
 
     def get_production_by_id_url
-      @production = Production.find_by_id_and_url(params[:id], params[:url])
+      @production = Production.find_by_id_and_url!(params[:id], params[:url])
     end
 
     def get_views_components
