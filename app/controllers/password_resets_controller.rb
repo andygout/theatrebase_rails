@@ -5,9 +5,11 @@ class PasswordResetsController < ApplicationController
   before_action :check_expiration,  only: [:edit, :update]
 
   def new
+    @page_title = 'Request password reset link'
   end
 
   def create
+    @page_title = 'Request password reset link'
     @user = User.find_by_email(params[:password_reset][:email].downcase)
     if !@user
       flash.now[:error] = 'Email address not found'
@@ -24,11 +26,11 @@ class PasswordResetsController < ApplicationController
   end
 
   def edit
-    @page_title = "#{@user.name} (#{@user.email})"
+    @page_title = "Reset password: #{@user.name} (#{@user.email})"
   end
 
   def update
-    @page_title = "#{@user.name} (#{@user.email})"
+    @page_title = "Reset password: #{@user.name} (#{@user.email})"
     if password_blank?
       @user.errors.add(:password, 'Password cannot be blank')
       render :edit

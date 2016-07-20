@@ -1,6 +1,7 @@
 class SessionsController < ApplicationController
 
   def new
+    @page_title = 'Log in'
   end
 
   def create
@@ -8,6 +9,7 @@ class SessionsController < ApplicationController
     if user && user.authenticate(params[:session][:password])
       clearance_check user
     else
+      @page_title = 'Log in'
       flash.now[:error] = 'Invalid email-password combination'
       render :new
     end

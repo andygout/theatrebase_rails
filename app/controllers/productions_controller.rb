@@ -15,6 +15,7 @@ class ProductionsController < ApplicationController
   before_action :get_show_components,       only: [:show]
 
   def new
+    @page_title = 'New production'
   end
 
   def create
@@ -23,12 +24,13 @@ class ProductionsController < ApplicationController
       flash[:success] = 'Production created successfully'
       redirect_to production_path(@production.id, @production.url)
     else
+      @page_title = 'New production'
       render :new
     end
   end
 
   def edit
-    @page_title = @production.title
+    @page_title = "Edit production: #{@production.title}"
   end
 
   def update
@@ -38,7 +40,7 @@ class ProductionsController < ApplicationController
     else
       @db_production = Production.find(params[:id])
       @production.url = @db_production.url
-      @page_title = @db_production.title
+      @page_title = "Edit production: #{@db_production.title}"
       render :edit
     end
   end
@@ -50,6 +52,7 @@ class ProductionsController < ApplicationController
   end
 
   def show
+    @page_title = @production.title
   end
 
   def index
@@ -100,7 +103,7 @@ class ProductionsController < ApplicationController
     end
 
     def get_views_components
-      get_content_header 'production'
+      @content_header = 'PRODUCTION'
     end
 
     def get_form_components

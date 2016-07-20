@@ -6,7 +6,7 @@ class AccountActivationsController < ApplicationController
     if @user && !@user.activated_at? && @user.authenticated?(:activation, params[:id])
       @user.activate
       log_in @user
-      @page_title = "#{@user.name} (#{@user.email})"
+      @page_title = "Set password: #{@user.name} (#{@user.email})"
       flash.now[:success] = 'Account activated'
       render :edit
     else
@@ -16,7 +16,7 @@ class AccountActivationsController < ApplicationController
   end
 
   def update
-    @page_title = "#{@user.name} (#{@user.email})"
+    @page_title = "Set password: #{@user.name} (#{@user.email})"
     if password_blank?
       @user.errors.add(:password, 'Password cannot be blank')
       render :edit

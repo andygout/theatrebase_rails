@@ -16,6 +16,7 @@ class UsersController < ApplicationController
   before_action :get_form_components,   only: [:new, :create, :edit, :update]
 
   def new
+    @page_title = 'New user'
   end
 
   def create
@@ -25,12 +26,13 @@ class UsersController < ApplicationController
       flash[:success] = 'Account activation instructions sent successfully'
       redirect_to root_path
     else
+      @page_title = 'New user'
       render :new
     end
   end
 
   def edit
-    get_user_page_title @user
+    @page_title = "Edit user: #{get_user_page_title(@user)}"
   end
 
   def update
@@ -38,7 +40,7 @@ class UsersController < ApplicationController
       flash[:success] = 'User updated successfully'
       redirect_to @user
     else
-      get_user_page_title User.find(params[:id])
+      @page_title = "Edit user: #{get_user_page_title(User.find(params[:id]))}"
       render :edit
     end
   end
@@ -55,10 +57,11 @@ class UsersController < ApplicationController
   end
 
   def show
-    get_user_page_title @user
+    @page_title = get_user_page_title @user
   end
 
   def index
+    @page_title = 'Users'
     @users = current_user.super_admin ?
       User.non_admin(current_user, SuperAdmin).order(:id).paginate(page: params[:page]) :
       User.non_admin(current_user, SuperAdmin).non_admin(current_user, Admin).order(:id).paginate(page: params[:page])
@@ -109,7 +112,7 @@ class UsersController < ApplicationController
     end
 
     def get_views_components
-      get_content_header 'user'
+      @content_header = 'USER'
       get_status_info
     end
 

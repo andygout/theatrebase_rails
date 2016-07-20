@@ -1,7 +1,3 @@
-<% provide(:title, "Reset password: #{@page_title}") %>
-
-<h1 class='title-text'>Reset password: <%= @page_title %></h1>
-
 <%= form_for @user, html: { class: 'form' }, url: password_reset_path(params[:id]) do |user| %>
   <%= render 'partials/error_count', count: @user.errors.count %>
 

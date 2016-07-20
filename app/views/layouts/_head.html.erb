@@ -1,6 +1,6 @@
 <head>
   <title>
-    <%= content_for?(:title) ? yield(:title) + ' | ' : '' %>TheatreBase
+    <%= @page_title ? "#{@page_title} | " : '' %>TheatreBase
   </title>
 
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>

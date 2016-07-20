@@ -1,7 +1,3 @@
-<% provide(:title, 'Log in') %>
-
-<h1 class='title-text'>Log in</h1>
-
 <%= form_for :session, html: { class: 'form' }, url: log_in_path do |session| %>
   <div class='form-item'>
     <%= session.label :email, class: 'label' %>
