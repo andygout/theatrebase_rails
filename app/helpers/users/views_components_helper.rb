@@ -36,14 +36,24 @@ module Users::ViewsComponentsHelper
   def get_user_index_table
     row_values = @users.map do |user|
       [
-        { content: "#{link_markup('users', user.id, user.name)} (#{user.email})" },
+        { content: link_markup('users', user.id, user.name) },
+        { content: user.email },
         { content: admin_status_wording(user), class: admin_status_class(user) },
         { content: suspension_status_wording(user), class: suspension_status_class(user) }
       ]
     end
-    header_values = [{ content: 'User' }, { content: 'Admin status' }, { content: 'Suspension status' }]
-    colwidth_values = [{ width: 60 }, { width: 20 }, { width: 20 }]
+
+    header_values = [
+      { content: 'User' },
+      { content: 'Email address' },
+      { content: 'Admin status' },
+      { content: 'Suspension status' }
+    ]
+
+    colwidth_values = [{ width: 30 }, { width: 30 }, { width: 20 }, { width: 20 }]
+
     rows_markup = compile_rows(row_values, header_values, colwidth_values)
+
     bookend_tags('table', rows_markup, 'listing').html_safe
   end
 
