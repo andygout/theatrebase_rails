@@ -4,7 +4,7 @@ module Productions::ViewsComponentsHelper
   include Shared::MarkupHelper
 
   def get_production_index_table
-    return "<p class='title-text'>No productions yet</p>".html_safe if @productions.empty?
+    return "<h1 class='title-text'>No productions yet</h1>".html_safe if @productions.empty?
 
     row_values = @productions.map do |production|
       [
