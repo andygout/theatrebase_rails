@@ -40,7 +40,7 @@ class AccountActivationsController < ApplicationController
     end
 
     def get_user
-      @user = User.find_by(email: params[:email])
+      @user = User.find_by_email(params[:email])
     end
 
     def password_blank?

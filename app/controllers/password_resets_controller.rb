@@ -8,7 +8,7 @@ class PasswordResetsController < ApplicationController
   end
 
   def create
-    @user = User.find_by(email: params[:password_reset][:email].downcase)
+    @user = User.find_by_email(params[:password_reset][:email].downcase)
     if !@user
       flash.now[:error] = 'Email address not found'
       render :new
@@ -53,7 +53,7 @@ class PasswordResetsController < ApplicationController
     end
 
     def get_user
-      @user = User.find_by(email: params[:email])
+      @user = User.find_by_email(params[:email])
     end
 
     def valid_user
