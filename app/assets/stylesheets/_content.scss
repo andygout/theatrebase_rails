@@ -1,28 +1,29 @@
 .content-label {
-  display: inline-block;
+  margin-bottom: 5px;
   padding: 0 5px;
+  display: inline-block;
   border-radius: 2px;
   background-color: $box-shadow-color;
   font-weight: bold;
-  margin: 30px 0 5px 0;
   border: 1px solid $border-color;
+
   &.content-header {
-    margin: 5px 0 20px 0;
+    margin: 0 0 20px 0;
     border-width: 2px;
   }
 }
 
 .content-container {
-  display: table;
-  margin-top: 20px;
+  margin-bottom: 20px;
   padding: 10px;
+  display: table;
   background-color: $form-bg-color;
   border: 2px solid $border-color;
   border-radius: 5px;
 }
 
 .pagination {
-  margin-top: 20px;
+  margin-bottom: 20px;
 
   & .current {
     font-style: normal;
