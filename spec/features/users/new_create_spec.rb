@@ -58,6 +58,7 @@ feature 'User new/create' do
       expect(page).to have_css '.alert-error'
       expect(page).to have_css '.field_with_errors'
       expect(page).not_to have_css '.alert-success'
+      expect(page).to have_content 'New user'
       expect(page).to have_current_path users_path
     end
   end
