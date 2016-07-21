@@ -73,7 +73,7 @@ module Productions::DatesTableHelper
   def get_dates p
     dates_note = p.dates_note.present? ? "<p class='note-text emphasis-text'>#{p.dates_note}</p>" : ''
     dates_inner_markup = "<div class='content-label'>Dates</div>" + dates_table(p) + dates_note
-    dates_markup = bookend_tags('div', dates_inner_markup, 'content-wrapper')
+    dates_markup = bookend_tags('div', dates_inner_markup, 'content-wrapper', 'dates')
     @dates = dates_markup.html_safe
   end
 

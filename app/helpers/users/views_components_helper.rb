@@ -30,7 +30,7 @@ module Users::ViewsComponentsHelper
         ]
       ]
 
-    @status_info = create_content_container(row_values)
+    @status_info = create_content_container(row_values, 'status-info')
   end
 
   def get_user_index_table
@@ -54,7 +54,7 @@ module Users::ViewsComponentsHelper
 
     rows_markup = compile_rows(row_values, header_values, colwidth_values)
 
-    bookend_tags('table', rows_markup, 'listing').html_safe
+    bookend_tags('table', rows_markup, 'listing', 'users-index').html_safe
   end
 
 end

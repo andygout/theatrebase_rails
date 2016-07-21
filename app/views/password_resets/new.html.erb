@@ -1,4 +1,4 @@
-<%= form_for :password_reset, html: { class: 'form' }, url: password_resets_path do |user| %>
+<%= form_for :password_reset, html: { id: 'new-password-reset-form', class: 'form' }, url: password_resets_path do |user| %>
   <div class='form-item'>
     <%= user.label :email, class: 'label' %>
     <%= user.email_field :email, class: 'input text-input', maxlength: 255 %>
