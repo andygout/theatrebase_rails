@@ -1,6 +1,6 @@
 <head>
   <title>
-    <%= @page_title ? "#{@page_title} | " : '' %>TheatreBase
+    <%= @browser_tab || @page_title ? "#{@browser_tab || @page_title} | " : '' %>TheatreBase
   </title>
 
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>

@@ -58,6 +58,7 @@ class UsersController < ApplicationController
 
   def show
     @page_title = get_user_page_title @user
+    @browser_tab = "#{@page_title} (user)"
   end
 
   def index
