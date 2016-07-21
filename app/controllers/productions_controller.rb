@@ -31,6 +31,7 @@ class ProductionsController < ApplicationController
 
   def edit
     @page_title = "Edit production: #{@production.title}"
+    @browser_tab = "#{@page_title} (#{listing_dates(@production)})"
   end
 
   def update
@@ -41,6 +42,7 @@ class ProductionsController < ApplicationController
       @db_production = Production.find(params[:id])
       @production.url = @db_production.url
       @page_title = "Edit production: #{@db_production.title}"
+      @browser_tab = "#{@page_title} (#{listing_dates(@db_production)})"
       render :edit
     end
   end
@@ -53,6 +55,7 @@ class ProductionsController < ApplicationController
 
   def show
     @page_title = @production.title
+    @browser_tab = "#{@page_title} (#{listing_dates(@production)})"
   end
 
   def index
