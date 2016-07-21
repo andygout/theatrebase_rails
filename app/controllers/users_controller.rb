@@ -32,7 +32,8 @@ class UsersController < ApplicationController
   end
 
   def edit
-    @page_title = "Edit user: #{get_user_page_title(@user)}"
+    @page_title = get_user_page_title(@user)
+    @browser_tab = "Edit: #{@page_title} (user)"
   end
 
   def update
@@ -40,7 +41,8 @@ class UsersController < ApplicationController
       flash[:success] = 'User updated successfully'
       redirect_to @user
     else
-      @page_title = "Edit user: #{get_user_page_title(User.find(params[:id]))}"
+      @page_title = get_user_page_title(User.find(params[:id]))
+      @browser_tab = "Edit: #{@page_title} (user)"
       render :edit
     end
   end

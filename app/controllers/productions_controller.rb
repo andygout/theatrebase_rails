@@ -30,8 +30,8 @@ class ProductionsController < ApplicationController
   end
 
   def edit
-    @page_title = "Edit production: #{@production.title}"
-    @browser_tab = "#{@page_title} (#{listing_dates(@production)})"
+    @page_title = @production.title
+    @browser_tab = "Edit: #{@page_title} (#{listing_dates(@production)})"
   end
 
   def update
@@ -41,8 +41,8 @@ class ProductionsController < ApplicationController
     else
       @db_production = Production.find(params[:id])
       @production.url = @db_production.url
-      @page_title = "Edit production: #{@db_production.title}"
-      @browser_tab = "#{@page_title} (#{listing_dates(@db_production)})"
+      @page_title = @db_production.title
+      @browser_tab = "Edit: #{@page_title} (#{listing_dates(@db_production)})"
       render :edit
     end
   end
