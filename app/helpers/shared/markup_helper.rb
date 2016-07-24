@@ -8,12 +8,7 @@ module Shared::MarkupHelper
     "<a href='/#{path}/#{id}'>#{text}</a>"
   end
 
-  def add_table_class element, el_class
-    element == 'table' ? ['table', el_class.to_s].join(' ').strip : el_class
-  end
-
   def bookend_tags element, markup, el_class = nil, el_id = nil, colspan = nil
-    el_class = add_table_class(element, el_class)
     el_class = el_class ? " class='#{el_class}'" : ''
     el_id = el_id ? " id='#{el_id}'" : ''
     colspan = colspan ? " colspan='#{colspan}'" : ''
@@ -40,7 +35,7 @@ module Shared::MarkupHelper
   end
 
   def create_content_container row_values, el_id = nil
-    table_markup = bookend_tags('table', compile_rows(row_values), 'content-table')
+    table_markup = bookend_tags('table', compile_rows(row_values), 'table content-table')
     bookend_tags('div', table_markup, 'content-container', el_id).html_safe
   end
 
