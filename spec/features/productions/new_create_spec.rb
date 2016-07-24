@@ -10,6 +10,13 @@ feature 'Production new/create' do
       log_in user
       expect(page).to have_link('New production', href: new_production_path)
     end
+
+    scenario 'click on \'New production\' link; display new production page', js: true do
+      visit root_path
+      log_in user
+      click_link 'New production'
+      expect(page).to have_current_path new_production_path
+    end
   end
 
   context 'creating productions with valid details' do

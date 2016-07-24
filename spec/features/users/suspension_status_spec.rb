@@ -6,7 +6,7 @@ feature 'User edit/update suspension status' do
     let(:second_super_admin_user) { create :second_super_admin_user }
     let(:user) { create :user }
 
-    scenario 'attempt edit permitted user: render suspension status edit form', js: true do
+    scenario 'attempt edit permitted user: render suspension status edit page', js: true do
       visit edit_suspension_status_path(user)
       expect(page).to have_current_path edit_suspension_status_path(user)
     end

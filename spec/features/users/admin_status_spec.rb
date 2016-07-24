@@ -6,7 +6,7 @@ feature 'User edit/update admin status' do
     let(:second_super_admin_user) { create :second_super_admin_user }
     let(:user) { create :user }
 
-    scenario 'attempt edit permitted user: render admin status edit form', js: true do
+    scenario 'attempt edit permitted user: render admin status edit page', js: true do
       visit edit_admin_status_path(user)
       expect(page).to have_current_path edit_admin_status_path(user)
     end
