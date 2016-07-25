@@ -85,7 +85,7 @@ describe Shared::ParamsHelper, type: :helper do
     end
 
     it 'will remove unpermitted characters (question marks)' do
-      expect(generate_url('Where Has Tommy Flowers Gone? ')).to eq 'where-has-tommy-flowers-gone'
+      expect(generate_url('Where Has Tommy Flowers Gone?')).to eq 'where-has-tommy-flowers-gone'
     end
 
     it 'will remove unpermitted characters (inverted exclamation points)' do
