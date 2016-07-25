@@ -1,7 +1,8 @@
 class SessionsController < ApplicationController
 
+  before_action :get_new_session_page_title
+
   def new
-    @page_title = 'Log in'
   end
 
   def create
@@ -9,7 +10,6 @@ class SessionsController < ApplicationController
     if user && user.authenticate(params[:session][:password])
       clearance_check user
     else
-      @page_title = 'Log in'
       flash.now[:error] = 'Invalid email-password combination'
       render :new
     end
@@ -35,5 +35,11 @@ class SessionsController < ApplicationController
     flash[:success] = 'Successfully logged out'
     redirect_to root_path
   end
+
+  private
+
+    def get_new_session_page_title
+      @page_title = 'Log in'
+    end
 
 end

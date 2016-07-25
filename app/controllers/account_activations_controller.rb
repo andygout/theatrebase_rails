@@ -1,12 +1,14 @@
 class AccountActivationsController < ApplicationController
 
+  include Shared::ViewsComponentsHelper
+
   before_action :get_user
+  before_action :get_page_title
 
   def edit
     if @user && !@user.activated_at? && @user.authenticated?(:activation, params[:id])
       @user.activate
       log_in @user
-      @page_title = "Set password: #{@user.name} (#{@user.email})"
       flash.now[:success] = 'Account activated'
       render :edit
     else
@@ -16,7 +18,6 @@ class AccountActivationsController < ApplicationController
   end
 
   def update
-    @page_title = "Set password: #{@user.name} (#{@user.email})"
     if password_blank?
       @user.errors.add(:password, 'Password cannot be blank')
       render :edit
@@ -41,6 +42,10 @@ class AccountActivationsController < ApplicationController
 
     def get_user
       @user = User.find_by_email(params[:email])
+    end
+
+    def get_page_title
+      @page_title = "Set password: #{get_user_page_title(@user)}" if @user
     end
 
     def password_blank?

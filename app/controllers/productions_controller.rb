@@ -10,12 +10,13 @@ class ProductionsController < ApplicationController
   before_action :not_suspended_user,        only: [:new, :create, :edit, :update, :destroy]
   before_action :get_new_production,        only: [:new, :create]
   before_action :get_production_by_id_url,  only: [:edit, :update, :destroy, :show]
+  before_action :get_page_title,            only: [:new, :create, :edit, :show]
+  before_action :get_browser_tab,           only: [:edit, :show]
   before_action :get_views_components,      only: [:new, :create, :edit, :update, :show]
   before_action :get_form_components,       only: [:new, :create, :edit, :update]
   before_action :get_show_components,       only: [:show]
 
   def new
-    @page_title = 'New production'
   end
 
   def create
@@ -24,14 +25,11 @@ class ProductionsController < ApplicationController
       flash[:success] = 'Production created successfully'
       redirect_to production_path(@production.id, @production.url)
     else
-      @page_title = 'New production'
       render :new
     end
   end
 
   def edit
-    @page_title = @production.title
-    @browser_tab = "Edit: #{@page_title} (#{listing_dates(@production)})"
   end
 
   def update
@@ -42,7 +40,7 @@ class ProductionsController < ApplicationController
       @db_production = Production.find(params[:id])
       @production.url = @db_production.url
       @page_title = @db_production.title
-      @browser_tab = "Edit: #{@page_title} (#{listing_dates(@db_production)})"
+      get_edit_browser_tab(@page_title, @db_production)
       render :edit
     end
   end
@@ -54,8 +52,6 @@ class ProductionsController < ApplicationController
   end
 
   def show
-    @page_title = @production.title
-    @browser_tab = "#{@page_title} (#{listing_dates(@production)})"
   end
 
   def index
@@ -103,6 +99,20 @@ class ProductionsController < ApplicationController
 
     def get_production_by_id_url
       @production = Production.find_by_id_and_url!(params[:id], params[:url])
+    end
+
+    def get_page_title
+      @page_title = @production.title || 'New production'
+    end
+
+    def get_browser_tab
+      params[:action] == 'show' ?
+        @browser_tab = "#{@page_title} (#{listing_dates(@production)})" :
+        get_edit_browser_tab(@page_title, @production)
+    end
+
+    def get_edit_browser_tab page_title, production
+      @browser_tab = "Edit: #{page_title} (#{listing_dates(production)})"
     end
 
     def get_views_components
