@@ -8,6 +8,13 @@ describe ErrorsController, type: :controller do
     end
   end
 
+  context '422 Unprocessable Entity Error occurs' do
+    it 'displays 422 Error display page' do
+      get :error_422
+      expect(response).to render_template :error_422
+    end
+  end
+
   context '500 Internal Server Error occurs' do
     it 'displays 500 Error display page' do
       get :error_500
