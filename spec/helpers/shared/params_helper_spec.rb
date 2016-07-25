@@ -88,6 +88,10 @@ describe Shared::ParamsHelper, type: :helper do
       expect(generate_url('Where Has Tommy Flowers Gone? ')).to eq 'where-has-tommy-flowers-gone'
     end
 
+    it 'will remove unpermitted characters (inverted exclamation points)' do
+      expect(generate_url('¡Vamos Cuba!')).to eq 'vamos-cuba!'
+    end
+
     it 'will retain permitted characters (asterisks)' do
       expect(generate_url('The Motherf**ker with the Hat')).to eq 'the-motherf**ker-with-the-hat'
     end
