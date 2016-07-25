@@ -12,6 +12,8 @@ class UsersController < ApplicationController
   before_action :correct_user,          only: [:edit, :update]
   before_action :destroy_user,          only: :destroy
   before_action :show_user,             only: :show
+  before_action :get_page_title,        only: [:new, :create, :edit, :show]
+  before_action :get_browser_tab,       only: [:edit, :show]
   before_action :get_views_components,  only: [:new, :create, :edit, :update, :show]
   before_action :get_form_components,   only: [:new, :create, :edit, :update]
 
@@ -30,7 +32,6 @@ class UsersController < ApplicationController
   end
 
   def edit
-    get_user_page_title @user
   end
 
   def update
@@ -38,7 +39,8 @@ class UsersController < ApplicationController
       flash[:success] = 'User updated successfully'
       redirect_to @user
     else
-      get_user_page_title User.find(params[:id])
+      @page_title = get_user_page_title(User.find(params[:id]))
+      get_edit_browser_tab @page_title
       render :edit
     end
   end
@@ -55,10 +57,10 @@ class UsersController < ApplicationController
   end
 
   def show
-    get_user_page_title @user
   end
 
   def index
+    @page_title = 'Users'
     @users = current_user.super_admin ?
       User.non_admin(current_user, SuperAdmin).order(:id).paginate(page: params[:page]) :
       User.non_admin(current_user, SuperAdmin).non_admin(current_user, Admin).order(:id).paginate(page: params[:page])
@@ -108,8 +110,24 @@ class UsersController < ApplicationController
       validate_user valid_show_user? @user
     end
 
+    def get_page_title
+      @page_title = ['new', 'create'].include?(params[:action]) ?
+        'New user' :
+        get_user_page_title(@user)
+    end
+
+    def get_browser_tab
+      params[:action] == 'show' ?
+        @browser_tab = "#{@page_title} (user)" :
+        get_edit_browser_tab(@page_title)
+    end
+
+    def get_edit_browser_tab page_title
+      @browser_tab = "Edit: #{page_title} (user)"
+    end
+
     def get_views_components
-      get_content_header 'user'
+      @content_header = 'USER'
       get_status_info
     end
 

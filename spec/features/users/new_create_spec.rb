@@ -11,20 +11,20 @@ feature 'User new/create' do
   context 'accessing add new user form' do
     scenario 'can view link as admin user and super-admin user; not as non-admin user; not when logged out', js: true do
       visit root_path
-      expect(page).to have_link('Add user', href: new_user_path)
+      expect(page).to have_link('New user', href: new_user_path)
       click_link 'Log out'
       log_in super_admin_user
-      expect(page).to have_link('Add user', href: new_user_path)
+      expect(page).to have_link('New user', href: new_user_path)
       click_link 'Log out'
       log_in second_user
-      expect(page).not_to have_link('Add user', href: new_user_path)
+      expect(page).not_to have_link('New user', href: new_user_path)
       click_link 'Log out'
-      expect(page).not_to have_link('Add user', href: new_user_path)
+      expect(page).not_to have_link('New user', href: new_user_path)
     end
 
-    scenario 'click on \'Add user\' link; display new user form', js: true do
+    scenario 'click on \'New user\' link; display new user page', js: true do
       visit root_path
-      click_link 'Add user'
+      click_link 'New user'
       expect(page).to have_current_path new_user_path
     end
   end
@@ -58,6 +58,7 @@ feature 'User new/create' do
       expect(page).to have_css '.alert-error'
       expect(page).to have_css '.field_with_errors'
       expect(page).not_to have_css '.alert-success'
+      expect(page).to have_content 'New user'
       expect(page).to have_current_path users_path
     end
   end

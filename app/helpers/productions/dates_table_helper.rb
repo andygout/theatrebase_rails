@@ -50,7 +50,7 @@ module Productions::DatesTableHelper
     if dates_single_date_tbc?(p)
       dates_tbc_note = ": #{p.dates_tbc_note}" if p.dates_tbc_note && dates_single_date_tbc?(p)
       dates_tbc_row = "<tr><td class='emphasis-text'>TBC#{dates_tbc_note}</td></tr>" if dates_single_date_tbc?(p)
-      return bookend_tags('table', dates_tbc_row, 'dates-tbc-table')
+      return bookend_tags('table', dates_tbc_row, 'table dates-tbc-table')
     end
 
     if single_date?(p)
@@ -60,19 +60,20 @@ module Productions::DatesTableHelper
           { content: "Performs#{booking_until_text}:" },
           { content: date_table_format(p.first_date), class: booking_until_class }
         ]]
-      return bookend_tags('table', compile_rows(row_values), 'dates-table')
+      return bookend_tags('table', compile_rows(row_values), 'table dates-table')
     end
 
     dates = []
     dates << get_first_date(p)
     dates << get_press_date(p) if p.press_date || p.press_date_tbc
     dates << get_last_date(p) unless single_date?(p)
-    bookend_tags('table', compile_rows(dates.compact), 'dates-table')
+    bookend_tags('table', compile_rows(dates.compact), 'table dates-table')
   end
 
   def get_dates p
     dates_note = p.dates_note.present? ? "<p class='note-text emphasis-text'>#{p.dates_note}</p>" : ''
-    dates_markup = "<p class='content-label'>Dates</p>" + dates_table(p) + dates_note
+    dates_inner_markup = "<div class='content-label'>Dates</div>" + dates_table(p) + dates_note
+    dates_markup = bookend_tags('div', dates_inner_markup, 'content-wrapper', 'dates')
     @dates = dates_markup.html_safe
   end
 

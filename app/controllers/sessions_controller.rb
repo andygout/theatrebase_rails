@@ -1,5 +1,7 @@
 class SessionsController < ApplicationController
 
+  before_action :get_new_session_page_title
+
   def new
   end
 
@@ -33,5 +35,11 @@ class SessionsController < ApplicationController
     flash[:success] = 'Successfully logged out'
     redirect_to root_path
   end
+
+  private
+
+    def get_new_session_page_title
+      @page_title = 'Log in'
+    end
 
 end

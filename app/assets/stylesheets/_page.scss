@@ -25,18 +25,19 @@ a {
   border: solid $border-color;
   border-width: 0 2px 2px;
   border-radius: 0 0 5px 5px;
-  box-shadow:  6px 3px 100px $border-color, -6px 3px 100px $box-shadow-color;
+  box-shadow:  5px 5px 100px $border-color, 5px 5px 100px $box-shadow-color;
   text-align: left;
 }
 
 .main-content {
-  padding: 20px 50px;
+  margin-bottom: 20px;
+  padding: 0 50px;
   width: 900px;
   font-size: small;
 }
 
 .title-text {
-  margin: 0 6px;
+  margin: 0 5px 20px 5px;
   padding-bottom: 0px;
   font-size: xx-large;
   color: $theme-color;

@@ -1,7 +1,3 @@
-<% provide(:title, "Set password: #{@page_title}") %>
-
-<p class='title-text'>Set password: <%= @page_title %></p>
-
 <%= form_for @user, html: { class: 'form' }, url: account_activation_path(params[:id]) do |user| %>
   <%= render 'partials/error_count', count: @user.errors.count %>
 

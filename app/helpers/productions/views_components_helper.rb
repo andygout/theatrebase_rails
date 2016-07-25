@@ -4,7 +4,7 @@ module Productions::ViewsComponentsHelper
   include Shared::MarkupHelper
 
   def get_production_index_table
-    return "<p class='title-text'>No productions yet</p>".html_safe if @productions.empty?
+    return "<h1 class='title-text'>No productions yet</h1>".html_safe if @productions.empty?
 
     row_values = @productions.map do |production|
       [
@@ -15,7 +15,7 @@ module Productions::ViewsComponentsHelper
     header_values = [{ content: 'Productions', colspan: 2 }]
     colwidth_values = [{ width: 80 }, { width: 20 }]
     rows_markup = compile_rows(row_values, header_values, colwidth_values)
-    bookend_tags('table', rows_markup, 'listing').html_safe
+    bookend_tags('table', rows_markup, 'table listing', 'productions-index').html_safe
   end
 
 end

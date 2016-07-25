@@ -21,7 +21,7 @@ module Shared::FormsHelper
         [{ content: 'First created:' }, { content: created }],
         [{ content: 'Last updated:' }, { content: updated }]
       ]
-    @created_updated_info = create_content_container(row_values)
+    @created_updated_info = create_content_container(row_values, 'created-updated-info')
   end
 
   def get_status_assigned_info status
@@ -29,7 +29,7 @@ module Shared::FormsHelper
     by = status ? status.assignor : nil
     assigned = created_updated_text(at, by)
     row_values = [[{ content: 'Assigned:' }, { content: assigned }]]
-    @status_assigned_info = create_content_container(row_values)
+    @status_assigned_info = create_content_container(row_values, 'assignment-info')
   end
 
 end

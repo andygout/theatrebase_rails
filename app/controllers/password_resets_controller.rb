@@ -1,8 +1,11 @@
 class PasswordResetsController < ApplicationController
 
+  include Shared::ViewsComponentsHelper
+
   before_action :get_user,          only: [:edit, :update]
   before_action :valid_user,        only: [:edit, :update]
   before_action :check_expiration,  only: [:edit, :update]
+  before_action :get_page_title
 
   def new
   end
@@ -24,11 +27,9 @@ class PasswordResetsController < ApplicationController
   end
 
   def edit
-    @page_title = "#{@user.name} (#{@user.email})"
   end
 
   def update
-    @page_title = "#{@user.name} (#{@user.email})"
     if password_blank?
       @user.errors.add(:password, 'Password cannot be blank')
       render :edit
@@ -67,6 +68,12 @@ class PasswordResetsController < ApplicationController
         flash[:error] = 'Password reset token has expired'
         redirect_to new_password_reset_url
       end
+    end
+
+    def get_page_title
+      @page_title = ['new', 'create'].include?(params[:action]) ?
+        'Request password reset link' :
+        "Reset password: #{get_user_page_title(@user)}"
     end
 
     def password_blank?

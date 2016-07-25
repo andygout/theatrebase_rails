@@ -5,7 +5,7 @@ feature 'User edit/update' do
     let!(:admin_user) { create_logged_in_admin_user }
     let(:user) { create :user }
 
-    scenario 'attempt edit permitted user: render edit form', js: true do
+    scenario 'attempt edit permitted user: render edit page', js: true do
       visit edit_user_path(admin_user)
       expect(page).to have_current_path edit_user_path(admin_user)
     end

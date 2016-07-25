@@ -1,8 +1,4 @@
-<% provide(:title, 'Log in') %>
-
-<p class='title-text'>Log in</p>
-
-<%= form_for :session, html: { class: 'form' }, url: log_in_path do |session| %>
+<%= form_for :session, html: { id: 'new-session-form', class: 'form' }, url: log_in_path do |session| %>
   <div class='form-item'>
     <%= session.label :email, class: 'label' %>
     <%= session.email_field :email, class: 'input text-input', maxlength: 255 %>

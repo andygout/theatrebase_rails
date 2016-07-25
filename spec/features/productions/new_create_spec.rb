@@ -1,14 +1,21 @@
 require 'rails_helper'
 
 feature 'Production new/create' do
-  context 'adding productions' do
+  context 'new productions' do
     let(:user) { create :user }
 
-    scenario 'user must be logged in to see \'Add production\' link', js: true do
+    scenario 'user must be logged in to see \'New production\' link', js: true do
       visit root_path
-      expect(page).not_to have_link('Add production', href: new_production_path)
+      expect(page).not_to have_link('New production', href: new_production_path)
       log_in user
-      expect(page).to have_link('Add production', href: new_production_path)
+      expect(page).to have_link('New production', href: new_production_path)
+    end
+
+    scenario 'click on \'New production\' link; display new production page', js: true do
+      visit root_path
+      log_in user
+      click_link 'New production'
+      expect(page).to have_current_path new_production_path
     end
   end
 
@@ -18,7 +25,7 @@ feature 'Production new/create' do
 
     scenario 'redirect to created production page with success message; creator and updater associations created', js: true do
       visit productions_path
-      click_link 'Add production'
+      click_link 'New production'
       fill_in 'production_title', with: production[:title]
       fill_in 'production_first_date', with: production[:first_date]
       fill_in 'production_last_date', with: production[:last_date]
@@ -42,7 +49,7 @@ feature 'Production new/create' do
 
     scenario 'invalid title given; re-renders form with error message', js: true do
       visit productions_path
-      click_link 'Add production'
+      click_link 'New production'
       fill_in 'production_title', with: ' '
       fill_in 'production_first_date', with: production[:first_date]
       fill_in 'production_last_date', with: production[:last_date]
