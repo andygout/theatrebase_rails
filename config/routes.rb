@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
 
   match "/404", :to => "errors#error_404", :via => :all
+  match "/422", :to => "errors#error_422", :via => :all
   match "/500", :to => "errors#error_500", :via => :all
 
   root 'productions#index'
