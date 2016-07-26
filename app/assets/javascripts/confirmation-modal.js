@@ -1,5 +1,21 @@
-var timeMillisecs = 500;
-var timeSecs = timeMillisecs / 1000;
+function getTransitionEndEventName() {
+  var el = document.createElement('fake'),
+    transitionEndEventNames = {
+      'transition'        : 'transitionend',                  // IE 10+, Opera 12.10+, Chrome, Firefox 15+, Safari 7+
+      'MozTransition'     : 'transitionend',                  // Firefox < 15
+      'WebkitTransition'  : 'webkitTransitionEnd',            // Safari 6, Android Browser
+      'msTransition'      : 'MSTransitionEnd',                // old IE versions
+      'OTransition'       : 'oTransitionEnd otransitionend'   // #1: Opera ≥ 10.5 < 12; #2: Opera ≥ 12.0 < 12.10
+    };
+
+  for (var t in transitionEndEventNames) {
+    if (el.style[t] !== undefined) {
+      return transitionEndEventNames[t];
+    }
+  }
+}
+
+var transitionEndEventName = getTransitionEndEventName();
 
 $.rails.allowAction = function(link) {
   if (!link.attr('data-confirm')) {
@@ -15,113 +31,58 @@ $.rails.confirmed = function(link) {
 };
 
 $.rails.activateModal = function(link) {
-  $('body').addClass('overflow-y-hidden');
-
   createOverlay();
-
   createModal(link);
 
-  blurContainer(2);
+  $('body').addClass('blur overflow-y-hidden');
+  $('.overlay').addClass('veil');
+  $('.modal').addClass('display');
 
-  windowResizeListener();
-
-  $(document).mouseup(function (e)
-  {
-    var modal = $('.modal');
-    if (!modal.is(e.target) && modal.has(e.target).length === 0)
-    {
-      removeEffect();
+  $(document).mouseup(function (ev) {
+    if (!$('.modal').is(ev.target) && $('.modal').has(ev.target).length === 0) {
+      removeModalEffect();
     }
+  });
+
+  $('.cancel').click(function() {
+    removeModalEffect();
   });
 
   $('.confirm').click(function() {
     $.rails.confirmed(link);
   });
-
-  $('.cancel').click(function() {
-    removeEffect();
-  });
 };
 
-function removeEffect() {
-  blurContainer(0);
-
-  $('.overlay, .modal')
-    .fadeOut(timeMillisecs, function() {
-      $(this).remove();
-      $('body').removeClass('overflow-y-hidden');
-    });
-}
-
 function createOverlay() {
-  $('<div></div>')
-    .addClass('overlay')
-    .fadeTo(timeMillisecs, 0.5)
-    .appendTo('body');
+  $("<div class='overlay'></div>")
+    .appendTo('html')
+    .focus(); // prevents batched reflow by browser (which skips CSS transition)
 }
 
 function createModal(link) {
-  var modalHTML = "<div class='modal'>" +
-                  "<h1 class='title-text'>" + link.attr('data-confirm') + "</h1>" +
-                  "<button class='button confirm'>OK</button>" +
-                  "<button class='button cancel'>Cancel</button>" +
-                  "</div>";
-
-  $(modalHTML)
-    .hide()
-    .fadeIn(timeMillisecs)
-    .appendTo('body')
+  $("<div class='modal'>" +
+    "<h1 class='title-text'>" + link.attr('data-confirm') + "</h1>" +
+    "<button class='button confirm'>OK</button>" +
+    "<button class='button cancel'>Cancel</button>" +
+    "</div>")
+    .appendTo('html')
     .css({
-      'top': acquireModalTop(),
-      'left': acquireModalLeft()
-    });
+      'top': getModalPosition($(window).height(), $('.modal').outerHeight()),
+      'left': getModalPosition($(window).width(), $('.modal').outerWidth())
+    })
+    .focus(); // prevents batched reflow by browser (which skips CSS transition)
 }
 
-function windowResizeListener() {
-  $(window).resize(function() {
-    clearTimeout(window.resizeEvt);
-    window.resizeEvt = setTimeout(function() {
-      repositionModal();
-    }, 250);
-  });
+function getModalPosition(windowDimension, modalDimension) {
+  return (windowDimension - modalDimension) / 2;
 }
 
-function repositionModal() {
-  $('.modal').animate({top: acquireModalTop(), left: acquireModalLeft()}, 250);
-}
-
-function acquireModalTop() {
-  return ($(window).height() - $('.modal').outerHeight()) / 2;
-}
-
-function acquireModalLeft() {
-  return ($(window).width() - $('.modal').outerWidth()) / 2;
-}
-
-function blurContainer(blurSize) {
-  var filterVal = 'blur(' + blurSize + 'px)';
-
-  $('.container')
-    .css({
-      'filter': filterVal,
-      'webkitFilter': filterVal,
-      'mozFilter': filterVal,
-      'oFilter': filterVal,
-      'msFilter': filterVal
-    });
-
-  containerTransition('ease-out');
-}
-
-function containerTransition(effect) {
-  var transitionVal = 'all ' + timeSecs + 's ' + effect;
-
-  $('.container')
-    .css({
-      'transition': transitionVal,
-      '-webkit-transition': transitionVal,
-      '-moz-transition': transitionVal,
-      '-o-transition': transitionVal,
-      '-ms-transition': transitionVal
+function removeModalEffect() {
+  $(document).unbind('mouseup');
+  $('.modal').removeClass('display');
+  $('.overlay').removeClass('veil');
+  $('body').removeClass('blur overflow-y-hidden')
+    .one(transitionEndEventName, function() {
+      $('.overlay, .modal').remove();
     });
 }
