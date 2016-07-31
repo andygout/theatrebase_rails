@@ -11,6 +11,19 @@ html {
   background-color: $html-bg-color;
 }
 
+body {
+  transition: $modal_transition_time;
+
+  &.blur {
+    -webkit-filter: blur(3px);
+    filter: blur(3px);
+  }
+
+  &.overflow-y-hidden {
+    overflow-y: hidden;
+  }
+}
+
 a {
   color: $theme-color;
   &:hover {
