@@ -9,13 +9,10 @@ class CreateSuspensions < ActiveRecord::Migration
 
       t.datetime :created_at
 
-      t.belongs_to :assignor,
-        index: true
+      t.belongs_to :assignor, index: true
     end
 
-    add_foreign_key :suspensions,
-      :users,
-      column: :assignor_id
+    add_foreign_key :suspensions, :users, column: :assignor_id
   end
 
 end
