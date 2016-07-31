@@ -6,9 +6,11 @@
   font-weight: bold;
 }
 
-.root-link {
+.home-link {
   color: $header-color;
+  transition: $link_color_transition_time;
+
   &:hover {
-    color: $header-hover;
+    color: $header-hover-color;
   }
 }
