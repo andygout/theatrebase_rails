@@ -17,8 +17,8 @@ ActiveRecord::Schema.define(version: 20160225202000) do
   enable_extension "plpgsql"
 
   create_table "admins", id: false, force: :cascade do |t|
-    t.integer  "user_id"
     t.datetime "created_at"
+    t.integer  "user_id"
     t.integer  "assignor_id"
   end
 
@@ -50,15 +50,15 @@ ActiveRecord::Schema.define(version: 20160225202000) do
   add_index "productions", ["url"], name: "index_productions_on_url", using: :btree
 
   create_table "super_admins", id: false, force: :cascade do |t|
-    t.integer  "user_id"
     t.datetime "created_at"
+    t.integer  "user_id"
   end
 
   add_index "super_admins", ["user_id"], name: "index_super_admins_on_user_id", using: :btree
 
   create_table "suspensions", id: false, force: :cascade do |t|
-    t.integer  "user_id"
     t.datetime "created_at"
+    t.integer  "user_id"
     t.integer  "assignor_id"
   end
 
