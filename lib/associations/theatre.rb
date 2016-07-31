@@ -1,9 +1,9 @@
-module Associations::Production
+module Associations::Theatre
 
   extend ActiveSupport::Concern
 
   included do
-    belongs_to :theatre
+    has_many :productions
 
     belongs_to :creator,
       class_name: :User,
