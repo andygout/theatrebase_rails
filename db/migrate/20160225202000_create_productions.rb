@@ -17,20 +17,12 @@ class CreateProductions < ActiveRecord::Migration
       t.date        :second_press_date
       t.timestamps  null: false
 
-      t.belongs_to :creator,
-        index: true
-
-      t.belongs_to :updater,
-        index: true
+      t.belongs_to :creator, index: true
+      t.belongs_to :updater, index: true
     end
 
-    add_foreign_key :productions,
-      :users,
-      column: :creator_id
-
-    add_foreign_key :productions,
-      :users,
-      column: :updater_id
+    add_foreign_key :productions, :users, column: :creator_id
+    add_foreign_key :productions, :users, column: :updater_id
   end
 
 end
