@@ -17,6 +17,7 @@ class ProductionsController < ApplicationController
   before_action :get_show_components,       only: [:show]
 
   def new
+    @production.build_theatre
   end
 
   def create
@@ -81,7 +82,8 @@ class ProductionsController < ApplicationController
                 :press_date_wording,
                 :dates_tbc_note,
                 :dates_note,
-                :second_press_date)
+                :second_press_date,
+                theatre_attributes: [:name])
         .merge(updater_id: current_user.id)
     end
 
