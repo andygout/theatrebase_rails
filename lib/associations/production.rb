@@ -6,6 +6,11 @@ module Associations::Production
     belongs_to :theatre
 
     accepts_nested_attributes_for :theatre
+    def theatre_attributes=(attributes)
+      self.theatre = Theatre.find_by_name(attributes[:name])
+      attributes.merge!(self.theatre.attributes) if self.theatre
+      assign_nested_attributes_for_one_to_one_association(:theatre, attributes)
+    end
 
     belongs_to :creator,
       class_name: :User,
