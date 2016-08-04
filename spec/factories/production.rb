@@ -5,6 +5,7 @@ FactoryGirl.define do
     url         'hamlet'
     first_date  '05/08/2015'
     last_date   '31/10/2015'
+    association :theatre
     association :creator, factory: :second_user
     updater     { creator }
 

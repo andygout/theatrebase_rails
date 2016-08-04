@@ -202,4 +202,11 @@ describe Production, type: :model do
       expect(production.valid?).to be true
     end
   end
+
+  context 'theatre association validation' do
+    it 'invalid if no association exists' do
+      production.theatre_attributes = {}
+      expect(production.valid?).to be false
+    end
+  end
 end
