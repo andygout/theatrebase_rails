@@ -67,6 +67,7 @@ class ProductionsController < ApplicationController
       params[:production][:alphabetise] = get_alphabetise_value(title)
       params[:production][:url] = generate_url(title)
       nullify_unused_params
+      params[:production][:theatre_attributes].merge!({ creator_id: current_user.id, updater_id: current_user.id })
 
       params
         .require(:production)
@@ -83,7 +84,7 @@ class ProductionsController < ApplicationController
                 :dates_tbc_note,
                 :dates_note,
                 :second_press_date,
-                theatre_attributes: [:name])
+                theatre_attributes: [:name, :creator_id, :updater_id])
         .merge(updater_id: current_user.id)
     end
 
