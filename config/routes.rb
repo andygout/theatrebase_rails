@@ -17,6 +17,7 @@ Rails.application.routes.draw do
   delete  'productions/:id/:url'      => 'productions#destroy'
 
   resources :productions, only: [:new, :create, :index]
+  resources :theatres, only: [:edit, :update, :show, :destroy]
   resources :users
   resources :admin_status, param: :user_id, only: [:edit, :update]
   resources :suspension_status, param: :user_id, only: [:edit, :update]
