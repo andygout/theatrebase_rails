@@ -69,8 +69,9 @@ ActiveRecord::Schema.define(version: 20160731200827) do
 
   create_table "theatres", force: :cascade do |t|
     t.string   "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string   "alphabetise"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
     t.integer  "creator_id"
     t.integer  "updater_id"
   end

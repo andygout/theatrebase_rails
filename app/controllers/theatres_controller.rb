@@ -1,6 +1,7 @@
 class TheatresController < ApplicationController
 
   include Shared::FormsHelper
+  include Shared::ParamsHelper
 
   before_action :logged_in_user,            only: [:edit, :update, :destroy]
   before_action :not_suspended_user,        only: [:edit, :update, :destroy]
@@ -37,9 +38,12 @@ class TheatresController < ApplicationController
   private
 
     def theatre_params
+      params[:theatre][:alphabetise] = get_alphabetise_value(params[:theatre][:name])
+
       params
         .require(:theatre)
-        .permit(:name)
+        .permit(:name,
+                :alphabetise)
         .merge(updater_id: current_user.id)
     end
 
