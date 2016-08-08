@@ -2,6 +2,7 @@ FactoryGirl.define do
 
   factory :theatre do
     name        'Barbican'
+    url         'barbican'
     association :creator, factory: :third_user
     updater     { creator }
 

@@ -3,6 +3,7 @@ class CreateTheatres < ActiveRecord::Migration
     create_table :theatres do |t|
       t.string      :name
       t.string      :alphabetise
+      t.string      :url, index: true
       t.timestamps  null: false
 
       t.belongs_to :creator, index: true

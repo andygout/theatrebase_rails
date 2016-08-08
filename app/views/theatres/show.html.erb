@@ -1,11 +1,11 @@
 <% if logged_in? %>
   <%= button_to 'Edit Theatre',
-      edit_theatre_path(@theatre),
+      edit_theatre_path(@theatre.url),
       method: :get,
       class: 'button' %>
 
   <%= button_to 'Delete Theatre',
-      theatre_path(@theatre),
+      theatre_path(@theatre.url),
       method: :delete,
       class: 'button',
       data: { confirm: 'Really delete this theatre?' } %>

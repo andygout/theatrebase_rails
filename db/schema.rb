@@ -70,6 +70,7 @@ ActiveRecord::Schema.define(version: 20160731200827) do
   create_table "theatres", force: :cascade do |t|
     t.string   "name"
     t.string   "alphabetise"
+    t.string   "url"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
     t.integer  "creator_id"
@@ -78,6 +79,7 @@ ActiveRecord::Schema.define(version: 20160731200827) do
 
   add_index "theatres", ["creator_id"], name: "index_theatres_on_creator_id", using: :btree
   add_index "theatres", ["updater_id"], name: "index_theatres_on_updater_id", using: :btree
+  add_index "theatres", ["url"], name: "index_theatres_on_url", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "name"

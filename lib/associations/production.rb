@@ -9,7 +9,7 @@ module Associations::Production
 
     accepts_nested_attributes_for :theatre
     def theatre_attributes=(attributes)
-      self.theatre = Theatre.find_by_name(attributes[:name])
+      self.theatre = Theatre.find_by_url(attributes[:url])
       attributes.merge!(self.theatre.attributes) if self.theatre
       assign_nested_attributes_for_one_to_one_association(:theatre, attributes)
     end

@@ -5,7 +5,7 @@ class TheatresController < ApplicationController
 
   before_action :logged_in_user,            only: [:edit, :update, :destroy]
   before_action :not_suspended_user,        only: [:edit, :update, :destroy]
-  before_action :get_theatre
+  before_action :get_theatre_by_url
   before_action :get_page_title,            only: [:edit, :show]
   before_action :get_browser_tab,           only: [:edit, :show]
   before_action :get_views_components,      only: [:edit, :update, :show]
@@ -17,9 +17,10 @@ class TheatresController < ApplicationController
   def update
     if @theatre.update(theatre_params)
       flash[:success] = 'Theatre updated successfully'
-      redirect_to theatre_path(@theatre)
+      redirect_to theatre_path(@theatre.url)
     else
-      @db_theatre = Theatre.find(params[:id])
+      @db_theatre = Theatre.find_by_url!(params[:url])
+      @theatre.url = @db_theatre.url
       @page_title = "#{@db_theatre.name}"
       get_browser_tab
       render :edit
@@ -38,17 +39,20 @@ class TheatresController < ApplicationController
   private
 
     def theatre_params
-      params[:theatre][:alphabetise] = get_alphabetise_value(params[:theatre][:name])
+      name = params[:theatre][:name]
+      params[:theatre][:alphabetise] = get_alphabetise_value(name)
+      params[:theatre][:url] = generate_url(name)
 
       params
         .require(:theatre)
         .permit(:name,
-                :alphabetise)
+                :alphabetise,
+                :url)
         .merge(updater_id: current_user.id)
     end
 
-    def get_theatre
-      @theatre = Theatre.find(params[:id])
+    def get_theatre_by_url
+      @theatre = Theatre.find_by_url!(params[:url])
     end
 
     def get_page_title
