@@ -9,6 +9,7 @@ describe TheatresController, type: :controller do
   let(:suspended_user) { create :suspended_user }
   let(:add_theatre) { attributes_for :add_theatre }
   let!(:theatre) { create :theatre }
+  let(:second_theatre) { create :second_theatre }
 
   context 'attempt edit theatre' do
     it 'as super-admin: render theatre edit form' do
@@ -107,6 +108,35 @@ describe TheatresController, type: :controller do
       patch :update, url: theatre.url, theatre: { name: ' ' + add_theatre[:name] + ' ' }
       theatre.reload
       expect(theatre.name).to eq add_theatre[:name]
+    end
+  end
+
+  context 'attempt update theatre with invalid and valid details' do
+    before(:each) do
+      session[:user_id] = user.id
+    end
+
+    it 'submitting a name that creates a URL already taken by another theatre will re-render the edit form' do
+      initial_url = theatre.url
+      patch :update, url: theatre.url, theatre: { name: second_theatre[:name] }
+      theatre.reload
+      expect(response).to render_template :edit
+      expect(theatre.url).to eq initial_url
+    end
+
+    it 'submitting a name that creates the existing URL theatre will redirect to theatre display page' do
+      initial_url = theatre.url
+      patch :update, url: theatre.url, theatre: { name: theatre[:name] }
+      theatre.reload
+      expect(response).to redirect_to theatre_path(theatre.url)
+      expect(theatre.url).to eq initial_url
+    end
+
+    it 'submitting a name that creates a URL not yet taken by any theatre will redirect to theatre display page' do
+      patch :update, url: theatre.url, theatre: { name: add_theatre[:name] }
+      theatre.reload
+      expect(response).to redirect_to theatre_path(theatre.url)
+      expect(theatre.url).to eq add_theatre[:url]
     end
   end
 
