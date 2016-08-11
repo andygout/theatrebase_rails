@@ -8,7 +8,8 @@ describe TheatresController, type: :controller do
   let(:suspended_admin_user) { create :suspended_admin_user }
   let(:suspended_user) { create :suspended_user }
   let(:add_theatre) { attributes_for :add_theatre }
-  let!(:theatre) { create :theatre }
+  let!(:production) { create :production }
+  let!(:theatre) { production.theatre }
   let(:second_theatre) { create :second_theatre }
 
   context 'attempt edit theatre' do
@@ -140,7 +141,11 @@ describe TheatresController, type: :controller do
     end
   end
 
-  context 'attempt delete theatre' do
+  context 'attempt delete theatre (with no existing associations)' do
+    before(:each) do
+      Production.destroy(theatre.productions.first.id)
+    end
+
     it 'as super-admin: succeed and redirect to home page' do
       session[:user_id] = super_admin_user.id
       expect { delete :destroy, url: theatre.url }.to change { Theatre.count }.by -1
@@ -180,6 +185,14 @@ describe TheatresController, type: :controller do
     it 'when not logged in: fail and redirect to log in page' do
       expect { delete :destroy, url: theatre.url }.to change { Theatre.count }.by 0
       expect(response).to redirect_to log_in_path
+    end
+  end
+
+  context 'attempt delete theatre (with existing associations)' do
+    it 'associated production exists: fail and redirect to theatre display page' do
+      session[:user_id] = user.id
+      expect { delete :destroy, url: theatre.url }.to change { Theatre.count }.by 0
+      expect(response).to redirect_to theatre_path(theatre.url)
     end
   end
 

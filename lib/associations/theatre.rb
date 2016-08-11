@@ -3,7 +3,7 @@ module Associations::Theatre
   extend ActiveSupport::Concern
 
   included do
-    has_many :productions
+    has_many :productions, dependent: :restrict_with_error
 
     belongs_to :creator,
       class_name: :User,

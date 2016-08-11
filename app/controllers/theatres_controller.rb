@@ -29,8 +29,14 @@ class TheatresController < ApplicationController
 
   def destroy
     @theatre.destroy
-    flash[:success] = 'Theatre deleted successfully'
-    redirect_to root_path
+    if @theatre.errors.empty?
+      flash[:success] = 'Theatre deleted successfully'
+      redirect_to root_path
+    else
+      get_page_title
+      get_browser_tab
+      redirect_to theatre_path(@theatre.url)
+    end
   end
 
   def show
@@ -60,7 +66,7 @@ class TheatresController < ApplicationController
     end
 
     def get_browser_tab
-      @browser_tab = params[:action] == 'show' ?
+      @browser_tab = ['show', 'destroy'].include?(params[:action]) ?
         "#{@page_title} (theatre)" :
         "Edit: #{@page_title} (theatre)"
     end
