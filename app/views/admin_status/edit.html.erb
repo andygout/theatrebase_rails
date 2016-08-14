@@ -4,12 +4,14 @@
 
 <%= form_for @user, html: { class: 'form' }, url: admin_status_path(params[:user_id]) do |user| %>
 
-  <%= user.fields_for :admin do |admin| %>
-    <div class='form-item'>
-      <%= admin.check_box :_destroy, { checked: admin.object.persisted? }, '0', '1' %>
-      <%= admin.label :_destroy, 'Admin status', class: 'checkbox' %>
-    </div>
-  <% end %>
+  <div class='form-section'>
+    <%= user.fields_for :admin do |admin| %>
+      <div class='form-item'>
+        <%= admin.check_box :_destroy, { checked: admin.object.persisted? }, '0', '1' %>
+        <%= admin.label :_destroy, 'Admin status', class: 'checkbox' %>
+      </div>
+    <% end %>
+  </div>
 
   <%= user.submit 'Update Admin Status', class: 'button' %>
 <% end %>
