@@ -1,5 +1,7 @@
 <%= @dates %>
 
+<%= @theatre %>
+
 <% if logged_in? %>
   <%= button_to 'Edit Production',
       edit_production_path(@production.id, @production.url),

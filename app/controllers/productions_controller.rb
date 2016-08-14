@@ -1,6 +1,7 @@
 class ProductionsController < ApplicationController
 
   include Productions::DatesTableHelper
+  include Productions::TheatreHelper
   include Productions::ViewsComponentsHelper
   include Shared::FormsHelper
   include Shared::ParamsHelper
@@ -137,6 +138,7 @@ class ProductionsController < ApplicationController
 
     def get_show_components
       get_dates @production
+      get_theatre @production.theatre
     end
 
 end
