@@ -36,6 +36,7 @@ class TheatresController < ApplicationController
     else
       get_page_title
       get_browser_tab
+      flash[:error] = @theatre.errors.messages[:base][0]
       redirect_to theatre_path(@theatre.url)
     end
   end
