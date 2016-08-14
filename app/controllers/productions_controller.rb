@@ -1,6 +1,7 @@
 class ProductionsController < ApplicationController
 
   include Productions::DatesTableHelper
+  include Productions::TheatreHelper
   include Productions::ViewsComponentsHelper
   include Shared::FormsHelper
   include Shared::ParamsHelper
@@ -17,6 +18,7 @@ class ProductionsController < ApplicationController
   before_action :get_show_components,       only: [:show]
 
   def new
+    @production.build_theatre
   end
 
   def create
@@ -56,7 +58,7 @@ class ProductionsController < ApplicationController
 
   def index
     @productions = Production.order('COALESCE(alphabetise, title)')
-    @production_index_table = get_production_index_table
+    get_production_index_table @productions
   end
 
   private
@@ -66,6 +68,16 @@ class ProductionsController < ApplicationController
       params[:production][:alphabetise] = get_alphabetise_value(title)
       params[:production][:url] = generate_url(title)
       nullify_unused_params
+
+      theatre_name = params[:production][:theatre_attributes][:name]
+      params[:production][:theatre_attributes].merge!(
+          {
+            alphabetise:  get_alphabetise_value(theatre_name),
+            url:          generate_url(theatre_name),
+            creator_id:   current_user.id,
+            updater_id:   current_user.id
+          }
+        )
 
       params
         .require(:production)
@@ -81,7 +93,8 @@ class ProductionsController < ApplicationController
                 :press_date_wording,
                 :dates_tbc_note,
                 :dates_note,
-                :second_press_date)
+                :second_press_date,
+                theatre_attributes: [:name, :alphabetise, :url, :creator_id, :updater_id])
         .merge(updater_id: current_user.id)
     end
 
@@ -125,6 +138,7 @@ class ProductionsController < ApplicationController
 
     def get_show_components
       get_dates @production
+      get_theatre @production.theatre
     end
 
 end

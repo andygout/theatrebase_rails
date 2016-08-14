@@ -77,5 +77,13 @@
     <%= render partial: 'partials/error', collection: @production.errors[:second_press_date] %>
   </div>
 
+  <%= production.fields_for :theatre do |theatre| %>
+    <div class='form-item'>
+      <%= theatre.label :name, 'Theatre', class: 'label mandatory' %>
+      <%= theatre.text_field :name, class: 'input text-input', maxlength: 255 %>
+      <%= render partial: 'partials/error', collection: @production.theatre.errors[:name] %>
+    </div>
+  <% end %>
+
   <%= production.submit nil, class: 'button' %>
 <% end %>

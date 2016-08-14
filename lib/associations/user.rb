@@ -65,6 +65,15 @@ module Associations::User
     has_many :updated_productions,
       class_name: :Production,
       foreign_key: :updater_id
+
+    has_many :created_theatres,
+      -> { extending WithUserAssociationExtension },
+      class_name: :Theatre,
+      foreign_key: :creator_id
+
+    has_many :updated_theatres,
+      class_name: :Theatre,
+      foreign_key: :updater_id
   end
 
 end

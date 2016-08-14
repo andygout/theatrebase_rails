@@ -17,6 +17,7 @@ class CreateProductions < ActiveRecord::Migration
       t.date        :second_press_date
       t.timestamps  null: false
 
+      t.belongs_to :theatre, index: true
       t.belongs_to :creator, index: true
       t.belongs_to :updater, index: true
     end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160225202000) do
+ActiveRecord::Schema.define(version: 20160731200827) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -41,11 +41,13 @@ ActiveRecord::Schema.define(version: 20160225202000) do
     t.date     "second_press_date"
     t.datetime "created_at",                   null: false
     t.datetime "updated_at",                   null: false
+    t.integer  "theatre_id"
     t.integer  "creator_id"
     t.integer  "updater_id"
   end
 
   add_index "productions", ["creator_id"], name: "index_productions_on_creator_id", using: :btree
+  add_index "productions", ["theatre_id"], name: "index_productions_on_theatre_id", using: :btree
   add_index "productions", ["updater_id"], name: "index_productions_on_updater_id", using: :btree
   add_index "productions", ["url"], name: "index_productions_on_url", using: :btree
 
@@ -64,6 +66,20 @@ ActiveRecord::Schema.define(version: 20160225202000) do
 
   add_index "suspensions", ["assignor_id"], name: "index_suspensions_on_assignor_id", using: :btree
   add_index "suspensions", ["user_id"], name: "index_suspensions_on_user_id", using: :btree
+
+  create_table "theatres", force: :cascade do |t|
+    t.string   "name"
+    t.string   "alphabetise"
+    t.string   "url"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.integer  "creator_id"
+    t.integer  "updater_id"
+  end
+
+  add_index "theatres", ["creator_id"], name: "index_theatres_on_creator_id", using: :btree
+  add_index "theatres", ["updater_id"], name: "index_theatres_on_updater_id", using: :btree
+  add_index "theatres", ["url"], name: "index_theatres_on_url", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "name"
@@ -95,6 +111,8 @@ ActiveRecord::Schema.define(version: 20160225202000) do
   add_foreign_key "super_admins", "users"
   add_foreign_key "suspensions", "users"
   add_foreign_key "suspensions", "users", column: "assignor_id"
+  add_foreign_key "theatres", "users", column: "creator_id"
+  add_foreign_key "theatres", "users", column: "updater_id"
   add_foreign_key "users", "users", column: "creator_id"
   add_foreign_key "users", "users", column: "updater_id"
 end

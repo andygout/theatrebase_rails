@@ -8,6 +8,7 @@ describe ProductionsController, type: :controller do
   let(:suspended_admin_user) { create :suspended_admin_user }
   let(:suspended_user) { create :suspended_user }
   let(:add_production) { attributes_for :add_production }
+  let(:add_theatre) { attributes_for :add_theatre }
   let!(:production) { create :production }
 
   let(:production_params) { {
@@ -16,7 +17,8 @@ describe ProductionsController, type: :controller do
     last_date: add_production[:last_date],
     press_date_wording: '',
     dates_tbc_note: '',
-    dates_note: ''
+    dates_note: '',
+    theatre_attributes: { name: add_theatre[:name] }
   } }
 
   let(:production_whitespace_params) { {
@@ -26,7 +28,8 @@ describe ProductionsController, type: :controller do
     dates_info: 3,
     press_date_wording: ' ' + add_production[:press_date_wording] + ' ',
     dates_tbc_note: ' ' + add_production[:dates_tbc_note] + ' ',
-    dates_note: ' ' + add_production[:dates_note] + ' '
+    dates_note: ' ' + add_production[:dates_note] + ' ',
+    theatre_attributes: { name: ' ' + add_theatre[:name] + ' ' }
   } }
 
   context 'attempt add new production' do

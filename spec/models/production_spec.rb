@@ -2,6 +2,7 @@ require 'rails_helper'
 
 describe Production, type: :model do
   context 'associations' do
+    it { should belong_to :theatre }
     it { should belong_to :creator }
     it { should belong_to :updater }
   end
@@ -199,6 +200,13 @@ describe Production, type: :model do
       production.press_date = '25/08/2015'
       production.second_press_date = '31/10/2015'
       expect(production.valid?).to be true
+    end
+  end
+
+  context 'theatre association validation' do
+    it 'invalid if no association exists' do
+      production.theatre_attributes = {}
+      expect(production.valid?).to be false
     end
   end
 end
