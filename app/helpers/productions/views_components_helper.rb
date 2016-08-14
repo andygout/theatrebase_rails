@@ -9,11 +9,12 @@ module Productions::ViewsComponentsHelper
     row_values = @productions.map do |production|
       [
         { content: link_markup('productions', "#{production.id}/#{production.url}", production.title) },
+        { content: production.theatre.name },
         { content: listing_dates(production) }
       ]
     end
-    header_values = [{ content: 'Productions', colspan: 2 }]
-    colwidth_values = [{ width: 80 }, { width: 20 }]
+    header_values = [{ content: 'Productions', colspan: 3 }]
+    colwidth_values = [{ width: 30 }, { width: 50 }, { width: 20 }]
     rows_markup = compile_rows(row_values, header_values, colwidth_values)
     bookend_tags('table', rows_markup, 'table listing', 'productions-index').html_safe
   end
