@@ -13,7 +13,7 @@
   }
 }
 
-.form {
+.form-section {
   margin-bottom: 20px;
   padding: 5px 10px 20px;
   background-color: $form-bg-color;
@@ -64,7 +64,8 @@
   }
 }
 
-.head-alert {
+.head-alert,
+.form-alert {
   margin: 0 5px 5px 5px;
   height: 15px;
 }

@@ -2,34 +2,36 @@
 
 <%= @created_updated_info %>
 
-<%= form_for @user, html: { class: 'form' } do |user| %>
+<%= form_for @user do |user| %>
   <%= render 'partials/error_count', count: @user.errors.count %>
 
-  <div class='form-item'>
-    <%= user.label :name, class: 'label' %>
-    <%= user.text_field :name, class: 'input text-input', maxlength: 255 %>
-    <%= render partial: 'partials/error', collection: @user.errors[:name] %>
-  </div>
-
-  <div class='form-item'>
-    <%= user.label :email, class: 'label' %>
-    <%= user.email_field :email, class: 'input text-input', maxlength: 255 %>
-    <%= render partial: 'partials/error', collection: @user.errors[:email] %>
-  </div>
-
-  <% if !@user.new_record? %>
+  <div class='form-section'>
     <div class='form-item'>
-      <%= user.label :password, class: 'label' %>
-      <%= user.password_field :password , class: 'input text-input', maxlength: 72 %>
-      <%= render partial: 'partials/error', collection: @user.errors[:password] %>
+      <%= user.label :name, class: 'label' %>
+      <%= user.text_field :name, class: 'input text-input', maxlength: 255 %>
+      <%= render partial: 'partials/error', collection: @user.errors[:name] %>
     </div>
 
     <div class='form-item'>
-      <%= user.label :password_confirmation, 'Password confirmation', class: 'label' %>
-      <%= user.password_field :password_confirmation, class: 'input text-input', maxlength: 72 %>
-      <%= render partial: 'partials/error', collection: @user.errors[:password_confirmation] %>
+      <%= user.label :email, class: 'label' %>
+      <%= user.email_field :email, class: 'input text-input', maxlength: 255 %>
+      <%= render partial: 'partials/error', collection: @user.errors[:email] %>
     </div>
-  <% end %>
+
+    <% if !@user.new_record? %>
+      <div class='form-item'>
+        <%= user.label :password, class: 'label' %>
+        <%= user.password_field :password , class: 'input text-input', maxlength: 72 %>
+        <%= render partial: 'partials/error', collection: @user.errors[:password] %>
+      </div>
+
+      <div class='form-item'>
+        <%= user.label :password_confirmation, 'Password confirmation', class: 'label' %>
+        <%= user.password_field :password_confirmation, class: 'input text-input', maxlength: 72 %>
+        <%= render partial: 'partials/error', collection: @user.errors[:password_confirmation] %>
+      </div>
+    <% end %>
+  </div>
 
   <%= user.submit nil, class: 'button' %>
 <% end %>

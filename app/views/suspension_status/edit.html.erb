@@ -2,14 +2,16 @@
 
 <%= @status_assigned_info %>
 
-<%= form_for @user, html: { class: 'form' }, url: suspension_status_path(params[:user_id]) do |user| %>
+<%= form_for @user, url: suspension_status_path(params[:user_id]) do |user| %>
 
-  <%= user.fields_for :suspension do |suspension| %>
-    <div class='form-item'>
-      <%= suspension.check_box :_destroy, { checked: suspension.object.persisted? }, '0', '1' %>
-      <%= suspension.label :_destroy, 'Suspension status', class: 'checkbox' %>
-    </div>
-  <% end %>
+  <div class='form-section'>
+    <%= user.fields_for :suspension do |suspension| %>
+      <div class='form-item'>
+        <%= suspension.check_box :_destroy, { checked: suspension.object.persisted? }, '0', '1' %>
+        <%= suspension.label :_destroy, 'Suspension status', class: 'checkbox' %>
+      </div>
+    <% end %>
+  </div>
 
   <%= user.submit 'Update Suspension Status', class: 'button' %>
 <% end %>
