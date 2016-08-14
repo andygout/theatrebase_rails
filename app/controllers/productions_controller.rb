@@ -58,7 +58,7 @@ class ProductionsController < ApplicationController
 
   def index
     @productions = Production.order('COALESCE(alphabetise, title)')
-    @production_index_table = get_production_index_table
+    get_production_index_table @productions
   end
 
   private

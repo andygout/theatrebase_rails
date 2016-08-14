@@ -2,6 +2,7 @@ class TheatresController < ApplicationController
 
   include Shared::FormsHelper
   include Shared::ParamsHelper
+  include Productions::ViewsComponentsHelper
 
   before_action :logged_in_user,            only: [:edit, :update, :destroy]
   before_action :not_suspended_user,        only: [:edit, :update, :destroy]
@@ -40,6 +41,7 @@ class TheatresController < ApplicationController
   end
 
   def show
+    get_production_index_table @theatre.productions
   end
 
   private
