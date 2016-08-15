@@ -10,5 +10,5 @@
       theatre_path(@theatre.url),
       method: :delete,
       class: 'button',
-      data: { confirm: 'Really delete this theatre?' } %>
+      data: { confirm: 'Really delete this theatre?', destroyable: @theatre.can_destroy? } %>
 <% end %>

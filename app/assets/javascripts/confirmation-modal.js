@@ -18,7 +18,7 @@ function getTransitionEndEventName() {
 var transitionEndEventName = getTransitionEndEventName();
 
 $.rails.allowAction = function(link) {
-  if (!link.attr('data-confirm')) {
+  if (!link.attr('data-confirm') || !link.attr('data-destroyable') || link.attr('data-destroyable') == 'false') {
     return true;
   }
   $.rails.activateModal(link);
