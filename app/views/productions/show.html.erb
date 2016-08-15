@@ -12,5 +12,5 @@
       production_path(@production.id, @production.url),
       method: :delete,
       class: 'button',
-      data: { confirm: 'Really delete this production?' } %>
+      data: { confirm: 'Really delete this production?', destroyable: @production.can_destroy? } %>
 <% end %>
