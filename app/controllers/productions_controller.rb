@@ -64,20 +64,9 @@ class ProductionsController < ApplicationController
   private
 
     def production_params
-      title = params[:production][:title]
-      params[:production][:alphabetise] = get_alphabetise_value(title)
-      params[:production][:url] = generate_url(title)
       nullify_unused_params
-
-      theatre_name = params[:production][:theatre_attributes][:name]
-      params[:production][:theatre_attributes].merge!(
-          {
-            alphabetise:  get_alphabetise_value(theatre_name),
-            url:          generate_url(theatre_name),
-            creator_id:   current_user.id,
-            updater_id:   current_user.id
-          }
-        )
+      amplify_production_attributes
+      amplify_theatre_attributes
 
       params
         .require(:production)
@@ -104,6 +93,24 @@ class ProductionsController < ApplicationController
 
       [:press_date_wording, :dates_tbc_note, :dates_note]
         .map { |p| params[:production][p] = nil if params[:production][p].empty? }
+    end
+
+    def amplify_production_attributes
+      title = params[:production][:title]
+      params[:production][:alphabetise] = get_alphabetise_value(title)
+      params[:production][:url] = generate_url(title)
+    end
+
+    def amplify_theatre_attributes
+      theatre_name = params[:production][:theatre_attributes][:name]
+      params[:production][:theatre_attributes].merge!(
+          {
+            alphabetise:  get_alphabetise_value(theatre_name),
+            url:          generate_url(theatre_name),
+            creator_id:   current_user.id,
+            updater_id:   current_user.id
+          }
+        )
     end
 
     def get_new_production
