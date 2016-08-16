@@ -1,6 +1,5 @@
 class Production < ActiveRecord::Base
 
-  include ActiveModel::Validations
   include Productions::ValidationsHelper
   include Shared::ParamsHelper
   include Associations::Production
