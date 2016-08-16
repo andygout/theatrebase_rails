@@ -23,7 +23,7 @@ en:
   activerecord:
     attributes:
       production:
-        dates_tbc_note: "Dates TBC"
+        dates_tbc_note: 'Dates TBC'
     errors:
       attributes:
         first_date:
