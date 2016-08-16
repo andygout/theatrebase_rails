@@ -169,7 +169,7 @@ describe ProductionsController, type: :controller do
     end
 
     it 'when not logged in: fail and redirect to log in page' do
-      get :edit, id: production, url: production.url
+      get :edit, id: production.id, url: production.url
       expect(response).to redirect_to log_in_path
     end
   end
