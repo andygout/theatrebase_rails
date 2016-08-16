@@ -20,7 +20,7 @@ describe Production, type: :model do
   end
 
   context 'title validation' do
-    it 'invalid if name not present' do
+    it 'invalid if title not present' do
       production.title = ' '
       expect(production.valid?).to be false
     end
