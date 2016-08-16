@@ -132,19 +132,19 @@ describe ProductionsController, type: :controller do
   end
 
   context 'attempt edit production' do
-    it 'as super-admin: redirect to production edit form' do
+    it 'as super-admin: render production edit form' do
       session[:user_id] = super_admin_user.id
       get :edit, id: production.id, url: production.url
       expect(response).to render_template :edit
     end
 
-    it 'as admin: redirect to production edit form' do
+    it 'as admin: render production edit form' do
       session[:user_id] = admin_user.id
       get :edit, id: production.id, url: production.url
       expect(response).to render_template :edit
     end
 
-    it 'as non-admin: redirect to production edit form' do
+    it 'as non-admin: render production edit form' do
       session[:user_id] = user.id
       get :edit, id: production.id, url: production.url
       expect(response).to render_template :edit
