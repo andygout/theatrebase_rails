@@ -11,26 +11,30 @@ describe ProductionsController, type: :controller do
   let(:add_theatre) { attributes_for :add_theatre }
   let!(:production) { create :production }
 
-  let(:production_params) { {
-    title: add_production[:title],
-    first_date: add_production[:first_date],
-    last_date: add_production[:last_date],
-    press_date_wording: '',
-    dates_tbc_note: '',
-    dates_note: '',
-    theatre_attributes: { name: add_theatre[:name] }
-  } }
+  let(:production_params) {
+    {
+      title: add_production[:title],
+      first_date: add_production[:first_date],
+      last_date: add_production[:last_date],
+      press_date_wording: '',
+      dates_tbc_note: '',
+      dates_note: '',
+      theatre_attributes: { name: add_theatre[:name] }
+    }
+  }
 
-  let(:production_whitespace_params) { {
-    title: ' ' + add_production[:title] + ' ',
-    first_date: add_production[:first_date],
-    last_date: add_production[:last_date],
-    dates_info: 3,
-    press_date_wording: ' ' + add_production[:press_date_wording] + ' ',
-    dates_tbc_note: ' ' + add_production[:dates_tbc_note] + ' ',
-    dates_note: ' ' + add_production[:dates_note] + ' ',
-    theatre_attributes: { name: ' ' + add_theatre[:name] + ' ' }
-  } }
+  let(:production_whitespace_params) {
+    {
+      title: ' ' + add_production[:title] + ' ',
+      first_date: add_production[:first_date],
+      last_date: add_production[:last_date],
+      dates_info: 3,
+      press_date_wording: ' ' + add_production[:press_date_wording] + ' ',
+      dates_tbc_note: ' ' + add_production[:dates_tbc_note] + ' ',
+      dates_note: ' ' + add_production[:dates_note] + ' ',
+      theatre_attributes: { name: ' ' + add_theatre[:name] + ' ' }
+    }
+  }
 
   context 'attempt add new production' do
     it 'as super-admin: render new production form' do
