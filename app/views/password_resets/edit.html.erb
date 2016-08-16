@@ -1,5 +1,5 @@
 <%= form_for @user, html: { class: 'form' }, url: password_reset_path(params[:id]) do |user| %>
-  <%= render 'partials/error_count', count: @user.errors.count %>
+  <%= render 'partials/form_error', count: @user.errors.count %>
 
   <%= hidden_field_tag :email, @user.email %>
 

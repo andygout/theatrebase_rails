@@ -3,7 +3,7 @@
 <%= @created_updated_info %>
 
 <%= form_for @user do |user| %>
-  <%= render 'partials/error_count', count: @user.errors.count %>
+  <%= render 'partials/form_error', count: @user.errors.count %>
 
   <div class='form-section'>
     <div class='form-item'>

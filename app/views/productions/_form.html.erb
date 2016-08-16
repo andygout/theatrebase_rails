@@ -2,7 +2,7 @@
 
 <%= form_for @production,
     url: (@production.new_record? ? nil : production_path(@production.id, url: @production.url)) do |production| %>
-  <%= render 'partials/error_count', count: @production.errors.count %>
+  <%= render 'partials/form_error', count: @production.errors.count %>
 
   <div class='form-section'>
 

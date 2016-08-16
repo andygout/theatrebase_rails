@@ -1,7 +1,7 @@
 <%= @created_updated_info %>
 
 <%= form_for @theatre, url: theatre_path(@theatre.url) do |theatre| %>
-  <%= render 'partials/error_count', count: @theatre.errors.count %>
+  <%= render 'partials/form_error', count: @theatre.errors.count %>
 
   <div class='form-section'>
     <div class='form-item'>
