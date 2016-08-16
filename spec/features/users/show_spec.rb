@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-feature 'User profile' do
+feature 'User show' do
   context 'attempt view user profile' do
     let!(:user) { create_logged_in_user }
     let(:second_user) { create :second_user }
