@@ -18,7 +18,7 @@ feature 'Production delete' do
       visit production_path(production.id, production.url)
       click_button 'Delete Production'
       expect { click_button 'OK' }.to change { Production.count }.by -1
-      expect(Production.exists? production.id).to be false
+      expect(Production.exists? production).to be false
       expect(page).to have_css '.alert-success'
       expect(page).not_to have_css '.alert-error'
       expect(page).not_to have_link(production.title, href: production_path(production.id, production.url))
