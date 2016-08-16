@@ -42,7 +42,7 @@ class ProductionsController < ApplicationController
       @db_production = Production.find(params[:id])
       @production.url = @db_production.url
       @page_title = @db_production.title
-      get_edit_browser_tab(@page_title, @db_production)
+      get_browser_tab
       render :edit
     end
   end
@@ -126,13 +126,8 @@ class ProductionsController < ApplicationController
     end
 
     def get_browser_tab
-      params[:action] == 'show' ?
-        @browser_tab = "#{@page_title} (#{listing_dates(@production)})" :
-        get_edit_browser_tab(@page_title, @production)
-    end
-
-    def get_edit_browser_tab page_title, production
-      @browser_tab = "Edit: #{page_title} (#{listing_dates(production)})"
+      edit_page = ['edit', 'update'].include?(params[:action])
+      @browser_tab = "#{'Edit: ' if edit_page}#{@page_title} (#{listing_dates(@db_production || @production)})"
     end
 
     def get_views_components

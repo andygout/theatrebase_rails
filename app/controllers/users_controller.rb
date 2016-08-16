@@ -40,7 +40,7 @@ class UsersController < ApplicationController
       redirect_to @user
     else
       @page_title = get_user_page_title(User.find(params[:id]))
-      get_edit_browser_tab @page_title
+      get_browser_tab
       render :edit
     end
   end
@@ -117,13 +117,8 @@ class UsersController < ApplicationController
     end
 
     def get_browser_tab
-      params[:action] == 'show' ?
-        @browser_tab = "#{@page_title} (user)" :
-        get_edit_browser_tab(@page_title)
-    end
-
-    def get_edit_browser_tab page_title
-      @browser_tab = "Edit: #{page_title} (user)"
+      edit_page = ['edit', 'update'].include?(params[:action])
+      @browser_tab = "#{'Edit: ' if edit_page}#{@page_title} (user)"
     end
 
     def get_views_components

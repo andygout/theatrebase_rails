@@ -73,9 +73,8 @@ class TheatresController < ApplicationController
     end
 
     def get_browser_tab
-      @browser_tab = ['show', 'destroy'].include?(params[:action]) ?
-        "#{@page_title} (theatre)" :
-        "Edit: #{@page_title} (theatre)"
+      edit_page = ['edit', 'update'].include?(params[:action])
+      @browser_tab = "#{'Edit: ' if edit_page}#{@page_title} (theatre)"
     end
 
     def get_views_components
