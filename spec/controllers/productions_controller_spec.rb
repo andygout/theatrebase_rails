@@ -225,7 +225,7 @@ describe ProductionsController, type: :controller do
 
     it 'permitted update will remove leading and trailing whitespace from string fields' do
       session[:user_id] = user.id
-      post :update, id: production.id, url: production.url, production: production_whitespace_params
+      patch :update, id: production.id, url: production.url, production: production_whitespace_params
       production.reload
       expect(production.title).to eq add_production[:title]
       expect(production.press_date_wording).to eq add_production[:press_date_wording]
