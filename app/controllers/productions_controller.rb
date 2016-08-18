@@ -9,15 +9,15 @@ class ProductionsController < ApplicationController
 
   MODEL = 'Production'
 
-  before_action :logged_in_user,            only: [:new, :create, :edit, :update, :destroy]
-  before_action :not_suspended_user,        only: [:new, :create, :edit, :update, :destroy]
-  before_action :get_new_production,        only: [:new, :create]
-  before_action :get_production_by_id_url,  only: [:edit, :update, :destroy, :show]
-  before_action :get_page_title,            only: [:new, :create, :edit, :show]
-  before_action :get_browser_tab,           only: [:edit, :show]
-  before_action :get_views_components,      only: [:new, :create, :edit, :update, :show]
-  before_action :get_form_components,       only: [:new, :create, :edit, :update]
-  before_action :get_show_components,       only: [:show]
+  before_action :logged_in_user,                    only: [:new, :create, :edit, :update, :destroy]
+  before_action :not_suspended_user,                only: [:new, :create, :edit, :update, :destroy]
+  before_action :get_new_production,                only: [:new, :create]
+  before_action :get_production_by_id_url,          only: [:edit, :update, :destroy, :show]
+  before_action :get_page_title,                    only: [:new, :create, :edit, :show]
+  before_action :get_browser_tab,                   only: [:edit, :show]
+  before_action -> { get_views_components MODEL },  only: [:new, :create, :edit, :update, :show]
+  before_action :get_form_components,               only: [:new, :create, :edit, :update]
+  before_action :get_show_components,               only: [:show]
 
   def new
     @production.build_theatre
@@ -130,10 +130,6 @@ class ProductionsController < ApplicationController
     def get_browser_tab
       edit_page = ['edit', 'update'].include?(params[:action])
       @browser_tab = "#{'Edit: ' if edit_page}#{@page_title} (#{listing_dates(@db_production || @production)})"
-    end
-
-    def get_views_components
-      @content_header = "#{MODEL.upcase}"
     end
 
     def get_form_components

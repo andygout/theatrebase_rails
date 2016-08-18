@@ -3,16 +3,17 @@ class TheatresController < ApplicationController
   include Shared::FormsHelper
   include Shared::ParamsHelper
   include Productions::ViewsComponentsHelper
+  include Shared::ViewsComponentsHelper
 
   MODEL = 'Theatre'
 
-  before_action :logged_in_user,            only: [:edit, :update, :destroy]
-  before_action :not_suspended_user,        only: [:edit, :update, :destroy]
+  before_action :logged_in_user,                    only: [:edit, :update, :destroy]
+  before_action :not_suspended_user,                only: [:edit, :update, :destroy]
   before_action :get_theatre_by_url
-  before_action :get_page_title,            only: [:edit, :show]
-  before_action :get_browser_tab,           only: [:edit, :show]
-  before_action :get_views_components,      only: [:edit, :update, :show]
-  before_action :get_form_components,       only: [:edit, :update]
+  before_action :get_page_title,                    only: [:edit, :show]
+  before_action :get_browser_tab,                   only: [:edit, :show]
+  before_action -> { get_views_components MODEL },  only: [:edit, :update, :show]
+  before_action :get_form_components,               only: [:edit, :update]
 
   def edit
   end
@@ -77,10 +78,6 @@ class TheatresController < ApplicationController
     def get_browser_tab
       edit_page = ['edit', 'update'].include?(params[:action])
       @browser_tab = "#{'Edit: ' if edit_page}#{@page_title} (#{MODEL.downcase})"
-    end
-
-    def get_views_components
-      @content_header = "#{MODEL.upcase}"
     end
 
     def get_form_components

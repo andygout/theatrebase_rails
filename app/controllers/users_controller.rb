@@ -7,17 +7,18 @@ class UsersController < ApplicationController
 
   MODEL = 'User'
 
-  before_action :get_user,              only: [:new, :create, :edit, :update, :destroy, :show]
+  before_action :get_user,                          only: [:new, :create, :edit, :update, :destroy, :show]
   before_action :logged_in_user
   before_action :not_suspended_user
-  before_action :admin_user,            only: [:new, :create, :index]
-  before_action :correct_user,          only: [:edit, :update]
-  before_action :destroy_user,          only: :destroy
-  before_action :show_user,             only: :show
-  before_action :get_page_title,        only: [:new, :create, :edit, :show]
-  before_action :get_browser_tab,       only: [:edit, :show]
-  before_action :get_views_components,  only: [:new, :create, :edit, :update, :show]
-  before_action :get_form_components,   only: [:new, :create, :edit, :update]
+  before_action :admin_user,                        only: [:new, :create, :index]
+  before_action :correct_user,                      only: [:edit, :update]
+  before_action :destroy_user,                      only: :destroy
+  before_action :show_user,                         only: :show
+  before_action :get_page_title,                    only: [:new, :create, :edit, :show]
+  before_action :get_browser_tab,                   only: [:edit, :show]
+  before_action -> { get_views_components MODEL },  only: [:new, :create, :edit, :update, :show]
+  before_action :get_status_info,                   only: [:new, :create, :edit, :update, :show]
+  before_action :get_form_components,               only: [:new, :create, :edit, :update]
 
   def new
   end
@@ -121,11 +122,6 @@ class UsersController < ApplicationController
     def get_browser_tab
       edit_page = ['edit', 'update'].include?(params[:action])
       @browser_tab = "#{'Edit: ' if edit_page}#{@page_title} (#{MODEL.downcase})"
-    end
-
-    def get_views_components
-      @content_header = "#{MODEL.upcase}"
-      get_status_info
     end
 
     def get_form_components
