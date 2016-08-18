@@ -7,6 +7,8 @@ class ProductionsController < ApplicationController
   include Shared::ParamsHelper
   include Shared::ViewsComponentsHelper
 
+  MODEL = 'Production'
+
   before_action :logged_in_user,            only: [:new, :create, :edit, :update, :destroy]
   before_action :not_suspended_user,        only: [:new, :create, :edit, :update, :destroy]
   before_action :get_new_production,        only: [:new, :create]
@@ -24,7 +26,7 @@ class ProductionsController < ApplicationController
   def create
     @production = current_user.created_productions.build_with_user(production_params, current_user)
     if @production.save
-      flash[:success] = 'Production created successfully'
+      flash[:success] = "#{MODEL} created successfully"
       redirect_to production_path(@production.id, @production.url)
     else
       render :new
@@ -36,7 +38,7 @@ class ProductionsController < ApplicationController
 
   def update
     if @production.update(production_params)
-      flash[:success] = 'Production updated successfully'
+      flash[:success] = "#{MODEL} updated successfully"
       redirect_to production_path(@production.id, @production.url)
     else
       @db_production = Production.find(params[:id])
@@ -49,7 +51,7 @@ class ProductionsController < ApplicationController
 
   def destroy
     @production.destroy
-    flash[:success] = 'Production deleted successfully'
+    flash[:success] = "#{MODEL} deleted successfully"
     redirect_to productions_path
   end
 
@@ -122,7 +124,7 @@ class ProductionsController < ApplicationController
     end
 
     def get_page_title
-      @page_title = @production.title || 'New production'
+      @page_title = @production.title || "New #{MODEL.downcase}"
     end
 
     def get_browser_tab
@@ -131,7 +133,7 @@ class ProductionsController < ApplicationController
     end
 
     def get_views_components
-      @content_header = 'PRODUCTION'
+      @content_header = "#{MODEL.upcase}"
     end
 
     def get_form_components

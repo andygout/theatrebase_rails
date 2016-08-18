@@ -5,6 +5,8 @@ class UsersController < ApplicationController
   include Shared::FormsHelper
   include Shared::ViewsComponentsHelper
 
+  MODEL = 'User'
+
   before_action :get_user,              only: [:new, :create, :edit, :update, :destroy, :show]
   before_action :logged_in_user
   before_action :not_suspended_user
@@ -36,7 +38,7 @@ class UsersController < ApplicationController
 
   def update
     if @user.update(user_update_params)
-      flash[:success] = 'User updated successfully'
+      flash[:success] = "#{MODEL} updated successfully"
       redirect_to @user
     else
       @page_title = get_user_page_title(User.find(params[:id]))
@@ -47,7 +49,7 @@ class UsersController < ApplicationController
 
   def destroy
     @user.destroy
-    flash[:success] = "User deleted successfully"
+    flash[:success] = "#{MODEL} deleted successfully"
     if current_user == @user
       session.delete :user_id
       redirect_to root_path
@@ -60,7 +62,7 @@ class UsersController < ApplicationController
   end
 
   def index
-    @page_title = 'Users'
+    @page_title = "#{MODEL.pluralize.capitalize}"
     @users = current_user.super_admin ?
       User.non_admin(current_user, SuperAdmin).order(:id).paginate(page: params[:page]) :
       User.non_admin(current_user, SuperAdmin).non_admin(current_user, Admin).order(:id).paginate(page: params[:page])
@@ -112,17 +114,17 @@ class UsersController < ApplicationController
 
     def get_page_title
       @page_title = ['new', 'create'].include?(params[:action]) ?
-        'New user' :
+        "New #{MODEL.downcase}" :
         get_user_page_title(@user)
     end
 
     def get_browser_tab
       edit_page = ['edit', 'update'].include?(params[:action])
-      @browser_tab = "#{'Edit: ' if edit_page}#{@page_title} (user)"
+      @browser_tab = "#{'Edit: ' if edit_page}#{@page_title} (#{MODEL.downcase})"
     end
 
     def get_views_components
-      @content_header = 'USER'
+      @content_header = "#{MODEL.upcase}"
       get_status_info
     end
 

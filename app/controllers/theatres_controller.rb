@@ -4,6 +4,8 @@ class TheatresController < ApplicationController
   include Shared::ParamsHelper
   include Productions::ViewsComponentsHelper
 
+  MODEL = 'Theatre'
+
   before_action :logged_in_user,            only: [:edit, :update, :destroy]
   before_action :not_suspended_user,        only: [:edit, :update, :destroy]
   before_action :get_theatre_by_url
@@ -17,7 +19,7 @@ class TheatresController < ApplicationController
 
   def update
     if @theatre.update(theatre_params)
-      flash[:success] = 'Theatre updated successfully'
+      flash[:success] = "#{MODEL} updated successfully"
       redirect_to theatre_path(@theatre.url)
     else
       @db_theatre = Theatre.find_by_url!(params[:url])
@@ -31,7 +33,7 @@ class TheatresController < ApplicationController
   def destroy
     @theatre.destroy
     if @theatre.errors.empty?
-      flash[:success] = 'Theatre deleted successfully'
+      flash[:success] = "#{MODEL} deleted successfully"
       redirect_to root_path
     else
       get_page_title
@@ -74,11 +76,11 @@ class TheatresController < ApplicationController
 
     def get_browser_tab
       edit_page = ['edit', 'update'].include?(params[:action])
-      @browser_tab = "#{'Edit: ' if edit_page}#{@page_title} (theatre)"
+      @browser_tab = "#{'Edit: ' if edit_page}#{@page_title} (#{MODEL.downcase})"
     end
 
     def get_views_components
-      @content_header = 'THEATRE'
+      @content_header = "#{MODEL.upcase}"
     end
 
     def get_form_components
