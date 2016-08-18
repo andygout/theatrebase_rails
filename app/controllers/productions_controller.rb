@@ -17,7 +17,6 @@ class ProductionsController < ApplicationController
   before_action :get_browser_tab,                             only: [:edit, :show]
   before_action -> { get_views_components MODEL },            only: [:new, :create, :edit, :update, :show]
   before_action -> { get_created_updated_info @production },  only: [:new, :create, :edit, :update]
-  before_action :get_show_components,                         only: [:show]
 
   def new
     @production.build_theatre
@@ -56,6 +55,8 @@ class ProductionsController < ApplicationController
   end
 
   def show
+    get_dates @production
+    get_theatre @production.theatre
   end
 
   def index
@@ -130,11 +131,6 @@ class ProductionsController < ApplicationController
     def get_browser_tab
       edit_page = ['edit', 'update'].include?(params[:action])
       @browser_tab = "#{'Edit: ' if edit_page}#{@page_title} (#{listing_dates(@db_production || @production)})"
-    end
-
-    def get_show_components
-      get_dates @production
-      get_theatre @production.theatre
     end
 
 end
