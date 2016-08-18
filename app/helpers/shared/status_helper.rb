@@ -14,10 +14,6 @@ module Shared::StatusHelper
 
     private
 
-    def get_user id
-      @user = User.find(id)
-    end
-
     def user_status_params status_type
       params
         .require(:user)

@@ -1,5 +1,6 @@
 class AdminStatusController < ApplicationController
 
+  include Shared::GetUserHelper
   include Shared::StatusHelper
 
   before_action -> { get_user(params[:user_id]) }

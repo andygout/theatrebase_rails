@@ -3,11 +3,13 @@ class UsersController < ApplicationController
   include UsersHelper
   include Users::ViewsComponentsHelper
   include Shared::FormsHelper
+  include Shared::GetUserHelper
   include Shared::ViewsComponentsHelper
 
   MODEL = 'User'
 
-  before_action :get_user,                              only: [:new, :create, :edit, :update, :destroy, :show]
+  before_action :get_new_user,                          only: [:new, :create]
+  before_action -> { get_user(params[:id]) },           only: [:edit, :update, :destroy, :show]
   before_action :logged_in_user
   before_action :not_suspended_user
   before_action :admin_user,                            only: [:new, :create, :index]
@@ -93,8 +95,8 @@ class UsersController < ApplicationController
         .merge(updater_id: current_user.id)
     end
 
-    def get_user
-      @user = params[:id] ? User.find(params[:id]) : User.new
+    def get_new_user
+      @user = User.new
     end
 
     def admin_user
