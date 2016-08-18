@@ -6,9 +6,9 @@ class SuspensionStatusController < ApplicationController
   before_action :logged_in_user
   before_action :not_suspended_user
   before_action :suspension_status_assignor
-  before_action -> { get_status_edit_components :suspension },  only: [:edit]
 
   def edit
+    get_status_edit_components(:suspension)
     @user.suspension || @user.build_suspension
   end
 
