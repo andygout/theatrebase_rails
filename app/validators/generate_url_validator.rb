@@ -1,9 +1,9 @@
 class GenerateUrlValidator < ActiveModel::EachValidator
 
+  include Shared::ConstantsHelper
   include Shared::ParamsHelper
 
-  MIN_LENGTH = 1
-  MAX_LENGTH = 255
+  TEXT_MIN_LENGTH = 1
   UNIQUENESS_CLASSES = ['Theatre']
 
   def readable_attr record, attribute
@@ -24,13 +24,13 @@ class GenerateUrlValidator < ActiveModel::EachValidator
   end
 
   def length_msg length, record, attribute
-    "#{readable_attr(record, attribute)} creates a URL that is too " + (length < MIN_LENGTH ?
-      "short (must have at least #{MIN_LENGTH} valid character)" :
-      "long (must be #{MAX_LENGTH} characters or less)")
+    "#{readable_attr(record, attribute)} creates a URL that is too " + (length < TEXT_MIN_LENGTH ?
+      "short (must have at least #{TEXT_MIN_LENGTH} valid character)" :
+      "long (must be #{TEXT_MAX_LENGTH} characters or less)")
   end
 
   def validate_length length, record, attribute
-    length_error = length < MIN_LENGTH || length > MAX_LENGTH
+    length_error = length < TEXT_MIN_LENGTH || length > TEXT_MAX_LENGTH
     record.errors.add(attribute, length_msg(length, record, attribute)) if length_error
   end
 
