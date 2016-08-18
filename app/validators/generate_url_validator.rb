@@ -6,10 +6,6 @@ class GenerateUrlValidator < ActiveModel::EachValidator
   MAX_LENGTH = 255
   UNIQUENESS_CLASSES = ['Theatre']
 
-  def add_error record, attribute, msg
-    record.errors.add(attribute, msg)
-  end
-
   def readable_attr record, attribute
     record.class.human_attribute_name(attribute)
   end
@@ -24,7 +20,7 @@ class GenerateUrlValidator < ActiveModel::EachValidator
       UNIQUENESS_CLASSES.include?(record.class.to_s) &&
       record.class.where(url: url).where.not(id: record.id).limit(1).any?
 
-    add_error(record, attribute, uniqueness_msg(record, attribute)) if uniqueness_error
+    record.errors.add(attribute, uniqueness_msg(record, attribute)) if uniqueness_error
   end
 
   def length_msg length, record, attribute
@@ -35,7 +31,7 @@ class GenerateUrlValidator < ActiveModel::EachValidator
 
   def validate_length length, record, attribute
     length_error = length < MIN_LENGTH || length > MAX_LENGTH
-    add_error(record, attribute, length_msg(length, record, attribute)) if length_error
+    record.errors.add(attribute, length_msg(length, record, attribute)) if length_error
   end
 
   def validate_each(record, attribute, value)
