@@ -2,7 +2,6 @@ class TheatresController < ApplicationController
 
   include Shared::FormsHelper
   include Shared::ParamsHelper
-  include Productions::ViewsComponentsHelper
   include Shared::ViewsComponentsHelper
 
   MODEL = 'Theatre'

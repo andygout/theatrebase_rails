@@ -2,7 +2,6 @@ class ProductionsController < ApplicationController
 
   include Productions::DatesTableHelper
   include Productions::TheatreHelper
-  include Productions::ViewsComponentsHelper
   include Shared::FormsHelper
   include Shared::ParamsHelper
   include Shared::ViewsComponentsHelper
