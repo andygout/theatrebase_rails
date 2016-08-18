@@ -11,7 +11,7 @@ class TheatresController < ApplicationController
   before_action :get_theatre_by_url
   before_action :get_page_title,                            only: [:edit, :show]
   before_action :get_browser_tab,                           only: [:edit, :show]
-  before_action -> { get_views_components(MODEL) },         only: [:edit, :update, :show]
+  before_action -> { get_content_header(MODEL) },           only: [:edit, :update, :show]
   before_action -> { get_created_updated_info(@theatre) },  only: [:edit, :update]
 
   def edit

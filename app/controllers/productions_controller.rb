@@ -14,7 +14,7 @@ class ProductionsController < ApplicationController
   before_action :get_production,                              only: [:edit, :update, :destroy, :show]
   before_action :get_page_title,                              only: [:new, :create, :edit, :show]
   before_action :get_browser_tab,                             only: [:edit, :show]
-  before_action -> { get_views_components(MODEL) },           only: [:new, :create, :edit, :update, :show]
+  before_action -> { get_content_header(MODEL) },             only: [:new, :create, :edit, :update, :show]
   before_action -> { get_created_updated_info(@production) }, only: [:new, :create, :edit, :update]
 
   def new

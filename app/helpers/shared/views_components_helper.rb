@@ -3,7 +3,7 @@ module Shared::ViewsComponentsHelper
   include Productions::DatesListingHelper
   include Shared::MarkupHelper
 
-  def get_views_components model
+  def get_content_header model
     @content_header = model.upcase
   end
 
