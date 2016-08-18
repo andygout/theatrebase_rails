@@ -39,4 +39,5 @@ class GenerateUrlValidator < ActiveModel::EachValidator
     validate_length(url.length, record, attribute)
     validate_uniqueness(url, record, attribute)
   end
+
 end
