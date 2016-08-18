@@ -6,7 +6,7 @@ class AdminStatusController < ApplicationController
   before_action :logged_in_user
   before_action :not_suspended_user
   before_action :admin_status_assignor
-  before_action :get_form_components,   only: [:edit]
+  before_action -> { get_status_edit_components :admin }, only: [:edit]
 
   def edit
     @user.admin || @user.build_admin
@@ -26,10 +26,6 @@ class AdminStatusController < ApplicationController
 
     def admin_status_assignor
       validate_user valid_admin_status_assignor? @user
-    end
-
-    def get_form_components
-      get_status_edit_components :admin
     end
 
 end
