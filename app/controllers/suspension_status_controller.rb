@@ -2,7 +2,7 @@ class SuspensionStatusController < ApplicationController
 
   include Shared::StatusHelper
 
-  before_action -> { get_user params[:user_id] }
+  before_action -> { get_user(params[:user_id]) }
   before_action :logged_in_user
   before_action :not_suspended_user
   before_action :suspension_status_assignor
