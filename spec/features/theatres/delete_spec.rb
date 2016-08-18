@@ -18,7 +18,7 @@ feature 'Theatre delete' do
       visit theatre_path(theatre.url)
       click_button 'Delete Theatre'
       expect { click_button 'OK' }.to change { Theatre.count }.by -1
-      expect(Theatre.exists? theatre).to be false
+      expect(Theatre.exists? theatre.id).to be false
       expect(page).to have_css '.alert-success'
       expect(page).not_to have_css '.alert-error'
       expect(page).to have_current_path root_path
