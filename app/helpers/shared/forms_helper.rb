@@ -14,9 +14,9 @@ module Shared::FormsHelper
     at && by ? "#{datetime_format(at)} by #{name_markup(by)}" : 'TBC'
   end
 
-  def get_created_updated_info var
-    created = created_updated_text(var.created_at, var.creator)
-    updated = created_updated_text(var.updated_at, var.updater)
+  def get_created_updated_info instance
+    created = created_updated_text(instance.created_at, instance.creator)
+    updated = created_updated_text(instance.updated_at, instance.updater)
     row_values = [
         [{ content: 'First created:' }, { content: created }],
         [{ content: 'Last updated:' }, { content: updated }]
