@@ -4,12 +4,14 @@ module Shared::StatusHelper
   include Shared::ViewsComponentsHelper
   include Users::ViewsComponentsHelper
 
+  MODEL = 'User'
+
   private
 
     def get_status_edit_components status_type
       @page_title = "Edit #{status_type.to_s} status: #{get_user_page_title(@user)}"
-      @browser_tab = "#{@page_title} (user)"
-      @content_header = 'USER'
+      @browser_tab = "#{@page_title} (#{MODEL.downcase})"
+      @content_header = MODEL.upcase
       get_status_info
       get_status_assigned_info(@user.send(status_type) || nil)
     end
