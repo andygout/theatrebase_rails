@@ -1,5 +1,7 @@
 require 'rails_helper'
 
+include Shared::ConstantsHelper
+
 describe Production, type: :model do
   context 'associations' do
     it { should belong_to :theatre }
@@ -9,10 +11,6 @@ describe Production, type: :model do
 
   let(:production) { build :production }
 
-  TEXT_MAX_LENGTH ||= 255
-  PRESS_DATE_WORDING_MAX_LENGTH ||= 25
-  DATES_TBC_NOTE_MAX_LENGTH ||= 15
-
   context 'valid details' do
     it 'should be valid' do
       expect(production.valid?).to be true
@@ -20,7 +18,7 @@ describe Production, type: :model do
   end
 
   context 'title validation' do
-    it 'invalid if name not present' do
+    it 'invalid if title not present' do
       production.title = ' '
       expect(production.valid?).to be false
     end

@@ -1,8 +1,7 @@
 module Validations::Theatre
 
   extend ActiveSupport::Concern
-
-  TEXT_MAX_LENGTH = 255
+  include Shared::ConstantsHelper
 
   included do
     validates :name,

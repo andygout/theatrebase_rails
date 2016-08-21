@@ -45,7 +45,7 @@ class AccountActivationsController < ApplicationController
     end
 
     def get_page_title
-      @page_title = "Set password: #{get_user_page_title(@user)}" if @user
+      @page_title = "Set password: #{get_user_page_title}" if @user
     end
 
     def password_blank?

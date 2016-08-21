@@ -1,5 +1,7 @@
 require 'rails_helper'
 
+include Shared::ConstantsHelper
+
 describe Theatre, type: :model do
   context 'associations' do
     it { should have_many :productions }
@@ -8,8 +10,6 @@ describe Theatre, type: :model do
   end
 
   let(:theatre) { build :theatre }
-
-  TEXT_MAX_LENGTH ||= 255
 
   context 'valid details' do
     it 'should be valid' do

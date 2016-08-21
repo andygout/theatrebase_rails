@@ -1,10 +1,7 @@
 module Validations::Production
 
   extend ActiveSupport::Concern
-
-  TEXT_MAX_LENGTH = 255
-  PRESS_DATE_WORDING_MAX_LENGTH = 25
-  DATES_TBC_NOTE_MAX_LENGTH = 15
+  include Shared::ConstantsHelper
 
   included do
     validates :title,

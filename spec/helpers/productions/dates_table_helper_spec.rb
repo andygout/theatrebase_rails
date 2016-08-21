@@ -6,7 +6,7 @@ describe Productions::DatesTableHelper, type: :helper do
   context 'outputting dates markup' do
     it 'first and last performance only; same dates (i.e. performs for one day only)' do
       production.last_date = '05/08/2015'
-      expect(get_dates(production)).to eq \
+      expect(get_dates_markup(production)).to eq \
         "<div id='dates' class='content-wrapper'>"\
           "<div class='content-label'>Dates</div>"\
           "<table class='table dates-table'>"\
@@ -18,7 +18,7 @@ describe Productions::DatesTableHelper, type: :helper do
     it 'first and last performance only; same dates (i.e. performs for one day only); "booking until" set' do
       production.last_date = '05/08/2015'
       production.dates_info = 1
-      expect(get_dates(production)).to eq \
+      expect(get_dates_markup(production)).to eq \
         "<div id='dates' class='content-wrapper'>"\
           "<div class='content-label'>Dates</div>"\
           "<table class='table dates-table'>"\
@@ -30,7 +30,7 @@ describe Productions::DatesTableHelper, type: :helper do
     it 'first and last performance only; same dates (i.e. performs for one day only); "last date TBC" set' do
       production.last_date = '05/08/2015'
       production.dates_info = 2
-      expect(get_dates(production)).to eq \
+      expect(get_dates_markup(production)).to eq \
         "<div id='dates' class='content-wrapper'>"\
           "<div class='content-label'>Dates</div>"\
           "<table class='table dates-tbc-table'>"\
@@ -40,7 +40,7 @@ describe Productions::DatesTableHelper, type: :helper do
     end
 
     it 'first and last performance only; different dates for each' do
-      expect(get_dates(production)).to eq \
+      expect(get_dates_markup(production)).to eq \
         "<div id='dates' class='content-wrapper'>"\
           "<div class='content-label'>Dates</div>"\
           "<table class='table dates-table'>"\
@@ -52,7 +52,7 @@ describe Productions::DatesTableHelper, type: :helper do
 
     it 'first and last performance only; different dates for each; "press date TBC" set' do
       production.press_date_tbc = true
-      expect(get_dates(production)).to eq \
+      expect(get_dates_markup(production)).to eq \
         "<div id='dates' class='content-wrapper'>"\
           "<div class='content-label'>Dates</div>"\
           "<table class='table dates-table'>"\
@@ -65,7 +65,7 @@ describe Productions::DatesTableHelper, type: :helper do
 
     it 'first and last performance only; different dates for each; "booking until" set' do
       production.dates_info = 1
-      expect(get_dates(production)).to eq \
+      expect(get_dates_markup(production)).to eq \
         "<div id='dates' class='content-wrapper'>"\
           "<div class='content-label'>Dates</div>"\
           "<table class='table dates-table'>"\
@@ -77,7 +77,7 @@ describe Productions::DatesTableHelper, type: :helper do
 
     it 'first and last performance only; different dates for each; "last date TBC" set' do
       production.dates_info = 2
-      expect(get_dates(production)).to eq \
+      expect(get_dates_markup(production)).to eq \
         "<div id='dates' class='content-wrapper'>"\
           "<div class='content-label'>Dates</div>"\
           "<table class='table dates-table'>"\
@@ -89,7 +89,7 @@ describe Productions::DatesTableHelper, type: :helper do
 
     it 'first, press and last performance; different dates for each' do
       production.press_date = '25/08/2015'
-      expect(get_dates(production)).to eq \
+      expect(get_dates_markup(production)).to eq \
         "<div id='dates' class='content-wrapper'>"\
           "<div class='content-label'>Dates</div>"\
           "<table class='table dates-table'>"\
@@ -102,7 +102,7 @@ describe Productions::DatesTableHelper, type: :helper do
 
     it 'first, press and last performance; first and press performance match' do
       production.press_date = '05/08/2015'
-      expect(get_dates(production)).to eq \
+      expect(get_dates_markup(production)).to eq \
         "<div id='dates' class='content-wrapper'>"\
           "<div class='content-label'>Dates</div>"\
           "<table class='table dates-table'>"\
@@ -115,7 +115,7 @@ describe Productions::DatesTableHelper, type: :helper do
     it 'first, press and last performance; all dates match (i.e. performs for one day only)' do
       production.press_date = '05/08/2015'
       production.last_date = '05/08/2015'
-      expect(get_dates(production)).to eq \
+      expect(get_dates_markup(production)).to eq \
         "<div id='dates' class='content-wrapper'>"\
           "<div class='content-label'>Dates</div>"\
           "<table class='table dates-table'>"\
@@ -127,7 +127,7 @@ describe Productions::DatesTableHelper, type: :helper do
     it 'first, press and last performance; different dates for each; "booking until" set' do
       production.press_date = '25/08/2015'
       production.dates_info = 1
-      expect(get_dates(production)).to eq \
+      expect(get_dates_markup(production)).to eq \
         "<div id='dates' class='content-wrapper'>"\
           "<div class='content-label'>Dates</div>"\
           "<table class='table dates-table'>"\
@@ -141,7 +141,7 @@ describe Productions::DatesTableHelper, type: :helper do
     it 'first, press and last performance; different dates for each; "last date TBC" set' do
       production.press_date = '25/08/2015'
       production.dates_info = 2
-      expect(get_dates(production)).to eq \
+      expect(get_dates_markup(production)).to eq \
         "<div id='dates' class='content-wrapper'>"\
           "<div class='content-label'>Dates</div>"\
           "<table class='table dates-table'>"\
@@ -155,7 +155,7 @@ describe Productions::DatesTableHelper, type: :helper do
     it 'first, press and last performance; different dates for each; "press date wording" given' do
       production.press_date = '25/08/2015'
       production.press_date_wording = 'Gala night'
-      expect(get_dates(production)).to eq \
+      expect(get_dates_markup(production)).to eq \
         "<div id='dates' class='content-wrapper'>"\
           "<div class='content-label'>Dates</div>"\
           "<table class='table dates-table'>"\
@@ -169,7 +169,7 @@ describe Productions::DatesTableHelper, type: :helper do
     it 'first and last performance only; different dates for each; "press date TBC" set; "press date wording" given' do
       production.press_date_tbc = true
       production.press_date_wording = 'Gala night'
-      expect(get_dates(production)).to eq \
+      expect(get_dates_markup(production)).to eq \
         "<div id='dates' class='content-wrapper'>"\
           "<div class='content-label'>Dates</div>"\
           "<table class='table dates-table'>"\
@@ -182,7 +182,7 @@ describe Productions::DatesTableHelper, type: :helper do
 
     it 'dates are TBC' do
       production.dates_info = 3
-      expect(get_dates(production)).to eq \
+      expect(get_dates_markup(production)).to eq \
         "<div id='dates' class='content-wrapper'>"\
           "<div class='content-label'>Dates</div>"\
           "<table class='table dates-tbc-table'>"\
@@ -194,7 +194,7 @@ describe Productions::DatesTableHelper, type: :helper do
     it 'dates are TBC; "dates TBC note" given' do
       production.dates_info = 3
       production.dates_tbc_note = 'Summer 2015'
-      expect(get_dates(production)).to eq \
+      expect(get_dates_markup(production)).to eq \
         "<div id='dates' class='content-wrapper'>"\
           "<div class='content-label'>Dates</div>"\
           "<table class='table dates-tbc-table'>"\
@@ -206,7 +206,7 @@ describe Productions::DatesTableHelper, type: :helper do
     it 'first, press, second press and last performance; different dates for each' do
       production.press_date = '25/08/2015'
       production.second_press_date = '26/08/2015'
-      expect(get_dates(production)).to eq \
+      expect(get_dates_markup(production)).to eq \
         "<div id='dates' class='content-wrapper'>"\
           "<div class='content-label'>Dates</div>"\
           "<table class='table dates-table'>"\
@@ -219,7 +219,7 @@ describe Productions::DatesTableHelper, type: :helper do
 
     it 'accompanying "dates note" given' do
       production.dates_note = 'Press night postponed'
-      expect(get_dates(production)).to eq \
+      expect(get_dates_markup(production)).to eq \
         "<div id='dates' class='content-wrapper'>"\
           "<div class='content-label'>Dates</div>"\
           "<table class='table dates-table'>"\

@@ -11,26 +11,30 @@ describe ProductionsController, type: :controller do
   let(:add_theatre) { attributes_for :add_theatre }
   let!(:production) { create :production }
 
-  let(:production_params) { {
-    title: add_production[:title],
-    first_date: add_production[:first_date],
-    last_date: add_production[:last_date],
-    press_date_wording: '',
-    dates_tbc_note: '',
-    dates_note: '',
-    theatre_attributes: { name: add_theatre[:name] }
-  } }
+  let(:production_params) {
+    {
+      title: add_production[:title],
+      first_date: add_production[:first_date],
+      last_date: add_production[:last_date],
+      press_date_wording: '',
+      dates_tbc_note: '',
+      dates_note: '',
+      theatre_attributes: { name: add_theatre[:name] }
+    }
+  }
 
-  let(:production_whitespace_params) { {
-    title: ' ' + add_production[:title] + ' ',
-    first_date: add_production[:first_date],
-    last_date: add_production[:last_date],
-    dates_info: 3,
-    press_date_wording: ' ' + add_production[:press_date_wording] + ' ',
-    dates_tbc_note: ' ' + add_production[:dates_tbc_note] + ' ',
-    dates_note: ' ' + add_production[:dates_note] + ' ',
-    theatre_attributes: { name: ' ' + add_theatre[:name] + ' ' }
-  } }
+  let(:production_whitespace_params) {
+    {
+      title: ' ' + add_production[:title] + ' ',
+      first_date: add_production[:first_date],
+      last_date: add_production[:last_date],
+      dates_info: 3,
+      press_date_wording: ' ' + add_production[:press_date_wording] + ' ',
+      dates_tbc_note: ' ' + add_production[:dates_tbc_note] + ' ',
+      dates_note: ' ' + add_production[:dates_note] + ' ',
+      theatre_attributes: { name: ' ' + add_theatre[:name] + ' ' }
+    }
+  }
 
   context 'attempt add new production' do
     it 'as super-admin: render new production form' do
@@ -132,19 +136,19 @@ describe ProductionsController, type: :controller do
   end
 
   context 'attempt edit production' do
-    it 'as super-admin: redirect to production edit form' do
+    it 'as super-admin: render production edit form' do
       session[:user_id] = super_admin_user.id
       get :edit, id: production.id, url: production.url
       expect(response).to render_template :edit
     end
 
-    it 'as admin: redirect to production edit form' do
+    it 'as admin: render production edit form' do
       session[:user_id] = admin_user.id
       get :edit, id: production.id, url: production.url
       expect(response).to render_template :edit
     end
 
-    it 'as non-admin: redirect to production edit form' do
+    it 'as non-admin: render production edit form' do
       session[:user_id] = user.id
       get :edit, id: production.id, url: production.url
       expect(response).to render_template :edit
@@ -169,7 +173,7 @@ describe ProductionsController, type: :controller do
     end
 
     it 'when not logged in: fail and redirect to log in page' do
-      get :edit, id: production, url: production.url
+      get :edit, id: production.id, url: production.url
       expect(response).to redirect_to log_in_path
     end
   end
@@ -225,7 +229,7 @@ describe ProductionsController, type: :controller do
 
     it 'permitted update will remove leading and trailing whitespace from string fields' do
       session[:user_id] = user.id
-      post :update, id: production.id, url: production.url, production: production_whitespace_params
+      patch :update, id: production.id, url: production.url, production: production_whitespace_params
       production.reload
       expect(production.title).to eq add_production[:title]
       expect(production.press_date_wording).to eq add_production[:press_date_wording]

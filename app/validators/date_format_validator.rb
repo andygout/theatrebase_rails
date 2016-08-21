@@ -1,4 +1,5 @@
 class DateFormatValidator < ActiveModel::EachValidator
+
   def validate_each(record, attribute, value)
     before_type_cast = "#{attribute}_before_type_cast"
 
@@ -16,4 +17,5 @@ class DateFormatValidator < ActiveModel::EachValidator
       record.errors.add(attribute, error_msg) if value.blank?
     end
   end
+
 end

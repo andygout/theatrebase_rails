@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-feature 'Theatre show page' do
+feature 'Theatre show' do
   context 'viewing theatres' do
     let!(:theatre) { create :theatre }
 

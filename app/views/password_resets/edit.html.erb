@@ -1,5 +1,5 @@
 <%= form_for @user, html: { class: 'form' }, url: password_reset_path(params[:id]) do |user| %>
-  <%= render 'partials/error_count', count: @user.errors.count %>
+  <%= render 'form_error', count: @user.errors.count %>
 
   <%= hidden_field_tag :email, @user.email %>
 
@@ -7,13 +7,13 @@
     <div class='form-item'>
       <%= user.label :password, class: 'label' %>
       <%= user.password_field :password, class: 'input text-input', maxlength: 72 %>
-      <%= render partial: 'partials/error', collection: @user.errors[:password] %>
+      <%= render partial: 'error', collection: @user.errors[:password] %>
     </div>
 
     <div class='form-item'>
       <%= user.label :password_confirmation, class: 'label' %>
       <%= user.password_field :password_confirmation, class: 'input text-input', maxlength: 72 %>
-      <%= render partial: 'partials/error', collection: @user.errors[:password_confirmation] %>
+      <%= render partial: 'error', collection: @user.errors[:password_confirmation] %>
     </div>
   </div>
 

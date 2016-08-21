@@ -2,28 +2,27 @@ class TheatresController < ApplicationController
 
   include Shared::FormsHelper
   include Shared::ParamsHelper
-  include Productions::ViewsComponentsHelper
+  include Shared::ViewsComponentsHelper
 
-  before_action :logged_in_user,            only: [:edit, :update, :destroy]
-  before_action :not_suspended_user,        only: [:edit, :update, :destroy]
-  before_action :get_theatre_by_url
-  before_action :get_page_title,            only: [:edit, :show]
-  before_action :get_browser_tab,           only: [:edit, :show]
-  before_action :get_views_components,      only: [:edit, :update, :show]
-  before_action :get_form_components,       only: [:edit, :update]
+  MODEL = 'Theatre'
+
+  before_action :logged_in_user,                              only: [:edit, :update, :destroy]
+  before_action :not_suspended_user,                          only: [:edit, :update, :destroy]
+  before_action :get_theatre
+  before_action -> { get_page_title(MODEL, @theatre.name) },  only: [:edit, :update, :show]
+  before_action -> { get_browser_tab(MODEL) },                only: [:edit, :update, :show]
+  before_action -> { get_content_header(MODEL) },             only: [:edit, :update, :show]
+  before_action -> { get_created_updated_info(@theatre) },    only: [:edit, :update]
 
   def edit
   end
 
   def update
     if @theatre.update(theatre_params)
-      flash[:success] = 'Theatre updated successfully'
+      flash[:success] = success_msg(MODEL, 'updated')
       redirect_to theatre_path(@theatre.url)
     else
-      @db_theatre = Theatre.find_by_url!(params[:url])
-      @theatre.url = @db_theatre.url
-      @page_title = "#{@db_theatre.name}"
-      get_browser_tab
+      @theatre.url = params[:url]
       render :edit
     end
   end
@@ -31,11 +30,9 @@ class TheatresController < ApplicationController
   def destroy
     @theatre.destroy
     if @theatre.errors.empty?
-      flash[:success] = 'Theatre deleted successfully'
+      flash[:success] = success_msg(MODEL, 'deleted')
       redirect_to root_path
     else
-      get_page_title
-      get_browser_tab
       flash[:error] = @theatre.errors.messages[:base][0]
       redirect_to theatre_path(@theatre.url)
     end
@@ -64,26 +61,8 @@ class TheatresController < ApplicationController
       params[:theatre][:url] = generate_url(name)
     end
 
-    def get_theatre_by_url
+    def get_theatre
       @theatre = Theatre.find_by_url!(params[:url])
-    end
-
-    def get_page_title
-      @page_title = "#{@theatre.name}"
-    end
-
-    def get_browser_tab
-      @browser_tab = ['show', 'destroy'].include?(params[:action]) ?
-        "#{@page_title} (theatre)" :
-        "Edit: #{@page_title} (theatre)"
-    end
-
-    def get_views_components
-      @content_header = 'THEATRE'
-    end
-
-    def get_form_components
-      get_created_updated_info @theatre
     end
 
 end

@@ -1,13 +1,13 @@
 <%= @created_updated_info %>
 
 <%= form_for @theatre, url: theatre_path(@theatre.url) do |theatre| %>
-  <%= render 'partials/error_count', count: @theatre.errors.count %>
+  <%= render 'form_error', count: @theatre.errors.count %>
 
   <div class='form-section'>
     <div class='form-item'>
       <%= theatre.label :name, class: 'label mandatory' %>
       <%= theatre.text_field :name, class: 'input text-input', maxlength: 255 %>
-      <%= render partial: 'partials/error', collection: @theatre.errors[:name] %>
+      <%= render partial: 'error', collection: @theatre.errors[:name] %>
     </div>
   </div>
 

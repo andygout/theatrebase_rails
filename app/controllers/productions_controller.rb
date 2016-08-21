@@ -2,20 +2,19 @@ class ProductionsController < ApplicationController
 
   include Productions::DatesTableHelper
   include Productions::TheatreHelper
-  include Productions::ViewsComponentsHelper
   include Shared::FormsHelper
   include Shared::ParamsHelper
   include Shared::ViewsComponentsHelper
 
-  before_action :logged_in_user,            only: [:new, :create, :edit, :update, :destroy]
-  before_action :not_suspended_user,        only: [:new, :create, :edit, :update, :destroy]
-  before_action :get_new_production,        only: [:new, :create]
-  before_action :get_production_by_id_url,  only: [:edit, :update, :destroy, :show]
-  before_action :get_page_title,            only: [:new, :create, :edit, :show]
-  before_action :get_browser_tab,           only: [:edit, :show]
-  before_action :get_views_components,      only: [:new, :create, :edit, :update, :show]
-  before_action :get_form_components,       only: [:new, :create, :edit, :update]
-  before_action :get_show_components,       only: [:show]
+  MODEL = 'Production'
+
+  before_action :logged_in_user,                                  only: [:new, :create, :edit, :update, :destroy]
+  before_action :not_suspended_user,                              only: [:new, :create, :edit, :update, :destroy]
+  before_action :get_production,                                  only: [:new, :create, :edit, :update, :destroy, :show]
+  before_action -> { get_page_title(MODEL, @production.title) },  only: [:new, :create, :edit, :update, :show]
+  before_action -> { get_browser_tab(MODEL) },                    only: [:edit, :update, :show]
+  before_action -> { get_content_header(MODEL) },                 only: [:new, :create, :edit, :update, :show]
+  before_action -> { get_created_updated_info(@production) },     only: [:new, :create, :edit, :update]
 
   def new
     @production.build_theatre
@@ -24,7 +23,7 @@ class ProductionsController < ApplicationController
   def create
     @production = current_user.created_productions.build_with_user(production_params, current_user)
     if @production.save
-      flash[:success] = 'Production created successfully'
+      flash[:success] = success_msg(MODEL, 'created')
       redirect_to production_path(@production.id, @production.url)
     else
       render :new
@@ -36,24 +35,23 @@ class ProductionsController < ApplicationController
 
   def update
     if @production.update(production_params)
-      flash[:success] = 'Production updated successfully'
+      flash[:success] = success_msg(MODEL, 'updated')
       redirect_to production_path(@production.id, @production.url)
     else
-      @db_production = Production.find(params[:id])
-      @production.url = @db_production.url
-      @page_title = @db_production.title
-      get_edit_browser_tab(@page_title, @db_production)
+      @production.url = params[:url]
       render :edit
     end
   end
 
   def destroy
     @production.destroy
-    flash[:success] = 'Production deleted successfully'
+    flash[:success] = success_msg(MODEL, 'deleted')
     redirect_to productions_path
   end
 
   def show
+    get_dates_markup @production
+    get_theatre_markup @production.theatre
   end
 
   def index
@@ -113,39 +111,10 @@ class ProductionsController < ApplicationController
         )
     end
 
-    def get_new_production
-      @production = Production.new
-    end
-
-    def get_production_by_id_url
-      @production = Production.find_by_id_and_url!(params[:id], params[:url])
-    end
-
-    def get_page_title
-      @page_title = @production.title || 'New production'
-    end
-
-    def get_browser_tab
-      params[:action] == 'show' ?
-        @browser_tab = "#{@page_title} (#{listing_dates(@production)})" :
-        get_edit_browser_tab(@page_title, @production)
-    end
-
-    def get_edit_browser_tab page_title, production
-      @browser_tab = "Edit: #{page_title} (#{listing_dates(production)})"
-    end
-
-    def get_views_components
-      @content_header = 'PRODUCTION'
-    end
-
-    def get_form_components
-      get_created_updated_info @production
-    end
-
-    def get_show_components
-      get_dates @production
-      get_theatre @production.theatre
+    def get_production
+      @production = ['new', 'create'].include?(params[:action]) ?
+        Production.new :
+        Production.find_by_id_and_url!(params[:id], params[:url])
     end
 
 end

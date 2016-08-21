@@ -4,8 +4,8 @@ module Shared::MarkupHelper
     array.join('').to_s
   end
 
-  def link_markup path, id, text
-    "<a href='/#{path}/#{id}'>#{text}</a>"
+  def link_markup path, identifier, text
+    "<a href='/#{path}/#{identifier}'>#{text}</a>"
   end
 
   def bookend_tags element, markup, el_class = nil, el_id = nil, colspan = nil
