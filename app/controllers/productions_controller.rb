@@ -10,8 +10,7 @@ class ProductionsController < ApplicationController
 
   before_action :logged_in_user,                              only: [:new, :create, :edit, :update, :destroy]
   before_action :not_suspended_user,                          only: [:new, :create, :edit, :update, :destroy]
-  before_action :get_new_production,                          only: [:new, :create]
-  before_action :get_production,                              only: [:edit, :update, :destroy, :show]
+  before_action :get_production,                              only: [:new, :create, :edit, :update, :destroy, :show]
   before_action :get_page_title,                              only: [:new, :create, :edit, :show]
   before_action :get_browser_tab,                             only: [:edit, :show]
   before_action -> { get_content_header(MODEL) },             only: [:new, :create, :edit, :update, :show]
@@ -115,12 +114,10 @@ class ProductionsController < ApplicationController
         )
     end
 
-    def get_new_production
-      @production = Production.new
-    end
-
     def get_production
-      @production = Production.find_by_id_and_url!(params[:id], params[:url])
+      @production = params[:id] && params[:url] ?
+        Production.find_by_id_and_url!(params[:id], params[:url]) :
+        Production.new
     end
 
     def get_page_title
