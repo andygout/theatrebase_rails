@@ -24,6 +24,10 @@ module Shared::ViewsComponentsHelper
     @content_header = model.upcase
   end
 
+  def success_msg model, action
+    "#{model} #{action} successfully"
+  end
+
   def get_production_index_table productions
     return @no_productions_msg = "<h1 class='title-text'>No productions yet</h1>".html_safe if productions.empty?
 

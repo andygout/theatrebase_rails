@@ -40,7 +40,7 @@ class UsersController < ApplicationController
 
   def update
     if @user.update(user_update_params)
-      flash[:success] = "#{MODEL} updated successfully"
+      flash[:success] = success_msg(MODEL, 'updated')
       redirect_to @user
     else
       render :edit
@@ -49,7 +49,7 @@ class UsersController < ApplicationController
 
   def destroy
     @user.destroy
-    flash[:success] = "#{MODEL} deleted successfully"
+    flash[:success] = success_msg(MODEL, 'deleted')
     if current_user == @user
       session.delete :user_id
       redirect_to root_path

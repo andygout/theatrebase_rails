@@ -15,7 +15,7 @@ class AdminStatusController < ApplicationController
 
   def update
     @user.update(user_status_params(:admin))
-    flash[:success] = 'Admin status updated successfully'
+    flash[:success] = success_msg('Admin status', 'updated')
     redirect_to @user
   end
 
