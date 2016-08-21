@@ -54,8 +54,8 @@ class ProductionsController < ApplicationController
   end
 
   def show
-    get_dates @production
-    get_theatre @production.theatre
+    get_dates_markup @production
+    get_theatre_markup @production.theatre
   end
 
   def index

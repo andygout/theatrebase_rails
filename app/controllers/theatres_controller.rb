@@ -8,7 +8,7 @@ class TheatresController < ApplicationController
 
   before_action :logged_in_user,                            only: [:edit, :update, :destroy]
   before_action :not_suspended_user,                        only: [:edit, :update, :destroy]
-  before_action :get_theatre_by_url
+  before_action :get_theatre
   before_action :get_page_title,                            only: [:edit, :show]
   before_action :get_browser_tab,                           only: [:edit, :show]
   before_action -> { get_content_header(MODEL) },           only: [:edit, :update, :show]
@@ -66,7 +66,7 @@ class TheatresController < ApplicationController
       params[:theatre][:url] = generate_url(name)
     end
 
-    def get_theatre_by_url
+    def get_theatre
       @theatre = Theatre.find_by_url!(params[:url])
     end
 
