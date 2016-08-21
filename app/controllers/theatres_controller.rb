@@ -45,7 +45,7 @@ class TheatresController < ApplicationController
   private
 
     def theatre_params
-      amplify_theatre_attributes
+      amplify_attributes(:theatre, :name)
 
       params
         .require(:theatre)
@@ -53,12 +53,6 @@ class TheatresController < ApplicationController
                 :alphabetise,
                 :url)
         .merge(updater_id: current_user.id)
-    end
-
-    def amplify_theatre_attributes
-      name = params[:theatre][:name]
-      params[:theatre][:alphabetise] = get_alphabetise_value(name)
-      params[:theatre][:url] = generate_url(name)
     end
 
     def get_theatre

@@ -63,7 +63,7 @@ class ProductionsController < ApplicationController
 
     def production_params
       nullify_unused_params
-      amplify_production_attributes
+      amplify_attributes(:production, :title)
       amplify_theatre_attributes
 
       params
@@ -91,12 +91,6 @@ class ProductionsController < ApplicationController
 
       [:press_date_wording, :dates_tbc_note, :dates_note]
         .map { |p| params[:production][p] = nil if params[:production][p].empty? }
-    end
-
-    def amplify_production_attributes
-      title = params[:production][:title]
-      params[:production][:alphabetise] = get_alphabetise_value(title)
-      params[:production][:url] = generate_url(title)
     end
 
     def amplify_theatre_attributes
