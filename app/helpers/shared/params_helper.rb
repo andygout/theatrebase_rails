@@ -22,4 +22,10 @@ module Shared::ParamsHelper
       .gsub(/-+/, '-')                # convert double hyphens (resulting from double whitespace) to single hyphens
   end
 
+  def amplify_attributes model, text_attr
+    text_attr = params[model][text_attr]
+    params[model][:alphabetise] = get_alphabetise_value(text_attr)
+    params[model][:url] = generate_url(text_attr)
+  end
+
 end

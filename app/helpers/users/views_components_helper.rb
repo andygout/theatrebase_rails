@@ -54,7 +54,7 @@ module Users::ViewsComponentsHelper
 
     rows_markup = compile_rows(row_values, header_values, colwidth_values)
 
-    bookend_tags('table', rows_markup, 'table listing', 'users-index').html_safe
+    @user_index_table = bookend_tags('table', rows_markup, 'table listing', 'users-index').html_safe
   end
 
 end

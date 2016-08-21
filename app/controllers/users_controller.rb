@@ -63,10 +63,8 @@ class UsersController < ApplicationController
 
   def index
     @page_title = "#{MODEL.pluralize.capitalize}"
-    @users = current_user.super_admin ?
-      User.non_admin(current_user, SuperAdmin).order(:id).paginate(page: params[:page]) :
-      User.non_admin(current_user, SuperAdmin).non_admin(current_user, Admin).order(:id).paginate(page: params[:page])
-    @user_index_table = get_user_index_table
+    @users = get_users_for_index
+    get_user_index_table
   end
 
   private
@@ -90,6 +88,12 @@ class UsersController < ApplicationController
                 :password,
                 :password_confirmation)
         .merge(updater_id: current_user.id)
+    end
+
+    def get_users_for_index
+      current_user.super_admin ?
+        User.non_admin(current_user, SuperAdmin).order(:id).paginate(page: params[:page]) :
+        User.non_admin(current_user, SuperAdmin).non_admin(current_user, Admin).order(:id).paginate(page: params[:page])
     end
 
 end
