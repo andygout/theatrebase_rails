@@ -8,18 +8,18 @@ class UsersController < ApplicationController
 
   MODEL = 'User'
 
-  before_action -> { get_user(params[:id]) },                       only: [:new, :create, :edit, :update, :destroy, :show]
+  before_action -> { get_user(params[:id]) },                         only: [:new, :create, :edit, :update, :destroy, :show]
   before_action :logged_in_user
   before_action :not_suspended_user
-  before_action :admin_user,                                        only: [:new, :create, :index]
-  before_action :correct_user,                                      only: [:edit, :update]
-  before_action :destroy_user,                                      only: :destroy
-  before_action :show_user,                                         only: :show
-  before_action -> { get_page_title(MODEL, get_user_page_title) },  only: [:new, :create, :edit, :update, :show]
-  before_action -> { get_browser_tab(MODEL) },                      only: [:edit, :update, :show]
-  before_action -> { get_content_header(MODEL) },                   only: [:new, :create, :edit, :update, :show]
-  before_action :get_status_info,                                   only: [:new, :create, :edit, :update, :show]
-  before_action -> { get_created_updated_info(@user) },             only: [:new, :create, :edit, :update]
+  before_action -> { validate_user(super_or_admin?(current_user)) },  only: [:new, :create, :index]
+  before_action -> { validate_user(current_user?(@user)) },           only: [:edit, :update]
+  before_action -> { validate_user(valid_destroy_user?(@user)) },     only: :destroy
+  before_action -> { validate_user(valid_show_user?(@user)) },        only: :show
+  before_action -> { get_page_title(MODEL, get_user_page_title) },    only: [:new, :create, :edit, :update, :show]
+  before_action -> { get_browser_tab(MODEL) },                        only: [:edit, :update, :show]
+  before_action -> { get_content_header(MODEL) },                     only: [:new, :create, :edit, :update, :show]
+  before_action :get_status_info,                                     only: [:new, :create, :edit, :update, :show]
+  before_action -> { get_created_updated_info(@user) },               only: [:new, :create, :edit, :update]
 
   def new
   end
@@ -90,22 +90,6 @@ class UsersController < ApplicationController
                 :password,
                 :password_confirmation)
         .merge(updater_id: current_user.id)
-    end
-
-    def admin_user
-      validate_user super_or_admin? current_user
-    end
-
-    def correct_user
-      validate_user current_user? @user
-    end
-
-    def destroy_user
-      validate_user valid_destroy_user? @user
-    end
-
-    def show_user
-      validate_user valid_show_user? @user
     end
 
 end
