@@ -1,6 +1,7 @@
 module Associations::Production
 
   extend ActiveSupport::Concern
+  include BelongsToCreatorUpdater
 
   included do
     belongs_to :theatre
@@ -14,10 +15,6 @@ module Associations::Production
       attributes.merge!(self.theatre.attributes) if self.theatre
       assign_nested_attributes_for_one_to_one_association(:theatre, attributes)
     end
-
-    belongs_to :creator, class_name: :User, foreign_key: :creator_id
-
-    belongs_to :updater, class_name: :User, foreign_key: :updater_id
   end
 
 end

@@ -1,6 +1,7 @@
 module Associations::User
 
   extend ActiveSupport::Concern
+  include BelongsToCreatorUpdater
 
   included do
     has_one :admin, dependent: :destroy
@@ -25,14 +26,10 @@ module Associations::User
 
     has_many :suspension_status_assignees, through: :suspensions, source: :user
 
-    belongs_to :creator, class_name: :User, foreign_key: :creator_id
-
     has_many :created_users,
       -> { extending WithUserAssociationExtension },
       class_name: :User,
       foreign_key: :creator_id
-
-    belongs_to :updater, class_name: :User, foreign_key: :updater_id
 
     has_many :updated_users, class_name: :User, foreign_key: :updater_id
 
