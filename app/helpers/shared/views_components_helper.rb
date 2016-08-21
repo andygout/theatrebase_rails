@@ -11,6 +11,11 @@ module Shared::ViewsComponentsHelper
     "#{user.name} (#{user.email})"
   end
 
+  def get_browser_tab model
+    edit_page = ['edit', 'update'].include?(params[:action])
+    @browser_tab = "#{'Edit: ' if edit_page}#{@page_title} (#{model.downcase})"
+  end
+
   def get_production_index_table productions
     return @no_productions_msg = "<h1 class='title-text'>No productions yet</h1>".html_safe if productions.empty?
 

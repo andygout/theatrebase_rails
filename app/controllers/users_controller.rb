@@ -17,7 +17,7 @@ class UsersController < ApplicationController
   before_action :destroy_user,                          only: :destroy
   before_action :show_user,                             only: :show
   before_action :get_page_title,                        only: [:new, :create, :edit, :show]
-  before_action :get_browser_tab,                       only: [:edit, :show]
+  before_action -> { get_browser_tab(MODEL) },          only: [:edit, :show]
   before_action -> { get_content_header(MODEL) },       only: [:new, :create, :edit, :update, :show]
   before_action :get_status_info,                       only: [:new, :create, :edit, :update, :show]
   before_action -> { get_created_updated_info(@user) }, only: [:new, :create, :edit, :update]
@@ -45,7 +45,7 @@ class UsersController < ApplicationController
       redirect_to @user
     else
       @page_title = get_user_page_title(User.find(params[:id]))
-      get_browser_tab
+      get_browser_tab(MODEL)
       render :edit
     end
   end
@@ -119,11 +119,6 @@ class UsersController < ApplicationController
       @page_title = ['new', 'create'].include?(params[:action]) ?
         "New #{MODEL.downcase}" :
         get_user_page_title(@user)
-    end
-
-    def get_browser_tab
-      edit_page = ['edit', 'update'].include?(params[:action])
-      @browser_tab = "#{'Edit: ' if edit_page}#{@page_title} (#{MODEL.downcase})"
     end
 
 end
