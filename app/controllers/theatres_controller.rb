@@ -6,13 +6,13 @@ class TheatresController < ApplicationController
 
   MODEL = 'Theatre'
 
-  before_action :logged_in_user,                            only: [:edit, :update, :destroy]
-  before_action :not_suspended_user,                        only: [:edit, :update, :destroy]
+  before_action :logged_in_user,                              only: [:edit, :update, :destroy]
+  before_action :not_suspended_user,                          only: [:edit, :update, :destroy]
   before_action :get_theatre
-  before_action :get_page_title,                            only: [:edit, :show]
-  before_action -> { get_browser_tab(MODEL) },              only: [:edit, :show]
-  before_action -> { get_content_header(MODEL) },           only: [:edit, :update, :show]
-  before_action -> { get_created_updated_info(@theatre) },  only: [:edit, :update]
+  before_action -> { get_page_title(MODEL, @theatre.name) },  only: [:edit, :update, :show]
+  before_action -> { get_browser_tab(MODEL) },                only: [:edit, :update, :show]
+  before_action -> { get_content_header(MODEL) },             only: [:edit, :update, :show]
+  before_action -> { get_created_updated_info(@theatre) },    only: [:edit, :update]
 
   def edit
   end
@@ -22,10 +22,7 @@ class TheatresController < ApplicationController
       flash[:success] = "#{MODEL} updated successfully"
       redirect_to theatre_path(@theatre.url)
     else
-      @db_theatre = Theatre.find_by_url!(params[:url])
-      @theatre.url = @db_theatre.url
-      @page_title = "#{@db_theatre.name}"
-      get_browser_tab(MODEL)
+      @theatre.url = params[:url]
       render :edit
     end
   end
@@ -36,8 +33,6 @@ class TheatresController < ApplicationController
       flash[:success] = "#{MODEL} deleted successfully"
       redirect_to root_path
     else
-      get_page_title
-      get_browser_tab(MODEL)
       flash[:error] = @theatre.errors.messages[:base][0]
       redirect_to theatre_path(@theatre.url)
     end
@@ -68,10 +63,6 @@ class TheatresController < ApplicationController
 
     def get_theatre
       @theatre = Theatre.find_by_url!(params[:url])
-    end
-
-    def get_page_title
-      @page_title = "#{@theatre.name}"
     end
 
 end

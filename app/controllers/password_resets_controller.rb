@@ -73,7 +73,7 @@ class PasswordResetsController < ApplicationController
     def get_page_title
       @page_title = ['new', 'create'].include?(params[:action]) ?
         'Request password reset link' :
-        "Reset password: #{get_user_page_title(@user)}"
+        "Reset password: #{get_user_page_title}"
     end
 
     def password_blank?

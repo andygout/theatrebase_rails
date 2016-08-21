@@ -3,17 +3,25 @@ module Shared::ViewsComponentsHelper
   include Productions::DatesListingHelper
   include Shared::MarkupHelper
 
-  def get_content_header model
-    @content_header = model.upcase
+  def get_page_title model, page_title
+    @page_title = ['new', 'create'].include?(params[:action]) ? "New #{model.downcase}" : page_title
   end
 
-  def get_user_page_title user
-    "#{user.name} (#{user.email})"
+  def get_user_page_title
+    "#{@user.name} (#{@user.email})"
+  end
+
+  def get_browser_tab_suffix model
+    model === 'Production' ? listing_dates(@production) : model.downcase
   end
 
   def get_browser_tab model
     edit_page = ['edit', 'update'].include?(params[:action])
-    @browser_tab = "#{'Edit: ' if edit_page}#{@page_title} (#{model.downcase})"
+    @browser_tab = "#{'Edit: ' if edit_page}#{@page_title} (#{get_browser_tab_suffix(model)})"
+  end
+
+  def get_content_header model
+    @content_header = model.upcase
   end
 
   def get_production_index_table productions

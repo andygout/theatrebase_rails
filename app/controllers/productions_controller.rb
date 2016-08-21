@@ -8,13 +8,13 @@ class ProductionsController < ApplicationController
 
   MODEL = 'Production'
 
-  before_action :logged_in_user,                              only: [:new, :create, :edit, :update, :destroy]
-  before_action :not_suspended_user,                          only: [:new, :create, :edit, :update, :destroy]
-  before_action :get_production,                              only: [:new, :create, :edit, :update, :destroy, :show]
-  before_action :get_page_title,                              only: [:new, :create, :edit, :show]
-  before_action :get_browser_tab,                             only: [:edit, :show]
-  before_action -> { get_content_header(MODEL) },             only: [:new, :create, :edit, :update, :show]
-  before_action -> { get_created_updated_info(@production) }, only: [:new, :create, :edit, :update]
+  before_action :logged_in_user,                                  only: [:new, :create, :edit, :update, :destroy]
+  before_action :not_suspended_user,                              only: [:new, :create, :edit, :update, :destroy]
+  before_action :get_production,                                  only: [:new, :create, :edit, :update, :destroy, :show]
+  before_action -> { get_page_title(MODEL, @production.title) },  only: [:new, :create, :edit, :update, :show]
+  before_action -> { get_browser_tab(MODEL) },                    only: [:edit, :update, :show]
+  before_action -> { get_content_header(MODEL) },                 only: [:new, :create, :edit, :update, :show]
+  before_action -> { get_created_updated_info(@production) },     only: [:new, :create, :edit, :update]
 
   def new
     @production.build_theatre
@@ -38,10 +38,7 @@ class ProductionsController < ApplicationController
       flash[:success] = "#{MODEL} updated successfully"
       redirect_to production_path(@production.id, @production.url)
     else
-      @db_production = Production.find(params[:id])
-      @production.url = @db_production.url
-      @page_title = @db_production.title
-      get_browser_tab
+      @production.url = params[:url]
       render :edit
     end
   end
@@ -115,18 +112,9 @@ class ProductionsController < ApplicationController
     end
 
     def get_production
-      @production = params[:id] && params[:url] ?
-        Production.find_by_id_and_url!(params[:id], params[:url]) :
-        Production.new
-    end
-
-    def get_page_title
-      @page_title = @production.title || "New #{MODEL.downcase}"
-    end
-
-    def get_browser_tab
-      edit_page = ['edit', 'update'].include?(params[:action])
-      @browser_tab = "#{'Edit: ' if edit_page}#{@page_title} (#{listing_dates(@db_production || @production)})"
+      @production = ['new', 'create'].include?(params[:action]) ?
+        Production.new :
+        Production.find_by_id_and_url!(params[:id], params[:url])
     end
 
 end

@@ -9,7 +9,7 @@ module Shared::StatusHelper
   private
 
     def get_status_edit_components status_type
-      @page_title = "Edit #{status_type.to_s} status: #{get_user_page_title(@user)}"
+      @page_title = "Edit #{status_type.to_s} status: #{get_user_page_title}"
       @browser_tab = "#{@page_title} (#{MODEL.downcase})"
       @content_header = MODEL.upcase
       get_status_info

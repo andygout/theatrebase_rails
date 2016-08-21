@@ -8,19 +8,18 @@ class UsersController < ApplicationController
 
   MODEL = 'User'
 
-  before_action :get_new_user,                          only: [:new, :create]
-  before_action -> { get_user(params[:id]) },           only: [:edit, :update, :destroy, :show]
+  before_action -> { get_user(params[:id]) },                       only: [:new, :create, :edit, :update, :destroy, :show]
   before_action :logged_in_user
   before_action :not_suspended_user
-  before_action :admin_user,                            only: [:new, :create, :index]
-  before_action :correct_user,                          only: [:edit, :update]
-  before_action :destroy_user,                          only: :destroy
-  before_action :show_user,                             only: :show
-  before_action :get_page_title,                        only: [:new, :create, :edit, :show]
-  before_action -> { get_browser_tab(MODEL) },          only: [:edit, :show]
-  before_action -> { get_content_header(MODEL) },       only: [:new, :create, :edit, :update, :show]
-  before_action :get_status_info,                       only: [:new, :create, :edit, :update, :show]
-  before_action -> { get_created_updated_info(@user) }, only: [:new, :create, :edit, :update]
+  before_action :admin_user,                                        only: [:new, :create, :index]
+  before_action :correct_user,                                      only: [:edit, :update]
+  before_action :destroy_user,                                      only: :destroy
+  before_action :show_user,                                         only: :show
+  before_action -> { get_page_title(MODEL, get_user_page_title) },  only: [:new, :create, :edit, :update, :show]
+  before_action -> { get_browser_tab(MODEL) },                      only: [:edit, :update, :show]
+  before_action -> { get_content_header(MODEL) },                   only: [:new, :create, :edit, :update, :show]
+  before_action :get_status_info,                                   only: [:new, :create, :edit, :update, :show]
+  before_action -> { get_created_updated_info(@user) },             only: [:new, :create, :edit, :update]
 
   def new
   end
@@ -44,8 +43,6 @@ class UsersController < ApplicationController
       flash[:success] = "#{MODEL} updated successfully"
       redirect_to @user
     else
-      @page_title = get_user_page_title(User.find(params[:id]))
-      get_browser_tab(MODEL)
       render :edit
     end
   end
@@ -95,10 +92,6 @@ class UsersController < ApplicationController
         .merge(updater_id: current_user.id)
     end
 
-    def get_new_user
-      @user = User.new
-    end
-
     def admin_user
       validate_user super_or_admin? current_user
     end
@@ -113,12 +106,6 @@ class UsersController < ApplicationController
 
     def show_user
       validate_user valid_show_user? @user
-    end
-
-    def get_page_title
-      @page_title = ['new', 'create'].include?(params[:action]) ?
-        "New #{MODEL.downcase}" :
-        get_user_page_title(@user)
     end
 
 end
