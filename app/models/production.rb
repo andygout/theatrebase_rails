@@ -4,7 +4,6 @@ class Production < ActiveRecord::Base
   include Shared::ParamsHelper
   include Associations::Production
   include Validations::Production
-
-  before_validation :strip_whitespace
+  include WhitespaceStripable
 
 end
