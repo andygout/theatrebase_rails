@@ -1,18 +1,18 @@
 require 'rails_helper'
 
 describe SuspensionStatusController, type: :controller do
-  let!(:super_admin_user) { create :super_admin_user }
-  let!(:second_super_admin_user) { create :second_super_admin_user }
-  let!(:admin_user) { create :admin_user }
-  let!(:second_admin_user) { create :second_admin_user }
+  let(:super_admin_user) { create :super_admin_user }
+  let(:second_super_admin_user) { create :second_super_admin_user }
+  let(:admin_user) { create :admin_user }
+  let(:second_admin_user) { create :second_admin_user }
   let(:user) { create :user }
-  let(:second_user) { create :second_user }
-  let!(:suspended_super_admin_user) { create :suspended_super_admin_user }
-  let!(:suspended_admin_user) { create :suspended_admin_user }
-  let!(:suspended_user) { create :suspended_user }
-  let!(:second_suspended_super_admin_user) { create :second_suspended_super_admin_user }
-  let!(:second_suspended_admin_user) { create :second_suspended_admin_user }
-  let!(:second_suspended_user) { create :second_suspended_user }
+  let(:second_user) { create :user }
+  let(:suspended_super_admin_user) { create :suspended_super_admin_user }
+  let(:suspended_admin_user) { create :suspended_admin_user }
+  let(:suspended_user) { create :suspended_user }
+  let(:second_suspended_super_admin_user) { create :second_suspended_super_admin_user }
+  let(:second_suspended_admin_user) { create :second_suspended_admin_user }
+  let(:second_suspended_user) { create :second_suspended_user }
 
   context 'attempt create user with suspended status' do
     it 'via suspension status create route: fail as not routable' do

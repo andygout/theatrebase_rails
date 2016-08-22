@@ -2,7 +2,7 @@ require 'rails_helper'
 
 feature 'User log in' do
   let(:user) { create :user }
-  let(:second_user) { attributes_for :second_user }
+  let(:user_attrs) { attributes_for :user }
 
   context 'valid details' do
     scenario 'redirect to user page with success message', js: true do
@@ -26,8 +26,8 @@ feature 'User log in' do
     end
 
     scenario 'details of non-existing user', js: true do
-      fill_in 'session_email',    with: second_user[:email]
-      fill_in 'session_password', with: second_user[:password]
+      fill_in 'session_email',    with: user_attrs[:email]
+      fill_in 'session_password', with: user_attrs[:password]
       click_button 'Log In'
       expect(page).to have_css '.alert-error'
       expect(page).not_to have_css '.alert-success'
@@ -62,8 +62,8 @@ feature 'User log in' do
     end
 
     scenario 'error alert will disappear when visiting subsequent page', js: true do
-      fill_in 'session_email',    with: second_user[:email]
-      fill_in 'session_password', with: second_user[:password]
+      fill_in 'session_email',    with: user_attrs[:email]
+      fill_in 'session_password', with: user_attrs[:password]
       click_button 'Log In'
       visit root_path
       expect(page).not_to have_css '.alert-error'
@@ -209,7 +209,7 @@ end
 
 feature 'Friendly forwarding' do
   let(:user) { create :user }
-  let(:second_user) { create :second_user }
+  let(:second_user) { create :user }
 
   context 'attempt to visit permitted page not logged in; logging in redirects to intended page first time only' do
     scenario 'redirect to log in page', js: true do

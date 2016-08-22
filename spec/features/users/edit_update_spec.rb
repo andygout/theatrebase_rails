@@ -30,14 +30,14 @@ feature 'User edit/update' do
   context 'displaying creator + updater info on edit form' do
     let(:created_user) { create :created_user }
     let(:user) { created_user.creator }
-    let(:edit_user) { attributes_for :edit_user }
+    let(:user_attrs) { attributes_for :user }
 
     scenario 'creator and updater will only display as link if profile page accessible by user' do
       log_in created_user
       visit edit_user_path(created_user)
       expect(page).to have_content(user[:name])
       expect(page).not_to have_link(user[:name], href: user_path(user))
-      fill_in 'user_name', with: edit_user[:name]
+      fill_in 'user_name', with: user_attrs[:name]
       click_button 'Update User'
       visit edit_user_path(created_user.reload)
       expect(page).to have_content(created_user[:name])
@@ -47,7 +47,7 @@ feature 'User edit/update' do
 
   context 'updating permitted user profile with valid details' do
     let(:created_user) { create :created_user }
-    let(:edit_user) { attributes_for :edit_user }
+    let(:user_attrs) { attributes_for :user }
     let(:user) { created_user.creator }
 
     before(:each) do
@@ -56,10 +56,10 @@ feature 'User edit/update' do
     end
 
     scenario 'valid details (inc. new password); redirect to user profile with success message; existing creator association remains and updater association (w/itself) updated', js: true do
-      user_edit_form( edit_user[:name],
-                      edit_user[:email],
-                      edit_user[:password],
-                      edit_user[:password])
+      user_edit_form( user_attrs[:name],
+                      user_attrs[:email],
+                      user_attrs[:password],
+                      user_attrs[:password])
       click_button 'Update User'
       expect(created_user.reload.creator).to eq user
       expect(created_user.updater).to eq created_user
@@ -69,15 +69,15 @@ feature 'User edit/update' do
       expect(page).to have_css '.alert-success'
       expect(page).not_to have_css '.alert-error'
       expect(page).not_to have_css '.field_with_errors'
-      expect(page).to have_content(edit_user[:name])
+      expect(page).to have_content(user_attrs[:name])
       expect(page).to have_current_path user_path(created_user)
     end
 
     scenario 'once email and password updated only new details can be used', js: true do
-      user_edit_form( edit_user[:name],
-                      edit_user[:email],
-                      edit_user[:password],
-                      edit_user[:password])
+      user_edit_form( user_attrs[:name],
+                      user_attrs[:email],
+                      user_attrs[:password],
+                      user_attrs[:password])
       click_button 'Update User'
       click_link 'Log out'
       log_in created_user
@@ -87,8 +87,8 @@ feature 'User edit/update' do
       expect(page).not_to have_link('Profile')
       expect(page).not_to have_link('Log out', href: log_out_path)
       expect(page).to have_current_path log_in_path
-      fill_in 'session_email',    with: edit_user[:email]
-      fill_in 'session_password', with: edit_user[:password]
+      fill_in 'session_email',    with: user_attrs[:email]
+      fill_in 'session_password', with: user_attrs[:password]
       click_button 'Log In'
       expect(page).to have_css '.alert-success'
       expect(page).not_to have_css '.alert-error'
@@ -101,13 +101,13 @@ feature 'User edit/update' do
     scenario 'password can contain leading and trailing whitespace', js: true do
       user_edit_form( created_user.name,
                       created_user.email,
-                      ' ' + edit_user[:password] + ' ',
-                      ' ' + edit_user[:password] + ' ')
+                      ' ' + user_attrs[:password] + ' ',
+                      ' ' + user_attrs[:password] + ' ')
       click_button 'Update User'
       click_link 'Log out'
       visit log_in_path
       fill_in 'session_email',    with: created_user.email
-      fill_in 'session_password', with: edit_user[:password]
+      fill_in 'session_password', with: user_attrs[:password]
       click_button 'Log In'
       expect(page).to have_css '.alert-error'
       expect(page).not_to have_css '.alert-success'
@@ -116,7 +116,7 @@ feature 'User edit/update' do
       expect(page).not_to have_link('Log out', href: log_out_path)
       expect(page).to have_current_path log_in_path
       fill_in 'session_email',    with: created_user.email
-      fill_in 'session_password', with: ' ' + edit_user[:password] + ' '
+      fill_in 'session_password', with: ' ' + user_attrs[:password] + ' '
       click_button 'Log In'
       expect(page).to have_css '.alert-success'
       expect(page).not_to have_css '.alert-error'
@@ -127,8 +127,8 @@ feature 'User edit/update' do
     end
 
     scenario 'valid details (retaining existing password); redirect to user profile with success message', js: true do
-      user_edit_form( edit_user[:name],
-                      edit_user[:email],
+      user_edit_form( user_attrs[:name],
+                      user_attrs[:email],
                       '',
                       '')
       click_button 'Update User'
@@ -139,14 +139,14 @@ feature 'User edit/update' do
     end
 
     scenario 'if existing password is retained it can still be used', js: true do
-      user_edit_form( edit_user[:name],
-                      edit_user[:email],
+      user_edit_form( user_attrs[:name],
+                      user_attrs[:email],
                       '',
                       '')
       click_button 'Update User'
       click_link 'Log out'
       visit log_in_path
-      fill_in 'session_email',    with: edit_user[:email]
+      fill_in 'session_email',    with: user_attrs[:email]
       fill_in 'session_password', with: created_user.password
       click_button 'Log In'
       expect(page).to have_css '.alert-success'
@@ -160,8 +160,8 @@ feature 'User edit/update' do
 
   context 'updating permitted profile with invalid details' do
     let(:created_user) { create :created_user }
-    let(:edit_user) { attributes_for :edit_user }
-    let(:invalid_user) { attributes_for :invalid_user }
+    let(:user_attrs) { attributes_for :user }
+    let(:invalid_user_attrs) { attributes_for :invalid_user }
     let(:user) { created_user.creator }
 
     before(:each) do
@@ -170,10 +170,10 @@ feature 'User edit/update' do
     end
 
     scenario 're-render form with error message, displaying existing user name; existing creator and updater associations remain', js: true do
-      user_edit_form( invalid_user[:name],
-                      invalid_user[:email],
-                      invalid_user[:password],
-                      invalid_user[:password])
+      user_edit_form( invalid_user_attrs[:name],
+                      invalid_user_attrs[:email],
+                      invalid_user_attrs[:password],
+                      invalid_user_attrs[:password])
       click_button 'Update User'
       expect(created_user.reload.creator).to eq user
       expect(created_user.updater).to eq user
@@ -188,8 +188,8 @@ feature 'User edit/update' do
     end
 
     scenario 'enter password as single whitespace (with no confirmation); re-render form with error message', js: true do
-      user_edit_form( edit_user[:name],
-                      edit_user[:email],
+      user_edit_form( user_attrs[:name],
+                      user_attrs[:email],
                       ' ',
                       '')
       click_button 'Update User'

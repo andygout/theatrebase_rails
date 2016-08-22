@@ -1,22 +1,10 @@
 FactoryGirl.define do
 
   factory :theatre do
-    name        'Barbican'
-    url         'barbican'
-    association :creator, factory: :third_user
-    updater     { creator }
-
-    factory :second_theatre do
-      name  'Hampstead Theatre'
-      url   'hampstead-theatre'
-      association :creator, factory: :super_admin_user
-      updater     { creator }
-    end
-
-    factory :add_theatre do
-      name  'Almeida Theatre'
-      url   'almeida-theatre'
-    end
+    sequence(:name) { |n| "Theatre #{n}" }
+    sequence(:url)  { |n| "theatre-#{n}" }
+    association     :creator, factory: :user
+    updater         { creator }
   end
 
 end

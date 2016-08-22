@@ -2,28 +2,28 @@ require 'rails_helper'
 
 describe ProductionsController, type: :controller do
   let(:user) { create :user }
-  let(:add_production) { attributes_for :add_production }
-  let(:add_theatre) { attributes_for :add_theatre }
-  let(:theatre) { attributes_for :theatre }
+  let(:production_attrs) { attributes_for :production }
+  let(:theatre_attrs) { attributes_for :theatre }
   let!(:production) { create :production }
 
   let(:production_params) {
     {
-      title: add_production[:title],
-      first_date: add_production[:first_date],
-      last_date: add_production[:last_date],
-      press_date_wording: '',
-      dates_tbc_note: '',
-      dates_note: ''
+      title: production_attrs[:title],
+      first_date: production_attrs[:first_date],
+      last_date: production_attrs[:last_date],
+      dates_info: production_attrs[:dates_info],
+      press_date_wording: production_attrs[:press_date_wording],
+      dates_tbc_note: production_attrs[:dates_tbc_note],
+      dates_note: production_attrs[:dates_note]
     }
   }
 
   let(:non_existing_theatre) {
-    { name: add_theatre[:name] }
+    { name: theatre_attrs[:name] }
   }
 
   let(:existing_theatre) {
-    { name: theatre[:name] }
+    { name: production.theatre.name }
   }
 
   before(:each) do

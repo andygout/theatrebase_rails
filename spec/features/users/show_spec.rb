@@ -3,7 +3,7 @@ require 'rails_helper'
 feature 'User show' do
   context 'attempt view user profile' do
     let!(:user) { create_logged_in_user }
-    let(:second_user) { create :second_user }
+    let(:second_user) { create :user }
 
     scenario 'viewing own non-admin user profile: show own non-admin user profile page', js: true do
       visit user_path(user)

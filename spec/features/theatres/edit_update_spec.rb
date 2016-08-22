@@ -17,17 +17,18 @@ feature 'Theatre edit/update' do
   context 'updating theatres with valid details' do
     let!(:user) { create_logged_in_user }
     let(:theatre) { create :theatre }
+    let(:theatre_attrs) { attributes_for :theatre }
     let(:second_user) { theatre.creator }
 
     scenario 'redirects to updated theatre page with success message; existing creator association remains and updater association updated', js: true do
       visit theatre_path(theatre.url)
       click_button 'Edit Theatre'
-      fill_in 'theatre_name', with: 'Almeida Theatre'
+      fill_in 'theatre_name', with: theatre_attrs[:name]
       click_button 'Update Theatre'
       expect(page).to have_css '.alert-success'
       expect(page).not_to have_css '.alert-error'
       expect(page).not_to have_css '.field_with_errors'
-      expect(page).to have_content 'Almeida Theatre'
+      expect(page).to have_content theatre_attrs[:name]
       expect(page).not_to have_content theatre.name
       theatre.reload
       expect(page).to have_current_path theatre_path(theatre.url)

@@ -100,15 +100,15 @@ feature 'User edit/update suspension status' do
 
   context 'logged in as user whose account is suspended' do
     let(:user) { create_logged_in_user }
-    let(:edit_user) { attributes_for :edit_user }
+    let(:user_attrs) { attributes_for :user }
     let(:super_admin_user) { create :super_admin_user }
 
     scenario 'user will be logged out on first page request following suspension', js: true do
       visit edit_user_path(user)
-      user_edit_form( edit_user[:name],
-                      edit_user[:email],
-                      edit_user[:password],
-                      edit_user[:password])
+      user_edit_form( user_attrs[:name],
+                      user_attrs[:email],
+                      user_attrs[:password],
+                      user_attrs[:password])
       Suspension.create(user_id: user.id, assignor_id: super_admin_user.id)
       click_button 'Update User'
       expect(user.name).to eq user.reload.name

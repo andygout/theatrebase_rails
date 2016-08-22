@@ -6,7 +6,7 @@ describe AdminStatusController, type: :controller do
   let(:admin_user) { create :admin_user }
   let(:second_admin_user) { create :second_admin_user }
   let(:user) { create :user }
-  let(:second_user) { create :second_user }
+  let(:second_user) { create :user }
   let(:suspended_super_admin_user) { create :suspended_super_admin_user }
   let(:suspended_admin_user) { create :suspended_admin_user }
   let(:suspended_user) { create :suspended_user }

@@ -32,7 +32,7 @@ feature 'User edit/update admin status' do
   context 'updating admin status of permitted user profile' do
     let!(:super_admin_user) { create_logged_in_super_admin_user }
     let(:user) { create :user }
-    let(:second_user) { create :second_user }
+    let(:second_user) { create :user }
 
     before(:each) do
       visit edit_admin_status_path(user)

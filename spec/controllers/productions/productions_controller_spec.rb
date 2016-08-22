@@ -7,32 +7,33 @@ describe ProductionsController, type: :controller do
   let(:suspended_super_admin_user) { create :suspended_super_admin_user }
   let(:suspended_admin_user) { create :suspended_admin_user }
   let(:suspended_user) { create :suspended_user }
-  let(:add_production) { attributes_for :add_production }
-  let(:add_theatre) { attributes_for :add_theatre }
+  let(:production_attrs) { attributes_for :production }
+  let(:theatre_attrs) { attributes_for :theatre }
   let!(:production) { create :production }
 
   let(:production_params) {
     {
-      title: add_production[:title],
-      first_date: add_production[:first_date],
-      last_date: add_production[:last_date],
-      press_date_wording: '',
-      dates_tbc_note: '',
-      dates_note: '',
-      theatre_attributes: { name: add_theatre[:name] }
+      title: production_attrs[:title],
+      first_date: production_attrs[:first_date],
+      last_date: production_attrs[:last_date],
+      dates_info: production_attrs[:dates_info],
+      press_date_wording: production_attrs[:press_date_wording],
+      dates_tbc_note: production_attrs[:dates_tbc_note],
+      dates_note: production_attrs[:dates_note],
+      theatre_attributes: { name: theatre_attrs[:name] }
     }
   }
 
   let(:production_whitespace_params) {
     {
-      title: ' ' + add_production[:title] + ' ',
-      first_date: add_production[:first_date],
-      last_date: add_production[:last_date],
-      dates_info: 3,
-      press_date_wording: ' ' + add_production[:press_date_wording] + ' ',
-      dates_tbc_note: ' ' + add_production[:dates_tbc_note] + ' ',
-      dates_note: ' ' + add_production[:dates_note] + ' ',
-      theatre_attributes: { name: ' ' + add_theatre[:name] + ' ' }
+      title: ' ' + production_attrs[:title] + ' ',
+      first_date: production_attrs[:first_date],
+      last_date: production_attrs[:last_date],
+      dates_info: production_attrs[:dates_info],
+      press_date_wording: ' ' + production_attrs[:press_date_wording] + ' ',
+      dates_tbc_note: ' ' + production_attrs[:dates_tbc_note] + ' ',
+      dates_note: ' ' + production_attrs[:dates_note] + ' ',
+      theatre_attributes: { name: ' ' + theatre_attrs[:name] + ' ' }
     }
   }
 
@@ -128,10 +129,10 @@ describe ProductionsController, type: :controller do
       session[:user_id] = user.id
       post :create, production: production_whitespace_params
       production = Production.last
-      expect(production.title).to eq add_production[:title]
-      expect(production.press_date_wording).to eq add_production[:press_date_wording]
-      expect(production.dates_tbc_note).to eq add_production[:dates_tbc_note]
-      expect(production.dates_note).to eq add_production[:dates_note]
+      expect(production.title).to eq production_attrs[:title]
+      expect(production.press_date_wording).to eq production_attrs[:press_date_wording]
+      expect(production.dates_tbc_note).to eq production_attrs[:dates_tbc_note]
+      expect(production.dates_note).to eq production_attrs[:dates_note]
     end
   end
 
@@ -182,21 +183,21 @@ describe ProductionsController, type: :controller do
     it 'as super-admin: succeed and redirect to production display page' do
       session[:user_id] = super_admin_user.id
       patch :update, id: production.id, url: production.url, production: production_params
-      expect(add_production[:title]).to eq production.reload.title
+      expect(production_attrs[:title]).to eq production.reload.title
       expect(response).to redirect_to production_path(production.id, production.url)
     end
 
     it 'as admin: succeed and redirect to production display page' do
       session[:user_id] = admin_user.id
       patch :update, id: production.id, url: production.url, production: production_params
-      expect(add_production[:title]).to eq production.reload.title
+      expect(production_attrs[:title]).to eq production.reload.title
       expect(response).to redirect_to production_path(production.id, production.url)
     end
 
     it 'as non-admin: succeed and redirect to production display page' do
       session[:user_id] = user.id
       patch :update, id: production.id, url: production.url, production: production_params
-      expect(add_production[:title]).to eq production.reload.title
+      expect(production_attrs[:title]).to eq production.reload.title
       expect(response).to redirect_to production_path(production.id, production.url)
     end
 
@@ -231,10 +232,10 @@ describe ProductionsController, type: :controller do
       session[:user_id] = user.id
       patch :update, id: production.id, url: production.url, production: production_whitespace_params
       production.reload
-      expect(production.title).to eq add_production[:title]
-      expect(production.press_date_wording).to eq add_production[:press_date_wording]
-      expect(production.dates_tbc_note).to eq add_production[:dates_tbc_note]
-      expect(production.dates_note).to eq add_production[:dates_note]
+      expect(production.title).to eq production_attrs[:title]
+      expect(production.press_date_wording).to eq production_attrs[:press_date_wording]
+      expect(production.dates_tbc_note).to eq production_attrs[:dates_tbc_note]
+      expect(production.dates_note).to eq production_attrs[:dates_note]
     end
   end
 
