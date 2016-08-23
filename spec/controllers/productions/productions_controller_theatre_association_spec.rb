@@ -6,23 +6,11 @@ describe ProductionsController, type: :controller do
   let(:theatre_attrs) { attributes_for :theatre }
   let!(:production) { create :production }
 
-  let(:production_params) {
-    {
-      title: production_attrs[:title],
-      first_date: production_attrs[:first_date],
-      last_date: production_attrs[:last_date],
-      dates_info: production_attrs[:dates_info],
-      press_date_wording: production_attrs[:press_date_wording],
-      dates_tbc_note: production_attrs[:dates_tbc_note],
-      dates_note: production_attrs[:dates_note]
-    }
-  }
-
-  let(:non_existing_theatre) {
+  let(:non_existing_theatre_attrs) {
     { name: theatre_attrs[:name] }
   }
 
-  let(:existing_theatre) {
+  let(:existing_theatre_attrs) {
     { name: production.theatre.name }
   }
 
@@ -32,8 +20,8 @@ describe ProductionsController, type: :controller do
 
   context 'creating production with associated theatre' do
     it 'theatre does not exist: new theatre is created and used for association' do
-      production_params[:theatre_attributes] = non_existing_theatre
-      expect { post :create, production: production_params }.to change { Theatre.count }.by 1
+      production_attrs[:theatre_attributes] = non_existing_theatre_attrs
+      expect { post :create, production: production_attrs }.to change { Theatre.count }.by 1
       production = Production.last
       theatre = Theatre.last
       expect(production.theatre).to eq theatre
@@ -41,8 +29,8 @@ describe ProductionsController, type: :controller do
     end
 
     it 'theatre exists: existing theatre is used for association' do
-      production_params[:theatre_attributes] = existing_theatre
-      expect { post :create, production: production_params }.to change { Theatre.count }.by 0
+      production_attrs[:theatre_attributes] = existing_theatre_attrs
+      expect { post :create, production: production_attrs }.to change { Theatre.count }.by 0
       production = Production.last
       theatre = Theatre.first
       expect(production.theatre).to eq theatre
@@ -52,8 +40,8 @@ describe ProductionsController, type: :controller do
 
   context 'setting creator and updater associations of theatre when production is created' do
     it 'theatre does not exist: theatre associates current user as creator and updater' do
-      production_params[:theatre_attributes] = non_existing_theatre
-      post :create, production: production_params
+      production_attrs[:theatre_attributes] = non_existing_theatre_attrs
+      post :create, production: production_attrs
       theatre = Theatre.last
       expect(theatre.creator).to eq user
       expect(theatre.updater).to eq user
@@ -65,8 +53,8 @@ describe ProductionsController, type: :controller do
       theatre = Theatre.first
       creator = theatre.creator
       updater = theatre.updater
-      production_params[:theatre_attributes] = existing_theatre
-      post :create, production: production_params
+      production_attrs[:theatre_attributes] = existing_theatre_attrs
+      post :create, production: production_attrs
       theatre.reload
       expect(theatre.creator).to eq creator
       expect(theatre.creator).not_to eq user
@@ -81,8 +69,8 @@ describe ProductionsController, type: :controller do
 
   context 'updating production with associated theatre' do
     it 'theatre does not exist: new theatre is created and used for association' do
-      production_params[:theatre_attributes] = non_existing_theatre
-      expect { patch :update, id: production.id, url: production.url, production: production_params }
+      production_attrs[:theatre_attributes] = non_existing_theatre_attrs
+      expect { patch :update, id: production.id, url: production.url, production: production_attrs }
         .to change { Theatre.count }.by 1
       theatre = Theatre.last
       production.reload
@@ -91,8 +79,8 @@ describe ProductionsController, type: :controller do
     end
 
     it 'theatre exists: existing theatre is used for association' do
-      production_params[:theatre_attributes] = existing_theatre
-      expect { patch :update, id: production.id, url: production.url, production: production_params }
+      production_attrs[:theatre_attributes] = existing_theatre_attrs
+      expect { patch :update, id: production.id, url: production.url, production: production_attrs }
         .to change { Theatre.count }.by 0
       theatre = Theatre.first
       production.reload
@@ -103,8 +91,8 @@ describe ProductionsController, type: :controller do
 
   context 'setting creator and updater associations of theatre when production is updated' do
     it 'theatre does not exist: theatre associates current user as creator and updater' do
-      production_params[:theatre_attributes] = non_existing_theatre
-      patch :update, id: production.id, url: production.url, production: production_params
+      production_attrs[:theatre_attributes] = non_existing_theatre_attrs
+      patch :update, id: production.id, url: production.url, production: production_attrs
       theatre = Theatre.last
       expect(theatre.creator).to eq user
       expect(theatre.updater).to eq user
@@ -116,8 +104,8 @@ describe ProductionsController, type: :controller do
       theatre = Theatre.first
       creator = theatre.creator
       updater = theatre.updater
-      production_params[:theatre_attributes] = existing_theatre
-      patch :update, id: production.id, url: production.url, production: production_params
+      production_attrs[:theatre_attributes] = existing_theatre_attrs
+      patch :update, id: production.id, url: production.url, production: production_attrs
       theatre.reload
       expect(theatre.creator).to eq creator
       expect(theatre.creator).not_to eq user
