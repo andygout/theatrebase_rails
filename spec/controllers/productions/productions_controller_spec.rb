@@ -11,19 +11,6 @@ describe ProductionsController, type: :controller do
   let(:theatre_attrs) { attributes_for :theatre }
   let!(:production) { create :production }
 
-  let(:production_whitespace_params) {
-    {
-      title: ' ' + production_attrs[:title] + ' ',
-      first_date: production_attrs[:first_date],
-      last_date: production_attrs[:last_date],
-      dates_info: production_attrs[:dates_info],
-      press_date_wording: ' ' + production_attrs[:press_date_wording] + ' ',
-      dates_tbc_note: ' ' + production_attrs[:dates_tbc_note] + ' ',
-      dates_note: ' ' + production_attrs[:dates_note] + ' ',
-      theatre_attributes: { name: ' ' + theatre_attrs[:name] + ' ' }
-    }
-  }
-
   context 'attempt add new production' do
     it 'as super-admin: render new production form' do
       session[:user_id] = super_admin_user.id
@@ -118,12 +105,16 @@ describe ProductionsController, type: :controller do
 
     it 'permitted create will remove leading and trailing whitespace from string fields' do
       session[:user_id] = user.id
-      post :create, production: production_whitespace_params
+      whitespace_production_attrs = production_attrs.transform_values { |v| " #{v} " }
+      whitespace_theatre_attrs = theatre_attrs.transform_values { |v| " #{v} " }
+      whitespace_production_attrs[:theatre_attributes] = { name: whitespace_theatre_attrs[:name] }
+      post :create, production: whitespace_production_attrs
       production = Production.last
       expect(production.title).to eq production_attrs[:title]
       expect(production.press_date_wording).to eq production_attrs[:press_date_wording]
       expect(production.dates_tbc_note).to eq production_attrs[:dates_tbc_note]
       expect(production.dates_note).to eq production_attrs[:dates_note]
+      expect(production.theatre.name).to eq production_attrs[:theatre_attributes][:name]
     end
   end
 
@@ -225,12 +216,16 @@ describe ProductionsController, type: :controller do
 
     it 'permitted update will remove leading and trailing whitespace from string fields' do
       session[:user_id] = user.id
-      patch :update, id: production.id, url: production.url, production: production_whitespace_params
+      whitespace_production_attrs = production_attrs.transform_values { |v| " #{v} " }
+      whitespace_theatre_attrs = theatre_attrs.transform_values { |v| " #{v} " }
+      whitespace_production_attrs[:theatre_attributes] = { name: whitespace_theatre_attrs[:name] }
+      patch :update, id: production.id, url: production.url, production: whitespace_production_attrs
       production.reload
       expect(production.title).to eq production_attrs[:title]
       expect(production.press_date_wording).to eq production_attrs[:press_date_wording]
       expect(production.dates_tbc_note).to eq production_attrs[:dates_tbc_note]
       expect(production.dates_note).to eq production_attrs[:dates_note]
+      expect(production.theatre.name).to eq production_attrs[:theatre_attributes][:name]
     end
   end
 
