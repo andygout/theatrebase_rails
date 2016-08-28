@@ -207,8 +207,8 @@ feature 'User new/create' do
     end
 
     scenario 'password can contain leading and trailing whitespace', js: true do
-      fill_in 'user_password',              with: ' ' + user2_attrs[:password] + ' '
-      fill_in 'user_password_confirmation', with: ' ' + user2_attrs[:password] + ' '
+      fill_in 'user_password',              with: " #{user2_attrs[:password]} "
+      fill_in 'user_password_confirmation', with: " #{user2_attrs[:password]} "
       click_button 'Set Password'
       click_link 'Log out'
       visit log_in_path
@@ -222,7 +222,7 @@ feature 'User new/create' do
       expect(page).not_to have_link('Log out', href: log_out_path)
       expect(page).to have_current_path log_in_path
       fill_in 'session_email',    with: user1_attrs[:email]
-      fill_in 'session_password', with: ' ' + user2_attrs[:password] + ' '
+      fill_in 'session_password', with: " #{user2_attrs[:password]} "
       click_button 'Log In'
       expect(page).to have_css '.alert-success'
       expect(page).not_to have_css '.alert-error'

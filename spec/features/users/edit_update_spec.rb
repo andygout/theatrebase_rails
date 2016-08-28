@@ -101,8 +101,8 @@ feature 'User edit/update' do
     scenario 'password can contain leading and trailing whitespace', js: true do
       user_edit_form( created_user.name,
                       created_user.email,
-                      ' ' + user_attrs[:password] + ' ',
-                      ' ' + user_attrs[:password] + ' ')
+                      " #{user_attrs[:password]} ",
+                      " #{user_attrs[:password]} ")
       click_button 'Update User'
       click_link 'Log out'
       visit log_in_path
@@ -116,7 +116,7 @@ feature 'User edit/update' do
       expect(page).not_to have_link('Log out', href: log_out_path)
       expect(page).to have_current_path log_in_path
       fill_in 'session_email',    with: created_user.email
-      fill_in 'session_password', with: ' ' + user_attrs[:password] + ' '
+      fill_in 'session_password', with: " #{user_attrs[:password]} "
       click_button 'Log In'
       expect(page).to have_css '.alert-success'
       expect(page).not_to have_css '.alert-error'

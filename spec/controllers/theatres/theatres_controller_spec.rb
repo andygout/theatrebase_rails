@@ -106,7 +106,7 @@ describe TheatresController, type: :controller do
 
     it 'permitted update will remove leading and trailing whitespace from string fields' do
       session[:user_id] = user.id
-      patch :update, url: theatre.url, theatre: { name: ' ' + theatre_attrs[:name] + ' ' }
+      patch :update, url: theatre.url, theatre: { name: " #{theatre_attrs[:name]} " }
       theatre.reload
       expect(theatre.name).to eq theatre_attrs[:name]
     end

@@ -155,7 +155,7 @@ describe UsersController, type: :controller do
   context 'create user with leading and trailing whitespace on name and email' do
     it 'will remove leading and trailing whitespace' do
       session[:user_id] = admin_user.id
-      post :create, user: { name: ' ' + user_attrs[:name] + ' ', email: ' ' + user_attrs[:email] + ' ' }
+      post :create, user: { name: " #{user_attrs[:name]} ", email: " #{user_attrs[:email]} " }
       user = User.last
       expect(user.name).to eq user_attrs[:name]
       expect(user.email).to eq user_attrs[:email]
@@ -561,7 +561,7 @@ describe UsersController, type: :controller do
   context 'update user with leading and trailing whitespace on name and email' do
     it 'will remove leading and trailing whitespace' do
       session[:user_id] = user.id
-      patch :update, id: user, user: { name: ' ' + user_attrs[:name] + ' ', email: ' ' + user_attrs[:email] + ' ' }
+      patch :update, id: user, user: { name: " #{user_attrs[:name]} ", email: " #{user_attrs[:email]} " }
       user.reload
       expect(user.name).to eq user_attrs[:name]
       expect(user.email).to eq user_attrs[:email]
