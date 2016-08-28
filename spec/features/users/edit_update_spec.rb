@@ -138,7 +138,7 @@ feature 'User edit/update' do
       expect(page).to have_current_path user_path(created_user)
     end
 
-    scenario 'if existing password is retained it can still be used', js: true do
+    scenario 'if password is not given any update values then existing password will be retained', js: true do
       user_edit_form( user_attrs[:name],
                       user_attrs[:email],
                       '',
