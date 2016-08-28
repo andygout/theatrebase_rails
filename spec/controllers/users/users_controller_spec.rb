@@ -6,6 +6,8 @@ describe UsersController, type: :controller do
   let!(:admin_user) { create :admin_user }
   let!(:second_admin_user) { create :second_admin_user }
   let!(:user) { create :user }
+  let!(:user_with_creator) { create :user_with_creator }
+  let!(:creator) { user_with_creator.creator }
   let!(:second_user) { create :user }
   let(:suspended_super_admin_user) { create :suspended_super_admin_user }
   let(:suspended_admin_user) { create :suspended_admin_user }
@@ -152,13 +154,23 @@ describe UsersController, type: :controller do
     end
   end
 
-  context 'create user with leading and trailing whitespace on name and email' do
-    it 'will remove leading and trailing whitespace' do
+  context 'permitted user create' do
+    it 'will remove leading and trailing whitespace from string fields' do
       session[:user_id] = admin_user.id
       post :create, user: { name: " #{user_attrs[:name]} ", email: " #{user_attrs[:email]} " }
       user = User.last
       expect(user.name).to eq user_attrs[:name]
       expect(user.email).to eq user_attrs[:email]
+    end
+
+    it 'will set creator and updater associations' do
+      session[:user_id] = admin_user.id
+      post :create, user: { name: user_attrs[:name], email: user_attrs[:email] }
+      user = User.last
+      expect(user.creator).to eq admin_user
+      expect(user.updater).to eq admin_user
+      expect(admin_user.created_users).to include user
+      expect(admin_user.updated_users).to include user
     end
   end
 
@@ -558,13 +570,37 @@ describe UsersController, type: :controller do
     end
   end
 
-  context 'update user with leading and trailing whitespace on name and email' do
+  context 'permitted user update' do
     it 'will remove leading and trailing whitespace' do
       session[:user_id] = user.id
       patch :update, id: user, user: { name: " #{user_attrs[:name]} ", email: " #{user_attrs[:email]} " }
       user.reload
       expect(user.name).to eq user_attrs[:name]
       expect(user.email).to eq user_attrs[:email]
+    end
+
+    it 'with valid params will retain existing creator association and update updater association (w/itself)' do
+      session[:user_id] = user_with_creator.id
+      patch :update, id: user_with_creator, user: { name: user_attrs[:name], email: user_attrs[:email] }
+      user_with_creator.reload
+      expect(user_with_creator.creator).to eq creator
+      expect(user_with_creator.updater).to eq user_with_creator
+      expect(creator.created_users).to include user_with_creator
+      expect(creator.updated_users).not_to include user_with_creator
+      expect(user_with_creator.created_users).not_to include user_with_creator
+      expect(user_with_creator.updated_users).to include user_with_creator
+    end
+
+    it 'with invalid params will retain existing creator association and update updater associations' do
+      session[:user_id] = user_with_creator.id
+      patch :update, id: user_with_creator, user: { name: '', email: '' }
+      user_with_creator.reload
+      expect(user_with_creator.creator).to eq creator
+      expect(user_with_creator.updater).to eq creator
+      expect(creator.created_users).to include user_with_creator
+      expect(creator.updated_users).to include user_with_creator
+      expect(user_with_creator.created_users).not_to include user_with_creator
+      expect(user_with_creator.updated_users).not_to include user_with_creator
     end
   end
 

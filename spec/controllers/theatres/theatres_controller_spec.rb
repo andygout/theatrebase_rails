@@ -10,6 +10,7 @@ describe TheatresController, type: :controller do
   let(:theatre_attrs) { attributes_for :theatre }
   let!(:production) { create :production }
   let!(:theatre) { production.theatre }
+  let(:creator) { theatre.creator }
   let(:second_theatre) { create :theatre }
 
   context 'attempt edit theatre' do
@@ -109,6 +110,30 @@ describe TheatresController, type: :controller do
       patch :update, url: theatre.url, theatre: { name: " #{theatre_attrs[:name]} " }
       theatre.reload
       expect(theatre.name).to eq theatre_attrs[:name]
+    end
+
+    it 'permitted update with valid params will retain existing creator association and update updater association' do
+      session[:user_id] = user.id
+      patch :update, url: theatre.url, theatre: { name: theatre_attrs[:name] }
+      theatre.reload
+      expect(theatre.creator).to eq creator
+      expect(theatre.updater).to eq user
+      expect(creator.created_theatres).to include theatre
+      expect(creator.updated_theatres).not_to include theatre
+      expect(user.created_theatres).not_to include theatre
+      expect(user.updated_theatres).to include theatre
+    end
+
+    it 'permitted update with invalid params will retain existing creator and updater associations' do
+      session[:user_id] = user.id
+      patch :update, url: theatre.url, theatre: { name: '' }
+      theatre.reload
+      expect(theatre.creator).to eq creator
+      expect(theatre.updater).to eq creator
+      expect(creator.created_theatres).to include theatre
+      expect(creator.updated_theatres).to include theatre
+      expect(user.created_theatres).not_to include theatre
+      expect(user.updated_theatres).not_to include theatre
     end
   end
 

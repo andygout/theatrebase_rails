@@ -18,7 +18,6 @@ feature 'Theatre edit/update' do
     let!(:user) { create_logged_in_user }
     let(:theatre) { create :theatre }
     let(:theatre_attrs) { attributes_for :theatre }
-    let(:second_user) { theatre.creator }
 
     scenario 'redirects to updated theatre page with success message; existing creator association remains and updater association updated', js: true do
       visit theatre_path(theatre.url)
@@ -32,19 +31,12 @@ feature 'Theatre edit/update' do
       expect(page).not_to have_content theatre.name
       theatre.reload
       expect(page).to have_current_path theatre_path(theatre.url)
-      expect(theatre.creator).to eq second_user
-      expect(theatre.updater).to eq user
-      expect(second_user.created_theatres).to include theatre
-      expect(second_user.updated_theatres).not_to include theatre
-      expect(user.created_theatres).not_to include theatre
-      expect(user.updated_theatres).to include theatre
     end
   end
 
   context 'updating theatres with invalid details' do
     let!(:user) { create_logged_in_user }
     let(:theatre) { create :theatre }
-    let(:second_user) { theatre.creator }
 
     scenario 'invalid name given; re-renders edit form with error message; existing creator and updater associations remain', js: true do
       visit theatre_path(theatre.url)
@@ -57,12 +49,6 @@ feature 'Theatre edit/update' do
       expect(page).to have_content theatre.name
       theatre.reload
       expect(page).to have_current_path theatre_path(theatre.url)
-      expect(theatre.creator).to eq second_user
-      expect(theatre.updater).to eq second_user
-      expect(second_user.created_theatres).to include theatre
-      expect(second_user.updated_theatres).to include theatre
-      expect(user.created_theatres).not_to include theatre
-      expect(user.updated_theatres).not_to include theatre
     end
 
     scenario 'invalid name given twice; re-renders edit form each time with error message (original URL persisted for routing)', js: true do

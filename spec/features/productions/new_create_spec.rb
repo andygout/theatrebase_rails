@@ -24,7 +24,7 @@ feature 'Production new/create' do
     let(:production_attrs) { attributes_for :production }
     let(:theatre_attrs) { attributes_for :theatre }
 
-    scenario 'redirect to created production page with success message; creator and updater associations created', js: true do
+    scenario 'redirect to created production page with success message', js: true do
       visit productions_path
       click_link 'New production'
       fill_in 'production_title', with: production_attrs[:title]
@@ -40,10 +40,6 @@ feature 'Production new/create' do
       expect(page).to have_content production_attrs[:title]
       production = Production.last
       expect(page).to have_current_path production_path(production.id, production.url)
-      expect(production.creator).to eq user
-      expect(production.updater).to eq user
-      expect(user.created_productions).to include production
-      expect(user.updated_productions).to include production
     end
   end
 

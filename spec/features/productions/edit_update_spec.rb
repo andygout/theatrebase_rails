@@ -17,9 +17,8 @@ feature 'Production edit/update' do
   context 'updating productions with valid details' do
     let!(:user) { create_logged_in_user }
     let(:production) { create :production }
-    let(:second_user) { production.creator }
 
-    scenario 'redirects to updated production page with success message; existing creator association remains and updater association updated', js: true do
+    scenario 'redirects to updated production page with success message', js: true do
       visit production_path(production.id, production.url)
       click_button 'Edit Production'
       fill_in 'production_title', with: 'Macbeth'
@@ -31,21 +30,14 @@ feature 'Production edit/update' do
       expect(page).not_to have_content production.title
       production.reload
       expect(page).to have_current_path production_path(production.id, production.url)
-      expect(production.creator).to eq second_user
-      expect(production.updater).to eq user
-      expect(second_user.created_productions).to include production
-      expect(second_user.updated_productions).not_to include production
-      expect(user.created_productions).not_to include production
-      expect(user.updated_productions).to include production
     end
   end
 
   context 'updating productions with invalid details' do
     let!(:user) { create_logged_in_user }
     let(:production) { create :production }
-    let(:second_user) { production.creator }
 
-    scenario 'invalid title given; re-renders edit form with error message; existing creator and updater associations remain', js: true do
+    scenario 'invalid title given; re-renders edit form with error message', js: true do
       visit production_path(production.id, production.url)
       click_button 'Edit Production'
       fill_in 'production_title', with: ' '
@@ -56,12 +48,6 @@ feature 'Production edit/update' do
       expect(page).to have_content production.title
       production.reload
       expect(page).to have_current_path production_path(production.id, production.url)
-      expect(production.creator).to eq second_user
-      expect(production.updater).to eq second_user
-      expect(second_user.created_productions).to include production
-      expect(second_user.updated_productions).to include production
-      expect(user.created_productions).not_to include production
-      expect(user.updated_productions).not_to include production
     end
 
     scenario 'invalid title given twice; re-renders edit form each time with error message (original URL persisted for routing)', js: true do

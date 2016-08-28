@@ -6,13 +6,15 @@ FactoryGirl.define do
     sequence(:password) { |n| "password#{n}" }
     activated_at        { Time.zone.now }
 
-    factory :created_user do
+    factory :user_with_creator do
       association :creator, factory: :user
       updater { creator }
     end
 
     factory :unactivated_user do
       activated_at  nil
+      association :creator, factory: :user
+      updater { creator }
     end
 
     factory :invalid_user do

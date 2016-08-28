@@ -37,11 +37,6 @@ feature 'User new/create' do
       expect { click_button 'Create User' }.to change { User.count }.by(1)
                                           .and change { ActionMailer::Base.deliveries.count }.by(1)
       user_email = acquire_email_address ActionMailer::Base.deliveries.last.to_s
-      user = User.find_by(email: user_email)
-      expect(user.creator).to eq admin_user
-      expect(user.updater).to eq admin_user
-      expect(admin_user.created_users).to include user
-      expect(admin_user.updated_users).to include user
       expect(page).to have_css '.alert-success'
       expect(page).not_to have_css '.alert-error'
       expect(page).not_to have_css '.field_with_errors'
@@ -138,32 +133,20 @@ feature 'User new/create' do
       @account_activation_token = acquire_token msg
     end
 
-    scenario 'if password not set correctly existing creator and updater associations (w/admin) remain', js: true do
+    scenario 'if invalid password and confirmation given: edit page will re-render with errors', js: true do
       fill_in 'user_password',              with: ''
       fill_in 'user_password_confirmation', with: ''
       click_button 'Set Password'
-      user = User.find_by(email: @new_user.email)
-      expect(user.creator).to eq admin_user
-      expect(user.updater).to eq admin_user
-      expect(admin_user.created_users).to include user
-      expect(admin_user.updated_users).to include user
-      expect(user.updated_users).not_to include user
       expect(page).to have_css '.alert-error'
       expect(page).to have_css '.field_with_errors'
       expect(page).not_to have_css '.alert-success'
       expect(page).to have_current_path account_activation_path(@account_activation_token)
     end
 
-    scenario 'password is set by entering valid password and confirmation; existing creator association (w/admin) remains and updater association (w/itself) updated', js: true do
+    scenario 'if valid password and confirmation given: redirects to user profile page with success message', js: true do
       fill_in 'user_password',              with: user2_attrs[:password]
       fill_in 'user_password_confirmation', with: user2_attrs[:password]
       click_button 'Set Password'
-      user = User.find_by(email: @new_user.email)
-      expect(user.creator).to eq admin_user
-      expect(user.updater).to eq user
-      expect(admin_user.created_users).to include user
-      expect(user.updated_users).to include user
-      expect(admin_user.updated_users).not_to include user
       expect(page).to have_css '.alert-success'
       expect(page).not_to have_css '.alert-error'
       expect(page).not_to have_css '.field_with_errors'

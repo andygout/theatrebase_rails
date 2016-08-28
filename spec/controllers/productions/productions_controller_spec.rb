@@ -10,6 +10,7 @@ describe ProductionsController, type: :controller do
   let(:production_attrs) { attributes_for :production }
   let(:theatre_attrs) { attributes_for :theatre }
   let!(:production) { create :production }
+  let(:creator) { production.creator }
 
   context 'attempt add new production' do
     it 'as super-admin: render new production form' do
@@ -115,6 +116,16 @@ describe ProductionsController, type: :controller do
       expect(production.dates_tbc_note).to eq production_attrs[:dates_tbc_note]
       expect(production.dates_note).to eq production_attrs[:dates_note]
       expect(production.theatre.name).to eq production_attrs[:theatre_attributes][:name]
+    end
+
+    it 'permitted create will set creator and updater associations' do
+      session[:user_id] = user.id
+      post :create, production: production_attrs
+      production = Production.last
+      expect(production.creator).to eq user
+      expect(production.updater).to eq user
+      expect(user.created_productions).to include production
+      expect(user.updated_productions).to include production
     end
   end
 
@@ -226,6 +237,31 @@ describe ProductionsController, type: :controller do
       expect(production.dates_tbc_note).to eq production_attrs[:dates_tbc_note]
       expect(production.dates_note).to eq production_attrs[:dates_note]
       expect(production.theatre.name).to eq production_attrs[:theatre_attributes][:name]
+    end
+
+    it 'permitted update with valid params will retain existing creator association and update updater association' do
+      session[:user_id] = user.id
+      patch :update, id: production.id, url: production.url, production: production_attrs
+      production.reload
+      expect(production.creator).to eq creator
+      expect(production.updater).to eq user
+      expect(creator.created_productions).to include production
+      expect(creator.updated_productions).not_to include production
+      expect(user.created_productions).not_to include production
+      expect(user.updated_productions).to include production
+    end
+
+    it 'permitted update with invalid params will retain existing creator and updater associations' do
+      session[:user_id] = user.id
+      production_attrs[:title] = ''
+      patch :update, id: production.id, url: production.url, production: production_attrs
+      production.reload
+      expect(production.creator).to eq creator
+      expect(production.updater).to eq creator
+      expect(creator.created_productions).to include production
+      expect(creator.updated_productions).to include production
+      expect(user.created_productions).not_to include production
+      expect(user.updated_productions).not_to include production
     end
   end
 
