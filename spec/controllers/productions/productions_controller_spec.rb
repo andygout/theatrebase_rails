@@ -120,8 +120,10 @@ describe ProductionsController, type: :controller do
       expect { post :create, production: production_params }.to change { Production.count }.by 0
       expect(response).to redirect_to log_in_path
     end
+  end
 
-    it 'permitted create will remove leading and trailing whitespace from string fields' do
+  context 'permitted production creation' do
+    it 'will remove leading and trailing whitespace from string fields' do
       session[:user_id] = user.id
       post :create, production: whitespace_production_params
       production = Production.last
@@ -132,7 +134,7 @@ describe ProductionsController, type: :controller do
       expect(production.theatre.name).to eq theatre_params[:name]
     end
 
-    it 'permitted create will set creator and updater associations' do
+    it 'will set creator and updater associations' do
       session[:user_id] = user.id
       post :create, production: production_params
       production = Production.last
@@ -234,8 +236,10 @@ describe ProductionsController, type: :controller do
       expect(production.title).to eq production.reload.title
       expect(response).to redirect_to log_in_path
     end
+  end
 
-    it 'permitted update will remove leading and trailing whitespace from string fields' do
+  context 'permitted production update' do
+    it 'will remove leading and trailing whitespace from string fields' do
       session[:user_id] = user.id
       patch :update, id: production.id, url: production.url, production: whitespace_production_params
       production.reload
@@ -246,7 +250,7 @@ describe ProductionsController, type: :controller do
       expect(production.theatre.name).to eq theatre_params[:name]
     end
 
-    it 'permitted update with valid params will retain existing creator association and update updater association' do
+    it 'with valid params will retain existing creator association and update updater association' do
       session[:user_id] = user.id
       patch :update, id: production.id, url: production.url, production: production_params
       production.reload
@@ -258,7 +262,7 @@ describe ProductionsController, type: :controller do
       expect(user.updated_productions).to include production
     end
 
-    it 'permitted update with invalid params will retain existing creator and updater associations' do
+    it 'with invalid params will retain existing creator and updater associations' do
       session[:user_id] = user.id
       production_params[:title] = ''
       patch :update, id: production.id, url: production.url, production: production_params

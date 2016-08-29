@@ -175,7 +175,7 @@ describe UsersController, type: :controller do
     end
   end
 
-  context 'permitted user create' do
+  context 'permitted user creation' do
     it 'will remove leading and trailing whitespace from string fields' do
       session[:user_id] = admin_user.id
       post :create, user: whitespace_user_params

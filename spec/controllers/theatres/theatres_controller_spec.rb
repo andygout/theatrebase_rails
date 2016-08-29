@@ -112,15 +112,17 @@ describe TheatresController, type: :controller do
       expect(theatre.name).to eq theatre.reload.name
       expect(response).to redirect_to log_in_path
     end
+  end
 
-    it 'permitted update will remove leading and trailing whitespace from string fields' do
+  context 'permitted theatre update' do
+    it 'will remove leading and trailing whitespace from string fields' do
       session[:user_id] = user.id
       patch :update, url: theatre.url, theatre: whitespace_theatre_params
       theatre.reload
       expect(theatre.name).to eq theatre_attrs[:name]
     end
 
-    it 'permitted update with valid params will retain existing creator association and update updater association' do
+    it 'with valid params will retain existing creator association and update updater association' do
       session[:user_id] = user.id
       patch :update, url: theatre.url, theatre: theatre_params
       theatre.reload
@@ -132,7 +134,7 @@ describe TheatresController, type: :controller do
       expect(user.updated_theatres).to include theatre
     end
 
-    it 'permitted update with invalid params will retain existing creator and updater associations' do
+    it 'with invalid params will retain existing creator and updater associations' do
       session[:user_id] = user.id
       theatre_params[:name] = ''
       patch :update, url: theatre.url, theatre: theatre_params
