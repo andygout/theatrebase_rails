@@ -358,6 +358,22 @@ describe AdminStatusController, type: :controller do
     end
   end
 
+  context 'permitted admin status update' do
+    it 'assign status: assignor and assignee associations created' do
+      session[:user_id] = super_admin_user.id
+      patch :update, user_id: user, user: { admin_attributes: { _destroy: '0' } }
+      expect(user.admin_status_assignor).to eq super_admin_user
+      expect(super_admin_user.admin_status_assignees).to include user
+    end
+
+    it 'revoke status: assignor and assignee associations destroyed' do
+      session[:user_id] = super_admin_user.id
+      patch :update, user_id: admin_user, user: { admin_attributes: { _destroy: '1', id: admin_user.id } }
+      expect(admin_user.admin_status_assignor).to eq nil
+      expect(super_admin_user.admin_status_assignees).to be_empty
+    end
+  end
+
   context 'attempt super-admin status update (via web request)' do
     it 'as super-admin user: update super-admin status of user: fail but response as expected' do
       session[:user_id] = super_admin_user.id

@@ -351,10 +351,26 @@ describe SuspensionStatusController, type: :controller do
     end
   end
 
-  context 'attempt suspension status update when not logged in' do
+  context 'attempt suspension status update (assign status) when not logged in' do
     it 'fail and redirect to log in page' do
       expect { patch :update, user_id: user, user: { suspension_attributes: { _destroy: '0' } } }.to change { Suspension.count }.by 0
       expect(response).to redirect_to log_in_path
+    end
+  end
+
+  context 'permitted suspension status update' do
+    it 'assign status: assignor and assignee associations created' do
+      session[:user_id] = super_admin_user.id
+      patch :update, user_id: user, user: { suspension_attributes: { _destroy: '0' } }
+      expect(user.suspension_status_assignor).to eq super_admin_user
+      expect(super_admin_user.suspension_status_assignees).to include user
+    end
+
+    it 'revoke status: assignor and assignee associations destroyed' do
+      session[:user_id] = super_admin_user.id
+      patch :update, user_id: suspended_user, user: { suspension_attributes: { _destroy: '1', id: suspended_user.id } }
+      expect(suspended_user.suspension_status_assignor).to eq nil
+      expect(super_admin_user.suspension_status_assignees).to be_empty
     end
   end
 
