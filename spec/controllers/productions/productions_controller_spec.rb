@@ -31,8 +31,8 @@ describe ProductionsController, type: :controller do
     }
   }
 
-  let(:whitespace_production_params) { production_params.transform_values { |v| " #{v} " } }
-  let(:whitespace_theatre_params) { theatre_params.transform_values { |v| " #{v} " } }
+  let(:whitespace_production_params) { add_whitespace_to_values(production_params) }
+  let(:whitespace_theatre_params) { add_whitespace_to_values(theatre_params) }
 
   context 'attempt add new production' do
     it 'as super-admin: render new production form' do

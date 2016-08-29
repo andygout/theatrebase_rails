@@ -24,7 +24,7 @@ describe UsersController, type: :controller do
     }
   }
 
-  let(:whitespace_user_params) { user_params.transform_values { |v| " #{v} " } }
+  let(:whitespace_user_params) { add_whitespace_to_values(user_params) }
 
   context 'attempt add new user' do
     it 'as super-admin: render new user form' do

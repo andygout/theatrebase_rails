@@ -19,7 +19,7 @@ describe TheatresController, type: :controller do
     }
   }
 
-  let(:whitespace_theatre_params) { theatre_params.transform_values { |v| " #{v} " } }
+  let(:whitespace_theatre_params) { add_whitespace_to_values(theatre_params) }
 
   context 'attempt edit theatre' do
     it 'as super-admin: render theatre edit form' do
