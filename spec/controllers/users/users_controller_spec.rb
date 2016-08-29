@@ -17,6 +17,15 @@ describe UsersController, type: :controller do
   let(:second_suspended_user) { create :second_suspended_user }
   let(:user_attrs) { attributes_for :user }
 
+  let(:user_params) {
+    {
+      name:   user_attrs[:name],
+      email:  user_attrs[:email]
+    }
+  }
+
+  let(:whitespace_user_params) { user_params.transform_values { |v| " #{v} " } }
+
   context 'attempt add new user' do
     it 'as super-admin: render new user form' do
       session[:user_id] = super_admin_user.id
@@ -63,57 +72,61 @@ describe UsersController, type: :controller do
   context 'attempt create user' do
     it 'as super-admin user: succeed and redirect to home page' do
       session[:user_id] = super_admin_user.id
-      expect { post :create, user: { name: user_attrs[:name], email: user_attrs[:email] } }.to change { User.count }.by 1
+      expect { post :create, user: user_params }.to change { User.count }.by 1
       expect(response).to redirect_to root_path
     end
 
     it 'as admin user: succeed and redirect to home page' do
       session[:user_id] = admin_user.id
-      expect { post :create, user: { name: user_attrs[:name], email: user_attrs[:email] } }.to change { User.count }.by 1
+      expect { post :create, user: user_params }.to change { User.count }.by 1
       expect(response).to redirect_to root_path
     end
 
     it 'as non-admin user: fail and redirect to home page' do
       session[:user_id] = user.id
-      expect { post :create, user: { name: user_attrs[:name], email: user_attrs[:email] } }.to change { User.count }.by 0
+      expect { post :create, user: user_params }.to change { User.count }.by 0
       expect(response).to redirect_to root_path
     end
 
     it 'as suspended super-admin user: fail and redirect to home page' do
       session[:user_id] = suspended_super_admin_user.id
-      expect { post :create, user: { name: user_attrs[:name], email: user_attrs[:email] } }.to change { User.count }.by 0
+      expect { post :create, user: user_params }.to change { User.count }.by 0
       expect(response).to redirect_to root_path
     end
 
     it 'as suspended admin user: fail and redirect to home page' do
       session[:user_id] = suspended_admin_user.id
-      expect { post :create, user: { name: user_attrs[:name], email: user_attrs[:email] } }.to change { User.count }.by 0
+      expect { post :create, user: user_params }.to change { User.count }.by 0
       expect(response).to redirect_to root_path
     end
 
     it 'as suspended non-admin user: fail and redirect to home page' do
       session[:user_id] = suspended_user.id
-      expect { post :create, user: { name: user_attrs[:name], email: user_attrs[:email] } }.to change { User.count }.by 0
+      expect { post :create, user: user_params }.to change { User.count }.by 0
       expect(response).to redirect_to root_path
     end
 
     it 'when not logged in: fail and redirect to log in page' do
-      expect { post :create, user: { name: user_attrs[:name], email: user_attrs[:email] } }.to change { User.count }.by 0
+      expect { post :create, user: user_params }.to change { User.count }.by 0
       expect(response).to redirect_to log_in_path
     end
   end
 
   context 'attempt create user with admin status (via web request)' do
+    before(:each) do
+      user_params[:admin_attributes] = { _destroy: '0' }
+    end
+
     it 'as super-admin user: user created but admin status not assigned; response as expected' do
       session[:user_id] = super_admin_user.id
-      expect { post :create, user: { name: user_attrs[:name], email: user_attrs[:email], admin_attributes: { _destroy: '0' } } }
+      expect { post :create, user: user_params }
         .to change { User.count }.by(1)
         .and change { Admin.count }.by(0)
       expect(response).to redirect_to root_path
     end
 
     it 'when not logged in: user not created nor super-admin status assigned; redirect to log in page' do
-      expect { post :create, user: { name: user_attrs[:name], email: user_attrs[:email], admin_attributes: { _destroy: '0' } } }
+      expect { post :create, user: user_params }
         .to change { User.count }.by(0)
         .and change { Admin.count }.by(0)
       expect(response).to redirect_to log_in_path
@@ -121,16 +134,20 @@ describe UsersController, type: :controller do
   end
 
   context 'attempt create user with super-admin status (via web request)' do
+    before(:each) do
+      user_params[:super_admin_attributes] = { _destroy: '0' }
+    end
+
     it 'as super-admin user: user created but super-admin status not assigned; response as expected' do
       session[:user_id] = super_admin_user.id
-      expect { post :create, user: { name: user_attrs[:name], email: user_attrs[:email], super_admin_attributes: { _destroy: '0' } } }
+      expect { post :create, user: user_params }
         .to change { User.count }.by(1)
         .and change { SuperAdmin.count }.by(0)
       expect(response).to redirect_to root_path
     end
 
     it 'when not logged in: user not created nor super-admin status assigned; redirect to log in page' do
-      expect { post :create, user: { name: user_attrs[:name], email: user_attrs[:email], super_admin_attributes: { _destroy: '0' } } }
+      expect { post :create, user: user_params }
         .to change { User.count }.by(0)
         .and change { SuperAdmin.count }.by(0)
       expect(response).to redirect_to log_in_path
@@ -138,16 +155,20 @@ describe UsersController, type: :controller do
   end
 
   context 'attempt create user with suspended status (via web request)' do
+    before(:each) do
+      user_params[:suspension_attributes] = { _destroy: '0' }
+    end
+
     it 'as super-admin user: user created but suspended status not assigned; response as expected' do
       session[:user_id] = super_admin_user.id
-      expect { post :create, user: { name: user_attrs[:name], email: user_attrs[:email], suspension_attributes: { _destroy: '0' } } }
+      expect { post :create, user: user_params }
         .to change { User.count }.by(1)
         .and change { Suspension.count }.by(0)
       expect(response).to redirect_to root_path
     end
 
     it 'when not logged in: user not created nor suspended status assigned; redirect to log in page' do
-      expect { post :create, user: { name: user_attrs[:name], email: user_attrs[:email], suspension_attributes: { _destroy: '0' } } }
+      expect { post :create, user: user_params }
         .to change { User.count }.by(0)
         .and change { Suspension.count }.by(0)
       expect(response).to redirect_to log_in_path
@@ -157,7 +178,7 @@ describe UsersController, type: :controller do
   context 'permitted user create' do
     it 'will remove leading and trailing whitespace from string fields' do
       session[:user_id] = admin_user.id
-      post :create, user: { name: " #{user_attrs[:name]} ", email: " #{user_attrs[:email]} " }
+      post :create, user: whitespace_user_params
       user = User.last
       expect(user.name).to eq user_attrs[:name]
       expect(user.email).to eq user_attrs[:email]
@@ -165,7 +186,7 @@ describe UsersController, type: :controller do
 
     it 'will set creator and updater associations' do
       session[:user_id] = admin_user.id
-      post :create, user: { name: user_attrs[:name], email: user_attrs[:email] }
+      post :create, user: user_params
       user = User.last
       expect(user.creator).to eq admin_user
       expect(user.updater).to eq admin_user
@@ -352,7 +373,7 @@ describe UsersController, type: :controller do
         { user: user, type: 'user', name: user.name, response: root_path }
       ].each do |u|
         session[:user_id] = super_admin_user.id
-        patch :update, id: u[:user], user: { name: user_attrs[:name], email: user_attrs[:email] }
+        patch :update, id: u[:user], user: user_params
         expect(u[:name]).to eq u[:user].reload.name
         expect(response).to redirect_to(u[:response]), "Failed: #{u[:type]}"
       end
@@ -365,7 +386,7 @@ describe UsersController, type: :controller do
         { user: suspended_user, type: 'suspended_user' }
       ].each do |u|
         session[:user_id] = super_admin_user.id
-        patch :update, id: u[:user], user: { name: user_attrs[:name], email: user_attrs[:email] }
+        patch :update, id: u[:user], user: user_params
         expect(u[:user].name).to eq u[:user].reload.name
         expect(response).to redirect_to(root_path), "Failed: #{u[:type]}"
       end
@@ -380,7 +401,7 @@ describe UsersController, type: :controller do
         { user: user, type: 'user' }
       ].each do |u|
         session[:user_id] = suspended_super_admin_user.id
-        patch :update, id: u[:user], user: { name: user_attrs[:name], email: user_attrs[:email] }
+        patch :update, id: u[:user], user: user_params
         expect(u[:user].name).to eq u[:user].reload.name
         expect(response).to redirect_to(root_path), "Failed: #{u[:type]}"
       end
@@ -394,7 +415,7 @@ describe UsersController, type: :controller do
         { user: suspended_user, type: 'suspended_user' }
       ].each do |u|
         session[:user_id] = suspended_super_admin_user.id
-        patch :update, id: u[:user], user: { name: user_attrs[:name], email: user_attrs[:email] }
+        patch :update, id: u[:user], user: user_params
         expect(u[:user].name).to eq u[:user].reload.name
         expect(response).to redirect_to(root_path), "Failed: #{u[:type]}"
       end
@@ -410,7 +431,7 @@ describe UsersController, type: :controller do
         { user: user, type: 'user', name: user.name, response: root_path }
       ].each do |u|
         session[:user_id] = admin_user.id
-        patch :update, id: u[:user], user: { name: user_attrs[:name], email: user_attrs[:email] }
+        patch :update, id: u[:user], user: user_params
         expect(u[:name]).to eq u[:user].reload.name
         expect(response).to redirect_to(u[:response]), "Failed: #{u[:type]}"
       end
@@ -423,7 +444,7 @@ describe UsersController, type: :controller do
         { user: suspended_user, type: 'suspended_user' }
       ].each do |u|
         session[:user_id] = admin_user.id
-        patch :update, id: u[:user], user: { name: user_attrs[:name], email: user_attrs[:email] }
+        patch :update, id: u[:user], user: user_params
         expect(u[:user].name).to eq u[:user].reload.name
         expect(response).to redirect_to(root_path), "Failed: #{u[:type]}"
       end
@@ -438,7 +459,7 @@ describe UsersController, type: :controller do
         { user: user, type: 'user' }
       ].each do |u|
         session[:user_id] = suspended_admin_user.id
-        patch :update, id: u[:user], user: { name: user_attrs[:name], email: user_attrs[:email] }
+        patch :update, id: u[:user], user: user_params
         expect(u[:user].name).to eq u[:user].reload.name
         expect(response).to redirect_to(root_path), "Failed: #{u[:type]}"
       end
@@ -452,7 +473,7 @@ describe UsersController, type: :controller do
         { user: suspended_user, type: 'suspended_user' }
       ].each do |u|
         session[:user_id] = suspended_admin_user.id
-        patch :update, id: u[:user], user: { name: user_attrs[:name], email: user_attrs[:email] }
+        patch :update, id: u[:user], user: user_params
         expect(u[:user].name).to eq u[:user].reload.name
         expect(response).to redirect_to(root_path), "Failed: #{u[:type]}"
       end
@@ -468,7 +489,7 @@ describe UsersController, type: :controller do
         { user: second_user, type: 'second_user', name: second_user.name, response: root_path }
       ].each do |u|
         session[:user_id] = user.id
-        patch :update, id: u[:user], user: { name: user_attrs[:name], email: user_attrs[:email] }
+        patch :update, id: u[:user], user: user_params
         expect(u[:name]).to eq u[:user].reload.name
         expect(response).to redirect_to(u[:response]), "Failed: #{u[:type]}"
       end
@@ -481,7 +502,7 @@ describe UsersController, type: :controller do
         { user: suspended_user, type: 'suspended_user' }
       ].each do |u|
         session[:user_id] = user.id
-        patch :update, id: u[:user], user: { name: user_attrs[:name], email: user_attrs[:email] }
+        patch :update, id: u[:user], user: user_params
         expect(u[:user].name).to eq u[:user].reload.name
         expect(response).to redirect_to(root_path), "Failed: #{u[:type]}"
       end
@@ -496,7 +517,7 @@ describe UsersController, type: :controller do
         { user: user, type: 'user' }
       ].each do |u|
         session[:user_id] = suspended_user.id
-        patch :update, id: u[:user], user: { name: user_attrs[:name], email: user_attrs[:email] }
+        patch :update, id: u[:user], user: user_params
         expect(u[:user].name).to eq u[:user].reload.name
         expect(response).to redirect_to(root_path), "Failed: #{u[:type]}"
       end
@@ -510,7 +531,7 @@ describe UsersController, type: :controller do
         { user: second_suspended_user, type: 'second_suspended_user' }
       ].each do |u|
         session[:user_id] = suspended_user.id
-        patch :update, id: u[:user], user: { name: user_attrs[:name], email: user_attrs[:email] }
+        patch :update, id: u[:user], user: user_params
         expect(u[:user].name).to eq u[:user].reload.name
         expect(response).to redirect_to(root_path), "Failed: #{u[:type]}"
       end
@@ -519,52 +540,64 @@ describe UsersController, type: :controller do
 
   context 'attempt update when not logged in' do
     it 'fail and redirect to log in page' do
-      patch :update, id: user, user: { name: user_attrs[:name], email: user_attrs[:email] }
+      patch :update, id: user, user: user_params
       expect(user.name).to eq user.reload.name
       expect(response).to redirect_to log_in_path
     end
   end
 
   context 'attempt update user and admin status (via web request)' do
+    before(:each) do
+      user_params[:admin_attributes] = { _destroy: '0' }
+    end
+
     it 'as super-admin user: user updated but admin status not assigned; response as expected' do
       session[:user_id] = super_admin_user.id
-      expect { patch :update, id: user, user: { name: user_attrs[:name], email: user_attrs[:email], admin_attributes: { _destroy: '0' } } }.to change { Admin.count }.by 0
+      expect { patch :update, id: user, user: user_params }.to change { Admin.count }.by 0
       expect(user.name).to eq user.reload.name
       expect(response).to redirect_to root_path
     end
 
     it 'when not logged in: user not updated nor admin status assigned; redirect to log in page' do
-      expect { patch :update, id: user, user: { name: user_attrs[:name], email: user_attrs[:email], admin_attributes: { _destroy: '0' } } }.to change { Admin.count }.by 0
+      expect { patch :update, id: user, user: user_params }.to change { Admin.count }.by 0
       expect(user.name).to eq user.reload.name
       expect(response).to redirect_to log_in_path
     end
   end
 
   context 'attempt update user and super-admin status (via web request)' do
+    before(:each) do
+      user_params[:super_admin_attributes] = { _destroy: '0' }
+    end
+
     it 'as super-admin user: user updated but super-admin status not assigned; response as expected' do
       session[:user_id] = super_admin_user.id
-      expect { patch :update, id: user, user: { name: user_attrs[:name], email: user_attrs[:email], super_admin_attributes: { _destroy: '0' } } }.to change { SuperAdmin.count }.by 0
+      expect { patch :update, id: user, user: user_params }.to change { SuperAdmin.count }.by 0
       expect(user.name).to eq user.reload.name
       expect(response).to redirect_to root_path
     end
 
     it 'when not logged in: user not updated nor super-admin status assigned; redirect to log in page' do
-      expect { patch :update, id: user, user: { name: user_attrs[:name], email: user_attrs[:email], super_admin_attributes: { _destroy: '0' } } }.to change { SuperAdmin.count }.by 0
+      expect { patch :update, id: user, user: user_params }.to change { SuperAdmin.count }.by 0
       expect(user.name).to eq user.reload.name
       expect(response).to redirect_to log_in_path
     end
   end
 
   context 'attempt update user and suspension status (via web request)' do
+    before(:each) do
+      user_params[:suspension_attributes] = { _destroy: '0' }
+    end
+
     it 'as super-admin user: user updated but suspended status not assigned; response as expected' do
       session[:user_id] = super_admin_user.id
-      expect { patch :update, id: user, user: { name: user_attrs[:name], email: user_attrs[:email], suspension_attributes: { _destroy: '0' } } }.to change { Suspension.count }.by 0
+      expect { patch :update, id: user, user: user_params }.to change { Suspension.count }.by 0
       expect(user.name).to eq user.reload.name
       expect(response).to redirect_to root_path
     end
 
     it 'when not logged in: user not updated nor suspended status assigned; redirect to log in page' do
-      expect { patch :update, id: user, user: { name: user_attrs[:name], email: user_attrs[:email], suspension_attributes: { _destroy: '0' } } }.to change { Suspension.count }.by 0
+      expect { patch :update, id: user, user: user_params }.to change { Suspension.count }.by 0
       expect(user.name).to eq user.reload.name
       expect(response).to redirect_to log_in_path
     end
@@ -573,7 +606,7 @@ describe UsersController, type: :controller do
   context 'permitted user update' do
     it 'will remove leading and trailing whitespace' do
       session[:user_id] = user.id
-      patch :update, id: user, user: { name: " #{user_attrs[:name]} ", email: " #{user_attrs[:email]} " }
+      patch :update, id: user, user: whitespace_user_params
       user.reload
       expect(user.name).to eq user_attrs[:name]
       expect(user.email).to eq user_attrs[:email]
@@ -581,7 +614,7 @@ describe UsersController, type: :controller do
 
     it 'with valid params will retain existing creator association and update updater association (w/itself)' do
       session[:user_id] = user_with_creator.id
-      patch :update, id: user_with_creator, user: { name: user_attrs[:name], email: user_attrs[:email] }
+      patch :update, id: user_with_creator, user: user_params
       user_with_creator.reload
       expect(user_with_creator.creator).to eq creator
       expect(user_with_creator.updater).to eq user_with_creator

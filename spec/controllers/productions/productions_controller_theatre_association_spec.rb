@@ -7,11 +7,15 @@ describe ProductionsController, type: :controller do
   let!(:production) { create :production }
 
   let(:non_existing_theatre_attrs) {
-    { name: theatre_attrs[:name] }
+    {
+      name: theatre_attrs[:name]
+    }
   }
 
   let(:existing_theatre_attrs) {
-    { name: production.theatre.name }
+    {
+      name: production.theatre.name
+    }
   }
 
   before(:each) do
