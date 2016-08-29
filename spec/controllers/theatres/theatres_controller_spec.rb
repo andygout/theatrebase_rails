@@ -21,6 +21,12 @@ describe TheatresController, type: :controller do
 
   let(:whitespace_theatre_params) { add_whitespace_to_values(theatre_params) }
 
+  context 'attempt create theatre' do
+    it 'is not routable (created via production)' do
+      expect(post: '/theatres').not_to be_routable
+    end
+  end
+
   context 'attempt edit theatre' do
     it 'as super-admin: render theatre edit form' do
       session[:user_id] = super_admin_user.id
@@ -274,6 +280,12 @@ describe TheatresController, type: :controller do
     it 'when not logged in: render theatre display page' do
       get :show, url: theatre.url
       expect(response).to render_template :show
+    end
+  end
+
+  context 'attempt view theatre index' do
+    it 'is not routable' do
+      expect(get: '/theatres').not_to be_routable
     end
   end
 end
