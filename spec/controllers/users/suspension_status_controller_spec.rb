@@ -16,7 +16,7 @@ describe SuspensionStatusController, type: :controller do
 
   context 'attempt create user with suspended status' do
     it 'via suspension status create route: fail as not routable' do
-      expect(post: '/suspension status' ).not_to be_routable
+      expect(post: '/suspension_status').not_to be_routable
     end
   end
 

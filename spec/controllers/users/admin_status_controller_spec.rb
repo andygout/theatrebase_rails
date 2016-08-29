@@ -16,7 +16,7 @@ describe AdminStatusController, type: :controller do
 
   context 'attempt to create user with admin status; fail and redirect to user display page' do
     it 'attempt to create new user via admin status create route (not routable)' do
-      expect(post: '/admin status' ).not_to be_routable
+      expect(post: '/admin_status').not_to be_routable
     end
   end
 
