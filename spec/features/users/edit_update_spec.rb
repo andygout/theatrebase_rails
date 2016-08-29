@@ -30,14 +30,14 @@ feature 'User edit/update' do
   context 'displaying creator + updater info on edit form' do
     let(:user_with_creator) { create :user_with_creator }
     let(:user) { user_with_creator.creator }
-    let(:user_attributes) { attributes_for :user }
+    let(:user_attrs) { attributes_for :user }
 
     scenario 'creator and updater will only display as link if profile page accessible by user' do
       log_in user_with_creator
       visit edit_user_path(user_with_creator)
       expect(page).to have_content(user[:name])
       expect(page).not_to have_link(user[:name], href: user_path(user))
-      fill_in 'user_name', with: user_attributes[:name]
+      fill_in 'user_name', with: user_attrs[:name]
       click_button 'Update User'
       user_with_creator.reload
       visit edit_user_path(user_with_creator)
