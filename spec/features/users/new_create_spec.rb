@@ -113,8 +113,8 @@ feature 'User new/create' do
 
     scenario 'activation link valid if valid token and correct email given', js: true do
       msg = ActionMailer::Base.deliveries.last.to_s
-      user = click_resource_link msg, 'account_activation'
       account_activation_token = acquire_token msg
+      user = click_resource_link msg, 'account_activation'
       expect(user.activated_at).not_to eq nil
       expect(page).to have_css '.alert-success'
       expect(page).not_to have_css '.alert-error'
@@ -129,8 +129,8 @@ feature 'User new/create' do
     before(:each) do
       create_user user1_attrs
       msg = ActionMailer::Base.deliveries.last.to_s
-      @new_user = click_resource_link msg, 'account_activation'
       @account_activation_token = acquire_token msg
+      @new_user = click_resource_link msg, 'account_activation'
     end
 
     scenario 'if invalid password and confirmation given: edit page will re-render with errors', js: true do
