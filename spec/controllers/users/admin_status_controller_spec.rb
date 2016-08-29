@@ -14,8 +14,8 @@ describe AdminStatusController, type: :controller do
   let(:second_suspended_admin_user) { create :second_suspended_admin_user }
   let(:second_suspended_user) { create :second_suspended_user }
 
-  context 'attempt to create user with admin status; fail and redirect to user display page' do
-    it 'attempt to create new user via admin status create route (not routable)' do
+  context 'attempt create admin status' do
+    it 'is not routable (created via user update)' do
       expect(post: '/admin_status').not_to be_routable
     end
   end

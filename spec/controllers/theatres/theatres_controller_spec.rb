@@ -22,7 +22,7 @@ describe TheatresController, type: :controller do
   let(:whitespace_theatre_params) { add_whitespace_to_values(theatre_params) }
 
   context 'attempt create theatre' do
-    it 'is not routable (created via production)' do
+    it 'is not routable (created via production create/update)' do
       expect(post: '/theatres').not_to be_routable
     end
   end
