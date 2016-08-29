@@ -32,7 +32,6 @@ describe ProductionsController, type: :controller do
   }
 
   let(:whitespace_production_params) { add_whitespace_to_values(production_params) }
-  let(:whitespace_theatre_params) { add_whitespace_to_values(theatre_params) }
 
   context 'attempt add new production' do
     it 'as super-admin: render new production form' do
@@ -124,7 +123,6 @@ describe ProductionsController, type: :controller do
 
     it 'permitted create will remove leading and trailing whitespace from string fields' do
       session[:user_id] = user.id
-      whitespace_production_params[:theatre_attributes] = whitespace_theatre_params
       post :create, production: whitespace_production_params
       production = Production.last
       expect(production.title).to eq production_params[:title]
@@ -239,7 +237,6 @@ describe ProductionsController, type: :controller do
 
     it 'permitted update will remove leading and trailing whitespace from string fields' do
       session[:user_id] = user.id
-      whitespace_production_params[:theatre_attributes] = whitespace_theatre_params
       patch :update, id: production.id, url: production.url, production: whitespace_production_params
       production.reload
       expect(production.title).to eq production_params[:title]
