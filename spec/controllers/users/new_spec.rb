@@ -1,9 +1,9 @@
 require 'rails_helper'
 
 describe UsersController, type: :controller do
-  let!(:super_admin_user) { create :super_admin_user }
-  let!(:admin_user) { create :admin_user }
-  let!(:user) { create :user }
+  let(:super_admin_user) { create :super_admin_user }
+  let(:admin_user) { create :admin_user }
+  let(:user) { create :user }
   let(:suspended_super_admin_user) { create :suspended_super_admin_user }
   let(:suspended_admin_user) { create :suspended_admin_user }
   let(:suspended_user) { create :suspended_user }
