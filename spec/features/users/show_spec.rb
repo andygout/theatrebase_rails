@@ -1,10 +1,14 @@
 require 'rails_helper'
 
 feature 'User show' do
-  context 'attempt view user profile' do
-    let!(:user) { create_logged_in_user }
-    let(:second_user) { create :user }
+  let(:user) { create :user }
+  let(:second_user) { create :user }
 
+  before(:each) do
+    log_in user
+  end
+
+  context 'attempt view user profile' do
     scenario 'viewing own non-admin user profile: show own non-admin user profile page', js: true do
       visit user_path(user)
       expect(page).to have_content user.name

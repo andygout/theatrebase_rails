@@ -72,7 +72,11 @@ feature 'User log in' do
 end
 
 feature 'User log out' do
-  let!(:user) { create_logged_in_user }
+  let(:user) { create :user }
+
+  before(:each) do
+    log_in user
+  end
 
   context 'having been logged in' do
     scenario 'redirect to home page with success message', js: true do
@@ -104,9 +108,9 @@ feature 'User log out' do
 end
 
 feature 'Remembering user across sessions' do
-  context 'opting to be remembered' do
-    let(:user) { create :user }
+  let(:user) { create :user }
 
+  context 'opting to be remembered' do
     scenario 'remember user after closing and re-opening browser', js: true do
       visit log_in_path
       fill_in 'session_email',    with: user.email
@@ -123,9 +127,8 @@ feature 'Remembering user across sessions' do
   end
 
   context 'not opting to be remembered' do
-    let!(:user) { create_logged_in_user }
-
     scenario 'remember user after closing and re-opening browser', js: true do
+      log_in user
       expire_cookies
       visit root_path
       expect(page).to have_link('Log in', href: log_in_path)

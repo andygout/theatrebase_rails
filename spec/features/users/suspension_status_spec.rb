@@ -1,10 +1,15 @@
 require 'rails_helper'
 
 feature 'User edit/update suspension status' do
+  let(:super_admin_user) { create :super_admin_user }
+  let(:second_super_admin_user) { create :second_super_admin_user }
+  let(:user) { create :user }
+  let(:user_attrs) { attributes_for :user }
+
   context 'attempt edit suspension status of user' do
-    let!(:super_admin_user) { create_logged_in_super_admin_user }
-    let(:second_super_admin_user) { create :second_super_admin_user }
-    let(:user) { create :user }
+    before(:each) do
+      log_in super_admin_user
+    end
 
     scenario 'attempt edit permitted user: render suspension status edit page', js: true do
       visit edit_suspension_status_path(user)
@@ -19,8 +24,9 @@ feature 'User edit/update suspension status' do
   end
 
   context 'accessing permitted user suspension status edit form' do
-    let!(:super_admin_user) { create_logged_in_super_admin_user }
-    let(:user) { create :user }
+    before(:each) do
+      log_in super_admin_user
+    end
 
     scenario 'click on \'Edit Suspension Status\' button on user profile page; display user edit form' do
       visit user_path(user)
@@ -30,10 +36,8 @@ feature 'User edit/update suspension status' do
   end
 
   context 'updating suspension status of permitted user profile' do
-    let!(:super_admin_user) { create_logged_in_super_admin_user }
-    let(:user) { create :user }
-
     before(:each) do
+      log_in super_admin_user
       visit edit_suspension_status_path(user)
     end
 
@@ -87,11 +91,8 @@ feature 'User edit/update suspension status' do
   end
 
   context 'logged in as user whose account is suspended' do
-    let(:user) { create_logged_in_user }
-    let(:user_attrs) { attributes_for :user }
-    let(:super_admin_user) { create :super_admin_user }
-
     scenario 'user will be logged out on first page request following suspension', js: true do
+      log_in user
       visit edit_user_path(user)
       user_edit_form( user_attrs[:name],
                       user_attrs[:email],

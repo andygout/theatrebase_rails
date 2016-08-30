@@ -1,9 +1,13 @@
 require 'rails_helper'
 
 feature 'User delete' do
+  let(:admin_user) { create :admin_user }
+  let(:user) { create :user }
+
   context 'attempt delete user' do
-    let!(:admin_user) { create_logged_in_admin_user }
-    let(:user) { create :user }
+    before(:each) do
+      log_in admin_user
+    end
 
     scenario 'delete permitted user; redirect to user index with success message', js: true do
       visit user_path(user)
@@ -33,9 +37,8 @@ feature 'User delete' do
   end
 
   context 'opting to not delete given profile' do
-    let(:user) { create_logged_in_user }
-
     scenario 'profile not deleted; remain on user page', js: true do
+      log_in user
       visit user_path(user)
       click_button 'Delete User'
       expect { click_button 'Cancel' }.to change { User.count }.by 0

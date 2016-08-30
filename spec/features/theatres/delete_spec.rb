@@ -1,9 +1,10 @@
 require 'rails_helper'
 
 feature 'Theatre delete' do
+  let(:user) { create :user }
+  let(:theatre) { create :theatre }
+
   context 'deleting theatres' do
-    let(:user) { create :user }
-    let(:theatre) { create :theatre }
 
     scenario 'user must be logged in to see \'Delete Theatre\' button', js: true do
       visit theatre_path(theatre.url)

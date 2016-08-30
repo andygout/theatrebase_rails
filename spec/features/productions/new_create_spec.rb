@@ -1,9 +1,11 @@
 require 'rails_helper'
 
 feature 'Production new/create' do
-  context 'new productions' do
-    let(:user) { create :user }
+  let(:user) { create :user }
+  let(:production_attrs) { attributes_for :production }
+  let(:theatre_attrs) { attributes_for :theatre }
 
+  context 'new productions' do
     scenario 'user must be logged in to see \'New production\' link', js: true do
       visit root_path
       expect(page).not_to have_link('New production', href: new_production_path)
@@ -20,11 +22,8 @@ feature 'Production new/create' do
   end
 
   context 'creating productions with valid details' do
-    let!(:user) { create_logged_in_user }
-    let(:production_attrs) { attributes_for :production }
-    let(:theatre_attrs) { attributes_for :theatre }
-
     scenario 'redirect to created production page with success message', js: true do
+      log_in user
       visit productions_path
       click_link 'New production'
       fill_in 'production_title', with: production_attrs[:title]
@@ -44,11 +43,8 @@ feature 'Production new/create' do
   end
 
   context 'creating productions with invalid details' do
-    let!(:user) { create_logged_in_user }
-    let(:production_attrs) { attributes_for :production }
-    let(:theatre_attrs) { attributes_for :theatre }
-
     scenario 'invalid title given; re-renders form with error message', js: true do
+      log_in user
       visit productions_path
       click_link 'New production'
       fill_in 'production_title', with: ' '

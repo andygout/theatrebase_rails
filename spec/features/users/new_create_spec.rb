@@ -1,12 +1,16 @@
 require 'rails_helper'
 
 feature 'User new/create' do
-  let!(:admin_user) { create_logged_in_admin_user }
+  let(:admin_user) { create :admin_user }
   let(:super_admin_user) { create :super_admin_user }
   let(:user) { create :user }
   let(:user1_attrs) { attributes_for :user }
   let(:user2_attrs) { attributes_for :user }
   let(:invalid_user_attrs) { attributes_for :invalid_user }
+
+  before(:each) do
+    log_in admin_user
+  end
 
   context 'accessing add new user form' do
     scenario 'can view link as admin user and super-admin user; not as non-admin user; not when logged out', js: true do

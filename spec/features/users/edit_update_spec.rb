@@ -1,9 +1,17 @@
 require 'rails_helper'
 
 feature 'User edit/update' do
+  let(:admin_user) { create :admin_user }
+  let(:user) { create :user }
+  let(:user_with_creator) { create :user_with_creator }
+  let(:user_creator) { user_with_creator.creator }
+  let(:user_attrs) { attributes_for :user }
+  let(:invalid_user_attrs) { attributes_for :invalid_user }
+
   context 'attempt edit user' do
-    let!(:admin_user) { create_logged_in_admin_user }
-    let(:user) { create :user }
+    before(:each) do
+      log_in admin_user
+    end
 
     scenario 'attempt edit permitted user: render edit page', js: true do
       visit edit_user_path(admin_user)
@@ -18,9 +26,8 @@ feature 'User edit/update' do
   end
 
   context 'accessing permitted user edit form' do
-    let(:user) { create_logged_in_user }
-
     scenario 'click on \'Edit User\' button on user profile page; display user edit form' do
+      log_in user
       visit user_path(user)
       click_button 'Edit User'
       expect(page).to have_current_path edit_user_path(user)
@@ -28,15 +35,11 @@ feature 'User edit/update' do
   end
 
   context 'displaying creator + updater info on edit form' do
-    let(:user_with_creator) { create :user_with_creator }
-    let(:user) { user_with_creator.creator }
-    let(:user_attrs) { attributes_for :user }
-
     scenario 'creator and updater will only display as link if profile page accessible by user' do
       log_in user_with_creator
       visit edit_user_path(user_with_creator)
-      expect(page).to have_content(user[:name])
-      expect(page).not_to have_link(user[:name], href: user_path(user))
+      expect(page).to have_content(user_creator[:name])
+      expect(page).not_to have_link(user_creator[:name], href: user_path(user_creator))
       fill_in 'user_name', with: user_attrs[:name]
       click_button 'Update User'
       user_with_creator.reload
@@ -47,9 +50,6 @@ feature 'User edit/update' do
   end
 
   context 'updating permitted user profile with valid details' do
-    let(:user) { create :user }
-    let(:user_attrs) { attributes_for :user }
-
     before(:each) do
       log_in user
       visit edit_user_path(user)
@@ -154,10 +154,6 @@ feature 'User edit/update' do
   end
 
   context 'updating permitted profile with invalid details' do
-    let(:user) { create :user }
-    let(:invalid_user_attrs) { attributes_for :invalid_user }
-    let(:user_attrs) { attributes_for :user }
-
     before(:each) do
       log_in user
       visit edit_user_path(user)
