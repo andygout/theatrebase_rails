@@ -64,7 +64,7 @@ class UsersController < ApplicationController
   def index
     @page_title = "#{MODEL.pluralize.capitalize}"
     @users = get_users_for_index
-    get_user_index_table
+    get_user_table @users
   end
 
   private

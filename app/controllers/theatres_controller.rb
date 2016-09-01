@@ -39,7 +39,7 @@ class TheatresController < ApplicationController
   end
 
   def show
-    get_production_index_table @theatre.productions
+    get_production_table @theatre.productions
   end
 
   private

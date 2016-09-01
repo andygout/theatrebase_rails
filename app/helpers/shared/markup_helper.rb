@@ -8,35 +8,43 @@ module Shared::MarkupHelper
     "<a href='/#{path}/#{identifier}'>#{text}</a>"
   end
 
-  def bookend_tags element, markup, el_class = nil, el_id = nil, colspan = nil
-    el_class = el_class ? " class='#{el_class}'" : ''
-    el_id = el_id ? " id='#{el_id}'" : ''
-    colspan = colspan ? " colspan='#{colspan}'" : ''
-    "<#{element}#{el_id}#{el_class}#{colspan}>#{markup}</#{element}>"
+  def concat_attrs attrs
+    ' ' + attrs.map{ |k, v| "#{k}='#{v}'" }.join(' ')
   end
 
-  def compile_header_markup header_values
-    header_markup = join_arr(header_values.map { |v| bookend_tags('th', v[:content], nil, nil, v[:colspan]) })
+  def bookend_tags tag, content, attrs = {}
+    attrs.compact!
+    "<#{tag}#{concat_attrs(attrs) if attrs.any?}>" +
+      "#{content}" +
+    "</#{tag}>"
+  end
+
+  def compile_header_markup header_data
+    header_markup = join_arr(header_data.map { |v| bookend_tags('th', v[:content], { colspan: v[:colspan].to_i }) })
     bookend_tags('tr', header_markup)
   end
 
-  def compile_colwidth_markup colwidth_values
-    join_arr(colwidth_values.map { |v| "<col width=#{v[:width]}%>" })
+  def compile_colwidth_markup colwidth_data
+    join_arr(colwidth_data.map { |v| "<col width=#{v[:width]}%>" })
   end
 
-  def compile_rows row_values, header_values = nil, colwidth_values = nil
-    rows_markup = row_values.map do |data_cell_values|
-      data_cells_markup = join_arr(data_cell_values.map { |v| bookend_tags('td', v[:content], v[:class]) })
-      bookend_tags('tr', data_cells_markup)
-    end
-    header_markup = header_values ? compile_header_markup(header_values) : ''
-    coldwidth_markup = colwidth_values ? compile_colwidth_markup(colwidth_values) : ''
-    coldwidth_markup + header_markup + rows_markup.join('')
+  def compile_data_cells data_cell_data
+    join_arr(data_cell_data.map { |v| bookend_tags('td', v[:content], { class: v[:class] }) })
   end
 
-  def create_content_container row_values, el_id = nil
-    table_markup = bookend_tags('table', compile_rows(row_values), 'table content-table')
-    bookend_tags('div', table_markup, 'content-container', el_id).html_safe
+  def compile_rows table_data
+    rows_markup = table_data[:row_data].map do |data_cell_data|
+        data_cells_markup = compile_data_cells(data_cell_data)
+        bookend_tags('tr', data_cells_markup)
+      end.join('')
+    header_markup = table_data[:header_data] ? compile_header_markup(table_data[:header_data]) : ''
+    coldwidth_markup = table_data[:colwidth_data] ? compile_colwidth_markup(table_data[:colwidth_data]) : ''
+    coldwidth_markup + header_markup + rows_markup
+  end
+
+  def create_content_container row_data, el_id = nil
+    table_markup = bookend_tags('table', compile_rows({ row_data: row_data }), { class: 'table content-table' })
+    bookend_tags('div', table_markup, { id: el_id, class: 'content-container' }).html_safe
   end
 
 end
