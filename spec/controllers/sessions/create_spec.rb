@@ -8,14 +8,6 @@ describe SessionsController, type: :controller do
   let(:suspended_admin_user) { create :suspended_admin_user }
   let(:suspended_user) { create :suspended_user }
 
-  context 'attempt new session' do
-    it 'returns http success; renders new session form (log in page)' do
-      get :new
-      expect(response).to have_http_status :success
-      expect(response).to render_template :new
-    end
-  end
-
   context 'attempt create session (log in)' do
     it 'by logging in (as different user types): redirect to user display page' do
       [
@@ -38,21 +30,6 @@ describe SessionsController, type: :controller do
         { user: suspended_user, type: 'suspended_user' }
       ].each do |u|
         post :create, session: { email: u[:user].email, password: u[:user].password }
-        expect(session[:user_id]).to eq nil
-        expect(response).to redirect_to(root_path), "Failed: #{u[:type]}"
-      end
-    end
-  end
-
-  context 'attempt destroy session (log out) having logged in' do
-    it 'by logging out (as different user types): redirect to home page' do
-      [
-        { user: super_admin_user, type: 'super_admin_user' },
-        { user: admin_user, type: 'admin_user' },
-        { user: user, type: 'user' }
-      ].each do |u|
-        session[:user_id] = u[:user].id
-        delete :destroy
         expect(session[:user_id]).to eq nil
         expect(response).to redirect_to(root_path), "Failed: #{u[:type]}"
       end

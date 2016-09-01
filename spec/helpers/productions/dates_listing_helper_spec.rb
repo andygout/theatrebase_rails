@@ -2,6 +2,12 @@ require 'rails_helper'
 
 describe Productions::DatesListingHelper, type: :helper do
   let(:production) { create :production }
+  let(:production_attrs) { attributes_for :production }
+
+  before(:each) do
+    production.dates_info = nil
+    production.dates_tbc_note = nil
+  end
 
   context 'outputting dates markup (for production listings)' do
     it 'same dates for first and last performance (i.e. performs for one day only)' do
@@ -42,7 +48,7 @@ describe Productions::DatesListingHelper, type: :helper do
 
     it 'dates are TBC; "dates TBC note" given' do
       production.dates_info = 3
-      production.dates_tbc_note = 'Summer 2015'
+      production.dates_tbc_note = production_attrs[:dates_tbc_note]
       expect(listing_dates(production)).to eq "<span class='emphasis-text'>Summer 2015</span>"
     end
   end

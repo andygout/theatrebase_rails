@@ -1,11 +1,16 @@
 require 'rails_helper'
 
 feature 'User edit/update admin status' do
-  context 'attempt edit admin status of user' do
-    let!(:super_admin_user) { create_logged_in_super_admin_user }
-    let(:second_super_admin_user) { create :second_super_admin_user }
-    let(:user) { create :user }
+  let(:super_admin_user) { create :super_admin_user }
+  let(:second_super_admin_user) { create :second_super_admin_user }
+  let(:user) { create :user }
+  let(:second_user) { create :user }
 
+  before(:each) do
+    log_in super_admin_user
+  end
+
+  context 'attempt edit admin status of user' do
     scenario 'attempt edit permitted user: render admin status edit page', js: true do
       visit edit_admin_status_path(user)
       expect(page).to have_current_path edit_admin_status_path(user)
@@ -19,9 +24,6 @@ feature 'User edit/update admin status' do
   end
 
   context 'accessing permitted user admin status edit form' do
-    let!(:super_admin_user) { create_logged_in_super_admin_user }
-    let(:user) { create :user }
-
     scenario 'click on \'Edit Admin Status\' button on user profile page; display user edit form' do
       visit user_path(user)
       click_button 'Edit Admin Status'
@@ -30,10 +32,6 @@ feature 'User edit/update admin status' do
   end
 
   context 'updating admin status of permitted user profile' do
-    let!(:super_admin_user) { create_logged_in_super_admin_user }
-    let(:user) { create :user }
-    let(:second_user) { create :second_user }
-
     before(:each) do
       visit edit_admin_status_path(user)
     end
@@ -61,18 +59,6 @@ feature 'User edit/update admin status' do
       expect(page).not_to have_css '.field_with_errors'
       expect(user.reload.admin).to be nil
       expect(page).to have_current_path user_path(user)
-    end
-
-    scenario 'assignor and assignee associations created/destroyed', js: true do
-      check('status')
-      click_button 'Update Admin Status'
-      expect(user.admin_status_assignor).to eq super_admin_user
-      expect(super_admin_user.admin_status_assignees).to include user
-      visit edit_admin_status_path(user)
-      uncheck('status')
-      click_button 'Update Admin Status'
-      expect(user.reload.admin_status_assignor).to eq nil
-      expect(super_admin_user.admin_status_assignees).to be_empty
     end
 
     scenario 'after admin status is updated only new admin status applies', js: true do

@@ -8,8 +8,9 @@ require 'rspec/rails'
 # Add additional requires below this line. Rails is not loaded until this point!
 require 'capybara/poltergeist'
 require 'capybara/rails'
+require 'support/controller_helper_methods'
 require 'support/database_cleaner'
-require 'support/helper_methods'
+require 'support/feature_helper_methods'
 require 'with_model'
 
 Capybara.current_driver = :poltergeist

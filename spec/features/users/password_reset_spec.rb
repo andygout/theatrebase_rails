@@ -77,9 +77,9 @@ feature 'User password reset' do
   context 'submitting password reset form' do
     before(:each) do
       request_password_reset user
-      @msg = ActionMailer::Base.deliveries.last.to_s
-      @password_reset_token = acquire_token @msg
-      @user = click_resource_link @msg, 'password_reset'
+      msg = ActionMailer::Base.deliveries.last.to_s
+      @password_reset_token = acquire_token msg
+      user = click_resource_link msg, 'password_reset'
     end
 
     scenario 'password cannot be reset without entering valid new password & confirmation', js: true do
@@ -99,7 +99,7 @@ feature 'User password reset' do
       expect(page).to have_css '.alert-success'
       expect(page).not_to have_css '.alert-error'
       expect(page).not_to have_css '.field_with_errors'
-      expect(page).to have_current_path user_path(@user)
+      expect(page).to have_current_path user_path(user)
     end
 
     scenario 'after password is reset only new password can be used', js: true do

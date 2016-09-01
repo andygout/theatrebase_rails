@@ -1,43 +1,29 @@
 require 'rails_helper'
 
-MAX_LENGTH ||= 255
+include Shared::ConstantsHelper
 
 describe GenerateUrlValidator, type: :validator do
-  context 'production URL validation' do
-    with_model :production do
-      table { |t| t.string :title }
-      model { validates :title, generate_url: true }
-    end
+  [
+    { class_name: 'Production', text_attr: :title },
+    { class_name: 'Theatre', text_attr: :name }
+  ].each do |m|
+    context "#{m[:class_name]} URL validation" do
+      with_model m[:class_name] do
+        table { |t| t.string m[:text_attr] }
+        model { validates m[:text_attr], generate_url: true }
+      end
 
-    it 'invalid if URL generated from string is less than one non-whitespace character' do
-      expect(Production.new(title: '\':/.,…?$%#').valid?).to be false
-    end
+      it 'invalid if URL generated from string is less than one non-whitespace character' do
+        expect(m[:class_name].constantize.new(m[:text_attr] => '\':/.,…?$%#').valid?).to be false
+      end
 
-    it 'invalid if URL generated from string exceeds length limit (while string itself is within limit: ß -> ss)' do
-      expect(Production.new(title: "#{'a' * (MAX_LENGTH - 1)}ß").valid?).to be false
-    end
+      it 'invalid if URL generated from string exceeds length limit (while string itself is within limit: ß -> ss)' do
+        expect(m[:class_name].constantize.new(m[:text_attr] => "#{'a' * (TEXT_MAX_LENGTH - 1)}ß").valid?).to be false
+      end
 
-    it 'valid if URL generated from string is within accepted minimum and maximum number of characters' do
-      expect(Production.new(title: 'hamlet').valid?).to be true
-    end
-  end
-
-  context 'theatre URL validation' do
-    with_model :theatre do
-      table { |t| t.string :name }
-      model { validates :name, generate_url: true }
-    end
-
-    it 'invalid if URL generated from string is less than one non-whitespace character' do
-      expect(Theatre.new(name: '\':/.,…?$%#').valid?).to be false
-    end
-
-    it 'invalid if URL generated from string exceeds length limit (while string itself is within limit: ß -> ss)' do
-      expect(Theatre.new(name: "#{'a' * (MAX_LENGTH - 1)}ß").valid?).to be false
-    end
-
-    it 'valid if URL generated from string is within accepted minimum and maximum number of characters' do
-      expect(Theatre.new(name: 'hamlet').valid?).to be true
+      it 'valid if URL generated from string is within accepted minimum and maximum number of characters' do
+        expect(m[:class_name].constantize.new(m[:text_attr] => 'hamlet').valid?).to be true
+      end
     end
   end
 end
