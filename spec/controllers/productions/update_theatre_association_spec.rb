@@ -69,18 +69,18 @@ describe ProductionsController, type: :controller do
 
     it 'theatre exists: theatre retains its existing associated creator and updater' do
       theatre = Theatre.first
-      creator = theatre.creator
-      updater = theatre.updater
+      theatre_creator = theatre.creator
+      theatre_updater = theatre.updater
       production_params[:theatre_attributes] = existing_theatre_attrs
       patch :update, id: production.id, url: production.url, production: production_params
       theatre.reload
-      expect(theatre.creator).to eq creator
+      expect(theatre.creator).to eq theatre_creator
       expect(theatre.creator).not_to eq user
-      expect(theatre.updater).to eq updater
+      expect(theatre.updater).to eq theatre_updater
       expect(theatre.updater).not_to eq user
-      expect(creator.created_theatres).to include theatre
+      expect(theatre_creator.created_theatres).to include theatre
       expect(user.created_theatres).not_to include theatre
-      expect(updater.updated_theatres).to include theatre
+      expect(theatre_updater.updated_theatres).to include theatre
       expect(user.updated_theatres).not_to include theatre
     end
   end

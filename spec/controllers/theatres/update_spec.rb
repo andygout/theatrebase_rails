@@ -10,7 +10,7 @@ describe TheatresController, type: :controller do
   let(:theatre_attrs) { attributes_for :theatre }
   let!(:production) { create :production }
   let!(:theatre) { production.theatre }
-  let(:creator) { theatre.creator }
+  let(:theatre_creator) { theatre.creator }
   let(:second_theatre) { create :theatre }
 
   let(:theatre_params) {
@@ -87,10 +87,10 @@ describe TheatresController, type: :controller do
       session[:user_id] = user.id
       patch :update, url: theatre.url, theatre: theatre_params
       theatre.reload
-      expect(theatre.creator).to eq creator
+      expect(theatre.creator).to eq theatre_creator
       expect(theatre.updater).to eq user
-      expect(creator.created_theatres).to include theatre
-      expect(creator.updated_theatres).not_to include theatre
+      expect(theatre_creator.created_theatres).to include theatre
+      expect(theatre_creator.updated_theatres).not_to include theatre
       expect(user.created_theatres).not_to include theatre
       expect(user.updated_theatres).to include theatre
     end
@@ -100,10 +100,10 @@ describe TheatresController, type: :controller do
       theatre_params[:name] = ''
       patch :update, url: theatre.url, theatre: theatre_params
       theatre.reload
-      expect(theatre.creator).to eq creator
-      expect(theatre.updater).to eq creator
-      expect(creator.created_theatres).to include theatre
-      expect(creator.updated_theatres).to include theatre
+      expect(theatre.creator).to eq theatre_creator
+      expect(theatre.updater).to eq theatre_creator
+      expect(theatre_creator.created_theatres).to include theatre
+      expect(theatre_creator.updated_theatres).to include theatre
       expect(user.created_theatres).not_to include theatre
       expect(user.updated_theatres).not_to include theatre
     end

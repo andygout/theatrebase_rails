@@ -10,7 +10,7 @@ describe ProductionsController, type: :controller do
   let(:production_attrs) { attributes_for :production }
   let(:theatre_attrs) { attributes_for :theatre }
   let!(:production) { create :production }
-  let(:creator) { production.creator }
+  let(:production_creator) { production.creator }
 
   let(:theatre_params) {
     {
@@ -99,10 +99,10 @@ describe ProductionsController, type: :controller do
       session[:user_id] = user.id
       patch :update, id: production.id, url: production.url, production: production_params
       production.reload
-      expect(production.creator).to eq creator
+      expect(production.creator).to eq production_creator
       expect(production.updater).to eq user
-      expect(creator.created_productions).to include production
-      expect(creator.updated_productions).not_to include production
+      expect(production_creator.created_productions).to include production
+      expect(production_creator.updated_productions).not_to include production
       expect(user.created_productions).not_to include production
       expect(user.updated_productions).to include production
     end
@@ -112,10 +112,10 @@ describe ProductionsController, type: :controller do
       production_params[:title] = ''
       patch :update, id: production.id, url: production.url, production: production_params
       production.reload
-      expect(production.creator).to eq creator
-      expect(production.updater).to eq creator
-      expect(creator.created_productions).to include production
-      expect(creator.updated_productions).to include production
+      expect(production.creator).to eq production_creator
+      expect(production.updater).to eq production_creator
+      expect(production_creator.created_productions).to include production
+      expect(production_creator.updated_productions).to include production
       expect(user.created_productions).not_to include production
       expect(user.updated_productions).not_to include production
     end

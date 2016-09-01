@@ -7,7 +7,7 @@ describe UsersController, type: :controller do
   let(:second_admin_user) { create :second_admin_user }
   let(:user) { create :user }
   let(:user_with_creator) { create :user_with_creator }
-  let(:creator) { user_with_creator.creator }
+  let(:user_creator) { user_with_creator.creator }
   let(:second_user) { create :user }
   let(:suspended_super_admin_user) { create :suspended_super_admin_user }
   let(:suspended_admin_user) { create :suspended_admin_user }
@@ -278,10 +278,10 @@ describe UsersController, type: :controller do
       session[:user_id] = user_with_creator.id
       patch :update, id: user_with_creator, user: user_params
       user_with_creator.reload
-      expect(user_with_creator.creator).to eq creator
+      expect(user_with_creator.creator).to eq user_creator
       expect(user_with_creator.updater).to eq user_with_creator
-      expect(creator.created_users).to include user_with_creator
-      expect(creator.updated_users).not_to include user_with_creator
+      expect(user_creator.created_users).to include user_with_creator
+      expect(user_creator.updated_users).not_to include user_with_creator
       expect(user_with_creator.created_users).not_to include user_with_creator
       expect(user_with_creator.updated_users).to include user_with_creator
     end
@@ -290,10 +290,10 @@ describe UsersController, type: :controller do
       session[:user_id] = user_with_creator.id
       patch :update, id: user_with_creator, user: { name: '', email: '' }
       user_with_creator.reload
-      expect(user_with_creator.creator).to eq creator
-      expect(user_with_creator.updater).to eq creator
-      expect(creator.created_users).to include user_with_creator
-      expect(creator.updated_users).to include user_with_creator
+      expect(user_with_creator.creator).to eq user_creator
+      expect(user_with_creator.updater).to eq user_creator
+      expect(user_creator.created_users).to include user_with_creator
+      expect(user_creator.updated_users).to include user_with_creator
       expect(user_with_creator.created_users).not_to include user_with_creator
       expect(user_with_creator.updated_users).not_to include user_with_creator
     end
