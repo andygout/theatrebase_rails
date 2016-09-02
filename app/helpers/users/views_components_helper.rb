@@ -19,7 +19,7 @@ module Users::ViewsComponentsHelper
   end
 
   def get_status_info
-    row_values = [
+    row_data = [
         [
           { content: 'Admin status:' },
           { content: admin_status_wording(@user), class: admin_status_class(@user) }
@@ -30,11 +30,20 @@ module Users::ViewsComponentsHelper
         ]
       ]
 
-    @status_info = create_content_container(row_values, 'status-info')
+    @status_info = create_content_container(row_data, 'status-info')
   end
 
-  def get_user_index_table
-    row_values = @users.map do |user|
+  def get_user_table_header_data
+    [
+      { content: 'User' },
+      { content: 'Email address' },
+      { content: 'Admin status' },
+      { content: 'Suspension status' }
+    ]
+  end
+
+  def get_user_table_row_data users
+    users.map do |user|
       [
         { content: link_markup('users', user.id, user.name) },
         { content: user.email },
@@ -42,19 +51,19 @@ module Users::ViewsComponentsHelper
         { content: suspension_status_wording(user), class: suspension_status_class(user) }
       ]
     end
+  end
 
-    header_values = [
-      { content: 'User' },
-      { content: 'Email address' },
-      { content: 'Admin status' },
-      { content: 'Suspension status' }
-    ]
+  def get_user_table_data users
+    {
+      header_data: get_user_table_header_data,
+      colwidth_data: [{ width: 30 }, { width: 30 }, { width: 20 }, { width: 20 }],
+      row_data: get_user_table_row_data(users)
+    }
+  end
 
-    colwidth_values = [{ width: 30 }, { width: 30 }, { width: 20 }, { width: 20 }]
-
-    rows_markup = compile_rows(row_values, header_values, colwidth_values)
-
-    @user_index_table = bookend_tags('table', rows_markup, 'table listing', 'users-index').html_safe
+  def get_user_table users
+    rows_markup = compile_rows(get_user_table_data(users))
+    @user_table = bookend_tags('table', rows_markup, { id: 'users-index', class: 'table listing' }).html_safe
   end
 
 end
