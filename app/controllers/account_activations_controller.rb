@@ -35,8 +35,7 @@ class AccountActivationsController < ApplicationController
       params
         .require(:user)
         .permit(:password,
-                :password_confirmation,
-                :updater_id)
+                :password_confirmation)
         .merge(updater_id: current_user.id)
     end
 
