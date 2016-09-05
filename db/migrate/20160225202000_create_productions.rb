@@ -10,7 +10,7 @@ class CreateProductions < ActiveRecord::Migration
       t.date        :last_date
       t.boolean     :press_date_tbc
       t.boolean     :previews_only
-      t.integer     :dates_info, limit: 2
+      t.integer     :dates_info, limit: 2 # 0 = Dates info N/A; 1 = Booking until; 2 = Last date TBC; 3 = Dates TBC
       t.string      :press_date_wording
       t.string      :dates_tbc_note
       t.string      :dates_note
