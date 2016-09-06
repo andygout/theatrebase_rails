@@ -1,11 +1,13 @@
 module Associations::User
 
   extend ActiveSupport::Concern
-  include BelongsToCreatorUpdater
 
   included do
-    has_one :admin, dependent: :destroy
+    belongs_to :creator, class_name: :User, foreign_key: :creator_id
 
+    belongs_to :updater, class_name: :User, foreign_key: :updater_id
+
+    has_one :admin, dependent: :destroy
     accepts_nested_attributes_for :admin, allow_destroy: true
 
     has_one :admin_status_assignor, through: :admin, source: :assignor
@@ -17,7 +19,6 @@ module Associations::User
     has_one :super_admin, dependent: :destroy
 
     has_one :suspension, dependent: :destroy
-
     accepts_nested_attributes_for :suspension, allow_destroy: true
 
     has_one :suspension_status_assignor, through: :suspension, source: :assignor
