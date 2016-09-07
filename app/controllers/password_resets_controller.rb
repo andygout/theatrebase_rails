@@ -1,10 +1,11 @@
 class PasswordResetsController < ApplicationController
 
+  include Shared::GetUserHelper
   include Shared::ViewsComponentsHelper
 
-  before_action :get_user,          only: [:edit, :update]
-  before_action :valid_user,        only: [:edit, :update]
-  before_action :check_expiration,  only: [:edit, :update]
+  before_action -> { get_user_by_email(params[:email]) }, only: [:edit, :update]
+  before_action :valid_user,                              only: [:edit, :update]
+  before_action :check_expiration,                        only: [:edit, :update]
   before_action :get_page_title
 
   def new
@@ -51,10 +52,6 @@ class PasswordResetsController < ApplicationController
                 :password_confirmation)
         .merge( reset_digest: nil,
                 reset_sent_at: nil)
-    end
-
-    def get_user
-      @user = User.find_by_email(params[:email])
     end
 
     def valid_user

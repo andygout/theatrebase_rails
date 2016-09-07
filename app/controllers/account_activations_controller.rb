@@ -1,8 +1,9 @@
 class AccountActivationsController < ApplicationController
 
+  include Shared::GetUserHelper
   include Shared::ViewsComponentsHelper
 
-  before_action :get_user
+  before_action -> { get_user_by_email(params[:email]) }
   before_action :get_page_title
 
   def edit
@@ -37,10 +38,6 @@ class AccountActivationsController < ApplicationController
         .permit(:password,
                 :password_confirmation)
         .merge(updater_id: current_user.id)
-    end
-
-    def get_user
-      @user = User.find_by_email(params[:email])
     end
 
     def get_page_title
