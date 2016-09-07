@@ -25,7 +25,7 @@ class UsersController < ApplicationController
   end
 
   def create
-    @user = current_user.created_users.build_with_user(user_create_params, current_user)
+    @user = current_user.created_users.build(user_create_params)
     if @user.save
       @user.send_activation_email
       flash[:success] = 'Account activation instructions sent successfully'

@@ -21,7 +21,7 @@ class ProductionsController < ApplicationController
   end
 
   def create
-    @production = current_user.created_productions.build_with_user(production_params, current_user)
+    @production = current_user.created_productions.build(production_params)
     if @production.save
       flash[:success] = success_msg(MODEL, 'created')
       redirect_to production_path(@production.id, @production.url)
