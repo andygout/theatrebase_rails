@@ -50,7 +50,8 @@ class PasswordResetsController < ApplicationController
         .require(:user)
         .permit(:password,
                 :password_confirmation)
-        .merge( reset_digest: nil,
+        .merge( updater_id: @user.id,
+                reset_digest: nil,
                 reset_sent_at: nil)
     end
 

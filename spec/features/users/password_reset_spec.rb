@@ -92,10 +92,14 @@ feature 'User password reset' do
       expect(page).to have_current_path password_reset_path(@password_reset_token)
     end
 
-    scenario 'password is reset by entering valid password and confirmation', js: true do
+    scenario 'password is reset by entering valid password and confirmation; user is set as associated updater', js: true do
       fill_in 'user_password',              with: 'new-password'
       fill_in 'user_password_confirmation', with: 'new-password'
+      expect(user.updater).to eq nil
       click_button 'Reset Password'
+      user.reload
+      expect(user.updater).to eq user
+      expect(user.updated_users).to include user
       expect(page).to have_css '.alert-success'
       expect(page).not_to have_css '.alert-error'
       expect(page).not_to have_css '.field_with_errors'
