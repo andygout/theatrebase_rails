@@ -19,7 +19,7 @@ class SuspensionStatusController < ApplicationController
     redirect_to @user
   end
 
-    private
+  private
 
     def suspension_status_assignor
       validate_user valid_suspension_status_assignor? @user

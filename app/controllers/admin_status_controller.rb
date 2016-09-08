@@ -19,7 +19,7 @@ class AdminStatusController < ApplicationController
     redirect_to @user
   end
 
-    private
+  private
 
     def admin_status_assignor
       validate_user valid_admin_status_assignor? @user
