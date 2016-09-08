@@ -12,7 +12,7 @@ module Shared::ViewsComponentsHelper
   end
 
   def get_browser_tab_suffix model
-    model === 'Production' ? listing_dates(@production) : model.downcase
+    model === 'Production' ? "#{@production.theatre.name}: #{listing_dates(@production)}" : model.downcase
   end
 
   def get_browser_tab model
