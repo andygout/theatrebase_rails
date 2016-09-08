@@ -3,7 +3,7 @@ module UsersHelper
   def logged_in_user
     unless logged_in?
       store_location
-      flash[:error] = 'Please log in'
+      flash[:error] = 'PLEASE LOG IN'
       redirect_to log_in_path
     end
   end
@@ -11,14 +11,14 @@ module UsersHelper
   def not_suspended_user
     if current_user.suspension
       log_out
-      flash[:error] = 'Account suspended'
+      flash[:error] = 'ACCOUNT SUSPENDED'
       validate_user false
     end
   end
 
   def validate_user user_valid
     unless user_valid
-      flash[:error] ||= 'Access denied'
+      flash[:error] ||= 'ACCESS DENIED'
       redirect_to root_path
     end
   end

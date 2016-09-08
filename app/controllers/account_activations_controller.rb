@@ -10,10 +10,10 @@ class AccountActivationsController < ApplicationController
     if @user && !@user.activated_at? && @user.authenticated?(:activation, params[:id])
       @user.activate
       log_in @user
-      flash.now[:success] = 'Account activated'
+      flash.now[:success] = 'ACCOUNT ACTIVATED'
       render :edit
     else
-      flash[:error] = 'Invalid activation link'
+      flash[:error] = 'INVALID ACTIVATION LINK'
       redirect_to root_path
     end
   end
@@ -23,7 +23,7 @@ class AccountActivationsController < ApplicationController
       @user.errors.add(:password, 'Password cannot be blank')
       render :edit
     elsif @user.update(user_params)
-      flash[:success] = 'Password has been set'
+      flash[:success] = 'PASSWORD HAS BEEN SET'
       redirect_to @user
     else
       render :edit

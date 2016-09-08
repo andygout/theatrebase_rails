@@ -2,7 +2,7 @@
 
   <div class='head-alert'>
     <% flash.each do |msg_type, msg| %>
-      <%= content_tag(:p, msg, class: "alert-#{msg_type}") %>
+      <%= content_tag(:p, strip_tags(msg), class: "alert-#{msg_type}") %>
     <% end %>
   </div>
 

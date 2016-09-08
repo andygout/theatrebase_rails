@@ -19,7 +19,7 @@ class TheatresController < ApplicationController
 
   def update
     if @theatre.update(theatre_params)
-      flash[:success] = success_msg(MODEL, 'updated')
+      flash[:success] = success_msg(MODEL, 'updated', @theatre.name)
       redirect_to theatre_path(@theatre.url)
     else
       @theatre.url = params[:url]
@@ -30,7 +30,7 @@ class TheatresController < ApplicationController
   def destroy
     @theatre.destroy
     if @theatre.errors.empty?
-      flash[:success] = success_msg(MODEL, 'deleted')
+      flash[:success] = success_msg(MODEL, 'deleted', @theatre.name)
       redirect_to root_path
     else
       flash[:error] = @theatre.errors.messages[:base][0]

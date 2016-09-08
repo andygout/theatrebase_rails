@@ -72,8 +72,10 @@
 
 .alert-success {
   color: $positive-color;
+  font-weight: bold;
 }
 
 .alert-error {
   color: $negative-color;
+  font-weight: bold;
 }

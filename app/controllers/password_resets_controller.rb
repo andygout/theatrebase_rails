@@ -14,15 +14,15 @@ class PasswordResetsController < ApplicationController
   def create
     @user = User.find_by_email(params[:password_reset][:email].downcase)
     if !@user
-      flash.now[:error] = 'Email address not found'
+      flash.now[:error] = 'EMAIL ADDRESS NOT FOUND'
       render :new
     elsif !@user.activated_at
-      flash[:error] = 'Account not yet activated - please check your email for account activation instructions'
+      flash[:error] = 'ACCOUNT NOT YET ACTIVATED - PLEASE CHECK YOUR EMAIL FOR ACCOUNT ACTIVATION INSTRUCTIONS'
       redirect_to root_path
     else
       @user.create_reset_digest
       @user.send_password_reset_email
-      flash[:success] = 'Please check your email for password reset instructions'
+      flash[:success] = 'PLEASE CHECK YOUR EMAIL FOR PASSWORD RESET INSTRUCTIONS'
       redirect_to root_path
     end
   end
@@ -36,7 +36,7 @@ class PasswordResetsController < ApplicationController
       render :edit
     elsif @user.update(user_params)
       log_in @user
-      flash[:success] = 'Password has been reset'
+      flash[:success] = 'PASSWORD HAS BEEN RESET'
       redirect_to @user
     else
       render :edit
@@ -63,7 +63,7 @@ class PasswordResetsController < ApplicationController
 
     def check_expiration
       if @user.password_reset_expired?
-        flash[:error] = 'Password reset token has expired'
+        flash[:error] = 'PASSWORD RESET TOKEN HAS EXPIRED'
         redirect_to new_password_reset_url
       end
     end

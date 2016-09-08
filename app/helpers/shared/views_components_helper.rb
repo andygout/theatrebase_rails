@@ -24,8 +24,8 @@ module Shared::ViewsComponentsHelper
     @content_header = model.upcase
   end
 
-  def success_msg model, action
-    "#{model} #{action} successfully"
+  def success_msg model, action, instance
+    "#{model.upcase} #{action.upcase} SUCCESSFULLY: #{instance}"
   end
 
   def get_production_table_row_data productions
