@@ -201,8 +201,18 @@ describe Production, type: :model do
     end
   end
 
-  context 'theatre association validation' do
-    it 'invalid if no association exists' do
+  context 'association validations' do
+    it 'invalid if no creator association exists' do
+      production.creator = nil
+      expect(production.valid?).to be false
+    end
+
+    it 'invalid if no updater association exists' do
+      production.updater = nil
+      expect(production.valid?).to be false
+    end
+
+    it 'invalid if no theatre association exists' do
       production.theatre_attributes = {}
       expect(production.valid?).to be false
     end

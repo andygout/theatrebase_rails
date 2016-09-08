@@ -21,9 +21,10 @@ class ProductionsController < ApplicationController
   end
 
   def create
-    @production = current_user.created_productions.build_with_user(production_params, current_user)
+    @production = current_user.created_productions.build(production_params)
     if @production.save
-      flash[:success] = success_msg(MODEL, 'created')
+      flash[:success] = success_msg(MODEL, 'created', @production.title)
+      flash[:success] = success_msg(MODEL, 'created', get_production_instance_string)
       redirect_to production_path(@production.id, @production.url)
     else
       render :new
@@ -35,7 +36,7 @@ class ProductionsController < ApplicationController
 
   def update
     if @production.update(production_params)
-      flash[:success] = success_msg(MODEL, 'updated')
+      flash[:success] = success_msg(MODEL, 'updated', get_production_instance_string)
       redirect_to production_path(@production.id, @production.url)
     else
       @production.url = params[:url]
@@ -45,7 +46,7 @@ class ProductionsController < ApplicationController
 
   def destroy
     @production.destroy
-    flash[:success] = success_msg(MODEL, 'deleted')
+    flash[:success] = success_msg(MODEL, 'deleted', get_production_instance_string)
     redirect_to productions_path
   end
 
@@ -109,6 +110,10 @@ class ProductionsController < ApplicationController
       @production = ['new', 'create'].include?(params[:action]) ?
         Production.new :
         Production.find_by_id_and_url!(params[:id], params[:url])
+    end
+
+    def get_production_instance_string
+      "#{@production.title} (#{@production.theatre.name}: #{listing_dates(@production)})"
     end
 
 end

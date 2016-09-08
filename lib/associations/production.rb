@@ -5,9 +5,7 @@ module Associations::Production
 
   included do
     belongs_to :theatre
-
     validates_presence_of :theatre
-
     accepts_nested_attributes_for :theatre
 
     def theatre_attributes=(attributes)

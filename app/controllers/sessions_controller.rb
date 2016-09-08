@@ -10,29 +10,29 @@ class SessionsController < ApplicationController
     if user && user.authenticate(params[:session][:password])
       clearance_check user
     else
-      flash.now[:error] = 'Invalid email-password combination'
+      flash.now[:error] = 'INVALID EMAIL-PASSWORD COMBINATION'
       render :new
     end
   end
 
   def clearance_check user
     if !user.activated_at?
-      flash[:error] = 'Account not activated: check your email for the activation link'
+      flash[:error] = 'ACCOUNT NOT ACTIVATED: CHECK YOUR EMAIL FOR THE ACTIVATION LINK'
       validate_user false
     elsif user.suspension
-      flash[:error] = 'Account suspended'
+      flash[:error] = 'ACCOUNT SUSPENDED'
       validate_user false
     else
       log_in user
       params[:session][:remember_me] == '1' ? remember(user) : forget(user)
-      flash[:success] = 'Successfully logged in'
+      flash[:success] = 'SUCCESSFULLY LOGGED IN'
       redirect_back_or user
     end
   end
 
   def destroy
     log_out if logged_in?
-    flash[:success] = 'Successfully logged out'
+    flash[:success] = 'SUCCESSFULLY LOGGED OUT'
     redirect_to root_path
   end
 

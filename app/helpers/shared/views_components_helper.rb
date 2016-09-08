@@ -12,7 +12,7 @@ module Shared::ViewsComponentsHelper
   end
 
   def get_browser_tab_suffix model
-    model === 'Production' ? listing_dates(@production) : model.downcase
+    model === 'Production' ? "#{@production.theatre.name}: #{listing_dates(@production)}" : model.downcase
   end
 
   def get_browser_tab model
@@ -24,8 +24,8 @@ module Shared::ViewsComponentsHelper
     @content_header = model.upcase
   end
 
-  def success_msg model, action
-    "#{model} #{action} successfully"
+  def success_msg model, action, instance
+    "#{model.upcase} #{action.upcase} SUCCESSFULLY: #{instance}"
   end
 
   def get_production_table_row_data productions

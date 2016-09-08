@@ -15,11 +15,11 @@ class SuspensionStatusController < ApplicationController
 
   def update
     @user.update(user_status_params(:suspension))
-    flash[:success] = success_msg('Suspension status', 'updated')
+    flash[:success] = success_msg('Suspension status', 'updated', get_user_page_title)
     redirect_to @user
   end
 
-    private
+  private
 
     def suspension_status_assignor
       validate_user valid_suspension_status_assignor? @user

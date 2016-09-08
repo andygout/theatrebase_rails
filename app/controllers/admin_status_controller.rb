@@ -15,11 +15,11 @@ class AdminStatusController < ApplicationController
 
   def update
     @user.update(user_status_params(:admin))
-    flash[:success] = success_msg('Admin status', 'updated')
+    flash[:success] = success_msg('Admin status', 'updated', get_user_page_title)
     redirect_to @user
   end
 
-    private
+  private
 
     def admin_status_assignor
       validate_user valid_admin_status_assignor? @user

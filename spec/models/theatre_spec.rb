@@ -33,4 +33,16 @@ describe Theatre, type: :model do
       expect(theatre.valid?).to be true
     end
   end
+
+  context 'association validations' do
+    it 'invalid if no creator association exists' do
+      theatre.creator = nil
+      expect(theatre.valid?).to be false
+    end
+
+    it 'invalid if no updater association exists' do
+      theatre.updater = nil
+      expect(theatre.valid?).to be false
+    end
+  end
 end

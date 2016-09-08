@@ -1,18 +1,19 @@
 class AccountActivationsController < ApplicationController
 
+  include Shared::GetUserHelper
   include Shared::ViewsComponentsHelper
 
-  before_action :get_user
+  before_action -> { get_user_by_email(params[:email]) }
   before_action :get_page_title
 
   def edit
     if @user && !@user.activated_at? && @user.authenticated?(:activation, params[:id])
       @user.activate
       log_in @user
-      flash.now[:success] = 'Account activated'
+      flash.now[:success] = 'ACCOUNT ACTIVATED'
       render :edit
     else
-      flash[:error] = 'Invalid activation link'
+      flash[:error] = 'INVALID ACTIVATION LINK'
       redirect_to root_path
     end
   end
@@ -22,7 +23,7 @@ class AccountActivationsController < ApplicationController
       @user.errors.add(:password, 'Password cannot be blank')
       render :edit
     elsif @user.update(user_params)
-      flash[:success] = 'Password has been set'
+      flash[:success] = 'PASSWORD HAS BEEN SET'
       redirect_to @user
     else
       render :edit
@@ -35,13 +36,8 @@ class AccountActivationsController < ApplicationController
       params
         .require(:user)
         .permit(:password,
-                :password_confirmation,
-                :updater_id)
+                :password_confirmation)
         .merge(updater_id: current_user.id)
-    end
-
-    def get_user
-      @user = User.find_by_email(params[:email])
     end
 
     def get_page_title
