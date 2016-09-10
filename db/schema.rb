@@ -71,13 +71,15 @@ ActiveRecord::Schema.define(version: 20160731200827) do
     t.string   "name"
     t.string   "alphabetise"
     t.string   "url"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+    t.integer  "sur_theatre_id"
     t.integer  "creator_id"
     t.integer  "updater_id"
   end
 
   add_index "theatres", ["creator_id"], name: "index_theatres_on_creator_id", using: :btree
+  add_index "theatres", ["sur_theatre_id"], name: "index_theatres_on_sur_theatre_id", using: :btree
   add_index "theatres", ["updater_id"], name: "index_theatres_on_updater_id", using: :btree
   add_index "theatres", ["url"], name: "index_theatres_on_url", using: :btree
 
@@ -111,6 +113,7 @@ ActiveRecord::Schema.define(version: 20160731200827) do
   add_foreign_key "super_admins", "users"
   add_foreign_key "suspensions", "users"
   add_foreign_key "suspensions", "users", column: "assignor_id"
+  add_foreign_key "theatres", "theatres", column: "sur_theatre_id"
   add_foreign_key "theatres", "users", column: "creator_id"
   add_foreign_key "theatres", "users", column: "updater_id"
   add_foreign_key "users", "users", column: "creator_id"
