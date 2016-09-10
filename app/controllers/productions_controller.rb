@@ -65,6 +65,7 @@ class ProductionsController < ApplicationController
     def production_params
       nullify_unused_params
       amplify_attributes(:production, :title)
+      amplify_sur_theatre_attributes
       amplify_theatre_attributes
 
       params
@@ -82,6 +83,7 @@ class ProductionsController < ApplicationController
                 :dates_tbc_note,
                 :dates_note,
                 :second_press_date,
+                sur_theatre_attributes: [:name, :alphabetise, :url, :creator_id, :updater_id],
                 theatre_attributes: [:name, :alphabetise, :url, :creator_id, :updater_id])
         .merge(updater_id: current_user.id)
     end
@@ -92,6 +94,18 @@ class ProductionsController < ApplicationController
 
       [:press_date_wording, :dates_tbc_note, :dates_note]
         .map { |p| params[:production][p] = nil if params[:production][p].empty? }
+    end
+
+    def amplify_sur_theatre_attributes
+      sur_theatre_name = params[:production][:sur_theatre_attributes][:name]
+      params[:production][:sur_theatre_attributes].merge!(
+          {
+            alphabetise:  get_alphabetise_value(sur_theatre_name),
+            url:          generate_url(sur_theatre_name),
+            creator_id:   current_user.id,
+            updater_id:   current_user.id
+          }
+        )
     end
 
     def amplify_theatre_attributes

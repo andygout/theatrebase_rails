@@ -79,6 +79,14 @@
   </div>
 
   <div class='form-section'>
+    <%= production.fields_for :sur_theatre do |sur_theatre| %>
+      <div class='form-item'>
+        <%= sur_theatre.label :name, 'Sur Theatre', class: 'label' %>
+        <%= sur_theatre.text_field :name, class: 'input text-input', maxlength: 255 %>
+        <%= render partial: 'error', collection: @production.sur_theatre.errors[:name] %>
+      </div>
+    <% end %>
+
     <%= production.fields_for :theatre do |theatre| %>
       <div class='form-item'>
         <%= theatre.label :name, 'Theatre', class: 'label mandatory' %>
