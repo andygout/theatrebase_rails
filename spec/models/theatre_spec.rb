@@ -5,6 +5,8 @@ include Shared::ConstantsHelper
 describe Theatre, type: :model do
   context 'associations' do
     it { should have_many :productions }
+    it { should belong_to :sur_theatre }
+    it { should have_many :sub_theatres }
     it { should belong_to :creator }
     it { should belong_to :updater }
   end
